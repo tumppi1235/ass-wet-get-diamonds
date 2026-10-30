@@ -82,6 +82,18 @@ export class LocalAccounts {
     const snapshot = JSON.parse(JSON.stringify(value));
     return this.serial(async () => { const db = await this.read(), { user } = await this.verified(db, token); if (user.id !== ownerId) throw new Error('This saved game belongs to a different profile.'); db.progress[user.id] = snapshot; await this.write(db); });
   }
+  async communityVisits(token: string): Promise<Record<string, number>> {
+    return this.serial(async () => {
+      const db = await this.read(), { user } = await this.verified(db, token), result: Record<string, number> = {};
+      // Share anonymous visited cells only, never another profile's path or account data.
+      for (const other of db.users) {
+        if (other.id === user.id) continue;
+        const state = db.progress[other.id] as { visits?: Record<string, number> } | undefined;
+        for (const [key, count] of Object.entries(state?.visits || {})) if (/^-?\d+,-?\d+$/.test(key) && Number.isFinite(count) && count > 0) result[key] = (result[key] || 0) + 1;
+      }
+      return result;
+    });
+  }
   async listUsers(token: string) {
     return this.serial(async () => {
       const db = await this.read(), { user } = await this.verified(db, token);

@@ -2,6 +2,8 @@
 
 The active app is React Native + Expo SDK 58, currently tested in the browser. Android/iOS packaging is paused. Native UI components, Expo Router and react-native-svg replace the old WebView host; the tested deterministic engine remains shared with the prototype.
 
+The game interface uses an original retro RPG theme: pixel typography/icons, dark green felt, gold frames, and bevelled controls. Terrain imagery remains unfiltered for navigation. Pixelify Sans is bundled for offline use under the SIL Open Font License; its licence is in `assets/fonts/OFL-PixelifySans.txt`. Icons and the patterned background are original SVG artwork.
+
 ## Run
 
 ```text
@@ -33,7 +35,11 @@ These are local device profiles, not a hosted authentication system. Roles prote
 
 ## Game and Garmin direction
 
-The app is the main game: a city-wide outdoor map, artefact collection, exploration history and player profiles. The initial overview fits the actual Jyväskylä municipality boundary, from Korpilahti to Tikkakoski. Zoom in for 250 m game tiles. New artefacts are revealed in the player's current and eight adjacent tiles; panning does not reveal remote finds.
+The app is the main game: a city-wide outdoor map, artefact collection, exploration history and player profiles. The map opens at a readable 250 m tile scale near the saved game position (downtown for a new player). The grid appears before GPS or a demo is started. **Whole Jyväskylä** fits the municipality boundary, from Korpilahti to Tikkakoski; **Tile view** returns to the player area. Use +/−, mouse wheel, double click or pinch to zoom. Wheel/pinch zoom holds the point beneath the pointer or midpoint and manual map movement stops following until **◎ Me** is selected. At city overview scale, a **Show 250 m tiles** shortcut replaces unreadably dense grid lines. New artefacts are revealed in the player's current and eight adjacent tiles; panning does not reveal remote finds.
+
+Walking earns **1 gold per 100 metres**. Gold and partial progress toward the next coin stay in the local profile across sessions. Only accepted GPS distance earns gold: coarse fixes, stale positions, GPS jumps and pauses add none. The labelled demo also earns gold for testing, just as it already updates demo distance and collection progress. Existing profiles start at zero gold; historical distance is not converted. Gold is currently a saved resource with no spending feature.
+
+Visited areas remain visible: green for your visits, purple for other local profiles, teal for both. Other-player data contains anonymous visited-cell presence only, not names, precise paths or account information. It loads when signing in; there is no cross-phone community service yet. At distant zooms, visited cells are grouped into larger areas; zooming in restores individual 250 m tiles. Map imagery automatically selects more detailed terrain/road tiles as you zoom, and offline centre detail omits buildings and minor paths at wide scales.
 
 Outdoor mode uses OpenTopoMap terrain, contours and trails, with OpenStreetMap street tiles as a fallback. Both load only the viewed area, use normal HTTP caching and require internet. The providers receive the requested map area, which can reveal approximate location when following the player. Attribution remains visible. Offline centre mode retains the bundled downtown roads, buildings, parks and water; it does not include municipality-wide offline terrain. These are OpenTopoMap/OSM maps with an outdoor appearance, not Trailmap's proprietary layers.
 
