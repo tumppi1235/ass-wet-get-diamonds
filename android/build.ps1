@@ -21,7 +21,7 @@ $keyFile = Join-Path $keysDir 'android-alpha.keystore'
 if (-not (Test-Path $keyFile)) {
     Run-Tool (Join-Path $jdkBin 'keytool.exe') @('-genkeypair','-keystore',$keyFile,'-alias','trailrelics','-keyalg','RSA','-keysize','2048','-validity','10000','-storepass','androidalpha','-keypass','androidalpha','-dname','CN=Trail Relics Local Alpha')
 }
-$outputApk = Join-Path $distDir 'TrailRelics-android-v0.1.0.apk'
+$outputApk = Join-Path $distDir 'TrailRelics-android-v0.2.0.apk'
 Run-Tool (Join-Path $jdkBin 'java.exe') @('-jar',(Join-Path $buildTools 'lib\apksigner.jar'),'sign','--ks',$keyFile,'--ks-key-alias','trailrelics','--ks-pass','pass:androidalpha','--key-pass','pass:androidalpha','--out',$outputApk,(Join-Path $buildDir 'aligned.apk'))
 Run-Tool (Join-Path $jdkBin 'java.exe') @('-jar',(Join-Path $buildTools 'lib\apksigner.jar'),'verify','--verbose',$outputApk)
 Run-Tool (Join-Path $buildTools 'aapt2.exe') @('dump','badging',$outputApk)

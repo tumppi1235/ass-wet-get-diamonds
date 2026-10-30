@@ -1,0 +1,49 @@
+name: Build iPhone alpha
+on:
+  push:
+    branches: [main]
+    paths: ['ios/**', 'android/assets/**', '.github/workflows/ios-build.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ios-alpha-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build for iPhone Simulator
+        run: |
+          set -euo pipefail
+          xcodebuild -project ios/TrailRelics.xcodeproj -scheme TrailRelics \
+            -configuration Debug -sdk iphonesimulator \
+            -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath "$RUNNER_TEMP/ios-simulator" \
+            CODE_SIGNING_ALLOWED=NO build > "$RUNNER_TEMP/ios-simulator.log" 2>&1 \
+            || { tail -100 "$RUNNER_TEMP/ios-simulator.log"; exit 1; }
+      - name: Build unsigned iPhone app
+        run: |
+          set -euo pipefail
+          xcodebuild -project ios/TrailRelics.xcodeproj -scheme TrailRelics \
+            -configuration Release -sdk iphoneos \
+            -destination 'generic/platform=iOS' \
+            -derivedDataPath "$RUNNER_TEMP/ios-device" \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY='' build \
+            > "$RUNNER_TEMP/ios-device.log" 2>&1 \
+            || { tail -100 "$RUNNER_TEMP/ios-device.log"; exit 1; }
+      - name: Package iPhone IPA
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/ios-package/Payload" dist
+          ditto "$RUNNER_TEMP/ios-device/Build/Products/Release-iphoneos/Trail Relics.app" \
+            "$RUNNER_TEMP/ios-package/Payload/Trail Relics.app"
+          (cd "$RUNNER_TEMP/ios-package" && /usr/bin/zip -qry \
+            "$GITHUB_WORKSPACE/dist/TrailRelics-ios-v0.2.0-unsigned.ipa" Payload)
+          unzip -t dist/TrailRelics-ios-v0.2.0-unsigned.ipa
+      - uses: actions/upload-artifact@v4
+        with:
+          name: TrailRelics-ios-v0.2.0-unsigned
+          path: dist/TrailRelics-ios-v0.2.0-unsigned.ipa
+          retention-days: 30

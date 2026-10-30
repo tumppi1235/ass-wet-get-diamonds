@@ -4,11 +4,11 @@ An exploration game set in Jyväskylä. Walk farther, discover artefacts in 250 
 
 ## Android alpha
 
-[Download Android APK](https://github.com/tumppi1235/ass-wet-get-diamonds/raw/refs/heads/main/dist/TrailRelics-android-v0.1.0.apk) · [Install guide](dist/INSTALL-ANDROID.txt)
+[Download Android APK](https://github.com/tumppi1235/ass-wet-get-diamonds/raw/refs/heads/main/dist/TrailRelics-android-v0.2.0.apk) · [Install guide](dist/INSTALL-ANDROID.txt)
 
 Share the APK link with your friend. On an Android phone, download and open the APK, install Trail Relics, tap Start GPS, and allow precise location while using the app. Requires Android 8.0 or newer. Keep the app open while playing. Physical-phone testing is still pending.
 
-Includes real GPS, two game screens, manual weather and saved collections. The tile map works offline. No account, Internet permission, GPS upload, background tracking, activity recording or phone/watch sync in this first version.
+Includes real GPS, two game screens, manual weather and saved collections. The full street map works offline and includes real roads, buildings, parks and water in central Jyväskylä. No account, Internet permission, GPS upload, background tracking, activity recording or phone/watch sync in this first version.
 
 ## Garmin Enduro 3
 
@@ -31,7 +31,7 @@ Click near a street to plan a route, or load the city demo. Keyboard movement fo
 ## Two game screens
 
 1. Guidance: north-up direction and approximate distance to the nearest visible artefact tile centre, or Ready to capture with collection odds.
-2. Nearby map: your tile and eight neighbouring tiles. Artefacts outside that vision are hidden.
+2. Phone street map: pan and zoom across real geography, with game tiles, visible-map artefacts, your position and your walking trail. Garmin retains the compact current-tile-plus-eight-neighbours view.
 
 Common, Rare and Legendary finds have increasing size, with blue detailing for Rare and gold ornament for Legendary. About 64% of tiles contain a find. Placement is deterministic; rarity is fixed on first reveal and weighted by personal neighbouring visits, not public traffic. World coordinates are designed for the Jyväskylä field trial.
 
@@ -53,8 +53,15 @@ Run:
 node tests/engine.test.cjs
 node tests/streets.test.cjs
 node tests/mobile.test.cjs
+node tests/phone-map.test.cjs
 ```
 
-All three suites pass. Android Java compilation, APK signature verification and manifest checks pass. Phone screens were checked in a browser preview. Neither native app has been tested on physical hardware yet.
+All four JavaScript suites pass. Android Java compilation, APK signature verification and manifest checks pass. Phone screens were checked in a browser preview. The Android app has also been installed and launched in a local Android 15 emulator. Physical-device testing is still pending.
 
 Private signing keys and downloaded SDKs are excluded. See [native alpha notes](docs/NATIVE-ALPHA.md) and [third-party data](THIRD_PARTY.md).
+
+## iPhone and desktop simulators
+
+The [iOS project](ios) uses the same full street map and gameplay screens as Android. [Download and installation instructions for iPhone](dist/INSTALL-IPHONE.md). A GitHub Mac build compiles the app and produces an unsigned IPA artifact, which must be signed before installation. No Apple credentials or signing keys are stored in GitHub.
+
+Android is installed locally as a Pixel 6a / Android 15 emulator. In VS Code choose Terminal > Run Task > Trail Relics: Android simulator. [Simulator setup](docs/SIMULATORS.md). Apple's native iOS Simulator runs on a Mac with Xcode; VS Code does not include it and cannot run it on Windows.

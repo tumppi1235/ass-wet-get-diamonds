@@ -1,0 +1,14 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm'),G=require('../public/engine.js');
+const callbacks=[],events={},ctx=new Proxy({},{get:(target,key)=>target[key]||(()=>{})}),canvas={getContext:()=>ctx,getBoundingClientRect:()=>({width:380,height:440}),addEventListener:(name,fn)=>events[name]=fn,setPointerCapture(){}};
+const sandbox={window:{devicePixelRatio:1},Game:G,ResizeObserver:class{constructor(fn){this.fn=fn;}observe(){this.fn();}},requestAnimationFrame:fn=>callbacks.push(fn),console};vm.createContext(sandbox);
+for(const name of ['city-map-data.js','phone-map.js'])vm.runInContext(fs.readFileSync(require.resolve('../android/assets/'+name),'utf8'),sandbox);
+const data=sandbox.window.TrailCityMap;assert.ok(data.features.some(f=>f.k==='building'));assert.ok(data.features.some(f=>f.k==='water'));assert.ok(data.features.some(f=>f.k==='road'&&f.n));
+assert.ok(data.features.some(f=>f.k==='water'&&f.n==='Jyväsjärvi'),'complete lake shoreline must be included');
+let saves=0;const controls={zoomIn:{},zoomOut:{},follow:{}},map=new sandbox.window.PhoneMap(canvas,controls,()=>saves++),s=G.initial();G.enter(s);const visits=JSON.stringify(s.visits);
+const flush=()=>{while(callbacks.length)callbacks.shift()();};map.update(s,false);flush();assert.equal(Object.keys(s.revealed).length,9,'no remote discovery before GPS');
+map.update(s,true);flush();assert.ok(Object.keys(s.revealed).length>9,'phone reveals the full visible map, beyond the watch nine-tile limit');assert.equal(JSON.stringify(s.visits),visits,'looking at the map is not walking');assert.ok(saves>0);
+const saved=JSON.stringify(s.revealed);map.draw();assert.equal(JSON.stringify(s.revealed),saved,'redrawing preserves rarity');
+events.pointerdown({pointerId:1,clientX:100,clientY:100});events.pointermove({pointerId:1,clientX:50,clientY:70});assert.equal(map.follow,false);flush();controls.follow.onclick();flush();assert.equal(map.center.x,s.x);
+for(let i=0;i<30;i++)controls.zoomOut.onclick();flush();assert.equal(map.scale,.1);assert.ok(Object.keys(s.revealed).length<600,'bounded offline map discovery');
+const before=Object.keys(s.revealed).length;map.update(s,false);map.center={x:100000,y:100000};map.draw();assert.equal(Object.keys(s.revealed).length,before);
+console.log('Passed: real buildings/water/named roads, full-map phone discovery, no visited-distance credit from panning, stable rarity, recenter, bounded zoom and stale-GPS behaviour.');

@@ -16,3 +16,7 @@ garmin/bin/
 !.env.example
 *.apk.idsig
 watch-map-preview.png
+ios/build/
+ios/DerivedData/
+**/xcuserdata/
+*.xcuserstate

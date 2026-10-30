@@ -1,0 +1,25 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Trail Relics: Android simulator",
+      "type": "shell",
+      "command": "pwsh",
+      "args": ["-NoProfile", "-File", "${workspaceFolder}/tools/Start-AndroidSimulator.ps1"],
+      "problemMatcher": []
+    },
+    {
+      "label": "Trail Relics: Build Android and run simulator",
+      "type": "shell",
+      "command": "pwsh",
+      "args": ["-NoProfile", "-File", "${workspaceFolder}/tools/Start-AndroidSimulator.ps1", "-Build"],
+      "problemMatcher": []
+    },
+    {
+      "label": "Trail Relics: Test game rules",
+      "type": "shell",
+      "command": "node tests/engine.test.cjs; node tests/streets.test.cjs; node tests/mobile.test.cjs",
+      "problemMatcher": []
+    }
+  ]
+}

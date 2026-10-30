@@ -1,9 +1,9 @@
-TRAIL RELICS - ANDROID ALPHA 0.1.0
+TRAIL RELICS - ANDROID ALPHA 0.2.0
 
 Requires Android 8.0 or later and GPS. This first version has not yet been tested on a physical phone.
 
 INSTALL
-1. Send TrailRelics-android-v0.1.0.apk to your phone as a document/file, or download it from a shared drive.
+1. Send TrailRelics-android-v0.2.0.apk to your phone as a document/file, or download it from a shared drive.
 2. Open the APK from your phone's Files app and choose Install.
 3. If Android asks, allow installation from the app you used to open this file, provided you trust the sender.
 4. Open Trail Relics. Tap Start GPS. Allow precise location while using the app.
@@ -11,14 +11,14 @@ INSTALL
 
 PLAY
 - Guidance shows a north-up arrow towards the nearest visible artefact tile, or Ready to capture when you are in its tile.
-- Nearby map shows your tile and its eight neighbours. The dot marks you. A tick marks a collected artefact.
+- Street map shows real roads, buildings, parks and water, overlaid with game tiles and artefacts across the visible map. Drag to pan; use + / - to zoom; Recentre follows you. The dot marks you. A tick marks a collected artefact.
 - Tap Collect once to attempt a capture. Distance builds search energy. A miss preserves energy; only one attempt is allowed per tile per outing.
 - Rare and Legendary artefacts have progressively larger blue/gold icons.
 - Conditions are changed manually. Start a new outing resets distance, energy and attempts, while keeping your collection.
 - Pause stops GPS. Tracking also pauses when the app is not in the foreground.
 
 THIS FIRST VERSION
-- Offline tile map; no street basemap or turn-by-turn navigation.
+- Offline street map covering central Jyväskylä; no turn-by-turn navigation.
 - Uses actual GPS movement rather than simulated waypoints. World coordinates are designed for the Jyväskylä field trial.
 - Data stays on the phone. There is no account, server, advertising or Internet permission.
 - Phone, browser and Garmin progress are separate. Uninstalling or clearing app data removes the phone's progress.
