@@ -1,0 +1,11 @@
+# Third-party components and data
+
+`public/streets-osm.json` is a derived street/footpath extract downloaded on 2026-10-30 through the OpenStreetMap 0.6 map API for central Jyväskylä (25.720–25.768 E, 62.229–62.253 N). This repository provides its editable JSON form.
+
+© OpenStreetMap contributors. Street data is available under [ODbL 1.0](https://opendatacommons.org/licenses/odbl/1-0/). See [OpenStreetMap copyright](https://www.openstreetmap.org/copyright). The data licence is distinct from the application source.
+
+The browser loads OpenLayers 10.6.1 and ol-mapbox-style 12.6.0 from jsDelivr, the Liberty map from OpenFreeMap, and DM Sans / Space Grotesk from Google Fonts. These services are not bundled in the offline Android or Garmin app. Attribution remains visible on the browser map.
+
+See [OpenLayers](https://github.com/openlayers/openlayers), [ol-mapbox-style](https://github.com/openlayers/ol-mapbox-style), [OpenFreeMap](https://openfreemap.org/) and [Google Fonts](https://fonts.google.com/) for their code, data and licences.
+
+Garmin Connect IQ, Android SDK and Java SDK files are not redistributed. Obtain build tools from their official vendors and accept their applicable agreements before building.

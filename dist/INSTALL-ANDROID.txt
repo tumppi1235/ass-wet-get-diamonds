@@ -1,0 +1,29 @@
+TRAIL RELICS - ANDROID ALPHA 0.1.0
+
+Requires Android 8.0 or later and GPS. This first version has not yet been tested on a physical phone.
+
+INSTALL
+1. Send TrailRelics-android-v0.1.0.apk to your phone as a document/file, or download it from a shared drive.
+2. Open the APK from your phone's Files app and choose Install.
+3. If Android asks, allow installation from the app you used to open this file, provided you trust the sender.
+4. Open Trail Relics. Tap Start GPS. Allow precise location while using the app.
+5. Go outdoors and wait for GPS ready. Keep the app open while playing.
+
+PLAY
+- Guidance shows a north-up arrow towards the nearest visible artefact tile, or Ready to capture when you are in its tile.
+- Nearby map shows your tile and its eight neighbours. The dot marks you. A tick marks a collected artefact.
+- Tap Collect once to attempt a capture. Distance builds search energy. A miss preserves energy; only one attempt is allowed per tile per outing.
+- Rare and Legendary artefacts have progressively larger blue/gold icons.
+- Conditions are changed manually. Start a new outing resets distance, energy and attempts, while keeping your collection.
+- Pause stops GPS. Tracking also pauses when the app is not in the foreground.
+
+THIS FIRST VERSION
+- Offline tile map; no street basemap or turn-by-turn navigation.
+- Uses actual GPS movement rather than simulated waypoints. World coordinates are designed for the Jyväskylä field trial.
+- Data stays on the phone. There is no account, server, advertising or Internet permission.
+- Phone, browser and Garmin progress are separate. Uninstalling or clearing app data removes the phone's progress.
+- No fitness activity recording or background tracking.
+- This is a locally signed alpha, not a Google Play release. Share only the APK or this ZIP, not the developer's signing keys.
+
+FEEDBACK
+Please report your phone model, Android version, and what happened. Useful checks: GPS acquisition, screen switching, tile changes while walking, one-tap capture, and reopening the app with saved progress.

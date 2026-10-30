@@ -1,0 +1,16 @@
+const assert=require('node:assert/strict');
+const G=require('../public/engine.js');
+assert.deepEqual(G.cell(-1,-1),{i:-1,j:-1});
+for(const m of [0,999,1000,2999,3000,4999,5000,7999,8000,20000])assert.ok(G.chance(m,'snow','Common',100000)<=.9);
+assert.deepEqual([0,1000,3000,5000,8000].map(G.energyChance),[.2,.35,.5,.65,.75]);
+const s=G.initial();G.enter(s);assert.equal(s.visits['0,0'],1);assert.equal(G.enter(s),false);assert.equal(s.visits['0,0'],1);
+G.move(s,251,0);assert.equal(s.lastCell,'1,0');assert.equal(s.meters,251);
+G.move(s,-251,0);assert.equal(s.visits['0,0'],2);
+const p=G.xy(62.25,25.76),g=G.geo(p.x,p.y);assert.ok(Math.abs(g.lat-62.25)<1e-10&&Math.abs(g.lon-25.76)<1e-10);
+s.revealed['0,0']={id:'0,0',i:0,j:0,rarity:'Rare',name:'Key'};s.energy=5000;
+assert.equal(G.search(s,()=>1).status,'miss');assert.equal(s.energy,5000);assert.equal(G.search(s,()=>0).status,'unavailable');
+s.searched={};assert.equal(G.search(s,()=>0).status,'success');assert.equal(s.energy,3000);assert.equal(s.collection.length,1);
+s.searched={};assert.equal(G.search(s,()=>0).status,'unavailable');
+const old=G.relic(0,0,{});const visit={};for(let i=-1;i<=1;i++)for(let j=-1;j<=1;j++)visit[G.key(i,j)]=3;assert.equal(G.novelty(visit,0,0),0);assert.equal(G.novelty({},0,0),1);
+assert.deepEqual(G.relic(2,3,{}),G.relic(2,3,{}));
+console.log('Passed: grid boundaries, coordinates, visit tracking, odds caps, distance tiers, failed/successful searches, duplicate prevention, novelty, deterministic placement.');

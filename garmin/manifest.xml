@@ -1,0 +1,7 @@
+<iq:manifest xmlns:iq="http://www.garmin.com/xml/connectiq" version="3">
+  <iq:application id="bdb6c7720be84d5ea6fed7bf187b4d32" type="watch-app" name="@Strings.AppName" entry="TrailRelicsApp" launcherIcon="@Drawables.LauncherIcon" minApiLevel="3.2.0">
+    <iq:products><iq:product id="enduro3"/></iq:products>
+    <iq:permissions><iq:uses-permission id="Positioning"/></iq:permissions>
+    <iq:languages><iq:language>eng</iq:language></iq:languages><iq:barrels/>
+  </iq:application>
+</iq:manifest>
