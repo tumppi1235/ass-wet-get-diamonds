@@ -1,7 +1,7 @@
 # Trail Relics
 ## Current app: React Native, browser first
 
-The main game is now in [mobile](mobile): React Native + Expo, with local login, separate saved profiles, full street-map exploration and a collection. Android/iOS packaging is paused. Garmin remains the planned compact collector/navigation companion; real watch pairing and sync are not connected yet.
+The main game is now in [mobile](mobile): React Native + Expo, with local login, separate saved profiles, a municipality-wide Jyväskylä outdoor map and a collection. Outdoor terrain/trail tiles load online with street-map fallback; bundled offline detail covers downtown only. Find my location shows actual position and accuracy, with game progress enabled for accurate fixes inside the city. Android/iOS packaging is paused. Garmin remains the planned compact collector/navigation companion; real watch pairing and sync are not connected yet.
 
 Start **START-WINDOWS.bat**, or run `cd mobile`, `npm ci`, then `npm run web -- --host localhost`. Open http://localhost:8081/.
 

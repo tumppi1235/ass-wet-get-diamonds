@@ -35,7 +35,7 @@
     "web": "expo start --web --port 8081",
     "typecheck": "tsc --noEmit",
     "lint": "expo lint",
-    "test": "tsx --test tests/accounts.test.ts"
+    "test": "tsx --test tests/accounts.test.ts tests/region-location.test.ts"
   },
   "private": true
 }

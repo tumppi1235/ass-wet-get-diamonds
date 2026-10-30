@@ -33,7 +33,15 @@ These are local device profiles, not a hosted authentication system. Roles prote
 
 ## Game and Garmin direction
 
-The app is the main game: real offline Jyväskylä map, artefact collection, exploration history and player profiles. GPS is opt-in; a clearly labelled demo follows the existing street graph. The compact Garmin navigation/collection prototype is kept as the companion concept. Garmin Connect pairing and profile/event synchronization are still pending and are labelled accordingly in the app; no live watch connection is claimed.
+The app is the main game: a city-wide outdoor map, artefact collection, exploration history and player profiles. The initial overview fits the actual Jyväskylä municipality boundary, from Korpilahti to Tikkakoski. Zoom in for 250 m game tiles. New artefacts are revealed in the player's current and eight adjacent tiles; panning does not reveal remote finds.
+
+Outdoor mode uses OpenTopoMap terrain, contours and trails, with OpenStreetMap street tiles as a fallback. Both load only the viewed area, use normal HTTP caching and require internet. The providers receive the requested map area, which can reveal approximate location when following the player. Attribution remains visible. Offline centre mode retains the bundled downtown roads, buildings, parks and water; it does not include municipality-wide offline terrain. These are OpenTopoMap/OSM maps with an outdoor appearance, not Trailmap's proprietary layers.
+
+Choose **Find my location** and allow location in the browser/device prompt. The first fix centres the map and subsequent fixes follow you. Approximate fixes show an amber marker and accuracy circle; collection and distance require a fresh fix within 25 m, inside the municipality, at walking speed. GPS gaps, jumps and switching sessions do not award teleport distance. Pausing or backgrounding the app stops tracking. Browser location requires localhost or HTTPS; a laptop may only provide a coarse fix. The separately labelled city demo follows the bundled downtown street graph.
+
+The municipality boundary is derived from [OpenStreetMap relation 569407](https://www.openstreetmap.org/relation/569407) (ODbL), generated with `tools/Build-JyvaskylaBoundary.cjs`. Outdoor tiles: © OpenStreetMap contributors, SRTM · OpenTopoMap (CC-BY-SA). Optional public environment settings `EXPO_PUBLIC_OUTDOOR_TILE_URL` and `EXPO_PUBLIC_STREET_TILE_URL` accept tile URLs containing `{z}`, `{x}` and `{y}`; only configure services you have permission to use.
+
+The compact Garmin navigation/collection prototype is kept as the companion concept. Garmin Connect pairing and profile/event synchronization are still pending and are labelled accordingly in the app; no live watch connection is claimed.
 
 ## Checks
 
@@ -44,6 +52,6 @@ npm test
 npx expo export --platform web
 ```
 
-The account suite verifies idempotent seeding, salted non-plaintext credentials, wrong-password rejection, separate profiles, session restoration/expiry, password changes and admin access checks. The parent repository still contains its existing game, street and map tests.
+The account suite verifies idempotent seeding, salted non-plaintext credentials, wrong-password rejection, separate profiles, session restoration/expiry, password changes and admin access checks. Map/location tests verify outer district coverage, bounded tile rendering and projection, approximate/accurate GPS eligibility, stale/jump rejection, browser high-accuracy settings, permission errors and watch cleanup. The parent repository still contains its existing game, street and map tests.
 
 Dependency audit currently reports eight upstream Expo/tooling advisories (including Zod 3). The proposed automated fix downgrades Expo by seven major versions; it has not been applied. The development server is bound to localhost. This app does not accept remotely submitted validation payloads or host a public login API.
