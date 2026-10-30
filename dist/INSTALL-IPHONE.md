@@ -19,3 +19,5 @@ Open `ios/TrailRelics.xcodeproj` in Xcode, select your development team and conn
 For simpler distribution to friends later, use Apple's [TestFlight](https://developer.apple.com/testflight/) process with an appropriate Apple Developer account. No TestFlight build is configured in this alpha.
 
 After installation, open Trail Relics, tap **Start GPS**, allow precise location while using the app, and go outdoors. Screen 2 is the full offline Jyväskylä street map with game tiles. Garmin retains its compact nearby view.
+
+Verified 0.2.0 download: https://github.com/tumppi1235/ass-wet-get-diamonds/actions/runs/41059923738/artifacts/12977663918 . Extract TrailRelics-ios-v0.2.0-unsigned.ipa from the downloaded ZIP, then sign/install it using one of the laptop methods above.

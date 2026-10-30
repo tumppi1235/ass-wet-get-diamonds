@@ -25,3 +25,5 @@ Generic source and test-function compilation pass. An official Enduro 3 device p
 Run the four Node suites: tests/engine.test.cjs, tests/streets.test.cjs, tests/mobile.test.cjs and tests/phone-map.test.cjs. They cover game rules, street confinement in the desktop simulator, GPS filtering, native bridge actions, mobile capture/state, real-map features, full-map discovery, stable rarity and panning without distance credit.
 
 The Xcode project and shared scheme XML are structurally parsed on Windows. Native iOS compilation status is reported by the GitHub Mac workflow; a source parse alone is not a native build or device test.
+
+Verified iOS build: both Simulator and unsigned physical-iPhone targets compiled successfully on the GitHub Mac runner. The packaged IPA includes the native executable and the full offline city-map files. Build: https://github.com/tumppi1235/ass-wet-get-diamonds/actions/runs/41059923738 . Hardware testing remains pending.
