@@ -21,4 +21,5 @@ for(const r of relations.values()){const k=kind(r.t);if(k&&!['road','rail','buil
 const min=G.xy(62.229,25.720),max=G.xy(62.253,25.768);
 const data={bounds:[min.x,min.y,max.x,max.y],attribution:'© OpenStreetMap contributors · ODbL',date:'2026-10-30',features,labels:[...new Map(labels.map(l=>[l.name,l])).values()]};
 fs.writeFileSync('android/assets/city-map-data.js','window.TrailCityMap='+JSON.stringify(data)+';\n');
+if(fs.existsSync('mobile/assets'))fs.writeFileSync('mobile/assets/city-map.json',JSON.stringify(data)+'\n');
 console.log('Offline map:',features.length,'features,',data.labels.length,'place labels,',fs.statSync('android/assets/city-map-data.js').size,'bytes');console.log(Object.fromEntries([...new Set(features.map(f=>f.k))].map(k=>[k,features.filter(f=>f.k===k).length])));

@@ -1,25 +1,18 @@
 @echo off
-cd /d "%~dp0"
+cd /d "%~dp0mobile"
 where node >nul 2>nul
-if %errorlevel% equ 0 (
-    start "" http://127.0.0.1:8000/
-    node run_local.cjs
+if %errorlevel% neq 0 (
+    echo Node.js is required. Install a current Node.js LTS release first.
     pause
-    exit /b
+    exit /b 1
 )
-where py >nul 2>nul
-if %errorlevel% equ 0 (
-    py -3 run_local.py
-    pause
-    exit /b
+if not exist node_modules (
+    call npm ci
+    if errorlevel 1 (
+        pause
+        exit /b 1
+    )
 )
-where python >nul 2>nul
-if %errorlevel% equ 0 (
-    python run_local.py
-    pause
-    exit /b
-)
-echo Python 3 is not installed or not on PATH.
-echo You can open public\index.html directly to try the simulator,
-echo or install Python 3 from python.org and run this launcher again.
+echo Opening Trail Relics React Native web at http://localhost:8081/
+call npm run web -- --host localhost
 pause

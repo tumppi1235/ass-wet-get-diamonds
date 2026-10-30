@@ -20,3 +20,7 @@ ios/build/
 ios/DerivedData/
 **/xcuserdata/
 *.xcuserstate
+mobile/.expo/
+mobile/dist/
+mobile/android/
+mobile/ios/

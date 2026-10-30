@@ -1,0 +1,11 @@
+import React from 'react';
+import { Link, usePathname, router } from 'expo-router';
+import { ScrollView, Text, View } from 'react-native';
+import { useSession } from '../accounts/session';
+import { useGame } from '../game/state';
+import { Button, colors, styles } from './ui';
+export function Frame({ children }: { children: React.ReactNode }) {
+  const { session, logout } = useSession(), { flush, error } = useGame(), path = usePathname();
+  const links = [{ href: '/' as const, title: 'Explore' }, { href: '/collection' as const, title: 'Collection' }, { href: '/garmin' as const, title: 'Garmin' }, { href: '/profile' as const, title: 'Profile' }, ...(session?.user.role === 'admin' ? [{ href: '/admin' as const, title: 'Admin' }] : [])];
+  return <ScrollView style={styles.page} contentContainerStyle={{ flexGrow: 1 }}><View style={{ borderBottomColor: colors.line, borderBottomWidth: 1, paddingHorizontal: 28, paddingVertical: 20, backgroundColor: colors.white }}><View style={[styles.spread, { maxWidth: 1384, width: '100%', alignSelf: 'center' }]}><View style={styles.row}><Text style={{ color: colors.green, fontSize: 31 }}>✳</Text><Text style={{ color: colors.ink, fontSize: 19, fontWeight: '800', letterSpacing: -.7 }}>TRAIL RELICS</Text><Text style={styles.badge}>LOCAL ALPHA</Text></View><View style={styles.row}>{links.map(l => <Link key={l.href} href={l.href} onPress={() => { void flush().catch(() => {}); }} style={{ color: path === l.href ? colors.green : colors.muted, fontSize: 13, fontWeight: path === l.href ? '700' : '400', padding: 7 }}>{l.title}</Link>)}</View><View style={styles.row}><Text style={{ color: colors.ink, fontSize: 12 }}>{session?.user.displayName}</Text><Button title="Sign out" quiet onPress={() => { void flush().then(logout).then(() => router.replace('/login')); }} /></View></View></View><View style={styles.shell}>{error ? <Text accessibilityRole="alert" style={styles.error}>{error}</Text> : null}{children}<View style={[styles.spread, { borderTopWidth: 1, borderTopColor: colors.line, paddingTop: 20, marginTop: 12 }]}><Text style={styles.small}>Made for curiosity. Set in Jyväskylä.</Text><Text style={styles.small}>Saved to this device · {session?.user.username} · {session?.user.role === 'admin' ? 'Administrator' : 'Explorer'}</Text></View></View></ScrollView>;
+}

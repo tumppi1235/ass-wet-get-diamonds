@@ -1,8 +1,22 @@
 # Trail Relics
+## Current app: React Native, browser first
+
+The main game is now in [mobile](mobile): React Native + Expo, with local login, separate saved profiles, full street-map exploration and a collection. Android/iOS packaging is paused. Garmin remains the planned compact collector/navigation companion; real watch pairing and sync are not connected yet.
+
+Start **START-WINDOWS.bat**, or run `cd mobile`, `npm ci`, then `npm run web -- --host localhost`. Open http://localhost:8081/.
+
+| Username | Initial password | Access |
+| --- | --- | --- |
+| admin | Admin123! | Local user administration and game |
+| test | Test123! | Normal explorer game |
+
+Profiles and progress stay on this device. Defaults are seeded only on first launch. Change passwords in Profile. [Full account and storage details](mobile/README.md).
+
+The earlier v0.2 native packages and simulator described below are retained as legacy snapshots.
 
 An exploration game set in Jyväskylä. Walk farther, discover artefacts in 250 m tiles, and build a field collection.
 
-## Android alpha
+## Legacy Android alpha (0.2)
 
 [Download Android APK](https://github.com/tumppi1235/ass-wet-get-diamonds/raw/refs/heads/main/dist/TrailRelics-android-v0.2.0.apk) · [Install guide](dist/INSTALL-ANDROID.txt)
 

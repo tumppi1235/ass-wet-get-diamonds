@@ -11,3 +11,5 @@ See [OpenLayers](https://github.com/openlayers/openlayers), [ol-mapbox-style](ht
 Garmin Connect IQ, Android SDK and Java SDK files are not redistributed. Obtain build tools from their official vendors and accept their applicable agreements before building.
 
 The phone map in android/assets/city-map-data.js is another derived ODbL extract from the same four city sections, plus complete OpenStreetMap lake relation 1302994 for Jyväsjärvi. It contains editable geometry and labels, with attribution visible on the phone map. tools/Build-OfflineMap.cjs documents its conversion. The data is bundled on both Android and iOS; neither phone downloads map tiles or uploads GPS.
+
+The React Native map uses the same derived data in `mobile/assets/city-map.json`, with OpenStreetMap attribution visible in its native SVG view. The Expo starter files retain their upstream MIT licence in `mobile/LICENSE`.

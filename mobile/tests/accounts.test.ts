@@ -1,0 +1,34 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { randomBytes } from 'node:crypto';
+import { LocalAccounts, DATABASE_KEY, SESSION_KEY, type Storage } from '../src/accounts/local-accounts';
+class Memory implements Storage { items = new Map<string, string>(); async getItem(key: string) { return this.items.get(key) ?? null; } async setItem(key: string, value: string) { this.items.set(key, value); } async removeItem(key: string) { this.items.delete(key); } }
+test('local accounts keep credentials, roles, sessions and player progress separate', async () => {
+  const store = new Memory(); let clock = 1000; const service = new LocalAccounts(store, async n => randomBytes(n), () => clock);
+  await service.bootstrap(); const original = store.items.get(DATABASE_KEY)!; await service.bootstrap(); assert.equal(store.items.get(DATABASE_KEY), original, 'bootstrap never resets users');
+  assert.ok(!original.includes('Admin123!') && !original.includes('Test123!'), 'no plaintext passwords stored');
+  const db = JSON.parse(original); assert.notEqual(db.users[0].salt, db.users[1].salt); assert.equal(db.users.length, 2);
+  await assert.rejects(service.login('admin', 'Wrong123!'), /incorrect/);
+  assert.equal(await service.current(), null);
+  const admin = await service.login(' ADMIN ', 'Admin123!'); assert.equal(admin.user.role, 'admin'); assert.ok(!('passwordHash' in admin.user));
+  await service.saveProgress(admin.token, admin.user.id, { collection: [{ id: '1,1' }], meters: 123 });
+  const users = await service.listUsers(admin.token); assert.equal(users.length, 2); assert.equal(users.find(u => u.username === 'admin')!.finds, 1); assert.ok(!JSON.stringify(users).includes('passwordHash'));
+  await service.logout(); await assert.rejects(service.listUsers(admin.token), /sign in/);
+  const player = await service.login('test', 'Test123!'); assert.equal(player.user.role, 'player');
+  await assert.rejects(service.listUsers(player.token), /Administrator/);
+  await assert.rejects(service.progress(player.token, admin.user.id), /different profile/);
+  await assert.rejects(service.saveProgress(admin.token, admin.user.id, { meters: 99999 }), /session/);
+  assert.equal(await service.progress(player.token, player.user.id), null);
+  const game = { meters: 500, collection: [{ id: '-1,0' }] }; const saving = service.saveProgress(player.token, player.user.id, game); game.meters = 999; await saving;
+  assert.deepEqual(await service.progress(player.token, player.user.id), { meters: 500, collection: [{ id: '-1,0' }] }, 'save captures an immutable snapshot');
+  const reloaded = new LocalAccounts(store, async n => randomBytes(n), () => clock); assert.equal((await reloaded.current())?.user.username, 'test');
+  const created = await service.createProfile('Second', 'Second Explorer', 'Second123!'); assert.equal(created.role, 'player');
+  await assert.rejects(service.createProfile('SECOND', 'Duplicate', 'Second123!'), /already/);
+  await assert.rejects(service.createProfile('x', 'Invalid', 'Second123!'), /3–24/);
+  await service.changePassword(player.token, 'Test123!', 'Changed123!'); assert.equal(await service.current(), null);
+  await assert.rejects(service.login('test', 'Test123!'), /incorrect/);
+  const changed = await service.login('test', 'Changed123!'); assert.equal((await service.progress<{ meters: number }>(changed.token, changed.user.id))?.meters, 500);
+  await service.bootstrap(); await assert.rejects(service.login('test', 'Test123!'), /incorrect/, 'bootstrap does not restore old default credentials');
+  clock += 8 * 60 * 60 * 1000 + 1; assert.equal(await service.current(), null); assert.equal(store.items.has(SESSION_KEY), false);
+  await service.login('admin', 'Admin123!'); assert.deepEqual(await service.progress(admin.token, admin.user.id).catch(() => null), null, 'previous login tokens stay invalid');
+});
