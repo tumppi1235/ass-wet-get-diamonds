@@ -7,6 +7,7 @@ The prototype reads the GPS/activity information supplied by a normal Garmin act
 ## Implemented source
 
 - Activity identity uses the SDK's start time, activity-profile identity and a device-local monotonic counter. Stop/auto-pause are pause states; resume/reload of the same SDK activity preserves its ID. Unloading a field is not activity completion.
+- Initial raw Toybox sport/subSport is retained with the activity/start event for source-specific classification. Missing profile identity/start time suppresses sampling rather than inventing an activity. Older queue entries remain compatible and unknown where metadata is absent. See DEV-ACTIVITY-CATEGORIES.md; there is still no import or reward path.
 - A timer reset records **ended-unverified**. This callback does not establish whether the user saved or discarded the Garmin activity. Nothing is imported or rewarded until that distinction and provider identity can be verified.
 - SDK good-quality location observations compute the original compatible tile projection. This is **not** a conversion of Garmin quality into the phone's 25m accuracy gate, nor a hardware proof of fresh GPS. The server does not accept these events as qualifying browser evidence.
 - Up to 64 start/pause/tile/collection-intent events persist locally. Entries have activity/sequence identity and observation time. Only tile-entry events retain coordinates, not a continuous second-by-second trace. SDK distance/timer/ascent metadata stays explicitly separate from game-validated distance.

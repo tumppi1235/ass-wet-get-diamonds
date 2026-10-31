@@ -18,7 +18,11 @@ class TrailFieldView extends WatchUi.DataField {
     function compute(info){
         var now=Time.now().value();
         running=info.timerState==Activity.TIMER_STATE_ON;
-        if(running && info.startTime!=null){var profile=Activity.getProfileInfo();state.begin(info.startTime.value(),profile.uniqueIdentifier.toString(),now);}
+        if(running){
+            var profile=Activity.getProfileInfo();
+            if(info.startTime==null || profile==null || profile.uniqueIdentifier==null){state.quality=false;message="PROFILE UNAVAILABLE";return;}
+            state.begin(info.startTime.value(),profile.uniqueIdentifier.toString(),now,profile.sport,profile.subSport);
+        }
         var loc=info.currentLocation==null?null:info.currentLocation.toDegrees();
         state.sample(loc==null?null:loc[0],loc==null?null:loc[1],info.currentLocationAccuracy==Position.QUALITY_GOOD,now,running,info.elapsedDistance,info.timerTime,info.totalAscent);
         if(now>=until){message=state.storageError?"STORAGE ERROR":state.full()?"QUEUE FULL":running?(state.quality?"UNLINKED DEV":"WAIT FOR GPS"):"ACTIVITY PAUSED";}

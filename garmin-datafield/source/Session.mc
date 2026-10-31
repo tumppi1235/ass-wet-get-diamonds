@@ -18,16 +18,16 @@ class FieldSession {
         data["sequence"]+=1;
         data["events"].add({"sequence"=>data["sequence"],"kind"=>kind,"observedAt"=>at,"activity"=>data["current"]==null?null:(data["current"] as Dictionary)["id"],"payload"=>payload});save();return true;
     }
-    function begin(start,profile,at){
-        if(readFailed || start==null){return false;}
+    function begin(start,profile,at,sport,subSport){
+        if(readFailed || start==null || profile==null){return false;}
         var current=data["current"] as Dictionary or Null;
         if(current!=null && current["startedAt"]==start && current["profile"]==profile){current["status"]="running";return true;}
         if(full()){return false;}
         // A new SDK activity never silently becomes the previous activity after a reload.
         if(current!=null){data["last"]=current;current["status"]="interrupted-unverified";}
         data["counter"]+=1;
-        data["current"]={"id"=>"watch-dev:"+start.toString()+":"+data["counter"].toString(),"startedAt"=>start,"profile"=>profile,"status"=>"running","tile"=>null,"distance"=>null,"timerMs"=>null,"ascent"=>null,"lastIntentTile"=>null};
-        tile="--";quality=false;lastFix=0;return append("start",at,{"profile"=>profile});
+        data["current"]={"id"=>"watch-dev:"+start.toString()+":"+data["counter"].toString(),"startedAt"=>start,"profile"=>profile,"sport"=>sport,"subSport"=>subSport,"status"=>"running","tile"=>null,"distance"=>null,"timerMs"=>null,"ascent"=>null,"lastIntentTile"=>null};
+        tile="--";quality=false;lastFix=0;return append("start",at,{"profile"=>profile,"source"=>"garmin-connect-iq","sport"=>sport,"subSport"=>subSport});
     }
     function pause(at){quality=false;lastFix=0;var current=data["current"] as Dictionary or Null;if(current!=null && current["status"]=="running"){current["status"]="paused";append("pause",at,null);save();}}
     function end(at){
