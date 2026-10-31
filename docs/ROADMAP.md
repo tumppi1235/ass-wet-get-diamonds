@@ -1,5 +1,9 @@
 # Dependency-aware implementation roadmap
 
+## Current development iteration — 2026-10-31
+
+User requested backlog continuation in dev after the GPS/route readability release. Keep production unchanged. TR-165 live browser compass is the next independent navigation item: sensor permission, relative direction, screen rotation and honest north-up fallback. Implementation and automated coverage are in DEV-COMPASS.md; physical acceptance is still pending. This does not bypass the M0 field gates or enable new collection conveniences. Future P0 server/world stories still require shared-service/account decisions; XP earning formulas remain undecided.
+
 ## M0 — Repair the browser adventure loop
 
 Next five priorities, in execution order:
