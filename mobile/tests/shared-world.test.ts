@@ -15,6 +15,8 @@ import {relicData} from '../src/map/vector-data';
 import {RawLocationSession} from '../src/location/raw-session';
 import {editPlayer} from '../../dev-server/trail/player-admin';
 import {emergingArchetype} from '../src/game/archetypes';
+import {estimateProgression,simulateHistory,scenarioHistory,PROGRESSION_SCENARIOS} from '../src/game/reward-rates';
+import {levelProgress} from '../src/game/progression';
 
 test('TR-003/004/008/015/016/018 deterministic world windows, personal rolls and capped density stay independent',()=>{
   const place=LANDMARKS[0],now=Date.now(),a=generateWorldSpawn(place,now),b=generateWorldSpawn(place,now);
@@ -150,6 +152,39 @@ test('shared saves from the first service release gain empty attributes without 
   assert.equal(data.world.game.gold,7);assert.deepEqual(data.world.game.visits,{'0,0':1});assert.equal(data.revision,3);assert.equal(Object.values(data.world.game.progression.xp).every(v=>v===0),true);
 });
 
+test('TR-085/090/095 progression estimates use the same arithmetic as accepted Foot/Bicycle server evidence',()=>{
+  for(const movement of ['foot','bicycle']as const){
+    let world=reduceDevEvent(newDevWorld(),{kind:'start',movement},100000).world,now=100000;
+    for(let x=0;x<=1000;x+=20){now+=5000;const geo=G.geo(x,125);world=reduceDevEvent(world,{kind:'gps',fix:{latitude:geo.lat,longitude:geo.lon,timestamp:now,accuracy:5,speed:1}},now).world;}
+    const snapshot=JSON.stringify(world),estimated=estimateProgression(DEV_BALANCE,{meters:world.game.meters,tiles:Object.keys(world.game.visits).length,regions:Object.keys(world.regions).length,finds:0,movement});
+    assert.deepEqual(estimated.xp,world.game.progression!.xp);assert.equal(estimated.awardsWritten,0);assert.equal(JSON.stringify(world),snapshot);
+  }
+  const assumption={meters:10000,tiles:20,regions:2,finds:3},foot=estimateProgression(DEV_BALANCE,{...assumption,movement:'foot'}),bike=estimateProgression(DEV_BALANCE,{...assumption,movement:'bicycle'});
+  assert.equal(foot.xp.endurance,40);assert.equal(bike.xp.endurance,16);assert.equal(foot.xp.exploration,bike.xp.exploration);assert.equal(foot.xp.power,0);assert.equal(foot.xp.fellowship,0);
+  assert.throws(()=>estimateProgression(DEV_BALANCE,{...assumption,tiles:-1,movement:'foot'}));
+});
+
+test('TR-089 curve edits are versioned and change level projection without rewriting earned XP or production defaults',async()=>{
+  const{db,sql}=database(),env={DB:db as never,TRAIL_ENV:'development',TRAIL_ADMIN_EMAIL:'owner@example.invalid'};
+  const call=async(path:string,method='GET',body?:unknown)=>{const r=await trailApi(new Request('https://dev.example/api/trail/'+path,{method,headers:{'oai-authenticated-user-id':'admin','oai-authenticated-user-email':'owner@example.invalid',origin:'https://dev.example'},...(body?{body:JSON.stringify(body)}:{})}),env);return{status:r.status,data:await r.json()};};
+  await call('me','POST',{displayName:'Admin'});const legacy={...DEV_BALANCE}as Partial<typeof DEV_BALANCE>;delete legacy.curveCoefficient;
+  sql.prepare('INSERT INTO trail_configs(id,revision,document,updated_by,updated_at) VALUES(?,1,?,?,?)').run('active-balance',JSON.stringify(legacy),'admin',Date.now());
+  assert.equal((await call('balance')).data.balance.curveCoefficient,25);
+  const initial=await call('world');initial.data.world.game.progression.xp.exploration=100;sql.prepare('UPDATE trail_players SET state=? WHERE id=?').run(JSON.stringify(initial.data.world),'admin');
+  assert.equal((await call('admin/balance','PUT',{balance:{...DEV_BALANCE,curveCoefficient:0},revision:1})).status,409);
+  const changed=await call('admin/balance','PUT',{balance:{...DEV_BALANCE,curveCoefficient:100},revision:1});assert.equal(changed.status,200);
+  const state=(await call('world')).data;assert.equal(state.world.game.progression.xp.exploration,100);assert.equal(state.world.curveCoefficient,100);assert.equal(levelProgress(100,state.world.curveCoefficient).level,2);assert.equal(DEV_BALANCE.curveCoefficient,25);
+  const history=(await call('admin/balance-history')).data.history;assert.equal(history[0].balance.curveCoefficient,100);assert.equal(history[history.length-1].balance.curveCoefficient,25);
+  assert.equal(sql.prepare("SELECT COUNT(*) AS n FROM trail_configs WHERE id='balance:2'").get()!.n,1);
+});
+
+test('TR-085/090 history simulations preserve effort fractions and deduplicate activity, tile, region and find identities',()=>{
+  const event={id:'activity:1',at:1,meters:200,tiles:['tile:1'],regions:['region:1'],finds:['find:1'],movement:'foot' as const};
+  const replay=simulateHistory(DEV_BALANCE,[event,event,{...event,id:'activity:2',at:2}]);assert.equal(replay.activities,2);assert.equal(replay.xp.endurance,1);assert.equal(replay.xp.exploration,5);assert.equal(replay.xp.perception,10);assert.equal(replay.awardsWritten,0);
+  assert.throws(()=>simulateHistory(DEV_BALANCE,[event,{...event,meters:400}]),/identity changed/);
+  for(const s of PROGRESSION_SCENARIOS)for(const movement of ['foot','bicycle']as const){const replayed=simulateHistory(DEV_BALANCE,scenarioHistory(s,movement)),aggregate=estimateProgression(DEV_BALANCE,{...s,movement});assert.deepEqual(replayed.xp,aggregate.xp);assert.equal(replayed.steps.length,s.activities);}
+});
+
 function database(){
   const sql=new DatabaseSync(':memory:');sql.exec('PRAGMA foreign_keys=ON');
   const folder=new URL('../../dev-server/drizzle/',import.meta.url);for(const file of readdirSync(folder).filter(x=>x.endsWith('.sql')).sort())sql.exec(readFileSync(new URL(file,folder),'utf8'));
@@ -163,6 +198,7 @@ test('TR-113/119 shared API requires identity, own-origin writes, server roles a
   assert.equal((await call('me','POST',{displayName:'Owner'},'owner','owner@example.invalid')).status,200);
   const player=await call('me','POST',{displayName:'Player',role:'admin'},'player');assert.equal((await player.json()).user.role,'player');
   assert.equal((await call('admin/players','GET',undefined,'player')).status,403);
+  assert.equal((await call('admin/balance-history','GET',undefined,'player')).status,403);
   assert.equal((await call('admin/players','GET',undefined,'owner')).status,200);
   assert.equal((await trailApi(new Request('https://dev.example/api/trail/me',{method:'PATCH',headers:{'oai-authenticated-user-id':'player',origin:'https://evil.example'},body:'{}'}),env)).status,403);
   assert.equal((await trailApi(new Request('https://dev.example/api/trail/health'),{...env,TRAIL_ENV:'production'})).status,503);

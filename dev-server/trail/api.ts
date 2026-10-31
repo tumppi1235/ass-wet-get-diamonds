@@ -6,6 +6,7 @@ import {generateWorldSpawn,validateSpawnRules,type SpawnRules} from '../../mobil
 import {LANDMARKS} from '../../mobile/src/game/landmarks';
 import G from '../../mobile/src/game/engine';
 import {inspectPlayer,editPlayer} from './player-admin';
+import {DEV_BALANCE,validateBalance} from '../../mobile/src/game/dev-world';
 type Bindings={DB?:D1Database;TRAIL_ENV?:string;TRAIL_ADMIN_EMAIL?:string;TRAIL_PUBLIC_ORIGIN?:string};
 type Member={id:string;display_name:string;role:'admin'|'player';created_at:number};
 class ApiError extends Error{constructor(public status:number,message:string){super(message);}}
@@ -85,6 +86,10 @@ export async function trailApi(request:Request,env:Bindings){
       if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');const input=await body(request);return json(await editPlayer(db,id,input.owner,input.revision,input.action,input));
     }
     if(path==='/api/trail/balance'&&request.method==='GET')return json(await loadBalance(db));
+    if(path==='/api/trail/admin/balance-history'&&request.method==='GET'){
+      if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');
+      const rows=await db.prepare("SELECT revision,document,updated_at FROM trail_configs WHERE id LIKE 'balance:%' ORDER BY revision DESC LIMIT 30").all<{revision:number;document:string;updated_at:number}>();return json({history:[...rows.results.map(r=>({revision:r.revision,balance:validateBalance(JSON.parse(r.document)),updatedAt:r.updated_at})),{revision:0,balance:DEV_BALANCE,updatedAt:0}]});
+    }
     if(path==='/api/trail/admin/balance'&&request.method==='PUT'){
       if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');
       const input=await body(request);try{return json(await saveBalance(db,id,input.balance,input.revision));}catch(error){throw new ApiError(409,(error as Error).message);}

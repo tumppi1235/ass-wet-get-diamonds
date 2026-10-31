@@ -10,7 +10,7 @@ type Row={state:string;revision:number};
 export async function loadWorld(db:D1Database,owner:string,now=Date.now()){
   await db.prepare('INSERT INTO trail_players(id,state,revision,updated_at) VALUES(?,?,0,?) ON CONFLICT(id) DO NOTHING').bind(owner,JSON.stringify(newDevWorld()),Date.now()).run();
   const row=await db.prepare('SELECT state,revision FROM trail_players WHERE id=?').bind(owner).first<Row>();
-  if(!row)throw new Error('World state unavailable');const world=JSON.parse(row.state)as DevWorld;world.game.progression??=newProgression();return{world:await hydrateSpawns(db,owner,world,now),revision:row.revision};
+  if(!row)throw new Error('World state unavailable');const world=JSON.parse(row.state)as DevWorld;world.game.progression??=newProgression();world.curveCoefficient=(await loadBalance(db)).balance.curveCoefficient;return{world:await hydrateSpawns(db,owner,world,now),revision:row.revision};
 }
 export async function applyWorldEvent(db:D1Database,owner:string,id:string,expected:number,event:DevEvent,now=Date.now()){
   if(!/^[a-zA-Z0-9:_-]{8,100}$/.test(id)||!Number.isSafeInteger(expected)||expected<0||!event||!['start','stop','gps','capture','claim'].includes(event.kind))throw new WorldError(400,'Invalid event envelope');

@@ -17,3 +17,5 @@ Shared dev server deployed: official Sites Vinext starter in `dev-server/`, pres
 Physical tests pending: GPS/route/collection recovery, national field access, iPhone compass and Enduro 3 activity/connectivity. Experimental rates must be labeled and recorded in a config revision, with no retroactive rewards or production changes.
 
 Player tools/journal increment: protected search/inventory/XP edits, per-edit snapshots, safe exploration-map reset and guarded restore, shared Character/Collection. See DEV-PLAYER-TOOLS.md. Next: versioned XP curve/simulations, remaining spawn region/modifier/map tools, then boss dependencies.
+
+Progression laboratory increment: protected versioned coefficient/history/draft recovery, shared earning arithmetic, zero-write estimates and chronological casual/regular/highly-active Foot/Bicycle histories. See DEV-PROGRESSION-LAB.md. Continue remaining world-region/modifier/admin map stories, then encounter effort/loot foundations.

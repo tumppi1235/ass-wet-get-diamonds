@@ -7,27 +7,21 @@ import {recordArtifactEvidence} from './achievements';
 import {newProgression,type Attribute} from './progression';
 import type {GameState} from './types';
 import type {LocationFix,PlayerPosition} from '../location/tracker';
+import {rewardXp} from './reward-rates';
+import {DEV_BALANCE,validateBalance} from './dev-balance';
+export {DEV_BALANCE,validateBalance,type DevBalance} from './dev-balance';
 
 export type Movement='foot'|'bicycle';
-export type DevBalance={revision:string;tileXp:number;regionXp:number;findXp:number;enduranceMetersPerXp:number;footFactor:number;bicycleFactor:number;footMaxSpeed:number;bicycleMaxSpeed:number};
-export const DEV_BALANCE:DevBalance={revision:'dev-experimental-1',tileXp:5,regionXp:3,findXp:10,enduranceMetersPerXp:250,footFactor:1,bicycleFactor:.4,footMaxSpeed:7,bicycleMaxSpeed:22};
-export type DevWorld={version:1;game:GameState;movement:Movement;previous:PlayerPosition|null;anchor:PlayerPosition|null;latestGpsValid:boolean;regions:Record<string,true>;xpRemainder:number;configRevision:string;rewardedTiles?:Record<string,boolean>};
+export type DevWorld={version:1;game:GameState;movement:Movement;previous:PlayerPosition|null;anchor:PlayerPosition|null;latestGpsValid:boolean;regions:Record<string,true>;xpRemainder:number;configRevision:string;curveCoefficient?:number;rewardedTiles?:Record<string,boolean>};
 export type DevEvent={kind:'start';movement:Movement}|{kind:'stop'}|{kind:'gps';fix:LocationFix}|{kind:'capture'}|{kind:'claim';tile:string;price:number};
 export type DevReceipt={accepted:boolean;reason:string;tile?:string;awards:Partial<Record<Attribute,number>>;collected?:string;balanceRevision:string};
-export function validateBalance(value:DevBalance){
-  if(!value||typeof value.revision!=='string'||!/^[a-z0-9-]{3,60}$/.test(value.revision))throw new Error('Invalid balance revision');
-  for(const key of ['tileXp','regionXp','findXp','enduranceMetersPerXp']as const)if(!Number.isSafeInteger(value[key])||value[key]<(key==='enduranceMetersPerXp'?1:0)||value[key]>10000)throw new Error('Invalid '+key);
-  for(const key of ['footFactor','bicycleFactor']as const)if(!Number.isFinite(value[key])||value[key]<=0||value[key]>2)throw new Error('Invalid '+key);
-  for(const key of ['footMaxSpeed','bicycleMaxSpeed']as const)if(!Number.isFinite(value[key])||value[key]<1||value[key]>30)throw new Error('Invalid '+key);
-  return{...value};
-}
 export function newDevWorld():DevWorld{const game=G.initial();game.sharedSpawnsOnly=true;game.revealed={};game.progression=newProgression();return{version:1,game,movement:'foot',previous:null,anchor:null,latestGpsValid:false,regions:{},xpRemainder:0,configRevision:DEV_BALANCE.revision};}
 /** Pure authoritative event reducer, also used by isolated balancing simulations. */
 export function reduceDevEvent(original:DevWorld,event:DevEvent,now:number,balance=DEV_BALANCE,random=()=>crypto.getRandomValues(new Uint32Array(1))[0]/2**32){
-  validateBalance(balance);const world:DevWorld=JSON.parse(JSON.stringify(original)),s=world.game;
+  balance=validateBalance(balance);const world:DevWorld=JSON.parse(JSON.stringify(original)),s=world.game;
   const receipt:DevReceipt={accepted:false,reason:'unsupported event',awards:{},balanceRevision:balance.revision};
   if(world.version!==1||!event||!Number.isSafeInteger(now))throw new Error('Unsupported world event');
-  world.configRevision=balance.revision;s.progression??=newProgression();
+  world.configRevision=balance.revision;world.curveCoefficient=balance.curveCoefficient;s.progression??=newProgression();
   if(event.kind==='claim')throw new Error('Shared claims require the atomic world store');
   const award=(key:Attribute,value:number)=>{if(!value)return;const total=s.progression!.xp[key]+value;if(!Number.isSafeInteger(total))throw new Error('XP limit reached');s.progression!.xp[key]=total;receipt.awards[key]=(receipt.awards[key]||0)+value;};
   if(event.kind==='start'){
@@ -50,16 +44,16 @@ export function reduceDevEvent(original:DevWorld,event:DevEvent,now:number,balan
     if(!first&&!(s.visits[tile]>0))s.visits[tile]=1;
     applyExplorationFix(s,{position,distance,startSegment,eligible:true,reason:'accurate'});
     // Discovery and both movement categories receive full geographic credit.
-    if(first){if(!active){s.visits[tile]=1;s.lastCell=tile;}award('exploration',balance.tileXp);}
+    if(first){if(!active){s.visits[tile]=1;s.lastCell=tile;}award('exploration',rewardXp(balance,{tiles:1}).exploration);}
     const region=G.key(Math.floor(position.x/2000),Math.floor(position.y/2000));
-    if(!world.regions[region]){world.regions[region]=true;award('agility',balance.regionXp);}
-    if(active&&distance){world.xpRemainder+=distance*(world.movement==='foot'?balance.footFactor:balance.bicycleFactor);const xp=Math.floor(world.xpRemainder/balance.enduranceMetersPerXp);world.xpRemainder-=xp*balance.enduranceMetersPerXp;award('endurance',xp);}
+    if(!world.regions[region]){world.regions[region]=true;award('agility',rewardXp(balance,{regions:1}).agility);}
+    if(active&&distance){world.xpRemainder+=distance*(world.movement==='foot'?balance.footFactor:balance.bicycleFactor);const xp=rewardXp(balance,{equivalentMeters:world.xpRemainder}).endurance;world.xpRemainder-=xp*balance.enduranceMetersPerXp;award('endurance',xp);}
     receipt.accepted=true;receipt.reason='GPS accepted';receipt.tile=tile;
   }else if(event.kind==='capture'){
     const fix=world.previous;
     if(!world.latestGpsValid||!fix||now-fix.timestamp<0||now-fix.timestamp>=15000){receipt.reason='fresh accurate GPS required';return{world,receipt};}
     const result=captureAt(s,fix,true,random);receipt.accepted=result.status!=='unavailable';receipt.reason=result.status;
-    if(result.status==='success'){recordArtifactEvidence(s,result.item!,now);award('perception',balance.findXp);receipt.collected=result.item!.id;}
+    if(result.status==='success'){recordArtifactEvidence(s,result.item!,now);award('perception',rewardXp(balance,{finds:1}).perception);receipt.collected=result.item!.id;}
   }
   return{world,receipt};
 }

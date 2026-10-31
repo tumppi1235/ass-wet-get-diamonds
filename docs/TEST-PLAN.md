@@ -55,3 +55,5 @@ Use an outdoor public path in Jyväskylä with precise location enabled. Record 
 Shared spawn evidence: DEV-SPAWNS.md. SQL covers two-player first visits, capture/replay, retirement, pages and zero-write simulation; physical return visits pending.
 
 Shared admin/player evidence: DEV-PLAYER-TOOLS.md. Test authorization, invalid items/attributes, stale revision, snapshot restore, isolation, reset no-reroll and unsafe wallet recovery rejection. Local grant/restore and Character/Collection tabs checked; physical acceptance pending.
+
+XP laboratory: DEV-PROGRESSION-LAB.md. Verify coefficient history authorization, old-config default, unchanged XP totals, active curve projection, estimate/reducer parity and history identity/coverage/fractional dedup. Browser draft chart/history and zero-write estimate passed locally; no physical pass inferred.

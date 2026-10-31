@@ -147,7 +147,7 @@ Automated repair evidence and remaining iPhone field gates: [P0 report](P0-EXPLO
 | TR-055 | P1 | Done | Create player character and statistics screen | TR-051 | Shared Character tab displays all six levels, XP, remaining thresholds and lifetime evidence; map remains visible. Local phone-size browser review passed. |
 | TR-056 | P2 | Done | Implement emerging player archetypes | TR-051 | Descriptive archetypes derive from leading attribute levels without restricting activities or changing rewards; deterministic non-mutation tests pass. |
 | TR-057 | P1 | Done | Add admin tools to modify and reset player attributes | TR-032, TR-051 | Protected six-attribute edit/reset validates whole non-negative totals and records backup/audit; stale views cannot overwrite newer state. |
-| TR-058 | P1 | Backlog | Balance progression across different sports and abilities | TR-121, TR-123 | Simulations compare casual/regular/ultra and different sports without speed-based Agility. |
+| TR-058 | P1 | In Progress | Balance progression across different sports and abilities | TR-121, TR-123 | Admin compares casual/regular/highly-active four-week histories for Foot/Bicycle with editable effort factors and displayed assumptions. Final balancing and wider sports/evidence remain. |
 | TR-070 | P0 | Backlog | Separate boss victory calculations from loot calculations | TR-043, TR-051 | Changing character levels cannot independently satisfy physical boss victory requirements. |
 | TR-071 | P0 | Backlog | Implement attribute-specific loot modifiers | TR-051, TR-070 | Each attribute changes its documented loot opportunity with configured caps. |
 | TR-072 | P0 | Backlog | Implement individual boss loot rolls | TR-070, TR-043 | Each qualified participant receives their own idempotent loot roll. |
@@ -159,17 +159,17 @@ Automated repair evidence and remaining iPhone field gates: [P0 report](P0-EXPLO
 | TR-078 | P0 | In Progress | Record lifetime player achievements and activity statistics | TR-013 | Dev records local GPS distance, observed duration, unique tiles/finds and per-adventure totals independently of XP. Demo and gaps excluded; legacy history labeled, unknown distance not guessed. Imported activity/elevation/cooperation evidence and physical phone verification remain pending. See DEV-FOUNDATIONS.md. |
 | TR-079 | P0 | In Progress | Convert verified exploration and activities into attribute XP | TR-078, TR-121 | Atomic server event receipts derive four supported XP sources, persist config revisions and reject replay/stale state. Actual provider activities, elevation and cooperation remain separate sources. |
 | TR-080 | P0 | Superseded | Implement progressive XP-to-level curves | — | Use the explicitly approved quadratic curve in TR-087. |
-| TR-081 | P1 | Backlog | Add activity-specific XP calculations | TR-079, TR-121 | Activity categories use independently configurable XP earning rules. |
-| TR-082 | P1 | Backlog | Earn Agility through terrain, sport and geographic diversity | TR-078, TR-086 | Terrain/sport variety and geographic spread increase Agility; raw pace does not. Revised at source turn 38; earlier personal-pace wording is superseded. |
+| TR-081 | P1 | In Progress | Add activity-specific XP calculations | TR-079, TR-121 | Shared explicit Foot/Bicycle earning arithmetic and histories use versioned factors. Imported activity types and unsupported XP sources remain. |
+| TR-082 | P1 | In Progress | Earn Agility through terrain, sport and geographic diversity | TR-078, TR-086 | Independent first regional-block Agility is live in shared dev with full credit for both modes; terrain and sport diversity sources remain. |
 | TR-083 | P0 | In Progress | Prevent repetitive XP farming and duplicate rewards | TR-078, TR-160 | Shared event ID/payload hash, state revision, per-player visits and pending-event replay prevent duplicate tested web rewards. Cross-provider activity identity/dedup remains TR-160. |
 | TR-084 | P1 | Done | Display lifetime achievements and attribute progression | TR-051, TR-078 | Shared Character shows accepted lifetime distance, observed minutes, genuine finds, reached tiles and attribute progress, with unsupported sources explicit. |
-| TR-085 | P1 | Backlog | Add attribute progression simulator to admin console | TR-033, TR-079 | Simulation can replay representative activity histories with versioned rules. |
-| TR-086 | P1 | Backlog | Track geographic adventure diversity | TR-026, TR-078 | Large-cell/region spread is tracked separately from small-tile coverage. |
+| TR-085 | P1 | Done | Add attribute progression simulator to admin console | TR-033, TR-079 | Admin replays representative chronological activity histories with current/draft rules, fractional effort and identity dedup; zero world writes. Reducer parity tests pass. |
+| TR-086 | P1 | Done | Track geographic adventure diversity | TR-026, TR-078 | Shared large regional-block spread is tracked separately from per-tile coverage and retained through map reset; Foot/Bicycle and no-repeat tests pass. |
 | TR-087 | P0 | Done | Implement quadratic attribute XP progression | TR-078 | `progression.ts`: cumulative XP = coefficient × (level−1)^2, initial 25; levels/remaining XP and independent dev/prod curve configs. Exact threshold, invalid input and large integer tests pass. Earning rules remain TR-079/091. |
 | TR-088 | P1 | Backlog | Apply diminishing returns to attribute-based loot bonuses | TR-087, TR-071 | Attribute loot bonuses approach a configured cap and remain relative modifiers. |
-| TR-089 | P1 | Backlog | Add XP curve configuration and visualization to the admin console | TR-033, TR-087 | Admins can graph/change versioned curves without losing raw achievement data. |
-| TR-090 | P1 | Backlog | Simulate progression for casual, regular and highly active players | TR-087, TR-089 | Progression reports compare realistic casual, regular and highly active histories. |
-| TR-091 | P1 | Backlog | Balance XP earning rates independently for all six attributes | TR-079, TR-090 | Each attribute earning rate can be tuned independently while using the same level curve. |
+| TR-089 | P1 | Done | Add XP curve configuration and visualization to the admin console | TR-033, TR-087 | Protected coefficient editing/history, exact level chart and draft recovery use immutable balance revisions; earned XP and production defaults preserved. Local browser/SQL verified. |
+| TR-090 | P1 | Done | Simulate progression for casual, regular and highly active players | TR-087, TR-089 | Laboratory compares 12 casual, 20 regular and 32 highly-active synthetic outings across Foot/Bicycle over four weeks, with visible assumptions and no data writes. |
+| TR-091 | P1 | In Progress | Balance XP earning rates independently for all six attributes | TR-079, TR-090 | Four supported earning rates and a shared level curve can be simulated/tuned independently in dev. Power/Fellowship evidence/rates and final six-attribute balance remain. |
 
 ## TR-E06 — Adventure & Training Recommendations
 
@@ -178,7 +178,7 @@ Automated repair evidence and remaining iPhone field gates: [P0 report](P0-EXPLO
 | TR-092 | P1 | Backlog | Adventure recommendation interface | TR-051 | The player can choose an attribute goal and see route or non-route suggestions. |
 | TR-093 | P1 | Backlog | Personalized recommendations for accumulating specific attributes | TR-092, TR-095 | Suggestions reflect selected goal, location and preferences without bonus quest XP. |
 | TR-094 | P1 | Backlog | Route generation using real trail and geographic data | TR-026, TR-101 | Routes follow real usable geographic paths and have valid GPX coordinates. |
-| TR-095 | P1 | Backlog | Estimated attribute XP for recommendations | TR-079, TR-087 | Displayed estimates use the same versioned XP rules as verified completed activity. |
+| TR-095 | P1 | In Progress | Estimated attribute XP for recommendations | TR-079, TR-087 | Shared estimate arithmetic matches accepted server rewards for Foot/Bicycle evidence; zero bonus XP. Recommendation UI/real route integration remain separate. |
 | TR-096 | P1 | Backlog | Include artifact and boss opportunities in recommendations | TR-094, TR-003, TR-043 | Relevant detected artefacts/bosses can be included without forcing extra collection range. |
 | TR-097 | P2 | Backlog | Evaluate Strava segments as potential training suggestions | TR-164 | Feasibility, permissions and permitted Strava segment use are documented before implementation. |
 | TR-098 | P1 | Backlog | GPX export for Garmin and other navigation devices | TR-094 | A generated GPX route can be exported and validated in a supported navigation workflow. |
@@ -221,7 +221,7 @@ Automated repair evidence and remaining iPhone field gates: [P0 report](P0-EXPLO
 | TR-124 | P1 | Backlog | Implement movement-based boss damage multipliers | TR-121, TR-044 | Boss distance damage uses the configured 2/0.8 HP per km baseline. |
 | TR-125 | P0 | In Progress | Give both movement categories full geographic discovery credit | TR-121, TR-013 | Tests show equal first-tile/regional discovery XP for Foot/Bicycle, independent of effort scaling. Shared server world and physical validation pending. |
 | TR-126 | P1 | In Progress | Add activity validation and basic anti-cheat checks | TR-121, TR-153 | Shared dev rejects invalid/coarse/stale/future/implausible GPS and duplicate events, with no long-gap rewards. This is consistency checking, not hardware anti-spoofing; provider validation remains. |
-| TR-127 | P1 | Backlog | Add movement balancing controls to admin console | TR-033, TR-123, TR-124 | Admins can simulate and tune movement factors without touching production tests. |
+| TR-127 | P1 | In Progress | Add movement balancing controls to admin console | TR-033, TR-123, TR-124 | Protected factor controls and two-mode progression histories are implemented. Boss damage balancing follows actual encounter rules. |
 | TR-128 | P2 | Deferred | Support mixed-mode adventures in a future release | TR-121, TR-126 | A later design can split a recorded adventure into verified movement segments. |
 
 ## TR-E09 — Animal Companions & Karma

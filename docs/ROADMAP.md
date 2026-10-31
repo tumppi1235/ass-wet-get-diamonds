@@ -2,11 +2,13 @@
 
 ## Current development iteration — 2026-10-31
 
-User requested backlog continuation in dev after the GPS/route readability release. Keep production unchanged. TR-165 live browser compass is the next independent navigation item: sensor permission, relative direction, screen rotation and honest north-up fallback. Implementation and automated coverage are in DEV-COMPASS.md; physical acceptance is still pending. This does not bypass the M0 field gates or enable new collection conveniences. Future P0 server/world stories still require shared-service/account decisions; XP earning formulas remain undecided.
+User authorized continuous dev-only backlog work, a shared dev backend and experimental configurable rates (D-024), with physical validation later. Production remains a5dc0cd. Shared platform identity/D1 services, recorded/personal spawns, density detection, admin player/recovery tools, Character/Collection and XP curve/simulations are implemented in dev; see DEV-CONTINUATION.md and the linked increment reports. Compass/GPS/Enduro field acceptance remains pending, separately from passing software tests.
+
+Next dependency-ready work: finish configurable event regions/spawn modifiers and admin world/density inspection; add effort/evidence foundations needed by encounters; implement boss definitions, explicit activation, fixed parties, one qualifying activity and loot separation; advance route recommendations/integrations using verified provider capabilities; complete release/recovery tooling within dev authorization. Keep unsupported provider/device work and production promotion as explicit gates.
 
 ## M0 — Repair the browser adventure loop
 
-Next five priorities, in execution order:
+P0 regression and physical acceptance gates:
 
 1. **TR-153:** recover stale GPS, keep latest validated active tile, prevent listener duplication and show diagnostic status.
 2. **TR-154:** repair discovery → tile eligibility → attempt → inventory persistence and visible failure reasons.
