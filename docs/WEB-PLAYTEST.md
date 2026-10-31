@@ -1,6 +1,8 @@
 # Phone web playtest
 
-The current Expo web build is published through the existing **Trail Relics · Jyväskylä** Sites project (`appgprj_6ae4783f8fcc8191a8e97464e8375938`). Its audience is public for sharing the URL with friends. The deployed URL is returned by the Sites deployment and recorded in the chat.
+Play at **https://trail-relics-jyvaskyla.tuomasl.chatgpt.site**.
+
+The Expo web build is published through the existing **Trail Relics · Jyväskylä** Sites project (`appgprj_6ae4783f8fcc8191a8e97464e8375938`). Its audience is public, explicitly approved by the user, so friends can open the URL without ChatGPT sign-in.
 
 1. Open the HTTPS game URL in Safari or Chrome on a phone. Sign in or create a local profile.
 2. Tap the bottom **Quest** strip to open the controls, then **Start quest**. Allow precise location for the site. Keep the page open and the screen on while walking.
