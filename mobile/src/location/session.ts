@@ -1,7 +1,7 @@
 import { PositionTracker, type LocationFix, type PlayerPosition, type TrackedFix } from './tracker';
 import type { LocationFailure, LocationSubscription } from './client';
-export type LocationSnapshot = { position:PlayerPosition|null; tracking:boolean; locating:boolean; message:string; fresh:number; focusRequest:number; status:'idle'|'locating'|'tracking'|'suspended'|'recovering'|'denied'; recoveries:number; rejected:number; receivedAt:number };
-export const initialLocation:LocationSnapshot={position:null,tracking:false,locating:false,message:'Tap Me to find your location.',fresh:0,focusRequest:0,status:'idle',recoveries:0,rejected:0,receivedAt:0};
+export type LocationSnapshot = { position:PlayerPosition|null; mapPosition:PlayerPosition|null; tracking:boolean; locating:boolean; message:string; fresh:number; focusRequest:number; status:'idle'|'locating'|'tracking'|'suspended'|'recovering'|'denied'; recoveries:number; rejected:number; receivedAt:number };
+export const initialLocation:LocationSnapshot={position:null,mapPosition:null,tracking:false,locating:false,message:'Tap Me to find your location.',fresh:0,focusRequest:0,status:'idle',recoveries:0,rejected:0,receivedAt:0};
 export type LocationWatch=(onFix:(fix:LocationFix)=>void,onError:(error:LocationFailure)=>void)=>Promise<LocationSubscription>;
 /** Own one replaceable GPS subscription, independently of an adventure's lifetime. */
 export class LocationSession {
@@ -24,7 +24,7 @@ export class LocationSession {
     if(notify)this.publish(patch);else this.value={...this.value,...patch};
   }
   suspend(){this.visible=false;if(this.wanted)this.publish({fresh:0,status:'suspended',message:'Adventure stays active. Browser GPS may pause while the screen is locked.'});}
-  resume(){this.visible=true;if(this.wanted&&this.clock()-this.lastAttemptAt>=2000)void this.replace(true,true);}
+  resume(){const wasHidden=!this.visible;this.visible=true;if(this.wanted&&(wasHidden||this.clock()-this.lastValidAt>25000)&&this.clock()-this.lastAttemptAt>=2000)void this.replace(true,true);}
   tick(){
     if(!this.wanted||!this.visible)return;
     if(this.clock()-this.lastValidAt>25000&&this.clock()-this.lastAttemptAt>25000)void this.replace(true,false);
@@ -46,11 +46,11 @@ export class LocationSession {
         if(!result){this.publish({rejected:this.value.rejected+1});return;}
         this.lastValidAt=this.clock();this.latest=result;
         const accuracy=Math.round(result.position.accuracy);
-        const message=result.eligible?`GPS live · ±${accuracy} m · tile updates active`:
+        const message=result.eligible?'GPS live · tile updates active.':
           result.reason==='outside'?`Location detected · ±${accuracy} m · outside the current playtest region.`:
-          result.reason==='approximate'?`GPS ±${accuracy} m · waiting for 25 m accuracy or better before collection and rewards.`:
+          result.reason==='approximate'?'GPS tracking · waiting for 25 m accuracy or better before collection and rewards.':
           result.reason==='speed'?'Location shown. Walking-speed fixes are required for this playtest.':'Waiting for a steady GPS fix after a location jump.';
-        this.publish({position:result.position,locating:false,fresh:result.eligible?result.position.timestamp:0,status:'tracking',message,receivedAt:this.clock(),focusRequest:this.value.focusRequest+(focusNext?1:0)});
+        this.publish({position:result.position,mapPosition:result.eligible?result.position:this.value.mapPosition || result.position,locating:false,fresh:result.eligible?result.position.timestamp:0,status:'tracking',message,receivedAt:this.clock(),focusRequest:this.value.focusRequest+(focusNext?1:0)});
         focusNext=false;
         if(result.eligible)this.onFix(result);
       },error=>{

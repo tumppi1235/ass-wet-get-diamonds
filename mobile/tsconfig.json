@@ -7,5 +7,7 @@
       "react-native",
       "node"
     ]
-  }
+  },
+  "include": ["src/**/*", "tests/**/*", "app.config.*", "expo-env.d.ts", ".expo/types/**/*.ts"],
+  "exclude": ["node_modules", "dist", "android", "ios"]
 }

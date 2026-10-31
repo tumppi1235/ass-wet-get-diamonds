@@ -5,6 +5,7 @@ import { validateStyleMin } from '@maplibre/maplibre-gl-style-spec';
 import G from '../src/game/engine';
 import { LANDMARKS, captureTarget, relicPoint } from '../src/game/landmarks';
 import { coordinates, overlayData, relicData, relicIcon, trailData } from '../src/map/vector-data';
+import {SourceUpdates} from '../src/map/source-updates';
 
 test('retro style validates against MapLibre and uses the verified Shortbread schema',()=>{
   const style=JSON.parse(readFileSync(new URL('../public/maps/trail-retro-style.json',import.meta.url),'utf8'));
@@ -46,6 +47,22 @@ test('rendered route never connects across a GPS discontinuity',()=>{
   const trail=trailData(game);assert.equal(trail.features.length,2);
   assert.deepEqual(trail.features[0].geometry,{type:'LineString',coordinates:[coordinates(game.path[0]),coordinates(game.path[1])]});
   assert.deepEqual(trail.features[1].geometry,{type:'LineString',coordinates:[coordinates(game.path[2]),coordinates(game.path[3])]});
+});
+
+test('GPS clock and distance-only updates leave identical map sources untouched',()=>{
+  const updates=new SourceUpdates(),game=G.initial(),p=relicPoint(LANDMARKS[0]);let writes=0;
+  const write=()=>{writes++;};
+  const before=relicData(game,p,undefined,undefined,false);
+  assert.equal(updates.send('relics',before,write),true);
+  const after=relicData(game,{x:p.x+10,y:p.y},undefined,undefined,false);
+  assert.equal(updates.send('relics',after,write),false,'moving only changes popup distance, not all 501 marker tiles');
+  for(let i=0;i<20;i++)updates.send('relics',JSON.parse(JSON.stringify(after)),write);
+  assert.equal(writes,1,'clock/status renders cannot re-submit unchanged GeoJSON');
+  game.collection.push(LANDMARKS[0]);updates.send('relics',relicData(game,p,undefined,undefined,false),write);
+  assert.equal(writes,2,'actual collection still refreshes markers');
+  updates.send('trail',trailData(game),write);assert.equal(writes,3,'sources have independent revisions');
+  const failing=new SourceUpdates();assert.throws(()=>failing.send('trail',{},()=>{throw new Error('unavailable');}));
+  assert.equal(failing.send('trail',{},write),true,'a failed write is retried');
 });
 test('map cells keep the original 250m grid; regional zoom removes detailed grid work',()=>{
   const game=G.initial();game.visits={'0,0':1};

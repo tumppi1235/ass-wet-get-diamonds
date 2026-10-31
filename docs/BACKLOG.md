@@ -234,6 +234,13 @@ Automated repair evidence and remaining iPhone field gates: [P0 report](P0-EXPLO
 | TR-142 | P3 | Deferred | Add companion avatars and cosmetic progression | TR-139 | Cosmetics/titles do not make companions a competitive requirement. |
 | TR-143 | P3 | Deferred | Configure Karma rewards and daily limits | TR-141, TR-033 | Karma rates/caps are configurable independently of combat XP. |
 
+## Field-test follow-ups
+
+| ID | Priority | Status | Story / outcome | Dependencies | Acceptance and implementation notes |
+| --- | --- | --- | --- | --- | --- |
+| TR-167 | P0 | In Progress | Stabilize GPS map/text and preserve route through short accuracy dips | TR-153 | Local fixes and simulated regressions implemented; no coarse rewards or long-gap route bridges. Physical iPhone retest pending. See GPS-MAP-STABILITY.md. |
+| TR-168 | P1 | In Progress | Make explored and claimed tiles clearly distinguishable | TR-030 | Teal dashed exploration, dark-cased gold personal claims, violet other claims, ownership labels, legend and wider route implemented. Browser/mobile visual review and field retest tracked in GPS-MAP-STABILITY.md. |
+
 ## Developer knowledge tooling
 
 | ID | Priority | Status | Story / outcome | Dependencies | Acceptance and implementation notes |

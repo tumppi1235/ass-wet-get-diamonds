@@ -17,7 +17,9 @@ export class PositionTracker {
     const point = {...G.xy(fix.latitude, fix.longitude),latitude:fix.latitude,longitude:fix.longitude}, inside = isPlayablePoint(point), precise = fix.accuracy <= 25;
     const position: PlayerPosition = { ...point, ...fix, accuracy: fix.accuracy, inside, precise };
     if (!inside || !precise || (fix.speed || 0) > 7) {
-      this.anchor = null; this.previous = null;
+      // A short accuracy dip is not a new outing/route segment. Keep only the
+      // last accurate anchor; the next good fix still passes gap/speed checks.
+      if (!inside || (fix.speed || 0) > 7) { this.anchor = null; this.previous = null; }
       return { position, distance: 0, eligible: false, startSegment: true, reason: !inside ? 'outside' : !precise ? 'approximate' : 'speed' };
     }
     let startSegment = this.previous === null, distance = 0;

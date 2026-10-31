@@ -5,6 +5,7 @@ import {LocationSession, type LocationWatch} from '../src/location/session';
 import {PositionTracker, type LocationFix, type TrackedFix} from '../src/location/tracker';
 import {requestAdventure,endAdventure,applyExplorationFix} from '../src/game/adventure';
 import {LANDMARKS,relicPoint,seedLandmarks,captureAt,captureTarget} from '../src/game/landmarks';
+import {trailData} from '../src/map/vector-data';
 
 function harness(){
   let now=1_000_000;
@@ -51,6 +52,26 @@ test('TR-153 stopping an unresolved location request disposes its eventual watch
 test('GPS callback updates do not restart the watcher',async()=>{
   const h=harness();await h.session.start();let updated=0;h.session.setOnFix(()=>updated++);
   h.calls[0].fix(h.fix());assert.equal(updated,1);assert.equal(h.calls.length,1);
+});
+
+test('TR-153 short accuracy dips hold the map steady, deny collection, and preserve an accepted route',async()=>{
+  const h=harness(),game=G.initial();requestAdventure(game,h.now());
+  h.session.setOnFix(fix=>applyExplorationFix(game,fix));await h.session.start();
+  h.calls[0].fix(h.fix(0));const stable=h.session.snapshot().mapPosition;
+  h.advance(2000);h.calls[0].fix(h.fix(400,32));
+  assert.equal(h.session.snapshot().mapPosition,stable,'coarse jitter must not pan the map or compass');
+  assert.equal(h.session.latestFix(),null,'a held display position cannot enable collection');
+  assert.equal(game.meters,0,'inaccurate fixes cannot earn distance');
+  h.advance(3000);h.calls[0].fix(h.fix(12));
+  assert.ok(game.meters>10&&game.meters<13);
+  assert.equal(trailData(game).features.length,1,'two good fixes form a visible route through a brief dip');
+  assert.equal(game.path.at(-1)!.breakBefore,false);
+  h.advance(5000);h.session.resume();assert.equal(h.calls.length,1,'ordinary focus does not restart a healthy watch');
+  const walked=game.meters;
+  h.advance(31000);h.calls[0].fix(h.fix(200,60));h.advance(1000);h.calls[0].fix(h.fix(300));
+  assert.equal(game.meters,walked,'a long inaccurate gap cannot invent distance');
+  assert.equal(game.path.at(-1)!.breakBefore,true,'long gaps start a separate route');
+  assert.equal(trailData(game).features.length,1,'no line is drawn across the long gap');
 });
 
 test('TR-146/153 saved adventures resume across tiles with no reset or duplicate rewards',()=>{

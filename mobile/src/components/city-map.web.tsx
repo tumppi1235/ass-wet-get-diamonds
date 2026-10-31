@@ -7,6 +7,7 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 import './quest-map.css';
 import type { createQuestMap } from '../map/vector-runtime.web';
 import {GAME_REGION} from '../map/region';
+import {MapLegend} from './map-legend';
 
 export function CityMap(props: CityMapProps) {
   const host=useRef<HTMLDivElement>(null),latest=useRef(props),controller=useRef<ReturnType<typeof createQuestMap> | null>(null);
@@ -29,6 +30,7 @@ export function CityMap(props: CityMapProps) {
     <View style={{position:'absolute',right:10,top:12,gap:6}}>
       <Button title="Me" quiet busy={props.locating} onPress={()=>controller.current?.locate()}/>
     </View>
+    <MapLegend/>
     {(!ready || error) && <View pointerEvents="none" style={{position:'absolute',left:12,right:110,bottom:92}}><Text style={{color:'#183E35',backgroundColor:'#F0E9CD',padding:7,fontSize:12}}>{error || 'Drawing your adventure map…'}</Text></View>}
     <div className="quest-map-attribution"><a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">© OpenStreetMap contributors</a> · <a href="https://github.com/tilezen/joerd/blob/master/docs/attribution.md" target="_blank" rel="noreferrer">Terrain: Mapzen / sources</a> · <a href="https://www.openstreetmap.org/fixthemap" target="_blank" rel="noreferrer">Improve map</a></div>
   </View>;

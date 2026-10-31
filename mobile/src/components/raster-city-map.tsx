@@ -13,6 +13,8 @@ import { LANDMARKS, relicPoint } from '../game/landmarks';
 import { gridForView } from '../map/grid';
 import { mapDetail, visitAreas } from '../map/visits';
 import type { CityMapProps } from './city-map.types';
+import {TILE_STYLE} from '../map/overlay-style';
+import {MapLegend} from './map-legend';
 
 type Feature = { k: string; p: number[][]; b: number[]; n?: string; t?: string; holes?: number[][][] };
 const data = require('../../assets/city-map.json') as { features: Feature[]; labels: { p: number[]; name: string; type: string }[] };
@@ -81,11 +83,11 @@ export function CityMap({ game, communityVisits, onDiscover, player, focusKey, d
         <MapColors terrain={online === 'outdoor'}><View pointerEvents="none" style={{ position: 'absolute', inset: 0 }}>{raster.map(tile => <Image key={tile.key} accessible={false} source={Platform.OS === 'web' ? { uri: tile.url } : { uri: tile.url, headers: { 'User-Agent': identify } }} resizeMode="stretch" onError={() => { if (online) setFailed(v => v[online] ? v : { ...v, [online]: true }); }} style={{ position: 'absolute', left: (tile.west - center.x) * scale + width / 2, top: (center.y - tile.north) * scale + height / 2, width: tile.width * scale + .5, height: tile.height * scale + .5 }} />)}</View></MapColors>
         <Svg pointerEvents="none" width="100%" height={height} viewBox={box} style={{ position: 'absolute', inset: 0 }}>
           <Defs><ClipPath id="municipal-grid"><Path d={boundaryPath} fillRule="evenodd" /></ClipPath></Defs>
-          <Group clipPath="url(#municipal-grid)">{explored.areas.map(a => <Rect key={a.x + ',' + a.y} x={a.x} y={-a.y - a.size} width={a.size} height={a.size} fill={a.mine && a.others ? '#218A8750' : a.mine ? '#59843B50' : '#8662B550'} stroke={a.mine && a.others ? '#176D6A' : a.mine ? '#355E27' : '#69428D'} strokeWidth={1 / scale} />)}</Group>
+          <Group clipPath="url(#municipal-grid)">{explored.areas.map(a => <Rect key={a.x + ',' + a.y} x={a.x} y={-a.y - a.size} width={a.size} height={a.size} fill={a.mine && a.others ? TILE_STYLE.shared : a.mine ? TILE_STYLE.explored : TILE_STYLE.others} fillOpacity={.3} stroke={a.mine && a.others ? TILE_STYLE.shared : a.mine ? TILE_STYLE.explored : TILE_STYLE.others} strokeWidth={2.5 / scale} strokeDasharray={`${7/scale},${4/scale}`} />)}</Group>
           {grid && <Group clipPath="url(#municipal-grid)"><Path d={grid} stroke="#FFFFFF70" strokeWidth={1.8 / scale} fill="none" /><Path d={grid} stroke="#456C5B55" strokeWidth={.65 / scale} fill="none" /></Group>}
           <Path d={boundaryPath} fill="#2D624A0A" stroke="#4E7354" strokeWidth={1.5 / scale} strokeDasharray={`${7 / scale},${5 / scale}`} fillRule="evenodd" />
-          {Object.entries(claims).map(([id,c])=>{const [i,j]=id.split(',').map(Number);return <Rect key={id} x={i*250} y={-(j+1)*250} width={250} height={250} fill={c.ownerId===ownerId?'#E6B65330':'#A17DC430'} stroke={c.ownerId===ownerId?'#AD7D1F':'#725198'} strokeWidth={2.5/scale}/>;})}
-          {trail && <><Path d={trail} stroke="#FFFFEE" strokeWidth={5 / scale} fill="none" /><Path d={trail} stroke="#B9703B" strokeWidth={2.5 / scale} fill="none" /></>}
+          {Object.entries(claims).map(([id,c])=>{const [i,j]=id.split(',').map(Number),fill=c.ownerId===ownerId?TILE_STYLE.claimed:TILE_STYLE.claimOther;return <Group key={id}><Rect x={i*250} y={-(j+1)*250} width={250} height={250} fill={fill} fillOpacity={.38} stroke={TILE_STYLE.claimedEdge} strokeWidth={7/scale}/><Rect x={i*250} y={-(j+1)*250} width={250} height={250} fill="none" stroke={fill} strokeWidth={4/scale}/></Group>;})}
+          {trail && <><Path d={trail} stroke={TILE_STYLE.routeHalo} strokeWidth={8 / scale} fill="none" /><Path d={trail} stroke={TILE_STYLE.route} strokeWidth={4 / scale} fill="none" /></>}
           {game.lastCell && gameTiles.map(([i, j]) => {
             const id = G.key(i, j), relic = game.revealed[id]?.landmarkId ? null : game.revealed[id], here = i === current.i && j === current.j, x = (i + .5) * 250, y = -(j + .5) * 250;
             const radius = (relic?.rarity === 'Legendary' ? 12 : relic?.rarity === 'Rare' ? 8 : 5) / scale, color = relic?.rarity === 'Legendary' ? '#A97C18' : relic?.rarity === 'Rare' ? '#377F8C' : '#B78A4F';
@@ -103,6 +105,7 @@ export function CityMap({ game, communityVisits, onDiscover, player, focusKey, d
           <Path d={`M${center.x - halfW + 16 / scale},${-center.y + halfH - 24 / scale}h${scaleMeters}`} stroke="#374D35" strokeWidth={2 / scale} /><SvgText x={center.x - halfW + 16 / scale} y={-center.y + halfH - 32 / scale} fontSize={10 / scale} fill="#374D35">{scaleMeters >= 1000 ? `${scaleMeters / 1000} km` : `${scaleMeters} m`}</SvgText>
         </Svg>
       </MapSurface>
+      {fullScreen&&<MapLegend/>}
       {fullScreen ? <View style={{ position: 'absolute', right: 10, top: 12, gap: 6 }}><Button title="Me" quiet busy={locating} onPress={() => { onLocate(); if(target) setCamera({ mode: 'player', center: target, scale: Math.max(.25, scale), focusKey }); }} /></View> : <>      <View style={{ position: 'absolute', right: 12, top: 12, gap: 6 }}><Button title="+" quiet onPress={() => zoom(1.6)} /><Button title="−" quiet onPress={() => zoom(1 / 1.6)} />{target && <Button title="◎ Me" quiet onPress={() => setCamera({ mode: 'player', center: target, scale: Math.max(.25, scale), focusKey })} />}</View>
 </>}
       {!fullScreen && <View pointerEvents="none" style={{ position: 'absolute', left: 12, top: 12, backgroundColor: '#FFFFF0EA', padding: 8, borderRadius: 5 }}><Text style={{ fontSize: 10, letterSpacing: 1, color: '#41593D' }}>NORTH ↑  /  {mode === 'area' ? 'WHOLE CITY' : 'TRAIL VIEW'}</Text></View>}
