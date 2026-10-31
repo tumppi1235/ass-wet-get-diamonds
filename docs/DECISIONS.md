@@ -46,3 +46,12 @@ D-030: shared dev Ideas are conditional ordinary progress plans, not formal ques
 D-031: dev maintenance is an explicit audited service pause with transactional write/epoch checks, including lazy GET mutations. Identity/status, maintenance and private snapshots stay available; pending journals remain recoverable. It changes neither adventure state nor encounter deadlines and does not perform hosted restore/revision reconciliation. Only maintenance-aware code is fenced, so old-worker drain/rollback compatibility remain operational requirements. Production and audience are unchanged.
 
 D-032 (dev experiment under D-024): first terrain class earns experimental 3 Agility XP after 250 conservatively classified metres in one outing; first Foot/Bicycle category earns 5 after an explicitly completed 1 km accepted outing. Independent admin rates default to zero until an audited revision enables them. Outing policy locks at start; permanent experience, including zero-rate qualification, survives resets/restores and prevents repayment. No historical terrain/sport/elevation is inferred. Finer sports, automatic classifications, access and physical validation remain separate; see DEV-DIVERSITY.md.
+
+D-033: dev route foundations use the retained checksum-verified Finland OSM PBF,
+original node topology and full mapped geometry. The first conservative policy
+excludes unresolved conditional access, unknown barriers and whole member ways
+of turn-restriction relations rather than ignoring restrictions. Bounded search
+returns unavailable on disconnection/access/resource limits; start/end offsets
+are not route connectors. No route plan is activity evidence or a reward. Asset
+hosting, live-region checks, UI, GPX/device access remain explicit implementation
+and validation gates; see DEV-ROUTING.md.

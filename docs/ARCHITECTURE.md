@@ -6,6 +6,14 @@
 
 There is no production game API or cloud inventory. Local ownership and visit sharing operate only between profiles in one installation. The user-authorized release enables Finland eligibility and a finite 501-destination catalog in both builds, including 28 Rantalantie/Haukivuori additions. Production and development retain separate origins and storage keys. See FINLAND-PLAYTEST.md and PRODUCTION-FINLAND-RELEASE.md for geographic compatibility and remaining national service/device work.
 
+Offline dev routing foundations: `tools/route_network.py` and `Build-RouteNetwork.py`
+extract conservative mode/direction-aware OSM node topology into checksummed
+geographic chunks; `Inspect-RouteNetwork.py` audits complete geometry preservation.
+`mobile/src/game/mapped-route.ts` is bounded pure A* with explicit unavailable
+states and no activity/reward writes. These tools/core are not yet connected to a
+hosted route API/map or GPX export. See DEV-ROUTING.md; no full-country graph is
+imported into a client/Worker bundle.
+
 ## P0 browser exploration pipeline
 
 Development-only shared service increment (D-024): `dev-server/` hosts an isolated Sites Worker/D1 API and a separate Vinext admin client; Expo `/shared` is the opt-in game client. Platform identity replaces local passwords in shared mode. Versioned, idempotent server events calculate dev state/XP/claims. Original phone-local mode and production remain separate. See SHARED-DEV.md for implemented scope, experimental balance and pending hosted/device gates.
