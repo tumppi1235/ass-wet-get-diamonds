@@ -104,25 +104,25 @@ Automated repair evidence and remaining iPhone field gates: [P0 report](P0-EXPLO
 
 | ID | Priority | Status | Story / outcome | Dependencies | Acceptance and implementation notes |
 | --- | --- | --- | --- | --- | --- |
-| TR-043 | P0 | Backlog | Define boss entity, HP, location and active window | TR-002, TR-112 | Boss definitions persist tier, tile, health policy and an explicit encounter window. |
+| TR-043 | P0 | Done | Define boss entity, HP, location and active window | TR-002, TR-112 | Shared dev persists sourced boss identity/tier/tile/availability and immutable physical-rule snapshot. Protected placement/retirement and SQL tests; live encounters are separate stories. |
 | TR-044 | P0 | Backlog | Convert verified sports activities into boss damage | TR-043, TR-121, TR-126 | Verified activity evidence determines damage using configured movement rules. |
 | TR-045 | P0 | Backlog | Implement shared boss health and contribution tracking | TR-044, TR-130 | Contributions update shared health exactly once per eligible activity. |
 | TR-046 | P1 | Backlog | Add boss weaknesses and sport-specific modifiers | TR-044, TR-138 | Boss-specific modifiers are capped and cannot bypass required individual effort. |
 | TR-047 | P1 | Backlog | Implement group and guild combat bonuses | TR-045 | Only verified participating members contribute configured team benefits. |
 | TR-048 | P0 | Backlog | Implement boss victory rewards and rare-drop rolls | TR-045, TR-070, TR-072 | Qualifying victories produce the correct loot ledger and cannot be rewarded twice. |
-| TR-049 | P0 | Backlog | Add boss placement and simulation to admin console | TR-031, TR-043 | Authorized admins can place/simulate bosses in an isolated world. |
-| TR-050 | P1 | Backlog | Create first four boss designs and encounter rules | TR-043 | Four boss briefs specify theme, signature reward, tile rules and difficulty. |
+| TR-049 | P0 | In Progress | Add boss placement and simulation to admin console | TR-031, TR-043 | Protected dev boss placement/inspection/retirement and zero-write combat simulator implemented. Live encounter administration follows activity/party lifecycle. |
+| TR-050 | P1 | Done | Create first four boss designs and encounter rules | TR-043 | Four theme/signature/path briefs implemented: Metsänvartija, Hallahukka, Syvänne, Kivenkulkija. Signature metadata awaits actual loot integration; see DEV-BOSS-FOUNDATIONS.md. |
 | TR-059 | P1 | Superseded | Resolve boss encounters within one adventure. | — | Replaced by TR-129/131: asynchronous shared window, one activity per participant. |
-| TR-060 | P1 | Backlog | Cap party-size combat benefits at five contributing players. | TR-043 | At most five verified participants affect encounter scaling and rewards. |
-| TR-061 | P1 | Backlog | Configure the solo 50km Greater-or-lower victory baseline | TR-065, TR-066 | The Greater-or-lower solo baseline remains 50 equivalent foot km; Mythical has its separately configured target. |
-| TR-062 | P1 | Backlog | Introduce configurable boss HP tiers. | TR-043, TR-033 | Tier and party-size thresholds can be configured and simulated. |
+| TR-060 | P1 | In Progress | Cap party-size combat benefits at five contributing players. | TR-043 | Model/simulator cap contributors at five and reject duplicate owners; verified persistent party membership is the next stage. |
+| TR-061 | P1 | Done | Configure the solo 50km Greater-or-lower victory baseline | TR-065, TR-066 | Protected policy retains Greater solo 50 equivalent foot km and Lesser/Standard <=50; Mythical has separately guarded ultra targets. Unit tests pass. |
+| TR-062 | P1 | Done | Introduce configurable boss HP tiers. | TR-043, TR-033 | Admin edits/audits immutable tier/party distance-to-HP policy and simulates it; placed definitions snapshot their policy. |
 | TR-063 | P1 | Superseded | Implement party damage aggregation and teamwork multiplier. | — | Replace the flat teamwork shortcut with TR-065 scaling and TR-045 contribution tracking. |
-| TR-064 | P1 | Backlog | Add an admin combat simulator for balancing encounters. | TR-049, TR-065 | Simulation exposes tier, party size, verified contributions and resulting health. |
-| TR-065 | P1 | Backlog | Implement boss HP scaling by party size and difficulty tier. | TR-043, TR-060 | Tier-specific HP scales by verified party size without the old flat bonus shortcut. |
-| TR-066 | P1 | Backlog | Set tier-specific solo and group distance targets. | TR-065 | The documented solo/group targets are configurable rather than hardcoded UI values. |
-| TR-067 | P1 | Backlog | Require minimum individual contributions for high-tier bosses. | TR-065 | High-tier participants must meet configured individual requirements. |
+| TR-064 | P1 | Done | Add an admin combat simulator for balancing encounters. | TR-049, TR-065 | Protected combat simulator reports synthetic participants, physical HP, required/minimum km and qualification with zero world/player writes. Local browser verified. |
+| TR-065 | P1 | In Progress | Implement boss HP scaling by party size and difficulty tier. | TR-043, TR-060 | Tier-specific HP model and nondecreasing total effort for 1–5 members tested; live verified/locked roster integration remains. |
+| TR-066 | P1 | Done | Set tier-specific solo and group distance targets. | TR-065 | Approved solo/2/3/5 targets are configurable with guardrails; four-person experimental totals interpolate 3/5. Defaults and baseline tests pass. |
+| TR-067 | P1 | In Progress | Require minimum individual contributions for high-tier bosses. | TR-065 | Configurable unmodified individual minimums and absolute Mythical floor implemented in model/simulator; real participant qualification pending. |
 | TR-068 | P1 | Backlog | Lock party composition for each boss encounter. | TR-130 | Joining/leaving cannot exploit a cheaper locked encounter scaling policy. |
-| TR-069 | P1 | Backlog | Cap combat modifiers so high-tier bosses retain their endurance requirements. | TR-065 | Combined modifiers cannot remove the tier’s minimum endurance requirement. |
+| TR-069 | P1 | In Progress | Cap combat modifiers so high-tier bosses retain their endurance requirements. | TR-065 | Capped damage bonuses cannot inflate individual physical evidence; synthetic high-tier minimum tests pass. Live encounter integration remains. |
 | TR-129 | P1 | Backlog | Configurable boss encounter window, initially 24 hours. | TR-043 | Explicit activation opens a configurable encounter window, initially 24 hours. |
 | TR-130 | P1 | Backlog | Asynchronous party participation, maximum five players. | TR-129, TR-060 | Up to five people can contribute at different times within the same encounter. |
 | TR-131 | P1 | Backlog | Exactly one qualifying activity per player per encounter. | TR-129, TR-130 | Exactly one qualifying continuous activity counts per participant per encounter. Revised option B replaces multiple activities in the window. |
@@ -148,7 +148,7 @@ Automated repair evidence and remaining iPhone field gates: [P0 report](P0-EXPLO
 | TR-056 | P2 | Done | Implement emerging player archetypes | TR-051 | Descriptive archetypes derive from leading attribute levels without restricting activities or changing rewards; deterministic non-mutation tests pass. |
 | TR-057 | P1 | Done | Add admin tools to modify and reset player attributes | TR-032, TR-051 | Protected six-attribute edit/reset validates whole non-negative totals and records backup/audit; stale views cannot overwrite newer state. |
 | TR-058 | P1 | In Progress | Balance progression across different sports and abilities | TR-121, TR-123 | Admin compares casual/regular/highly-active four-week histories for Foot/Bicycle with editable effort factors and displayed assumptions. Final balancing and wider sports/evidence remain. |
-| TR-070 | P0 | Backlog | Separate boss victory calculations from loot calculations | TR-043, TR-051 | Changing character levels cannot independently satisfy physical boss victory requirements. |
+| TR-070 | P0 | In Progress | Separate boss victory calculations from loot calculations | TR-043, TR-051 | Combat policy accepts physical activity evidence only, without character-level damage inputs. Real victory settlement and separate loot ledger remain. |
 | TR-071 | P0 | Backlog | Implement attribute-specific loot modifiers | TR-051, TR-070 | Each attribute changes its documented loot opportunity with configured caps. |
 | TR-072 | P0 | Backlog | Implement individual boss loot rolls | TR-070, TR-043 | Each qualified participant receives their own idempotent loot roll. |
 | TR-073 | P1 | Backlog | Introduce boss-specific signature artifacts | TR-048 | Signature loot is linked to its boss’s versioned loot table. |
@@ -218,7 +218,7 @@ Automated repair evidence and remaining iPhone field gates: [P0 report](P0-EXPLO
 | TR-121 | P0 | In Progress | Implement Foot and Bicycle movement categories | — | Shared dev offers explicit Foot/Bicycle, locks movement within an active adventure and validates with mode-specific limits. Original local mode remains walking-only. Physical/import type validation pending. |
 | TR-122 | P0 | Backlog | Map Garmin and imported activity types to movement categories | TR-121, TR-155 | Known imported activity types map deterministically; unknowns are not guessed from speed alone. |
 | TR-123 | P0 | In Progress | Implement configurable movement-based XP multipliers | TR-121, TR-079 | Shared Endurance effort uses versioned Foot 1.0/Bicycle 0.4 defaults; protected admin configuration affects future events only. Broader six-attribute/provider effort remains pending. |
-| TR-124 | P1 | Backlog | Implement movement-based boss damage multipliers | TR-121, TR-044 | Boss distance damage uses the configured 2/0.8 HP per km baseline. |
+| TR-124 | P1 | In Progress | Implement movement-based boss damage multipliers | TR-121, TR-044 | Independent versioned combat Foot 2/Bicycle 0.8 HP/km model, controls and simulation implemented; real server activity submission remains. |
 | TR-125 | P0 | In Progress | Give both movement categories full geographic discovery credit | TR-121, TR-013 | Tests show equal first-tile/regional discovery XP for Foot/Bicycle, independent of effort scaling. Shared server world and physical validation pending. |
 | TR-126 | P1 | In Progress | Add activity validation and basic anti-cheat checks | TR-121, TR-153 | Shared dev rejects invalid/coarse/stale/future/implausible GPS and duplicate events, with no long-gap rewards. This is consistency checking, not hardware anti-spoofing; provider validation remains. |
 | TR-127 | P1 | In Progress | Add movement balancing controls to admin console | TR-033, TR-123, TR-124 | Protected factor controls and two-mode progression histories are implemented. Boss damage balancing follows actual encounter rules. |

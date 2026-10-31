@@ -59,3 +59,5 @@ Shared admin/player evidence: DEV-PLAYER-TOOLS.md. Test authorization, invalid i
 XP laboratory: DEV-PROGRESSION-LAB.md. Verify coefficient history authorization, old-config default, unchanged XP totals, active curve projection, estimate/reducer parity and history identity/coverage/fractional dedup. Browser draft chart/history and zero-write estimate passed locally; no physical pass inferred.
 
 Regions/world map: DEV-WORLD-REGIONS.md. Test UTC context/weights/caps, active region boundaries, blocked placement/collection, concurrent config/capture rollback, index backfill and unique density. Local map loads and audited region save passed; no fake GPS/physical pass.
+
+Boss foundations: DEV-BOSS-FOUNDATIONS.md. Test solo/party targets, monotonic scaling, caps/minimums, tile/window/duplicate rejection, immutable source placement, role/config CAS/audit and no-player-write simulation. Local synthetic combat/definition placement passed; real encounter and phone/watch acceptance pending.

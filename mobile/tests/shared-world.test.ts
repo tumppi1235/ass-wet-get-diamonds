@@ -1,3 +1,4 @@
+import {database} from './sqlite-world';
 import {test,mock} from 'node:test';
 import assert from 'node:assert/strict';
 import {DatabaseSync} from 'node:sqlite';
@@ -7,7 +8,7 @@ import G from '../src/game/engine';
 import {trailApi} from '../../dev-server/trail/api';
 import {SharedWorldClient} from '../src/accounts/shared-world';
 import {LANDMARKS,captureTarget} from '../src/game/landmarks';
-import {generateWorldSpawn,firstVisitSpawn,SPAWN_RULES,weightedRarity,detectionMeters} from '../src/game/world-spawns';
+import {generateWorldSpawn,firstVisitSpawn,SPAWN_RULES,weightedRarity,detectionMeters,validateSpawnRules} from '../src/game/world-spawns';
 import {hydrateSpawns,querySpawns,nearbyBounds,removeSpawn,placeSpawn} from '../../dev-server/trail/spawn-store';
 import {applyWorldEvent} from '../../dev-server/trail/world-store';
 import {spawnVisibleTo} from '../src/game/spawns';
@@ -65,6 +66,7 @@ test('TR-030 geographic index migration backfills existing tile IDs without losi
 });
 
 test('TR-003/004/008/015/016/018 deterministic world windows, personal rolls and capped density stay independent',()=>{
+  assert.throws(()=>validateSpawnRules({...SPAWN_RULES,revision:null as never}),/Invalid/);
   const place=LANDMARKS[0],now=Date.now(),a=generateWorldSpawn(place,now),b=generateWorldSpawn(place,now);
   assert.deepEqual(a,b);assert.notEqual(generateWorldSpawn(place,a.expiresAt!).id,a.id);assert.equal(spawnVisibleTo(a,'any',a.expiresAt!),false);
   assert.equal(firstVisitSpawn(place,'one',now,{...SPAWN_RULES,firstVisitChance:0}),null);
@@ -232,12 +234,6 @@ test('TR-085/090 history simulations preserve effort fractions and deduplicate a
   for(const s of PROGRESSION_SCENARIOS)for(const movement of ['foot','bicycle']as const){const replayed=simulateHistory(DEV_BALANCE,scenarioHistory(s,movement)),aggregate=estimateProgression(DEV_BALANCE,{...s,movement});assert.deepEqual(replayed.xp,aggregate.xp);assert.equal(replayed.steps.length,s.activities);}
 });
 
-function database(){
-  const sql=new DatabaseSync(':memory:');sql.exec('PRAGMA foreign_keys=ON');
-  const folder=new URL('../../dev-server/drizzle/',import.meta.url);for(const file of readdirSync(folder).filter(x=>x.endsWith('.sql')).sort())sql.exec(readFileSync(new URL(file,folder),'utf8'));
-  const prepare=(query:string)=>{let values:unknown[]=[];const statement={bind(...args:unknown[]){values=args;return statement;},async first(){return sql.prepare(query).get(...values as never[])??null;},async all(){return{results:sql.prepare(query).all(...values as never[])};},async run(){return{success:true,meta:sql.prepare(query).run(...values as never[])};}};return statement;};
-  return{sql,db:{prepare,async batch(statements:ReturnType<typeof prepare>[]){sql.exec('BEGIN IMMEDIATE');try{const results=[];for(const statement of statements)results.push(await statement.run());sql.exec('COMMIT');return results;}catch(error){sql.exec('ROLLBACK');throw error;}}}};
-}
 test('TR-113/119 shared API requires identity, own-origin writes, server roles and a dev-only database',async()=>{
   const {db}=database(),env={DB:db as never,TRAIL_ENV:'development',TRAIL_ADMIN_EMAIL:'owner@example.invalid'};
   const call=(path:string,method='GET',input?:unknown,subject?:string,email?:string)=>trailApi(new Request('https://dev.example/api/trail/'+path,{method,headers:{...(subject?{'oai-authenticated-user-id':subject}:{}),...(email?{'oai-authenticated-user-email':email}:{}),origin:'https://dev.example','Content-Type':'application/json'},...(input===undefined?{}:{body:JSON.stringify(input)})}),env);

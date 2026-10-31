@@ -34,3 +34,5 @@ Open decisions: final spawn/rarity formulas, national tile projection/migration,
 D-025 (dev experiment under D-024): the active shared curve is a versioned coefficient over unchanged earned XP. Balance recovery copies values into a new revision. Simulations reuse earning arithmetic and never write rewards; unsupported elevation/cooperation remain zero. Experimental values are not final fairness approval.
 
 D-026 (dev experiment under D-024): admin-classified regions supply explicit test terrain/weather and active windows; no live-weather claim. Blocked areas invalidate placement/collection, with transactional region-revision checks. Recorded appearances/ownership stay immutable; new contexts receive new identities.
+
+D-027 (dev experiment under D-024): four-person boss targets interpolate total required effort, preserving monotonic party scaling. Initial individual fractions 25/25/50/100 percent are experiments; Mythical retains an absolute 50 equivalent km individual floor. Boss placements snapshot policy; character stats never supply physical damage. These defaults do not finalize provider/party/loot rules.

@@ -9,6 +9,8 @@ import {inspectPlayer,editPlayer} from './player-admin';
 import {DEV_BALANCE,validateBalance} from '../../mobile/src/game/dev-world';
 import {loadRegions,saveRegions,queryDensity} from './region-store';
 import {rulesForPlace} from '../../mobile/src/game/world-regions';
+import {loadBossRules,saveBossRules,placeBoss,queryBosses,retireBoss} from './boss-store';
+import {BOSS_DESIGNS,simulateEncounter} from '../../mobile/src/game/bosses';
 type Bindings={DB?:D1Database;TRAIL_ENV?:string;TRAIL_ADMIN_EMAIL?:string;TRAIL_PUBLIC_ORIGIN?:string};
 type Member={id:string;display_name:string;role:'admin'|'player';created_at:number};
 class ApiError extends Error{constructor(public status:number,message:string){super(message);}}
@@ -64,6 +66,27 @@ export async function trailApi(request:Request,env:Bindings){
     }
     if(path==='/api/trail/admin/density'&&request.method==='GET'){
       if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');return json(await queryDensity(db,readBounds(url.searchParams)));
+    }
+    if(path==='/api/trail/admin/boss-rules'&&request.method==='GET'){
+      if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');return json({rules:await loadBossRules(db),designs:BOSS_DESIGNS});
+    }
+    if(path==='/api/trail/admin/boss-rules'&&request.method==='PUT'){
+      if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');const input=await body(request);try{return json(await saveBossRules(db,id,input.rules,input.revision));}catch(e){if(e instanceof WorldError)throw e;throw new ApiError(400,(e as Error).message);}
+    }
+    if(path==='/api/trail/admin/boss-places'&&request.method==='GET'){
+      if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');const q=(url.searchParams.get('q')||'').toLowerCase();if(q.length>80)throw new ApiError(400,'Search is too long');return json({places:LANDMARKS.filter(p=>p.landmarkId&&p.source&&((p.landmark||'').toLowerCase().includes(q)||p.landmarkId.includes(q))).slice(0,50).map(p=>({id:p.landmarkId,name:p.landmark,tile:p.id,latitude:p.latitude,longitude:p.longitude}))});
+    }
+    if(path==='/api/trail/admin/bosses'&&request.method==='POST'){
+      if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');return json(await placeBoss(db,id,await body(request)));
+    }
+    if(path==='/api/trail/admin/bosses'&&request.method==='GET'){
+      if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');return json(await queryBosses(db,readBounds(url.searchParams),Date.now(),true));
+    }
+    if(path==='/api/trail/admin/bosses'&&request.method==='DELETE'){
+      if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');const input=await body(request);if(typeof input.id!=='string'||input.id.length>100)throw new ApiError(400,'Invalid boss identity');return json(await retireBoss(db,id,input.id));
+    }
+    if(path==='/api/trail/admin/boss-simulation'&&request.method==='POST'){
+      if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');const input=await body(request);try{return json({simulation:true,...simulateEncounter(input.tier,input.partySize,input.contributions,input.boss,input.rules)});}catch(e){throw new ApiError(400,(e as Error).message);}
     }
     if(path==='/api/trail/admin/spawns'&&request.method==='POST'){
       if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');
