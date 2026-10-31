@@ -16,6 +16,7 @@ import {listCompletedActivities,summarizeActivity,allowedBossVisit} from './acti
 import {loadLootRules,saveLootRules} from './loot-store';
 import {lootChances,validateLootRules} from '../../mobile/src/game/loot';
 import {queryEncounters,inspectEncounter,cancelEncounter} from './encounter-admin';
+import {exportDevSnapshot} from './snapshot-store';
 type Bindings={DB?:D1Database;TRAIL_ENV?:string;TRAIL_ADMIN_EMAIL?:string;TRAIL_PUBLIC_ORIGIN?:string};
 type Member={id:string;display_name:string;role:'admin'|'player';created_at:number};
 class ApiError extends Error{constructor(public status:number,message:string){super(message);}}
@@ -49,6 +50,9 @@ export async function trailApi(request:Request,env:Bindings){
       await db.prepare('UPDATE trail_members SET display_name=? WHERE id=?').bind(displayName,id).run();return json({saved:true});
     }
     if(path==='/api/trail/world'&&request.method==='GET')return json(await loadWorld(db,id));
+    if(path==='/api/trail/admin/snapshot'&&request.method==='POST'){
+      if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');return json(await exportDevSnapshot(db));
+    }
     if(path.startsWith('/api/trail/admin/encounter')){
       if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');
       if(path==='/api/trail/admin/encounters'&&request.method==='GET')return json(await queryEncounters(db,url.searchParams));
