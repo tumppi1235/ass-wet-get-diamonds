@@ -9,16 +9,18 @@ import type {GameState} from './types';
 import type {LocationFix,PlayerPosition} from '../location/tracker';
 import {rewardXp} from './reward-rates';
 import {DEV_BALANCE,validateBalance} from './dev-balance';
+import {beginDiversity,recordDiversity,finishDiversity,DIVERSITY_RULES,type DiversityState,type DiversityContext,type DiversityReceipt} from './diversity';
+import {WORLD_REGIONS} from './world-regions';
 export {DEV_BALANCE,validateBalance,type DevBalance} from './dev-balance';
 
 export type Movement='foot'|'bicycle';
-export type DevWorld={version:1;game:GameState;movement:Movement;previous:PlayerPosition|null;anchor:PlayerPosition|null;latestGpsValid:boolean;regions:Record<string,true>;xpRemainder:number;configRevision:string;curveCoefficient?:number;spawnContextRevision?:string;rewardedTiles?:Record<string,boolean>};
+export type DevWorld={version:1;game:GameState;movement:Movement;previous:PlayerPosition|null;anchor:PlayerPosition|null;latestGpsValid:boolean;regions:Record<string,true>;xpRemainder:number;configRevision:string;curveCoefficient?:number;spawnContextRevision?:string;rewardedTiles?:Record<string,boolean>;diversity?:DiversityState};
 export type DevEvent={kind:'start';movement:Movement}|{kind:'stop'}|{kind:'gps';fix:LocationFix}|{kind:'capture'}|{kind:'claim';tile:string;price:number};
 export type ActivityEvidence={id:string;source:'browser-gps';phase:'start'|'gps'|'stop';movement:Movement;startedAt:number;recordedAt:number;meters:number;distanceStartedAt:number;observedSeconds:number};
-export type DevReceipt={accepted:boolean;reason:string;tile?:string;awards:Partial<Record<Attribute,number>>;collected?:string;balanceRevision:string;activity?:ActivityEvidence};
+export type DevReceipt={accepted:boolean;reason:string;tile?:string;awards:Partial<Record<Attribute,number>>;collected?:string;balanceRevision:string;activity?:ActivityEvidence;diversity?:DiversityReceipt};
 export function newDevWorld():DevWorld{const game=G.initial();game.sharedSpawnsOnly=true;game.revealed={};game.progression=newProgression();return{version:1,game,movement:'foot',previous:null,anchor:null,latestGpsValid:false,regions:{},xpRemainder:0,configRevision:DEV_BALANCE.revision};}
 /** Pure authoritative event reducer, also used by isolated balancing simulations. */
-export function reduceDevEvent(original:DevWorld,event:DevEvent,now:number,balance=DEV_BALANCE,random=()=>crypto.getRandomValues(new Uint32Array(1))[0]/2**32,activityId?:string){
+export function reduceDevEvent(original:DevWorld,event:DevEvent,now:number,balance=DEV_BALANCE,random=()=>crypto.getRandomValues(new Uint32Array(1))[0]/2**32,activityId?:string,diversityContext:DiversityContext={rules:DIVERSITY_RULES,regions:WORLD_REGIONS}){
   balance=validateBalance(balance);const world:DevWorld=JSON.parse(JSON.stringify(original)),s=world.game;
   const receipt:DevReceipt={accepted:false,reason:'unsupported event',awards:{},balanceRevision:balance.revision};
   if(world.version!==1||!event||!Number.isSafeInteger(now))throw new Error('Unsupported world event');
@@ -28,8 +30,8 @@ export function reduceDevEvent(original:DevWorld,event:DevEvent,now:number,balan
   if(event.kind==='start'){
     if(!['foot','bicycle'].includes(event.movement))throw new Error('Choose Foot or Bicycle');
     if(s.adventure?.status==='active'){if(world.movement!==event.movement)throw new Error('Stop the current adventure before changing movement');receipt.reason='already active';}
-    else{requestAdventure(s,now);if(activityId)s.adventure!.id=activityId;world.movement=event.movement;world.previous=null;world.anchor=null;receipt.reason='adventure started';receipt.activity={id:s.adventure!.id,source:'browser-gps',phase:'start',movement:world.movement,startedAt:now,recordedAt:now,meters:0,distanceStartedAt:now,observedSeconds:0};}receipt.accepted=true;
-  }else if(event.kind==='stop'){if(s.adventure?.status==='active')receipt.activity={id:s.adventure.id,source:'browser-gps',phase:'stop',movement:world.movement,startedAt:s.adventure.startedAt,recordedAt:now,meters:0,distanceStartedAt:now,observedSeconds:0};endAdventure(s,now);world.previous=null;world.anchor=null;receipt.accepted=true;receipt.reason='adventure stopped';}
+    else{requestAdventure(s,now);if(activityId)s.adventure!.id=activityId;world.movement=event.movement;world.previous=null;world.anchor=null;beginDiversity(world,s.adventure!.id,world.movement,diversityContext.rules);receipt.reason='adventure started';receipt.activity={id:s.adventure!.id,source:'browser-gps',phase:'start',movement:world.movement,startedAt:now,recordedAt:now,meters:0,distanceStartedAt:now,observedSeconds:0};}receipt.accepted=true;
+  }else if(event.kind==='stop'){receipt.diversity=finishDiversity(world,now);award('agility',receipt.diversity?.xp||0);if(s.adventure?.status==='active')receipt.activity={id:s.adventure.id,source:'browser-gps',phase:'stop',movement:world.movement,startedAt:s.adventure.startedAt,recordedAt:now,meters:0,distanceStartedAt:now,observedSeconds:0};endAdventure(s,now);world.previous=null;world.anchor=null;receipt.accepted=true;receipt.reason='adventure stopped';}
   else if(event.kind==='gps'){
     const f=event.fix&&{...event.fix,timestamp:Math.trunc(event.fix.timestamp)};
     world.latestGpsValid=false;
@@ -50,6 +52,7 @@ export function reduceDevEvent(original:DevWorld,event:DevEvent,now:number,balan
     const region=G.key(Math.floor(position.x/2000),Math.floor(position.y/2000));
     if(!world.regions[region]){world.regions[region]=true;award('agility',rewardXp(balance,{regions:1}).agility);}
     if(active&&distance){world.xpRemainder+=distance*(world.movement==='foot'?balance.footFactor:balance.bicycleFactor);const xp=rewardXp(balance,{equivalentMeters:world.xpRemainder}).endurance;world.xpRemainder-=xp*balance.enduranceMetersPerXp;award('endurance',xp);}
+    receipt.diversity=recordDiversity(world,position,priorAnchor,distance,startSegment,now,diversityContext);award('agility',receipt.diversity?.xp||0);
     receipt.accepted=true;receipt.reason='GPS accepted';receipt.tile=tile;
     if(active&&s.adventure)receipt.activity={id:s.adventure.id,source:'browser-gps',phase:'gps',movement:world.movement,startedAt:s.adventure.startedAt,recordedAt:f.timestamp,meters:distance,distanceStartedAt:distance&&priorAnchor?priorAnchor.timestamp:f.timestamp,observedSeconds:!startSegment&&prior?Math.max(0,(f.timestamp-prior.timestamp)/1000):0};
   }else if(event.kind==='capture'){

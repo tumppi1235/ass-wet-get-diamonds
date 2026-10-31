@@ -34,6 +34,7 @@ Working title: Trail Relics. Vision: an outdoor RPG where greater effort and exp
 | [CONNECTIVITY-FEASIBILITY.md](CONNECTIVITY-FEASIBILITY.md) | Current Garmin/Strava investigation, data-use constraints and reconciliation gates |
 | [DEV-OBSERVABILITY.md](DEV-OBSERVABILITY.md) | Dev service failure references, privacy-safe application logs and remaining monitoring gates |
 | [DEV-MAINTENANCE.md](DEV-MAINTENANCE.md) | Dev pause/resume controls, transactional write coordination and pending-action/recovery limits |
+| [DEV-DIVERSITY.md](DEV-DIVERSITY.md) | First terrain/movement experience, locked experimental Agility rules and permanent anti-farming evidence |
 | [DEV-CONTINUATION.md](DEV-CONTINUATION.md) | Continuous dev-only backlog execution and outstanding gates |
 | [DEV-FOUNDATIONS.md](DEV-FOUNDATIONS.md) | Development-only spawn, lifetime evidence and XP foundation scope |
 | [FINLAND-PLAYTEST.md](FINLAND-PLAYTEST.md) | National dev catalog, geographic compatibility and field tests |

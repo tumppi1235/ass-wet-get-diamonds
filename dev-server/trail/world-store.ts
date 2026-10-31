@@ -7,6 +7,9 @@ export {WorldError} from './world-error';
 import {hydrateSpawns,firstVisitStatement} from './spawn-store';
 import {newProgression} from '../../mobile/src/game/progression';
 import {requestHash} from './hash';
+import {loadDiversityRules} from './diversity-store';
+import {loadRegions} from './region-store';
+import type {DiversityContext} from '../../mobile/src/game/diversity';
 type Row={state:string;revision:number};
 export async function loadWorld(db:D1Database,owner:string,now=Date.now()){
   await db.prepare('INSERT INTO trail_players(id,state,revision,updated_at) VALUES(?,?,0,?) ON CONFLICT(id) DO NOTHING').bind(owner,JSON.stringify(newDevWorld()),Date.now()).run();
@@ -19,7 +22,7 @@ export async function applyWorldEvent(db:D1Database,owner:string,id:string,expec
   const existing=await db.prepare('SELECT request_hash,result FROM trail_events WHERE owner=? AND id=?').bind(owner,id).first<{request_hash:string;result:string}>();
   if(existing){if(existing.request_hash!==hash)throw new WorldError(409,'Event identity was reused with different contents');return{...(await loadWorld(db,owner)),receipt:JSON.parse(existing.result)as DevReceipt,replayed:true};}
   const current=await loadWorld(db,owner,now);if(current.revision!==expected)throw new WorldError(409,'Progress changed on another device. Refresh before continuing.');
-  let reduced:ReturnType<typeof reduceDevEvent>,previousClaim:{owner:string;price:number}|null=null;
+  let reduced:ReturnType<typeof reduceDevEvent>,previousClaim:{owner:string;price:number}|null=null,diversityContext:DiversityContext|undefined;
   if(event.kind==='claim'){
     if(typeof event.tile!=='string'||!tilePoint(event.tile)||!(current.world.game.visits[event.tile]>0))throw new WorldError(400,'Visit a valid tile before claiming it');
     previousClaim=await db.prepare('SELECT owner,price FROM trail_claims WHERE tile=?').bind(event.tile).first();
@@ -30,7 +33,7 @@ export async function applyWorldEvent(db:D1Database,owner:string,id:string,expec
     if(!Number.isSafeInteger(world.game.gold)||world.game.gold<price)throw new WorldError(400,'Not enough gold');
     world.game.gold-=price;world.game.claimGoldSpent=(world.game.claimGoldSpent||0)+price;
     reduced={world,receipt:{accepted:true,reason:'claimed',tile:event.tile,awards:{},balanceRevision:world.configRevision}};
-  }else{try{reduced=reduceDevEvent(current.world,event,now,(await loadBalance(db)).balance,undefined,'activity:'+id);}catch(error){throw new WorldError(400,(error as Error).message);}}
+  }else{diversityContext={rules:(await loadDiversityRules(db)).rules,regions:await loadRegions(db)};try{reduced=reduceDevEvent(current.world,event,now,(await loadBalance(db)).balance,undefined,'activity:'+id,diversityContext);}catch(error){throw new WorldError(400,(error as Error).message);}}
   const {world,receipt}=reduced;
   const personal=receipt.tile&&event.kind==='gps'?await firstVisitStatement(db,owner,receipt.tile,now):null;
   const statements=[
@@ -40,6 +43,11 @@ export async function applyWorldEvent(db:D1Database,owner:string,id:string,expec
     db.prepare("INSERT INTO trail_integrity(id,valid) VALUES('world-cas',CASE WHEN changes()=1 THEN 1 ELSE 0 END) ON CONFLICT(id) DO UPDATE SET valid=excluded.valid"),
   ];
   if(personal)statements.push(personal);
+  if(diversityContext&&event.kind==='start')statements.push(db.prepare("INSERT INTO trail_integrity(id,valid) VALUES('diversity-start-cas',CASE WHEN COALESCE((SELECT json_extract(document,'$.revision') FROM trail_configs WHERE id='diversity-rules'),'diversity-experiment-1')=? THEN 1 ELSE 0 END) ON CONFLICT(id) DO UPDATE SET valid=excluded.valid").bind(diversityContext.rules.revision));
+  if(diversityContext&&event.kind==='gps'&&receipt.diversity)statements.push(
+    db.prepare("INSERT INTO trail_integrity(id,valid) VALUES('diversity-region-cas',CASE WHEN COALESCE((SELECT json_extract(document,'$.revision') FROM trail_configs WHERE id='world-regions'),'regions-experiment-1')=? THEN 1 ELSE 0 END) ON CONFLICT(id) DO UPDATE SET valid=excluded.valid").bind(diversityContext.regions.revision),
+    db.prepare("INSERT INTO trail_integrity(id,valid) VALUES('diversity-rules-cas',CASE WHEN COALESCE((SELECT json_extract(document,'$.revision') FROM trail_configs WHERE id='diversity-rules'),'diversity-experiment-1')=? THEN 1 ELSE 0 END) ON CONFLICT(id) DO UPDATE SET valid=excluded.valid").bind(diversityContext.rules.revision),
+  );
   if(receipt.collected&&event.kind==='capture'&&world.game.sharedSpawnsOnly)statements.push(
     db.prepare("INSERT INTO trail_integrity(id,valid) VALUES('capture-region-cas',CASE WHEN COALESCE((SELECT json_extract(document,'$.revision') FROM trail_configs WHERE id='world-regions'),'regions-experiment-1')=? THEN 1 ELSE 0 END) ON CONFLICT(id) DO UPDATE SET valid=excluded.valid").bind(world.spawnContextRevision||'regions-experiment-1'),
     db.prepare('INSERT INTO trail_spawn_claims(spawn,owner,event,created_at) SELECT id,?,?,? FROM trail_spawns WHERE id=? AND removed_at IS NULL AND starts_at<=? AND (expires_at IS NULL OR expires_at>?)').bind(owner,id,now,receipt.collected,now,now),

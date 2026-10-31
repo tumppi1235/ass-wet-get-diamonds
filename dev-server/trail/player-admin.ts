@@ -4,6 +4,7 @@ import {validateProgression} from '../../mobile/src/game/progression';
 import type {Relic} from '../../mobile/src/game/types';
 import {loadWorld} from './world-store';
 import {WorldError} from './world-error';
+import {mergeDiversity} from '../../mobile/src/game/diversity';
 
 type Visit={tile:string;first_at:number;last_at:number};
 type Claim={tile:string;price:number;revision:number;updated_at:number};
@@ -31,6 +32,7 @@ export async function editPlayer(db:D1Database,actor:string,owner:string,expecte
     next.rewardedTiles={...next.rewardedTiles,...Object.fromEntries(Object.keys(next.game.visits).map(k=>[k,true]))};
     next.game.visits={};next.game.path=[];next.game.searched={};next.game.revealed={};next.game.meters=0;next.game.energy=0;next.game.elapsed=0;
     if(next.game.adventure)next.game.adventure={...next.game.adventure,status:'stopped',pendingStart:false,endedAt:now};
+    if(next.diversity)next.diversity.active=null;
     next.previous=null;next.anchor=null;next.latestGpsValid=false;
   }else if(action==='restore'){
     if(typeof input.backupId!=='string'||input.backupId.length>100)throw new WorldError(400,'Choose a recovery snapshot');
@@ -40,6 +42,8 @@ export async function editPlayer(db:D1Database,actor:string,owner:string,expecte
     if(next.game.gold!==current.world.game.gold||JSON.stringify(saved.claims)!==JSON.stringify(backup.claims)||JSON.stringify(saved.captures)!==JSON.stringify(backup.captures))throw new WorldError(409,'Wallet or world claims changed since this snapshot; use a reconciled recovery instead');
     next.rewardedTiles={...next.rewardedTiles,...current.world.rewardedTiles,...Object.fromEntries(Object.keys(current.world.game.visits).map(k=>[k,true]))};
     next.regions={...next.regions,...current.world.regions};
+    next.diversity=mergeDiversity(next.diversity,current.world.diversity);
+    if(next.diversity)next.diversity.active=null;
     next.previous=null;next.anchor=null;next.latestGpsValid=false;if(next.game.adventure)next.game.adventure={...next.game.adventure,status:'stopped',pendingStart:false,endedAt:now};
   }else if(action==='attributes'){
     try{next.game.progression=validateProgression({version:1,xp:input.xp as never});}catch{throw new WorldError(400,'Provide all six non-negative whole XP totals');}

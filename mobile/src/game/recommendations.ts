@@ -5,6 +5,7 @@ import {rewardXp} from './reward-rates';
 import {blockedAt,type WorldRegions} from './world-regions';
 import {groundDistance} from '../map/geodesy';
 import type {Relic} from './types';
+import {terrainAt,DIVERSITY_RULES,type DiversityRules} from './diversity';
 
 export type RecommendationPreferences={goal:Attribute;movement:Movement;meters:number;terrain:'any'|'urban'|'trail'|'woodland';access:'known-paths'|'step-free'};
 export type SuggestedPlace={id:string;name:string;latitude:number;longitude:number;source:string;tile:string;minimumReturnMeters:number;terrain:string;newTile:boolean;newRegion:boolean};
@@ -13,7 +14,7 @@ export function validatePreferences(value:RecommendationPreferences){
   if(!value||!ATTRIBUTES.includes(value.goal)||!['foot','bicycle'].includes(value.movement)||!Number.isSafeInteger(value.meters)||value.meters<250||value.meters>100000||!['any','urban','trail','woodland'].includes(value.terrain)||!['known-paths','step-free'].includes(value.access))throw new Error('Choose a goal, Foot/Bicycle, 0.25–100 km and supported preferences');return value;
 }
 /** Non-route, conditional guidance only. It neither starts an activity nor evaluates or grants rewards. */
-export function recommendAdventure(world:DevWorld,balance:DevBalance,preferences:RecommendationPreferences,catalog:Relic[],regions:WorldRegions,now:number):AdventureIdeas{
+export function recommendAdventure(world:DevWorld,balance:DevBalance,preferences:RecommendationPreferences,catalog:Relic[],regions:WorldRegions,now:number,diversityRules:DiversityRules=DIVERSITY_RULES):AdventureIdeas{
   const p=validatePreferences(preferences),unsupported=p.goal==='power'||p.goal==='fellowship';
   const fix=world.previous,locationUsed=!!fix&&world.latestGpsValid&&fix.accuracy<=25&&now>=fix.timestamp&&now-fix.timestamp<15000;
   const evidence={equivalentMeters:unsupported?0:world.xpRemainder+p.meters*(p.movement==='foot'?balance.footFactor:balance.bicycleFactor),tiles:p.goal==='exploration'?1:0,regions:p.goal==='agility'?1:0,finds:p.goal==='perception'?1:0};
@@ -21,6 +22,11 @@ export function recommendAdventure(world:DevWorld,balance:DevBalance,preferences
   if(p.goal==='exploration')assumptions.push('Reach one distinct tile never previously rewarded to this account. Repeated visits add no first-tile XP.');
   if(p.goal==='agility')assumptions.push('Reach one previously unrewarded regional block. A different tile in an old block adds no regional Agility XP.');
   if(p.goal==='perception')assumptions.push('One successful eligible artefact collection, not just an attempt. A find is not guaranteed by distance or this plan.');
+  if(p.goal==='agility'){
+    if(!world.diversity?.movements[p.movement]&&p.meters>=diversityRules.movementMeters&&diversityRules.movementXp){xp.agility+=diversityRules.movementXp;assumptions.push(`Complete a new ${p.movement==='foot'?'Foot':'Bicycle'} outing with at least ${diversityRules.movementMeters} accepted metres, then Stop; this movement category has not qualified before. Diversity policy ${diversityRules.revision}.`);}
+    if(p.terrain!=='any'&&!world.diversity?.terrains[p.terrain]&&p.meters>=diversityRules.terrainMeters&&diversityRules.terrainXp){xp.agility+=diversityRules.terrainXp;assumptions.push(`Record at least ${diversityRules.terrainMeters} conservatively classified metres in new ${p.terrain} terrain within one outing. Unknown/blocked/conflicting terrain does not qualify. Diversity policy ${diversityRules.revision}.`);}
+    assumptions.push('Diversity estimates use rules for a new outing. An already active outing keeps its starting diversity policy; no past mileage is backfilled.');
+  }
   const titles:Record<Attribute,string>={exploration:'Find one new tile',endurance:'Build recorded distance',agility:'Explore an unfamiliar region',perception:'Look for a new find',power:'Power needs elevation evidence',fellowship:'Cooperate in a boss encounter'};
   const guidance=p.goal==='power'?'Elevation earning is not supported yet. Hill repeats cannot currently award Power XP.':p.goal==='fellowship'?'Open Encounters to plan a shared boss. Fellowship requires at least two qualified submitted participants and a victory; joining a party alone earns none.':`Choose ${p.movement==='foot'?'walking':'cycling'} paths you know are usable and aim for ${p.meters/1000} km of recorded distance. These are ordinary activity estimates, with no plan-completion bonus.`;
   const places:SuggestedPlace[]=[],seen=new Set<string>();
@@ -30,9 +36,7 @@ export function recommendAdventure(world:DevWorld,balance:DevBalance,preferences
       const point=G.xy(place.latitude,place.longitude),cell=G.cell(point.x,point.y),tile=G.key(cell.i,cell.j),region=G.key(Math.floor(point.x/2000),Math.floor(point.y/2000));
       const newTile=!(world.rewardedTiles?.[tile]||world.game.visits[tile]>0),newRegion=!world.regions[region];
       if((p.goal==='exploration'&&!newTile)||(p.goal==='agility'&&!newRegion))continue;
-      const matching=regions.regions.filter(r=>now>=r.startsAt&&now<r.endsAt&&place.latitude!>=r.south&&place.latitude!<=r.north&&place.longitude!>=r.west&&place.longitude!<=r.east).sort((a,b)=>a.id.localeCompare(b.id));
-      // Conflicting or missing manual classifications are unknown, not an accessibility inference.
-      const terrains=new Set(matching.map(r=>r.terrain)),terrain=terrains.size===1?[...terrains][0]:'unknown';
+      const terrain=terrainAt({latitude:place.latitude,longitude:place.longitude},now,regions)||'unknown';
       if(p.terrain!=='any'&&terrain!==p.terrain)continue;
       const minimumReturnMeters=2*groundDistance(fix!,{latitude:place.latitude,longitude:place.longitude});
       if(minimumReturnMeters>p.meters||seen.has(tile))continue;seen.add(tile);

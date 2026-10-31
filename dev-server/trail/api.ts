@@ -23,6 +23,7 @@ import {queryClaims} from './claim-store';
 import {adventureIdeas} from './recommendation-store';
 import {unexpectedApiFailure} from './observability';
 import {loadMaintenance,saveMaintenance,guardedGameDatabase,MaintenanceError} from './maintenance-store';
+import {loadDiversityRules,saveDiversityRules} from './diversity-store';
 type Bindings={DB?:D1Database;TRAIL_ENV?:string;TRAIL_ADMIN_EMAIL?:string;TRAIL_PUBLIC_ORIGIN?:string};
 type Member={id:string;display_name:string;role:'admin'|'player';created_at:number};
 class ApiError extends Error{constructor(public status:number,message:string){super(message);}}
@@ -67,6 +68,10 @@ export async function trailApi(request:Request,env:Bindings){
       await db.prepare('UPDATE trail_members SET display_name=? WHERE id=?').bind(displayName,id).run();return json({saved:true});
     }
     if(path==='/api/trail/world'&&request.method==='GET')return json(await loadWorld(db,id));
+    if(path==='/api/trail/diversity-rules'&&request.method==='GET')return json(await loadDiversityRules(db));
+    if(path==='/api/trail/admin/diversity-rules'&&request.method==='PUT'){
+      if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');const input=await body(request);return json(await saveDiversityRules(db,id,input.rules,input.revision));
+    }
     if(path==='/api/trail/ideas'&&request.method==='POST')return json(await adventureIdeas(db,id,await body(request)));
     if(path==='/api/trail/admin/snapshot'&&request.method==='POST'){
       if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');return json(await exportDevSnapshot(rawDb));
