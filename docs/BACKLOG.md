@@ -81,7 +81,7 @@ Automated repair evidence and remaining iPhone field gates: [P0 report](P0-EXPLO
 | TR-027 | P0 | In Progress | Remove Jyväskylä-specific game logic and configuration | TR-026 | Dev GPS, gold, tile claims/overlays, labels and collection use Finland policy; production scope stays unchanged. Existing save IDs retained; old distance/coins are not recalculated. See FINLAND-PLAYTEST.md. |
 | TR-028 | P0 | In Progress | Support countrywide artifact spawning and visitation statistics | TR-003, TR-005, TR-026 | Dev adds 450 sourced path-side relics (35 towns plus rural trails) and local visits. This finite catalog does not complete server spawn generation, global visitation or shared queries. |
 | TR-029 | P1 | Done | Add configurable regions for testing and events | TR-026 | Protected visual-map region drafts, local active windows, terrain/weather/factor settings and access blocking persist with optimistic revisions and audit. Local D1/browser save passed. |
-| TR-030 | P1 | In Progress | Optimize map and artifact queries for national coverage | TR-026, TR-028 | Country client rendering, bounded spawn pages and indexed 500-cell density/community queries implemented; legacy visits backfilled safely. Claims pagination/full national load validation remain. |
+| TR-030 | P1 | In Progress | Optimize map and artifact queries for national coverage | TR-026, TR-028 | Country rendering, bounded spawn pages, indexed community queries, paged visible-area claims, exact tile prices and bounded ownership count groups implemented; compatible legacy-index/recovery tests pass. Full national load and device validation remain. See DEV-CLAIM-QUERIES.md. |
 
 ## TR-E03 — Administration & Simulation
 

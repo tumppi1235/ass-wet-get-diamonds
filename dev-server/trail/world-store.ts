@@ -46,7 +46,7 @@ export async function applyWorldEvent(db:D1Database,owner:string,id:string,expec
     db.prepare("INSERT INTO trail_integrity(id,valid) VALUES('spawn-claim-cas',CASE WHEN changes()=1 THEN 1 ELSE 0 END) ON CONFLICT(id) DO UPDATE SET valid=excluded.valid"),
   );
   if(event.kind==='claim')statements.push(
-    db.prepare('INSERT INTO trail_claims(tile,owner,price,revision,updated_at) VALUES(?,?,?,1,?) ON CONFLICT(tile) DO UPDATE SET owner=excluded.owner,price=excluded.price,revision=trail_claims.revision+1,updated_at=excluded.updated_at WHERE trail_claims.price=? AND trail_claims.owner<>?').bind(event.tile,owner,event.price,now,previousClaim?.price||0,owner),
+    db.prepare('INSERT INTO trail_claims(tile,owner,price,revision,updated_at,cell_i,cell_j) VALUES(?,?,?,1,?,?,?) ON CONFLICT(tile) DO UPDATE SET owner=excluded.owner,price=excluded.price,revision=trail_claims.revision+1,updated_at=excluded.updated_at,cell_i=excluded.cell_i,cell_j=excluded.cell_j WHERE trail_claims.price=? AND trail_claims.owner<>?').bind(event.tile,owner,event.price,now,...event.tile.split(',').map(Number),previousClaim?.price||0,owner),
     db.prepare("INSERT INTO trail_integrity(id,valid) VALUES('claim-cas',CASE WHEN changes()=1 THEN 1 ELSE 0 END) ON CONFLICT(id) DO UPDATE SET valid=excluded.valid"),
   );
   if(receipt.tile&&event.kind==='gps'){const[i,j]=receipt.tile.split(',').map(Number);statements.push(db.prepare('INSERT INTO trail_visits(tile,owner,first_at,last_at,cell_i,cell_j) VALUES(?,?,?,?,?,?) ON CONFLICT(tile,owner) DO UPDATE SET last_at=excluded.last_at').bind(receipt.tile,owner,now,now,i,j));}

@@ -61,3 +61,9 @@ test('TR-118 export is admin-only, same-origin and all-or-nothing when data exce
   f.sql.prepare("UPDATE trail_audit SET details=? WHERE id=(SELECT id FROM trail_audit LIMIT 1)").run('x'.repeat(MAX_SNAPSHOT_BYTES));const tooLarge=await call('admin');assert.equal(tooLarge.status,413);assert.equal((await tooLarge.json()).tables,undefined,'no misleading truncated snapshot escapes');
   f.sql.exec('CREATE TABLE trail_future_schema(id TEXT)');assert.equal((await call('admin')).status,503,'an older exporter cannot omit a newly migrated game table');
 });
+
+test('TR-118 older schema-5 snapshots remain recoverable after the claim index migrations',async t=>{
+  const f=await recoveryFixture(),paths=files(t),legacy=structuredClone(await exportDevSnapshot(f.db,f.now));legacy.schema=5;
+  for(const row of legacy.tables.trail_claims){delete row.cell_i;delete row.cell_j;}const{digest:_,...payload}=legacy;legacy.digest=await requestHash(payload);writeFileSync(paths.input,JSON.stringify(legacy));
+  const result=await restoreDevSnapshot(paths.input,paths.output);assert.equal(result.schema,5);const restored=new DatabaseSync(paths.output);try{assert.equal(restored.prepare('PRAGMA table_info(trail_claims)').all().some(r=>r.name==='cell_i'),false);assert.equal(restored.prepare('SELECT COUNT(*) AS n FROM trail_claims').get()!.n,1);assert.equal(restored.prepare('SELECT COUNT(*) AS n FROM trail_boss_rewards').get()!.n,1);}finally{restored.close();}
+});

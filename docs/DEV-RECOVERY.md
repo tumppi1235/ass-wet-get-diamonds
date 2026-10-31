@@ -8,7 +8,7 @@ The admin confirms private storage, prepares a snapshot and saves the offered JS
 
 One D1 batch transaction reads all 17 `trail_*` tables, including member references/roles, current wallets/inventory/XP, configuration history, activity/event receipts, visits, tile ownership, spawns and claim ledger, boss definitions, parties, contributions, rewards, per-player recovery snapshots, audit and integrity rows. It captures a consistent game state rather than stitching unrelated paged reads together. Hosting secrets, platform authentication, the hosting service's migration metadata, original local profiles/passwords and watch storage are outside this export.
 
-The format identifies the exact dev Site, schema migration 0005 and capture time, with a SHA-256 checksum. The checksum detects file damage; it is not encryption or a signed attestation. The file contains private identifiers and saved location routes. Keep it private and out of public GitHub reports; share only redacted aggregate recovery results.
+The current format identifies the exact dev Site, schema migration 0007 and capture time, with a SHA-256 checksum. The checksum detects file damage; it is not encryption or a signed attestation. The file contains private identifiers and saved location routes. Keep it private and out of public GitHub reports; share only redacted aggregate recovery results.
 
 The current small-dev limit is 5,000 rows per table and a combined 512 KiB JSON file. SQL suppresses oversized table results before transfer; metadata and final file size are checked. Extra/new game tables, missing rows, wrong schema and oversized output fail the whole export. No partial JSON file is offered as a complete backup. This bounded tool is not a large national-database backup strategy.
 
@@ -22,7 +22,7 @@ node mobile/node_modules/tsx/dist/cli.mjs tools/Restore-SharedDevSnapshot.mts --
 
 The output **must not exist**. The tool uses exclusive file creation, validates size/schema/project/checksum, applies the real append-only migrations and restores the fixed table/column list with prepared values. It checks foreign keys and SQLite integrity, then reports table counts/checksum without printing player contents. A failed drill rolls back and removes only its newly created output. Existing files are refused and never overwritten. There is no network or hosted-write path.
 
-Use the recovery source matching the snapshot schema. A later game schema requires updated format/column coverage and a fresh passing drill; do not edit applied migrations to make an older snapshot fit. A restored offline database contains private gameplay data and role references but has no copied platform authentication credential or hosting secret.
+The recovery command accepts known schemas 5, 6 and 7 with their matching column definitions and migration prefixes, preserving older saved snapshots after the claim-index additions. A later game schema requires updated format/column coverage and a fresh passing drill; do not edit applied migrations to make an older snapshot fit. A restored offline database contains private gameplay data and role references but has no copied platform authentication credential or hosting secret.
 
 ## Evidence
 

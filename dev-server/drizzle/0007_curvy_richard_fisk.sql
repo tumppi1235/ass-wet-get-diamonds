@@ -1,0 +1,1 @@
+CREATE INDEX `claim_coordinates_pending` ON `trail_claims` (`tile`) WHERE "trail_claims"."cell_i" IS NULL OR "trail_claims"."cell_j" IS NULL;

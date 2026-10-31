@@ -24,7 +24,7 @@ const boundaryPath = JYVASKYLA.polygons.map(p => line(p.outer) + 'Z' + p.holes.m
 const identify = 'TrailRelics/0.4 (+https://github.com/tumppi1235/ass-wet-get-diamonds)';
 
 type Props = CityMapProps;
-export function CityMap({ game, communityVisits, onDiscover, player, focusKey, demo, locating, onLocate, claims = {}, ownerId, fullScreen = false }: Props) {
+export function CityMap({ game, communityVisits, onDiscover, player, focusKey, demo, locating, onLocate, claims = {}, claimClusters=[],onViewBounds,ownerId, fullScreen = false }: Props) {
   const [width, setWidth] = useState(750), [mapStyle, setMapStyle] = useState<MapStyle>('street'), [failed, setFailed] = useState<Record<string, boolean>>({});
   const { height: screenHeight, width: screenWidth } = useWindowDimensions();
   const height = fullScreen ? screenHeight : screenWidth < 700 ? Math.max(330, Math.min(480, screenHeight * .52)) : 560, area = useMemo(() => fitJyvaskyla(width, height), [width, height]);
@@ -35,6 +35,7 @@ export function CityMap({ game, communityVisits, onDiscover, player, focusKey, d
   const center = mode === 'area' ? area.center : mode === 'player' && target ? target : camera.center;
   const scale = mode === 'area' ? area.scale : requested ? .31 : camera.scale;
   const halfW = width / scale / 2, halfH = height / scale / 2;
+  useEffect(()=>{if(!onViewBounds)return;const a=G.geo(center.x-halfW,center.y-halfH),b=G.geo(center.x+halfW,center.y+halfH);onViewBounds({south:a.lat,north:b.lat,west:a.lon,east:b.lon});},[onViewBounds,center.x,center.y,halfW,halfH]);
   const effective = mapStyle === 'outdoor' && failed.outdoor ? 'street' : mapStyle;
   const online = effective !== 'offline' && !failed[effective] ? effective : null;
   const raster = useMemo(() => online ? tilesForView(center, width, height, scale, online) : [], [online, center, width, height, scale]);
@@ -87,6 +88,7 @@ export function CityMap({ game, communityVisits, onDiscover, player, focusKey, d
           {grid && <Group clipPath="url(#municipal-grid)"><Path d={grid} stroke="#FFFFFF70" strokeWidth={1.8 / scale} fill="none" /><Path d={grid} stroke="#456C5B55" strokeWidth={.65 / scale} fill="none" /></Group>}
           <Path d={boundaryPath} fill="#2D624A0A" stroke="#4E7354" strokeWidth={1.5 / scale} strokeDasharray={`${7 / scale},${5 / scale}`} fillRule="evenodd" />
           {Object.entries(claims).map(([id,c])=>{const [i,j]=id.split(',').map(Number),fill=c.ownerId===ownerId?TILE_STYLE.claimed:TILE_STYLE.claimOther;return <Group key={id}><Rect x={i*250} y={-(j+1)*250} width={250} height={250} fill={fill} fillOpacity={.38} stroke={TILE_STYLE.claimedEdge} strokeWidth={7/scale}/><Rect x={i*250} y={-(j+1)*250} width={250} height={250} fill="none" stroke={fill} strokeWidth={4/scale}/></Group>;})}
+          {claimClusters.map(c=><Group key={`claim:${c.i},${c.j}:${c.step}`}><Circle cx={(c.i+c.step/2)*250} cy={-(c.j+c.step/2)*250} r={18/scale} fill={c.mine?TILE_STYLE.claimed:TILE_STYLE.claimOther} stroke={c.mine&&c.others?TILE_STYLE.claimOther:TILE_STYLE.claimedEdge} strokeWidth={3/scale}/><SvgText x={(c.i+c.step/2)*250} y={-(c.j+c.step/2)*250+4/scale} textAnchor="middle" fontSize={10/scale} fill="#FFF4BB">{c.count} claims</SvgText></Group>)}
           {trail && <><Path d={trail} stroke={TILE_STYLE.routeHalo} strokeWidth={8 / scale} fill="none" /><Path d={trail} stroke={TILE_STYLE.route} strokeWidth={4 / scale} fill="none" /></>}
           {game.lastCell && gameTiles.map(([i, j]) => {
             const id = G.key(i, j), relic = game.revealed[id]?.landmarkId ? null : game.revealed[id], here = i === current.i && j === current.j, x = (i + .5) * 250, y = -(j + .5) * 250;

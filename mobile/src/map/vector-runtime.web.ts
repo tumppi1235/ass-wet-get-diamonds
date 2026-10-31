@@ -34,6 +34,7 @@ export function createQuestMap(container: HTMLDivElement, read: () => CityMapPro
     return {center,width:canvas.clientWidth,height:canvas.clientHeight,scale:Math.max(.00001,Math.abs(origin.y-north.y)/100)};
   };
   function overlays(){if(!ready)return;const p=read(),v=viewport(),o=overlayData(p.game,p.communityVisits,v.center,v.width,v.height,v.scale);data('visits',o.visits);data('grid',o.grid);if(p.game.lastCell)p.onDiscover(o.cells);}
+  function reportBounds(){if(!ready||!read().onViewBounds)return;const b=map.getBounds();read().onViewBounds?.({south:b.getSouth(),north:b.getNorth(),west:b.getWest(),east:b.getEast()});}
   function popupContents(id:string){
     const p=read(),point=p.player || p.game,feature=relicData(p.game,point,p.selectedRelicId,p.capturableId).features.find(f=>f.id===id);
     if(!feature || !popup)return;
@@ -44,7 +45,7 @@ export function createQuestMap(container: HTMLDivElement, read: () => CityMapPro
     status.textContent=a.collected?'Collected':a.searched?'Searched this quest':a.collectable?'Ready to collect · open Quest':`${p.player||p.demo?'Follow your compass':'Find your location'} · open Quest to collect`;
   }
   function update(){if(!ready)return;const p=read(),point=p.player || p.game;
-    data('claims',claimsData(p.claims || {},p.ownerId,p.selectedTileId));data('selected-tile',selectedTileData(p.selectedTileId));data('active-tile',selectedTileData(p.activeTileId));
+    data('claims',claimsData(p.claims || {},p.ownerId,p.selectedTileId,p.claimClusters));data('selected-tile',selectedTileData(p.selectedTileId));data('active-tile',selectedTileData(p.activeTileId));
     data('trail',trailData(p.game));data('relics',relicData(p.game,point,p.selectedRelicId,p.capturableId,false));
     data('player',playerData(p.player,p.demo?p.game:null));data('accuracy',accuracyData(p.player));
     if(p.focusKey && p.focusKey!==focus){focus=p.focusKey;follow=true;map.jumpTo({center:coordinates(point),zoom:Math.max(14.4,map.getZoom())});}
@@ -64,7 +65,9 @@ export function createQuestMap(container: HTMLDivElement, read: () => CityMapPro
     add({id:'claimed-border',type:'line',source:'claims',paint:{'line-color':['case',['get','mine'],TILE_STYLE.claimed,TILE_STYLE.claimOther],'line-width':4}});
     add({id:'selected-tile-border',type:'line',source:'selected-tile',paint:{'line-color':'#55D6D0','line-width':2,'line-dasharray':[3,2]}});
     add({id:'active-tile-border',type:'line',source:'active-tile',paint:{'line-color':'#FFF4BB','line-width':2,'line-dasharray':[1,3]}});
-    add({id:'claimed-owner',type:'symbol',source:'claims',minzoom:14,layout:{'text-field':['case',['get','mine'],'YOUR CLAIM',['concat','CLAIM · ',['get','owner']]],'text-font':['Noto Sans Regular'],'text-size':12,'text-max-width':12},paint:{'text-color':'#FFF4BB','text-halo-color':TILE_STYLE.claimedEdge,'text-halo-width':2}});
+    add({id:'claimed-owner',type:'symbol',source:'claims',minzoom:14,filter:['==',['geometry-type'],'Polygon'],layout:{'text-field':['case',['get','mine'],'YOUR CLAIM',['concat','CLAIM · ',['get','owner']]],'text-font':['Noto Sans Regular'],'text-size':12,'text-max-width':12},paint:{'text-color':'#FFF4BB','text-halo-color':TILE_STYLE.claimedEdge,'text-halo-width':2}});
+    add({id:'claim-clusters',type:'circle',source:'claims',filter:['==',['get','claimCluster'],true],paint:{'circle-radius':['interpolate',['linear'],['get','count'],1,13,10,19,100,25],'circle-color':['case',['get','mine'],TILE_STYLE.claimed,TILE_STYLE.claimOther],'circle-stroke-color':['case',['get','mixed'],TILE_STYLE.claimOther,TILE_STYLE.claimedEdge],'circle-stroke-width':3}});
+    add({id:'claim-cluster-count',type:'symbol',source:'claims',filter:['==',['get','claimCluster'],true],layout:{'text-field':['concat',['to-string',['get','count']],' claims'],'text-font':['Noto Sans Regular'],'text-size':10,'text-max-width':8},paint:{'text-color':'#FFF4BB','text-halo-color':TILE_STYLE.claimedEdge,'text-halo-width':1.5}});
     add({id:'municipal-boundary',type:'line',source:'boundary',maxzoom:13,paint:{'line-color':'#376747','line-width':1.5,'line-dasharray':[4,3]}});
     add({id:'route-casing',type:'line',source:'trail',layout:{'line-cap':'round','line-join':'round'},paint:{'line-color':TILE_STYLE.routeHalo,'line-width':8}});
     add({id:'route-line',type:'line',source:'trail',layout:{'line-cap':'round','line-join':'round'},paint:{'line-color':TILE_STYLE.route,'line-width':4}});
@@ -81,14 +84,16 @@ export function createQuestMap(container: HTMLDivElement, read: () => CityMapPro
     },paint:{'icon-opacity':['case',['get','collected'],.45,['get','searched'],.6,1]}});
     add({id:'player-halo',type:'circle',source:'player',paint:{'circle-radius':13,'circle-color':'#FFFFFF','circle-opacity':.5}});
     add({id:'player-dot',type:'circle',source:'player',paint:{'circle-radius':6,'circle-color':['case',['get','precise'],'#267BAD','#BB8939'],'circle-stroke-color':'#FFF6DA','circle-stroke-width':3}});
-    ready=true;update();setTerrain(terrain);onReady();
+    ready=true;update();setTerrain(terrain);onReady();reportBounds();
   });
   map.on('movestart',e=>{if(e.originalEvent)follow=false;});
   map.on('moveend',overlays);
+  map.on('moveend',reportBounds);map.on('resize',reportBounds);
   map.on('error',e=>{console.warn('Quest map:',e.error?.message);if(!ready)onError('Map could not load. Check your connection.');});
   map.on('click',async e=>{
     if(!ready)return;
-    const features=map.queryRenderedFeatures(e.point,{layers:['relic-icons','relic-dots','relic-clusters']});const f=features[0];if(!f){const point=G.xy(e.lngLat.lat,e.lngLat.lng),c=G.cell(point.x,point.y);read().onSelectTile?.(G.key(c.i,c.j));return;}
+    const features=map.queryRenderedFeatures(e.point,{layers:['relic-icons','relic-dots','relic-clusters','claim-clusters']});const f=features[0];if(!f){const point=G.xy(e.lngLat.lat,e.lngLat.lng),c=G.cell(point.x,point.y);read().onSelectTile?.(G.key(c.i,c.j));return;}
+    if(f.properties.claimCluster){map.jumpTo({center:(f.geometry as GeoJSON.Point).coordinates as [number,number],zoom:Math.min(19,map.getZoom()+2)});return;}
     if(f.properties.point_count){const zoom=await (map.getSource('relics') as GeoJSONSource).getClusterExpansionZoom(f.properties.cluster_id);if(!map.getSource('relics'))return;map.jumpTo({center:(f.geometry as GeoJSON.Point).coordinates as [number,number],zoom});return;}
     const id=String(f.properties.relicId);read().onSelectRelic?.(id);popup?.remove();popupNodes=null;popupId=id;
     popup=new Popup({offset:[0,-45],closeButton:true,closeOnClick:true,maxWidth:'245px',className:'quest-relic-popup'}).setLngLat((f.geometry as GeoJSON.Point).coordinates as [number,number]);

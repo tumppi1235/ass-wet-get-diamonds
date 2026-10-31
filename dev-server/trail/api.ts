@@ -19,6 +19,7 @@ import {queryEncounters,inspectEncounter,cancelEncounter} from './encounter-admi
 import {exportDevSnapshot} from './snapshot-store';
 import {simulateCollection} from '../../mobile/src/game/collection-simulation';
 import {spawnAnalytics} from './spawn-analytics';
+import {queryClaims} from './claim-store';
 type Bindings={DB?:D1Database;TRAIL_ENV?:string;TRAIL_ADMIN_EMAIL?:string;TRAIL_PUBLIC_ORIGIN?:string};
 type Member={id:string;display_name:string;role:'admin'|'player';created_at:number};
 class ApiError extends Error{constructor(public status:number,message:string){super(message);}}
@@ -161,7 +162,7 @@ export async function trailApi(request:Request,env:Bindings){
       const state=(await loadWorld(db,id)).world,p=state.previous||(()=>{const point=G.geo(state.game.x,state.game.y);return{latitude:point.lat,longitude:point.lon};})(),rows=await queryDensity(db,nearbyBounds(p.latitude,p.longitude),id);return json({visits:rows.density.map(row=>({tile:row.tile,players:row.players})),truncated:rows.truncated});
     }
     if(path==='/api/trail/claims'&&request.method==='GET'){
-      const rows=await db.prepare('SELECT c.tile,c.owner,c.price,c.updated_at,m.display_name FROM trail_claims c JOIN trail_members m ON m.id=c.owner ORDER BY c.updated_at DESC LIMIT 1000').all();return json({claims:rows.results});
+      return json(await queryClaims(db,id,url.searchParams));
     }
     if(path==='/api/trail/admin/players'&&request.method==='GET'){
       if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');
