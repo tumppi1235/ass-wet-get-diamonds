@@ -7,6 +7,7 @@ import type { PlayerPosition } from '../location/tracker';
 import { fitJyvaskyla, JYVASKYLA, visibleGameTiles, type Point } from '../map/region';
 import { MAP_PROVIDERS, tilesForView, type MapStyle } from '../map/tiles';
 import { Button, colors, styles } from './ui';
+import { iconForRelic, PixelGlyph } from './pixel-icon';
 import { MapColors } from './map-colors';
 import { MapSurface } from './map-surface';
 import { panViewport, zoomViewport } from '../map/camera';
@@ -90,7 +91,13 @@ export function CityMap({ game, communityVisits, onDiscover, player, focusKey, d
             const radius = (relic?.rarity === 'Legendary' ? 12 : relic?.rarity === 'Rare' ? 8 : 5) / scale, color = relic?.rarity === 'Legendary' ? '#A97C18' : relic?.rarity === 'Rare' ? '#377F8C' : '#B78A4F';
             return <Group key={id}><Rect x={i * 250} y={-(j + 1) * 250} width={250} height={250} fill="transparent" stroke={here ? '#244E36' : 'transparent'} strokeWidth={2.5 / scale} />{relic && (found.has(id) ? <SvgText x={x} y={y} fontSize={14 / scale} fill={colors.green} textAnchor="middle">✓</SvgText> : <Group>{relic.rarity !== 'Common' && <Circle cx={x} cy={y} r={radius + 4 / scale} fill="none" stroke={color} strokeWidth={1.5 / scale} />}<Path d={`M${x},${y - radius}L${x + radius},${y}L${x},${y + radius}L${x - radius},${y}Z`} fill={color} stroke="#FFFAE9" strokeWidth={2 / scale} /></Group>)}</Group>;
           })}
-          {LANDMARKS.filter(r => { const p = relicPoint(r); return p.x >= center.x - halfW && p.x <= center.x + halfW && p.y >= center.y - halfH && p.y <= center.y + halfH; }).map(r => { const p = relicPoint(r), radius = (r.rarity === 'Legendary' ? 11 : 8) / scale, claimed = found.has(r.id); return <Group key={r.id}><Circle cx={p.x} cy={-p.y} r={radius + 3 / scale} fill="#FFFCF2" stroke={claimed ? '#3B7962' : '#A7731B'} strokeWidth={2 / scale} /><Path d={`M${p.x},${-p.y-radius}l${radius},${radius}l${-radius},${radius}l${-radius},${-radius}Z`} fill={claimed ? '#3B7962' : r.rarity === 'Legendary' ? '#DEA533' : '#58AABA'} />{scale >= .16 && <SvgText x={p.x} y={-p.y + 26 / scale} fontSize={10 / scale} fill="#183D35" stroke="#FFFFF8" strokeWidth={.4 / scale} textAnchor="middle">{r.landmark}</SvgText>}</Group>; })}
+          {LANDMARKS.filter(r => { const p = relicPoint(r); return p.x >= center.x - halfW && p.x <= center.x + halfW && p.y >= center.y - halfH && p.y <= center.y + halfH; }).map(r => {
+            const p = relicPoint(r), claimed = found.has(r.id), size = r.rarity === 'Legendary' ? 40 : 30;
+            return <Group key={r.id}>
+              {scale < .08 ? <Circle cx={p.x} cy={-p.y} r={5 / scale} fill={claimed ? '#4D896C' : r.rarity === 'Legendary' ? '#E7B74E' : '#52B5C0'} stroke="#FFF5CF" strokeWidth={1.5 / scale} /> : <Group opacity={claimed ? .55 : 1} transform={`translate(${p.x - size / 2 / scale},${-p.y - (size + 8) / scale}) scale(${size / 32 / scale})`}><Path d="M1 -4H31V-2H34V33H21L16 39L11 33H-2V-1H1Z" fill="#102A2A" stroke={claimed ? '#70B594' : r.rarity === 'Legendary' ? '#F1CD6A' : '#D7C68A'} strokeWidth={1.7} /><PixelGlyph name={iconForRelic(r.name)} /></Group>}
+              {scale >= .5 && <SvgText x={p.x} y={-p.y + 18 / scale} fontSize={11 / scale} fontWeight="600" fill="#183D35" stroke="#FFFFF8" strokeWidth={.25 / scale} textAnchor="middle">{r.landmark}</SvgText>}
+            </Group>;
+          })}
           {player && <Circle cx={player.x} cy={-player.y} r={player.accuracy} fill={player.precise ? '#3388DD20' : '#D89E3820'} stroke={player.precise ? '#3388DD88' : '#BE8D4588'} strokeWidth={1 / scale} />}
           {target && <Group><Circle cx={target.x} cy={-target.y} r={12 / scale} fill={player ? '#3D8DD32A' : '#3D6D442A'} /><Circle cx={target.x} cy={-target.y} r={6 / scale} fill={player ? player.precise ? '#277DC2' : '#BF8F37' : colors.green} stroke="white" strokeWidth={3 / scale} /></Group>}
           <Path d={`M${center.x - halfW + 16 / scale},${-center.y + halfH - 24 / scale}h${scaleMeters}`} stroke="#374D35" strokeWidth={2 / scale} /><SvgText x={center.x - halfW + 16 / scale} y={-center.y + halfH - 32 / scale} fontSize={10 / scale} fill="#374D35">{scaleMeters >= 1000 ? `${scaleMeters / 1000} km` : `${scaleMeters} m`}</SvgText>
