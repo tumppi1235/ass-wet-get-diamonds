@@ -2,6 +2,8 @@
 
 Recorded from the user's ideas on 2026-10-30. These are planned designs, not claims about implemented multiplayer features.
 
+Organization update, 2026-10-31: this memo is retained for provenance. The [canonical backlog](BACKLOG.md), [approved design](GAME_DESIGN.md), [decision log](DECISIONS.md) and [implementation roadmap](ROADMAP.md) reconcile the later shared discussion. Garmin connectivity is captured in TR-155–163; optional Strava in TR-097/TR-164. Keep the phone as the main game and Garmin as the compact training collector/navigation device, with one future inventory and duplicate-safe activity reconciliation. Provider capabilities and permissions must be verified before implementation.
+
 ## WoW-inspired outdoor progression
 
 Build a richer outdoor adventure inspired by MMO progression: everyday movement provides resources, players cooperate in guilds, and events offer shared challenges and loot.

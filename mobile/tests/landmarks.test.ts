@@ -13,7 +13,7 @@ test('landmarks include reachable Haukkala and Sippulanniemi destinations with u
   }
   for (const r of LANDMARKS) { const p = relicPoint(r); assert.ok(isInJyvaskyla(p)); const c = G.cell(p.x, p.y); assert.equal(r.id, G.key(c.i, c.j)); }
 });
-test('landmark collection requires proximity and an eligible fix and remains collected after reseeding', () => {
+test('landmark collection requires its own tile and an eligible fix and remains collected after reseeding', () => {
   const state = G.initial(), r = LANDMARKS[0], p = relicPoint(r); state.x = p.x; state.y = p.y; G.enter(state);
   assert.equal(captureAt(state, p, false, () => 0).status, 'unavailable'); assert.equal(state.collection.length, 0);
   const far = { x: p.x + 500, y: p.y + 500 }; assert.notEqual(availableRelics(state, far)[0]?.id, r.id);

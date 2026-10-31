@@ -7,5 +7,5 @@ export type CityMapProps = {
   player: PlayerPosition | null; focusKey: string; demo: boolean;
   locating: boolean; onLocate(): void; fullScreen?: boolean;
   selectedRelicId?: string; capturableId?: string; onSelectRelic?(id: string): void;
-  claims?: TileClaims; ownerId?: string; selectedTileId?: string; onSelectTile?(id:string):void;
+  claims?: TileClaims; ownerId?: string; activeTileId?:string; selectedTileId?: string; onSelectTile?(id:string):void;
 };

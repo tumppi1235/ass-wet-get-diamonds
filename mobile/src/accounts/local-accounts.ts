@@ -3,6 +3,7 @@ import { sha256 } from '@noble/hashes/sha2.js';
 import { bytesToHex, hexToBytes } from '@noble/hashes/utils.js';
 import { claimPrice, reconcileClaimGold, tilePoint, type TileClaims } from '../game/claims';
 import type { GameState } from '../game/types';
+import {APP_ENV,storageKeys} from '../config/environment';
 
 export interface Storage { getItem(key: string): Promise<string | null>; setItem(key: string, value: string): Promise<void>; removeItem(key: string): Promise<void> }
 export type User = { id: string; username: string; displayName: string; role: 'admin' | 'player'; createdAt: number };
@@ -10,8 +11,8 @@ type StoredUser = User & { salt: string; passwordHash: string; passwordVersion: 
 type Database = { version: 1; users: StoredUser[]; progress: Record<string, unknown>; tileClaims?: TileClaims; claimSpending?: Record<string, number> };
 type Session = { userId: string; token: string; expiresAt: number; passwordVersion: number };
 const provisioned = require('./provisioned-players.json') as Omit<StoredUser, 'createdAt'>[];
-export const DATABASE_KEY = 'trail-relics.profiles.v1';
-export const SESSION_KEY = 'trail-relics.session.v1';
+export const DATABASE_KEY = storageKeys(APP_ENV).database;
+export const SESSION_KEY = storageKeys(APP_ENV).session;
 export const DEMO_ACCOUNTS = [
   { id: 'local-admin', username: 'admin', password: 'Admin123!', displayName: 'Administrator', role: 'admin' as const },
   { id: 'local-test', username: 'test', password: 'Test123!', displayName: 'Test Explorer', role: 'player' as const },

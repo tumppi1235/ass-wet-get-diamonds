@@ -9,7 +9,8 @@ export function availableRelics(s: GameState, p: { x: number; y: number }) {
   return Object.values(s.revealed).filter((r): r is Relic => !!r && !s.searched[r.id] && !s.collection.some(a => a.id === r.id)).sort((a, b) => Math.hypot(relicPoint(a).x - p.x, relicPoint(a).y - p.y) - Math.hypot(relicPoint(b).x - p.x, relicPoint(b).y - p.y));
 }
 export function captureTarget(s: GameState, p: { x: number; y: number }) {
-  return availableRelics(s, p).find(r => r.landmarkId ? Math.hypot(relicPoint(r).x - p.x, relicPoint(r).y - p.y) <= (r.captureRadius || 70) : r.id === rules.key(rules.cell(p.x, p.y).i, rules.cell(p.x, p.y).j));
+  const c=rules.cell(p.x,p.y);
+  return availableRelics(s, p).find(r => r.i===c.i&&r.j===c.j);
 }
 export function captureAt(s: GameState, p: { x: number; y: number }, eligible: boolean, rng = Math.random) {
   const target = eligible && captureTarget(s, p); if (!target) return { status: 'unavailable' };

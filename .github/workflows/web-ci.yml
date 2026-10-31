@@ -1,0 +1,58 @@
+name: Web checks and release candidates
+on:
+  pull_request:
+  push:
+    branches: [main, develop]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: web-checks-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        environment: [development, production]
+    env:
+      CI: 'true'
+      EXPO_PUBLIC_APP_ENV: ${{ matrix.environment }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: mobile/package-lock.json
+      - run: npm ci
+        working-directory: mobile
+      - name: Lint, types and regression tests
+        run: npm run quality
+        working-directory: mobile
+      - name: Publish actual test results
+        if: always()
+        run: |
+          if [ -f test-results/summary.md ]; then cat test-results/summary.md >> "$GITHUB_STEP_SUMMARY"; fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results-${{ matrix.environment }}
+          path: test-results/
+          retention-days: 30
+      - name: Export tested web candidate
+        run: npm run build:web
+        working-directory: mobile
+      - name: Record candidate provenance
+        run: |
+          node -e 'require("fs").writeFileSync("mobile/dist/release.json", JSON.stringify({sourceCommit:process.env.GITHUB_SHA,environment:process.env.EXPO_PUBLIC_APP_ENV,runId:process.env.GITHUB_RUN_ID},null,2))'
+          tar -czf web-${{ matrix.environment }}.tar.gz -C mobile/dist .
+          sha256sum web-${{ matrix.environment }}.tar.gz > web-${{ matrix.environment }}.sha256
+      - uses: actions/upload-artifact@v4
+        with:
+          name: web-${{ matrix.environment }}
+          path: |
+            web-${{ matrix.environment }}.tar.gz
+            web-${{ matrix.environment }}.sha256
+          retention-days: 30

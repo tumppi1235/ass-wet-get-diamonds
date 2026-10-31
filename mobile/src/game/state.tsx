@@ -6,6 +6,7 @@ import { seedLandmarks } from './landmarks';
 import { restoreResources } from './resources';
 import type { GameState } from './types';
 import { reconcileClaimGold, type TileClaims } from './claims';
+import {observeLocationLifecycle} from '../location/lifecycle';
 type Value = { game: GameState | null; communityVisits: Record<string, number>; claims: TileClaims; claiming: boolean; claimTile(id:string,price:number):Promise<void>; error: string; change(fn: (state: GameState) => void): void; flush(): Promise<void> };
 const Context = createContext<Value | null>(null);
 export function GameProvider({ children }: { children: React.ReactNode }) {
@@ -19,6 +20,7 @@ function ScopedGameProvider({ session, children }: { session: ReturnType<typeof 
   const flush = useCallback(async () => { if (timer.current) clearTimeout(timer.current); const active = owner.current, state = current.current; if (!active || !state) return; try { await accounts.saveProgress(active.token, active.user.id, state); setError(''); } catch (e) { setError((e as Error).message); throw e; } }, []);
   useEffect(() => { let cancelled = false; if (session) Promise.all([accounts.progress<GameState>(session.token, session.user.id), accounts.communityVisits(session.token)]).then(([saved, visits]) => { if (cancelled) return; const state = seedLandmarks(restoreResources(saved || G.initial())); current.current = state; setGame(state); setCommunityVisits(visits); }).catch(e => { if (!cancelled) setError(e.message); }); return () => { cancelled = true; if (timer.current) clearTimeout(timer.current); }; }, [session]);
   useEffect(() => { const interval = setInterval(() => { void flush().catch(() => {}); }, 3000); return () => clearInterval(interval); }, [flush]);
+  useEffect(()=>observeLocationLifecycle(visible=>{if(!visible)void flush().catch(()=>{});}),[flush]);
   const change = useCallback((fn: (state: GameState) => void) => { if (!current.current) return; const next: GameState = JSON.parse(JSON.stringify(current.current)); fn(next); current.current = next; setGame(next); if (timer.current) clearTimeout(timer.current); timer.current = setTimeout(() => { void flush().catch(() => {}); }, 350); }, [flush]);
   useEffect(()=>{let cancelled=false;if(session)accounts.tileClaims(session.token).then(value=>{if(!cancelled)setClaims(value);}).catch(e=>{if(!cancelled)setError(e.message);});return()=>{cancelled=true;};},[session]);
   const claimTile=useCallback(async(id:string,price:number)=>{

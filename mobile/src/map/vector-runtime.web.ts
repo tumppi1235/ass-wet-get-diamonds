@@ -20,7 +20,7 @@ export function createQuestMap(container: HTMLDivElement, read: () => CityMapPro
   map.getCanvas().setAttribute('aria-label','Jyväskylä adventure map. Drag to pan and pinch or scroll to zoom.');
   let ready=false,follow=!!initial.player||initial.demo,focus=initial.focusKey,terrain=true,popup:Popup | null=null,popupId:string | null=null;
   let popupNodes:{title:HTMLElement;detail:HTMLElement;status:HTMLElement} | null=null;
-  const sources = ['visits','grid','trail','accuracy','player','relics','boundary','claims','selected-tile'];
+  const sources = ['visits','grid','trail','accuracy','player','relics','boundary','claims','selected-tile','active-tile'];
   const data=(id:string,value:FeatureCollection)=>{(map.getSource(id) as GeoJSONSource | undefined)?.setData(value);};
   const viewport=()=>{
     const c=map.getCenter(),center=G.xy(c.lat,c.lng), canvas=map.getCanvas();
@@ -39,7 +39,7 @@ export function createQuestMap(container: HTMLDivElement, read: () => CityMapPro
     status.textContent=a.collected?'Collected':a.searched?'Searched this quest':a.collectable?'Ready to collect · open Quest':`${p.player||p.demo?'Follow your compass':'Find your location'} · open Quest to collect`;
   }
   function update(){if(!ready)return;const p=read(),point=p.player || p.game;
-    data('claims',claimsData(p.claims || {},p.ownerId,p.selectedTileId));data('selected-tile',selectedTileData(p.selectedTileId));
+    data('claims',claimsData(p.claims || {},p.ownerId,p.selectedTileId));data('selected-tile',selectedTileData(p.selectedTileId));data('active-tile',selectedTileData(p.activeTileId));
     data('trail',trailData(p.game));data('relics',relicData(p.game,point,p.selectedRelicId,p.capturableId));
     data('player',playerData(p.player,p.demo?p.game:null));data('accuracy',accuracyData(p.player));
     if(p.focusKey && p.focusKey!==focus){focus=p.focusKey;follow=true;map.jumpTo({center:coordinates(point),zoom:Math.max(14.4,map.getZoom())});}
@@ -56,7 +56,8 @@ export function createQuestMap(container: HTMLDivElement, read: () => CityMapPro
     add({id:'game-grid',type:'line',source:'grid',minzoom:13,paint:{'line-color':'#305B49','line-width':.65,'line-opacity':.25}});
     add({id:'claimed-fill',type:'fill',source:'claims',paint:{'fill-color':['case',['get','mine'],'#E6B653','#A17DC4'],'fill-opacity':.18}});
     add({id:'claimed-border',type:'line',source:'claims',paint:{'line-color':['case',['get','mine'],'#AD7D1F','#725198'],'line-width':2.5}});
-    add({id:'selected-tile-border',type:'line',source:'selected-tile',paint:{'line-color':'#FFF4BB','line-width':4,'line-dasharray':[3,2]}});
+    add({id:'selected-tile-border',type:'line',source:'selected-tile',paint:{'line-color':'#55D6D0','line-width':2,'line-dasharray':[3,2]}});
+    add({id:'active-tile-border',type:'line',source:'active-tile',paint:{'line-color':'#FFF4BB','line-width':4}});
     add({id:'claimed-owner',type:'symbol',source:'claims',minzoom:15,layout:{'text-field':['concat','CLAIMED · ',['get','owner']],'text-font':['Noto Sans Regular'],'text-size':11,'text-max-width':12},paint:{'text-color':'#423B22','text-halo-color':'#FFF0B9','text-halo-width':1.5}});
     add({id:'municipal-boundary',type:'line',source:'boundary',maxzoom:13,paint:{'line-color':'#376747','line-width':1.5,'line-dasharray':[4,3]}});
     add({id:'route-casing',type:'line',source:'trail',layout:{'line-cap':'round','line-join':'round'},paint:{'line-color':'#FFF3CF','line-width':5}});
