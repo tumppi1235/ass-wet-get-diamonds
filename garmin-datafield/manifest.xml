@@ -1,0 +1,7 @@
+<iq:manifest xmlns:iq="http://www.garmin.com/xml/connectiq" version="3">
+  <iq:application id="ef3e1e0d4a2a4bd28d0506c067d27a2a" type="datafield" name="@Strings.AppName" entry="TrailFieldApp" launcherIcon="@Drawables.LauncherIcon" minApiLevel="5.2.2">
+    <iq:products><iq:product id="enduro3"/></iq:products>
+    <iq:permissions><iq:uses-permission id="Positioning"/></iq:permissions>
+    <iq:languages><iq:language>eng</iq:language></iq:languages><iq:barrels/>
+  </iq:application>
+</iq:manifest>
