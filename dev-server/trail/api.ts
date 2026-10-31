@@ -22,6 +22,7 @@ import {spawnAnalytics} from './spawn-analytics';
 import {queryClaims} from './claim-store';
 import {adventureIdeas} from './recommendation-store';
 import {unexpectedApiFailure} from './observability';
+import {loadMaintenance,saveMaintenance,guardedGameDatabase,MaintenanceError} from './maintenance-store';
 type Bindings={DB?:D1Database;TRAIL_ENV?:string;TRAIL_ADMIN_EMAIL?:string;TRAIL_PUBLIC_ORIGIN?:string};
 type Member={id:string;display_name:string;role:'admin'|'player';created_at:number};
 class ApiError extends Error{constructor(public status:number,message:string){super(message);}}
@@ -35,13 +36,17 @@ async function body(request:Request){
 }
 function identity(request:Request){const id=request.headers.get('oai-authenticated-user-id');if(!id||id.length>250)throw new ApiError(401,'Sign in with ChatGPT to use the shared dev world.');return id;}
 export async function trailApi(request:Request,env:Bindings){
+  let requestEpoch:number|undefined;
   try{
     if(env.TRAIL_ENV!=='development'||!env.DB)throw new ApiError(503,'Shared development services are not configured.');
     const url=new URL(request.url),path=url.pathname.replace(/\/$/,'');
     if(path==='/api/trail/health'&&request.method==='GET')return json({environment:'development',service:'trail-shared',schema:1});
-    const id=identity(request),db=env.DB;
+    const id=identity(request),rawDb=env.DB;
     if(!['GET','HEAD'].includes(request.method)&&request.headers.get('origin')!==new URL(env.TRAIL_PUBLIC_ORIGIN||url.origin).origin)throw new ApiError(403,'Use the app on its own origin.');
+    const maintenance=await loadMaintenance(rawDb),db=guardedGameDatabase(rawDb,maintenance.revision);requestEpoch=maintenance.revision;
     let member=await db.prepare('SELECT * FROM trail_members WHERE id=?').bind(id).first<Member>();
+    const maintenanceRoute=path==='/api/trail/admin/maintenance',snapshotRoute=path==='/api/trail/admin/snapshot',identityRead=path==='/api/trail/me'&&request.method==='GET',statusRead=path==='/api/trail/maintenance'&&request.method==='GET';
+    if(maintenance.paused&&!maintenanceRoute&&!snapshotRoute&&!identityRead&&!statusRead)throw new MaintenanceError();
     if(path==='/api/trail/me'&&request.method==='POST'){
       const input=await body(request),displayName=name(input.displayName??'Explorer');
       const isOwner=!!env.TRAIL_ADMIN_EMAIL&&request.headers.get('oai-authenticated-user-email')?.toLowerCase()===env.TRAIL_ADMIN_EMAIL.toLowerCase();
@@ -49,6 +54,13 @@ export async function trailApi(request:Request,env:Bindings){
       member=await db.prepare('SELECT * FROM trail_members WHERE id=?').bind(id).first<Member>();
     }
     if(!member)throw new ApiError(404,'Create your shared dev profile first. Your local profiles remain saved.');
+    if(statusRead)return json({maintenance});
+    if(maintenanceRoute){
+      if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');
+      if(request.method==='GET')return json({maintenance});
+      if(request.method==='PUT')return json(await saveMaintenance(rawDb,id,await body(request)));
+      throw new ApiError(405,'Use GET or PUT for maintenance');
+    }
     if(path==='/api/trail/me'&&['GET','POST'].includes(request.method))return json({user:{id:member.id,displayName:member.display_name,username:'shared',role:member.role,createdAt:member.created_at},environment:'development'});
     if(path==='/api/trail/me'&&request.method==='PATCH'){
       const input=await body(request),displayName=name(input.displayName);
@@ -57,7 +69,7 @@ export async function trailApi(request:Request,env:Bindings){
     if(path==='/api/trail/world'&&request.method==='GET')return json(await loadWorld(db,id));
     if(path==='/api/trail/ideas'&&request.method==='POST')return json(await adventureIdeas(db,id,await body(request)));
     if(path==='/api/trail/admin/snapshot'&&request.method==='POST'){
-      if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');return json(await exportDevSnapshot(db));
+      if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');return json(await exportDevSnapshot(rawDb));
     }
     if(path==='/api/trail/admin/collection-simulation'&&request.method==='POST'){
       if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');const input=await body(request),place=LANDMARKS.find(p=>p.landmarkId===input.placeId);
@@ -192,5 +204,10 @@ export async function trailApi(request:Request,env:Bindings){
       const rows=await db.prepare('SELECT id,actor,action,target,details,created_at FROM trail_audit ORDER BY created_at DESC LIMIT 100').all();return json({audit:rows.results});
     }
     throw new ApiError(404,'Unknown API endpoint.');
-  }catch(error){if(error instanceof ApiError||error instanceof WorldError)return json({error:error.message},error.status);return unexpectedApiFailure(request,error);}
+  }catch(error){
+    const errorPath=new URL(request.url).pathname,controlRead=['/api/trail/admin/maintenance','/api/trail/admin/snapshot','/api/trail/maintenance'].includes(errorPath)||(errorPath==='/api/trail/me'&&request.method==='GET');
+    if(requestEpoch!==undefined&&env.DB&&!controlRead)try{const current=await loadMaintenance(env.DB);if(current.paused||current.revision!==requestEpoch)error=new MaintenanceError();}catch{/* Keep the original safe failure if status is unavailable. */}
+    if(error instanceof MaintenanceError)return new Response(JSON.stringify({error:error.message,code:'dev-maintenance'}),{status:503,headers:{'Content-Type':'application/json','Cache-Control':'no-store','Retry-After':'30'}});
+    if(error instanceof ApiError||error instanceof WorldError)return json({error:error.message},error.status);return unexpectedApiFailure(request,error);
+  }
 }
