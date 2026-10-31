@@ -17,6 +17,8 @@ import {loadLootRules,saveLootRules} from './loot-store';
 import {lootChances,validateLootRules} from '../../mobile/src/game/loot';
 import {queryEncounters,inspectEncounter,cancelEncounter} from './encounter-admin';
 import {exportDevSnapshot} from './snapshot-store';
+import {simulateCollection} from '../../mobile/src/game/collection-simulation';
+import {spawnAnalytics} from './spawn-analytics';
 type Bindings={DB?:D1Database;TRAIL_ENV?:string;TRAIL_ADMIN_EMAIL?:string;TRAIL_PUBLIC_ORIGIN?:string};
 type Member={id:string;display_name:string;role:'admin'|'player';created_at:number};
 class ApiError extends Error{constructor(public status:number,message:string){super(message);}}
@@ -52,6 +54,13 @@ export async function trailApi(request:Request,env:Bindings){
     if(path==='/api/trail/world'&&request.method==='GET')return json(await loadWorld(db,id));
     if(path==='/api/trail/admin/snapshot'&&request.method==='POST'){
       if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');return json(await exportDevSnapshot(db));
+    }
+    if(path==='/api/trail/admin/collection-simulation'&&request.method==='POST'){
+      if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');const input=await body(request),place=LANDMARKS.find(p=>p.landmarkId===input.placeId);
+      if(!place)throw new ApiError(400,'Choose a sourced catalog path');const regions=await loadRegions(db);try{return json(simulateCollection(place,input.scenario,validateSpawnRules(input.rules),regions));}catch(e){throw new ApiError(400,(e as Error).message);}
+    }
+    if(path==='/api/trail/admin/spawn-analytics'&&request.method==='GET'){
+      if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');return json(await spawnAnalytics(db,readBounds(url.searchParams),Number(url.searchParams.get('days')||7)));
     }
     if(path.startsWith('/api/trail/admin/encounter')){
       if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');
@@ -119,7 +128,7 @@ export async function trailApi(request:Request,env:Bindings){
     if(path==='/api/trail/admin/boss-rules'&&request.method==='PUT'){
       if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');const input=await body(request);try{return json(await saveBossRules(db,id,input.rules,input.revision));}catch(e){if(e instanceof WorldError)throw e;throw new ApiError(400,(e as Error).message);}
     }
-    if(path==='/api/trail/admin/boss-places'&&request.method==='GET'){
+    if(['/api/trail/admin/boss-places','/api/trail/admin/places'].includes(path)&&request.method==='GET'){
       if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');const q=(url.searchParams.get('q')||'').toLowerCase();if(q.length>80)throw new ApiError(400,'Search is too long');return json({places:LANDMARKS.filter(p=>p.landmarkId&&p.source&&((p.landmark||'').toLowerCase().includes(q)||p.landmarkId.includes(q))).slice(0,50).map(p=>({id:p.landmarkId,name:p.landmark,tile:p.id,latitude:p.latitude,longitude:p.longitude}))});
     }
     if(path==='/api/trail/admin/bosses'&&request.method==='POST'){

@@ -2,6 +2,7 @@
 import {useEffect,useState} from 'react';
 import type {SpawnRules} from '../../../mobile/src/game/world-spawns';
 import type {ArtifactSpawn} from '../../../mobile/src/game/spawns';
+import CollectionLab from './collection-lab';
 async function api<T>(path:string,method='GET',body?:unknown):Promise<T>{const r=await fetch('/api/trail/admin/'+path,{method,headers:{'Content-Type':'application/json'},...(body?{body:JSON.stringify(body)}:{})});const data=await r.json() as T&{error?:string};if(!r.ok)throw new Error(data.error||'Request failed');return data;}
 export default function SpawnAdmin(){
   const[rules,setRules]=useState<SpawnRules|null>(null),[revision,setRevision]=useState(''),[rows,setRows]=useState<{spawn:ArtifactSpawn;visitors:number}[]>([]),[cursor,setCursor]=useState<string|null>(null),[message,setMessage]=useState(''),[busy,setBusy]=useState(false);
@@ -14,5 +15,6 @@ export default function SpawnAdmin(){
     <h3>Inspect / place near a location</h3><label>Latitude <input aria-label="Spawn latitude" value={latitude} onChange={e=>{setLatitude(e.target.value);setReviewed(false);}}/></label> <label>Longitude <input aria-label="Spawn longitude" value={longitude} onChange={e=>{setLongitude(e.target.value);setReviewed(false);}}/></label><p><button disabled={busy} onClick={()=>{void run(()=>load());}}>Load nearby artefacts</button></p>
     <label>Type <select aria-label="Artefact type" value={kind} onChange={e=>setKind(e.target.value)}>{['Stone','Rune','Compass','Shard','Crown','Key','Lantern'].map(x=><option key={x}>{x}</option>)}</select></label> <label>Rarity <select aria-label="Artefact rarity" value={rarity} onChange={e=>setRarity(e.target.value)}>{['Common','Rare','Legendary'].map(x=><option key={x}>{x}</option>)}</select></label><p><label><input type="checkbox" checked={reviewed} onChange={e=>setReviewed(e.target.checked)}/> I reviewed this position for public outdoor access.</label></p><button disabled={busy||!reviewed} onClick={()=>{void run(async()=>{await api('spawns','POST',{latitude:Number(latitude),longitude:Number(longitude),artifactType:kind,rarity});await load();setMessage('Dev artefact placed for 24 hours.');});}}>Place dev artefact</button>
     {message&&<p role="status">{message}</p>}<ul>{rows.map(({spawn,visitors})=><li key={spawn.id}>{spawn.artifactType} · {spawn.rarity} · tile {spawn.tileId} · {visitors} unique visitors · {spawn.kind} <button disabled={busy} onClick={()=>{void run(async()=>{await api('spawns','DELETE',{id:spawn.id});setRows(old=>old.filter(r=>r.spawn.id!==spawn.id));setMessage('Artefact retired; existing inventory is preserved.');});}}>Retire</button></li>)}</ul>{cursor&&<button disabled={busy} onClick={()=>{void run(()=>load(cursor));}}>Load next page</button>}
+    {rules&&<CollectionLab rules={rules} latitude={latitude} longitude={longitude}/>}
   </section>;
 }
