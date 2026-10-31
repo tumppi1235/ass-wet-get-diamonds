@@ -1,0 +1,5823 @@
+{
+  "source": "https://download.geofabrik.de/europe/finland-latest.osm.pbf",
+  "sourceChecksum": "5b113c7a2c31d8465eead4a958eab97b  finland-latest.osm.pbf",
+  "license": "ODbL-1.0",
+  "attribution": "© OpenStreetMap contributors / Geofabrik",
+  "selectionVersion": 1,
+  "cities": [
+    "Helsinki",
+    "Espoo",
+    "Vantaa",
+    "Turku",
+    "Tampere",
+    "Lahti",
+    "Hämeenlinna",
+    "Porvoo",
+    "Kotka",
+    "Kouvola",
+    "Lappeenranta",
+    "Imatra",
+    "Pori",
+    "Rauma",
+    "Salo",
+    "Vaasa",
+    "Seinäjoki",
+    "Kokkola",
+    "Pietarsaari",
+    "Kuopio",
+    "Joensuu",
+    "Mikkeli",
+    "Savonlinna",
+    "Kajaani",
+    "Oulu",
+    "Raahe",
+    "Kemi",
+    "Tornio",
+    "Rovaniemi",
+    "Kuusamo",
+    "Sodankylä",
+    "Inari",
+    "Utsjoki",
+    "Enontekiö",
+    "Mariehamn"
+  ],
+  "ruralCount": 205,
+  "count": 450,
+  "records": {
+    "-167,-920": {
+      "wayId": 1435114662,
+      "nodeId": 310034280,
+      "latitude": 60.1756113,
+      "longitude": 24.9440386,
+      "tags": {
+        "highway": "footway",
+        "lit": "yes",
+        "name": "Birger Brunilan puistokuja",
+        "name:fi": "Birger Brunilan puistokuja",
+        "name:sv": "Birger Brunilas allé",
+        "segregated": "no",
+        "snowplowing": "yes",
+        "surface": "compacted"
+      }
+    },
+    "-166,-922": {
+      "wayId": 1155329754,
+      "nodeId": 4435014144,
+      "latitude": 60.1731241,
+      "longitude": 24.9494024,
+      "tags": {
+        "bicycle": "yes",
+        "highway": "footway",
+        "lit": "yes",
+        "motor_vehicle": "no",
+        "name": "Yrjö-Koskisen katu",
+        "name:fi": "Yrjö-Koskisen katu",
+        "name:sv": "Yrjö-Koskinens gata",
+        "old_name": "Puutarhakatu",
+        "smoothness": "bad",
+        "snowplowing": "yes",
+        "surface": "sett"
+      }
+    },
+    "-166,-923": {
+      "wayId": 123341418,
+      "nodeId": 4435014130,
+      "latitude": 60.1697699,
+      "longitude": 24.9509521,
+      "tags": {
+        "bicycle": "yes",
+        "filming:location:movie:wikidata": "Q15260475",
+        "highway": "pedestrian",
+        "lit": "yes",
+        "maxspeed": "20",
+        "name": "Hallituskatu",
+        "name:fi": "Hallituskatu",
+        "name:sv": "Regeringsgatan",
+        "parking:left": "no",
+        "parking:left:restriction": "no_stopping",
+        "parking:right": "no",
+        "parking:right:restriction": "no_parking",
+        "smoothness": "bad",
+        "snowplowing": "yes",
+        "start_date": "before 1815",
+        "surface": "sett"
+      }
+    },
+    "-167,-926": {
+      "wayId": 346308453,
+      "nodeId": 7669134940,
+      "latitude": 60.1641221,
+      "longitude": 24.9439884,
+      "tags": {
+        "bicycle": "yes",
+        "highway": "pedestrian",
+        "lit": "yes",
+        "loc_name": "Iso-Roba;Iso Roba",
+        "maxspeed": "20",
+        "motor_vehicle": "no",
+        "name": "Iso Roobertinkatu",
+        "name:sv": "Stora Robertsgatan",
+        "railway": "razed",
+        "razed:railway": "tram",
+        "surface": "paving_stones"
+      }
+    },
+    "-169,-925": {
+      "wayId": 29083919,
+      "nodeId": 319938387,
+      "latitude": 60.1642993,
+      "longitude": 24.9325857,
+      "tags": {
+        "highway": "footway",
+        "motorcar": "private"
+      }
+    },
+    "-171,-923": {
+      "wayId": 8014677,
+      "nodeId": 7694323010,
+      "latitude": 60.1688977,
+      "longitude": 24.9259258,
+      "tags": {
+        "bicycle": "yes",
+        "highway": "pedestrian",
+        "lit": "yes",
+        "motor_vehicle": "destination",
+        "name": "Eteläinen Rautatiekatu",
+        "name:fi": "Eteläinen Rautatiekatu",
+        "name:sv": "Södra Järnvägsgatan",
+        "source": "survey",
+        "surface": "paving_stones"
+      }
+    },
+    "-170,-921": {
+      "wayId": 87202100,
+      "nodeId": 7669704420,
+      "latitude": 60.1737552,
+      "longitude": 24.9283437,
+      "tags": {
+        "bicycle": "no",
+        "footway": "sidewalk",
+        "highway": "footway",
+        "lit": "yes",
+        "smoothness": "good",
+        "surface": "asphalt"
+      }
+    },
+    "-226,-904": {
+      "wayId": 1376483460,
+      "nodeId": 12744781149,
+      "latitude": 60.2115452,
+      "longitude": 24.6586388,
+      "tags": {
+        "highway": "path",
+        "name": "Lehtimäenranta",
+        "name:fi": "Lehtimäenranta",
+        "name:sv": "Lövkullastranden"
+      }
+    },
+    "-225,-906": {
+      "wayId": 15245008,
+      "nodeId": 11640750160,
+      "latitude": 60.2084708,
+      "longitude": 24.666872,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "name": "Kylänraitti",
+        "name:fi": "Kylänraitti",
+        "name:sv": "Bygatan",
+        "segregated": "no",
+        "source:name:sv": "Digiroad.fi",
+        "surface": "asphalt"
+      }
+    },
+    "-224,-908": {
+      "wayId": 965877280,
+      "nodeId": 14041709502,
+      "latitude": 60.2032259,
+      "longitude": 24.6677933,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "name": "Kirstinpolku",
+        "name:fi": "Kirstinpolku",
+        "name:sv": "Kirstistigen",
+        "segregated": "no",
+        "snowplowing": "yes",
+        "surface": "paving_stones"
+      }
+    },
+    "-226,-910": {
+      "wayId": 23641886,
+      "nodeId": 256125649,
+      "latitude": 60.1999092,
+      "longitude": 24.6620568,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "name": "Veljespolku",
+        "name:fi": "Veljespolku",
+        "name:sv": "Brödrastigen",
+        "source": "survey",
+        "surface": "fine_gravel"
+      }
+    },
+    "-227,-910": {
+      "wayId": 1283324349,
+      "nodeId": 13232957706,
+      "latitude": 60.199318,
+      "longitude": 24.6533404,
+      "tags": {
+        "bicycle": "designated",
+        "construction": "minor",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "moped": "yes",
+        "name": "Honkakuja",
+        "name:fi": "Honkakuja",
+        "name:sv": "Furugränden",
+        "note": "Road works / KTP-kadut construction until 2026-10-29",
+        "surface": "gravel"
+      }
+    },
+    "-229,-907": {
+      "wayId": 23659375,
+      "nodeId": 1163271793,
+      "latitude": 60.2047037,
+      "longitude": 24.6434365,
+      "tags": {
+        "bicycle": "designated",
+        "bridge": "yes",
+        "foot": "designated",
+        "highway": "cycleway",
+        "layer": "1",
+        "lit": "yes",
+        "moped": "yes",
+        "name": "Jokisilta",
+        "name:fi": "Jokisilta",
+        "name:sv": "Åbron",
+        "segregated": "no",
+        "source": "survey",
+        "surface": "asphalt"
+      }
+    },
+    "-229,-905": {
+      "wayId": 997991581,
+      "nodeId": 9214814311,
+      "latitude": 60.2091732,
+      "longitude": 24.6456596,
+      "tags": {
+        "highway": "path",
+        "mtb:scale": "2",
+        "width": "0.5"
+      }
+    },
+    "-147,-865": {
+      "wayId": 85892239,
+      "nodeId": 86872566,
+      "latitude": 60.3000059,
+      "longitude": 25.0386137,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "name": "Orvokkitie",
+        "name:fi": "Orvokkitie",
+        "name:sv": "Violvägen",
+        "segregated": "no",
+        "source": "extrapolation",
+        "surface": "asphalt"
+      }
+    },
+    "-145,-866": {
+      "wayId": 10795351,
+      "nodeId": 355837242,
+      "latitude": 60.2984501,
+      "longitude": 25.0512814,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "moped": "no",
+        "name": "Eero Tolamon polku",
+        "name:fi": "Eero Tolamon polku",
+        "name:sv": "Eero Tolamos stig",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "-145,-868": {
+      "wayId": 1105321185,
+      "nodeId": 568656222,
+      "latitude": 60.2927896,
+      "longitude": 25.0523896,
+      "tags": {
+        "bicycle": "yes",
+        "foot": "yes",
+        "highway": "pedestrian",
+        "horse": "yes",
+        "lit": "yes",
+        "name": "Rillitori",
+        "name:fi": "Rillitori",
+        "name:sv": "Rilltorget",
+        "note": "for routing purposes",
+        "surface": "paving_stones"
+      }
+    },
+    "-146,-870": {
+      "wayId": 220083217,
+      "nodeId": 2344386074,
+      "latitude": 60.2884655,
+      "longitude": 25.0461681,
+      "tags": {
+        "footway": "sidewalk",
+        "highway": "footway",
+        "lit": "yes",
+        "surface": "asphalt"
+      }
+    },
+    "-148,-870": {
+      "wayId": 10785402,
+      "nodeId": 95970540,
+      "latitude": 60.288666,
+      "longitude": 25.0359978,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "motor_vehicle": "destination",
+        "name": "Silkkipolku",
+        "name:fi": "Silkkipolku",
+        "name:sv": "Silkestigen",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "-149,-869": {
+      "wayId": 10305731,
+      "nodeId": 86873925,
+      "latitude": 60.291583,
+      "longitude": 25.0294152,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "name": "Neilikkapolku",
+        "name:fi": "Neilikkapolku",
+        "name:sv": "Nejlikstigen",
+        "segregated": "no",
+        "source:name:sv": "Digiroad.fi",
+        "surface": "asphalt"
+      }
+    },
+    "-149,-865": {
+      "wayId": 43522242,
+      "nodeId": 445825681,
+      "latitude": 60.2993031,
+      "longitude": 25.0334118,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "name": "Talvikkitie",
+        "name:fi": "Talvikkitie",
+        "name:sv": "Pyrolavägen",
+        "segregated": "no",
+        "source": "survey",
+        "surface": "asphalt"
+      }
+    },
+    "-722,-795": {
+      "wayId": 688172102,
+      "nodeId": 1045226569,
+      "latitude": 60.4580685,
+      "longitude": 22.2671949,
+      "tags": {
+        "bicycle": "designated",
+        "class:bicycle": "2",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "segregated": "no",
+        "surface": "asphalt",
+        "winter_service": "yes"
+      }
+    },
+    "-721,-795": {
+      "wayId": 612743527,
+      "nodeId": 14041558868,
+      "latitude": 60.4566033,
+      "longitude": 22.2734689,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "name": "Ukkokodinpolku",
+        "name:fi": "Ukkokodinpolku",
+        "name:sv": "Gubbhemsstigen",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "-720,-798": {
+      "wayId": 25893146,
+      "nodeId": 6440680881,
+      "latitude": 60.4494284,
+      "longitude": 22.2776783,
+      "tags": {
+        "handrail": "yes",
+        "highway": "steps",
+        "incline": "up",
+        "lit": "yes",
+        "name": "Wecksellin portaat",
+        "name:fi": "Wecksellin portaat",
+        "name:sv": "Wecksells trappor",
+        "ramp": "no",
+        "step_count": "75",
+        "surface": "paving_stones"
+      }
+    },
+    "-721,-800": {
+      "wayId": 316988571,
+      "nodeId": 2712531884,
+      "latitude": 60.4462281,
+      "longitude": 22.2728469,
+      "tags": {
+        "bicycle": "no",
+        "footway": "sidewalk",
+        "highway": "footway",
+        "lit": "yes",
+        "surface": "paving_stones"
+      }
+    },
+    "-723,-800": {
+      "wayId": 9472983,
+      "nodeId": 21536941,
+      "latitude": 60.445347,
+      "longitude": 22.264605,
+      "tags": {
+        "bicycle": "yes",
+        "highway": "pedestrian",
+        "lit": "yes",
+        "motor_vehicle": "private",
+        "name": "Volter Kilven katu",
+        "name:fi": "Volter Kilven katu",
+        "name:sv": "Volter Kilpis gata",
+        "surface": "asphalt"
+      }
+    },
+    "-725,-798": {
+      "wayId": 1218771586,
+      "nodeId": 11293127895,
+      "latitude": 60.4503952,
+      "longitude": 22.2541709,
+      "tags": {
+        "highway": "footway",
+        "surface": "paving_stones"
+      }
+    },
+    "-725,-796": {
+      "wayId": 4247874,
+      "nodeId": 25343741,
+      "latitude": 60.4542904,
+      "longitude": 22.2543288,
+      "tags": {
+        "bicycle": "designated",
+        "bridge": "yes",
+        "foot": "designated",
+        "highway": "cycleway",
+        "layer": "1",
+        "lit": "yes",
+        "name": "Humalistonsilta",
+        "name:fi": "Humalistonsilta",
+        "name:sv": "Humlegårdsbron",
+        "oneway": "no",
+        "segregated": "no",
+        "source:name": "survey",
+        "surface": "metal",
+        "width": "4",
+        "wikidata": "Q18662472",
+        "wikipedia": "fi:Humalistonsilta"
+      }
+    },
+    "-413,-329": {
+      "wayId": 23344242,
+      "nodeId": 1862822393,
+      "latitude": 61.5040823,
+      "longitude": 23.7593957,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "name": "Auvisenpolku",
+        "name:fi": "Auvisenpolku",
+        "segregated": "no",
+        "surface": "sett"
+      }
+    },
+    "-412,-329": {
+      "wayId": 23342183,
+      "nodeId": 12624183554,
+      "latitude": 61.5037896,
+      "longitude": 23.7649674,
+      "tags": {
+        "highway": "footway",
+        "name": "Puuhiomonkuja",
+        "name:fi": "Puuhiomonkuja",
+        "surface": "paving_stones"
+      }
+    },
+    "-410,-332": {
+      "wayId": 302528318,
+      "nodeId": 3067768311,
+      "latitude": 61.4980873,
+      "longitude": 23.7748909,
+      "tags": {
+        "highway": "footway",
+        "lit": "yes",
+        "name": "Pakkahuoneenaukio",
+        "surface": "paving_stones"
+      }
+    },
+    "-411,-334": {
+      "wayId": 442179798,
+      "nodeId": 5573120911,
+      "latitude": 61.4918662,
+      "longitude": 23.7662589,
+      "tags": {
+        "bicycle": "designated",
+        "cycleway:surface": "asphalt",
+        "foot": "designated",
+        "footway:surface": "asphalt",
+        "highway": "cycleway",
+        "lit": "yes",
+        "name": "Ratinanraitti",
+        "segregated": "yes",
+        "snowplowing": "yes",
+        "surface": "paved"
+      }
+    },
+    "-414,-334": {
+      "wayId": 1524192216,
+      "nodeId": 13892718634,
+      "latitude": 61.4922299,
+      "longitude": 23.7542847,
+      "tags": {
+        "footway": "sidewalk",
+        "highway": "footway",
+        "lit": "yes",
+        "name": "Hämeenpuisto",
+        "surface": "asphalt"
+      }
+    },
+    "-415,-332": {
+      "wayId": 73520697,
+      "nodeId": 1002114987,
+      "latitude": 61.49677,
+      "longitude": 23.7479382,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "horse": "no",
+        "lit": "yes",
+        "segregated": "no",
+        "surface": "fine_gravel",
+        "traffic_sign": "FI:D6"
+      }
+    },
+    "-415,-330": {
+      "wayId": 1305113848,
+      "nodeId": 1002115192,
+      "latitude": 61.5015193,
+      "longitude": 23.7503373,
+      "tags": {
+        "bicycle": "designated",
+        "cycleway": "crossing",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "name": "Puuvillatehtaankatu",
+        "name:fi": "Puuvillatehtaankatu",
+        "note": "Historic Finnish name translated from Swedish language city plan; may be inaccurate",
+        "old_name": "Polttimonkatu",
+        "old_name:fi": "Polttimonkatu",
+        "old_name:sv": "Brännerigatan",
+        "segregated": "no",
+        "smoothness": "intermediate",
+        "source:old_name:sv": "1841 city plan",
+        "surface": "asphalt"
+      }
+    },
+    "-18,-558": {
+      "wayId": 49522501,
+      "nodeId": 629106972,
+      "latitude": 60.9890683,
+      "longitude": 25.6610316,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "surface": "asphalt"
+      }
+    },
+    "-17,-559": {
+      "wayId": 33438542,
+      "nodeId": 590114740,
+      "latitude": 60.9875348,
+      "longitude": 25.6700292,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "name": "Mattilanmäenpolku",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "-15,-561": {
+      "wayId": 37883016,
+      "nodeId": 3240474428,
+      "latitude": 60.981781,
+      "longitude": 25.6749848,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "name": "Mörrinraitti",
+        "name:fi": "Mörrinraitti"
+      }
+    },
+    "-18,-564": {
+      "wayId": 37040919,
+      "nodeId": 3916002602,
+      "latitude": 60.9764923,
+      "longitude": 25.6639039,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "moped": "no",
+        "name": "Vihdinpolku",
+        "segregated": "no",
+        "source": "MML 2012;survey",
+        "surface": "asphalt"
+      }
+    },
+    "-19,-564": {
+      "wayId": 765782542,
+      "nodeId": 432639558,
+      "latitude": 60.976118,
+      "longitude": 25.6557757,
+      "tags": {
+        "foot": "designated",
+        "highway": "cycleway",
+        "name": "Helkalankatu",
+        "name:fi": "Helkalankatu",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "-21,-561": {
+      "wayId": 39821202,
+      "nodeId": 2292296029,
+      "latitude": 60.9835445,
+      "longitude": 25.6491074,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "moped": "no",
+        "name": "Paasikivenkatu",
+        "name:fi": "Paasikivenkatu",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "-20,-559": {
+      "wayId": 179058924,
+      "nodeId": 13745255924,
+      "latitude": 60.9868334,
+      "longitude": 25.65154,
+      "tags": {
+        "highway": "footway",
+        "source": "Bing"
+      }
+    },
+    "-267,-552": {
+      "wayId": 50212386,
+      "nodeId": 11046321127,
+      "latitude": 61.0021555,
+      "longitude": 24.4606663,
+      "tags": {
+        "foot": "designated",
+        "footway": "sidewalk",
+        "highway": "footway",
+        "name": "Kustaa III:n katu",
+        "name:fi": "Kustaa III:n katu",
+        "surface": "fine_gravel"
+      }
+    },
+    "-264,-554": {
+      "wayId": 186683981,
+      "nodeId": 243801897,
+      "latitude": 60.9986089,
+      "longitude": 24.4760492,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "name": "Viipurintie",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "-264,-555": {
+      "wayId": 22732763,
+      "nodeId": 306023522,
+      "latitude": 60.9963197,
+      "longitude": 24.4771867,
+      "tags": {
+        "bicycle": "designated",
+        "check_date:surface": "2025-04-14",
+        "cycleway:surface": "asphalt",
+        "foot": "designated",
+        "footway:surface": "asphalt",
+        "highway": "cycleway",
+        "lit": "yes",
+        "name": "Paasikiventie",
+        "name:fi": "Paasikiventie",
+        "segregated": "yes",
+        "surface": "asphalt"
+      }
+    },
+    "-267,-558": {
+      "wayId": 22633173,
+      "nodeId": 243062974,
+      "latitude": 60.9898271,
+      "longitude": 24.4600715,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "moped": "no",
+        "name": "Kaivopolku",
+        "name:fi": "Kaivopolku",
+        "segregated": "no",
+        "source": "MML 2012;survey",
+        "surface": "asphalt"
+      }
+    },
+    "-268,-558": {
+      "wayId": 27758210,
+      "nodeId": 1025848552,
+      "latitude": 60.9902893,
+      "longitude": 24.4596898,
+      "tags": {
+        "access": "yes",
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "motor_vehicle": "no",
+        "name": "Kaivopolku",
+        "name:fi": "Kaivopolku",
+        "surface": "asphalt"
+      }
+    },
+    "-269,-556": {
+      "wayId": 37323430,
+      "nodeId": 435019637,
+      "latitude": 60.994628,
+      "longitude": 24.451588,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "name": "Parolantie",
+        "name:fi": "Parolantie",
+        "surface": "asphalt"
+      }
+    },
+    "-268,-553": {
+      "wayId": 113820674,
+      "nodeId": 1290394762,
+      "latitude": 60.9999869,
+      "longitude": 24.4557702,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "name": "Saaristenpolku",
+        "name:fi": "Saaristenpolku",
+        "surface": "fine_gravel"
+      }
+    },
+    "-16,-821": {
+      "wayId": 25829064,
+      "nodeId": 5271587199,
+      "latitude": 60.3985559,
+      "longitude": 25.67119,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "name": "Oikotie",
+        "name:fi": "Oikotie",
+        "name:sv": "Genvägen",
+        "surface": "fine_gravel"
+      }
+    },
+    "-15,-822": {
+      "wayId": 19893950,
+      "nodeId": 12421045579,
+      "latitude": 60.3966767,
+      "longitude": 25.6754305,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "-15,-824": {
+      "wayId": 23443758,
+      "nodeId": 253889664,
+      "latitude": 60.3910697,
+      "longitude": 25.67742,
+      "tags": {
+        "created_by": "Potlatch 0.8",
+        "highway": "steps"
+      }
+    },
+    "-17,-826": {
+      "wayId": 26516227,
+      "nodeId": 290617532,
+      "latitude": 60.3866754,
+      "longitude": 25.6672765,
+      "tags": {
+        "bicycle": "yes",
+        "foot": "yes",
+        "highway": "cycleway",
+        "name": "Tapulikatu",
+        "name:fi": "Tapulikatu",
+        "name:sv": "Stapelgatan"
+      }
+    },
+    "-19,-826": {
+      "wayId": 921363660,
+      "nodeId": 10910879742,
+      "latitude": 60.3870153,
+      "longitude": 25.6600067,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "oneway": "no",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "-20,-825": {
+      "wayId": 23406561,
+      "nodeId": 6241413600,
+      "latitude": 60.3909565,
+      "longitude": 25.6526643,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "segregated": "no",
+        "source": "Bing",
+        "surface": "asphalt"
+      }
+    },
+    "-19,-821": {
+      "wayId": 94453464,
+      "nodeId": 1097203356,
+      "latitude": 60.397921,
+      "longitude": 25.6585178,
+      "tags": {
+        "alt_name": "Pirunportaat",
+        "highway": "footway",
+        "lit": "no",
+        "name": "Koulukuja",
+        "name:fi": "Koulukuja",
+        "name:sv": "Skolgränd",
+        "surface": "rock"
+      }
+    },
+    "248,-788": {
+      "wayId": 1198640821,
+      "nodeId": 14098510567,
+      "latitude": 60.4725623,
+      "longitude": 26.9459477,
+      "tags": {
+        "footway": "sidewalk",
+        "highway": "footway",
+        "surface": "sett"
+      }
+    },
+    "249,-789": {
+      "wayId": 1550088207,
+      "nodeId": 14098510557,
+      "latitude": 60.4718049,
+      "longitude": 26.9509197,
+      "tags": {
+        "highway": "footway"
+      }
+    },
+    "250,-792": {
+      "wayId": 295417918,
+      "nodeId": 2991273749,
+      "latitude": 60.4643978,
+      "longitude": 26.9551003,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "249,-793": {
+      "wayId": 93249663,
+      "nodeId": 1080886954,
+      "latitude": 60.461056,
+      "longitude": 26.9514461,
+      "tags": {
+        "footway": "sidewalk",
+        "highway": "footway",
+        "source": "bing"
+      }
+    },
+    "247,-793": {
+      "wayId": 41958912,
+      "nodeId": 519933046,
+      "latitude": 60.4615608,
+      "longitude": 26.9426262,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "layer": "0",
+        "lit": "yes",
+        "name": "Museokatu",
+        "name:fi": "Museokatu",
+        "surface": "asphalt"
+      }
+    },
+    "246,-791": {
+      "wayId": 88791197,
+      "nodeId": 1030437933,
+      "latitude": 60.4651799,
+      "longitude": 26.9334482,
+      "tags": {
+        "bicycle": "yes",
+        "highway": "footway",
+        "surface": "asphalt"
+      }
+    },
+    "245,-791": {
+      "wayId": 688745457,
+      "nodeId": 6459900109,
+      "latitude": 60.4659691,
+      "longitude": 26.9329412,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "surface": "asphalt"
+      }
+    },
+    "198,-609": {
+      "wayId": 34951466,
+      "nodeId": 9815280468,
+      "latitude": 60.8754319,
+      "longitude": 26.7045269,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "horse": "no",
+        "name": "Jokelantie",
+        "name:fi": "Jokelantie",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "200,-610": {
+      "wayId": 32517503,
+      "nodeId": 4088975754,
+      "latitude": 60.8721014,
+      "longitude": 26.7149701,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "horse": "no",
+        "lit": "yes",
+        "motor_vehicle": "no",
+        "name": "Tietotie",
+        "name:fi": "Tietotie",
+        "segregated": "no",
+        "sidewalk": "no",
+        "surface": "unpaved"
+      }
+    },
+    "200,-612": {
+      "wayId": 161866278,
+      "nodeId": 1498656523,
+      "latitude": 60.8673525,
+      "longitude": 26.7158096,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "horse": "no",
+        "lit": "yes",
+        "motor_vehicle": "no",
+        "name": "Puolakantie",
+        "name:fi": "Puolakantie",
+        "oneway": "no",
+        "surface": "asphalt",
+        "width": "4"
+      }
+    },
+    "198,-615": {
+      "wayId": 128636511,
+      "nodeId": 1421104379,
+      "latitude": 60.8618184,
+      "longitude": 26.7028064,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "horse": "no",
+        "incline": "0%",
+        "lit": "yes",
+        "name": "Ruskeinraitti",
+        "segregated": "no",
+        "smoothness": "intermediate",
+        "surface": "asphalt",
+        "width": "3"
+      }
+    },
+    "197,-614": {
+      "wayId": 137104746,
+      "nodeId": 4070643466,
+      "latitude": 60.8628706,
+      "longitude": 26.7007236,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "horse": "no",
+        "lit": "yes",
+        "motor_vehicle": "no",
+        "name": "Tennisraitti",
+        "segregated": "no",
+        "smoothness": "intermediate",
+        "surface": "asphalt",
+        "width": "2"
+      }
+    },
+    "196,-613": {
+      "wayId": 407328767,
+      "nodeId": 833010550,
+      "latitude": 60.8652641,
+      "longitude": 26.6923359,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "horse": "no",
+        "lit": "yes",
+        "motor_vehicle": "no",
+        "name": "Veturimiehenraitti",
+        "name:fi": "Veturimiehenraitti",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "196,-610": {
+      "wayId": 1571577371,
+      "nodeId": 14318117523,
+      "latitude": 60.8719865,
+      "longitude": 26.6939575,
+      "tags": {
+        "highway": "footway"
+      }
+    },
+    "507,-525": {
+      "wayId": 24806503,
+      "nodeId": 4851419640,
+      "latitude": 61.0638623,
+      "longitude": 28.1962341,
+      "tags": {
+        "bicycle": "yes",
+        "highway": "footway",
+        "motor_vehicle": "no",
+        "name": "Kimpisen kuntopolku",
+        "surface": "woodchips",
+        "tracktype": "grade2"
+      }
+    },
+    "508,-525": {
+      "wayId": 24806503,
+      "nodeId": 269511003,
+      "latitude": 61.0635793,
+      "longitude": 28.1968399,
+      "tags": {
+        "bicycle": "yes",
+        "highway": "footway",
+        "motor_vehicle": "no",
+        "name": "Kimpisen kuntopolku",
+        "surface": "woodchips",
+        "tracktype": "grade2"
+      }
+    },
+    "509,-527": {
+      "wayId": 1432950104,
+      "nodeId": 1586208933,
+      "latitude": 61.0587005,
+      "longitude": 28.2017525,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "moped": "no",
+        "name": "Pajakuja",
+        "name:fi": "Pajakuja",
+        "oneway": "no",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "507,-530": {
+      "wayId": 429932362,
+      "nodeId": 4291327979,
+      "latitude": 61.0533472,
+      "longitude": 28.1930864,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "name": "Louhenraitti",
+        "name:fi": "Louhenraitti",
+        "oneway": "no",
+        "segregated": "no",
+        "smoothness": "excellent",
+        "surface": "asphalt"
+      }
+    },
+    "506,-530": {
+      "wayId": 429932349,
+      "nodeId": 13319268132,
+      "latitude": 61.0523748,
+      "longitude": 28.188465,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "name": "Rinkelimäenkuja",
+        "oneway": "no",
+        "segregated": "no",
+        "surface": "paved"
+      }
+    },
+    "503,-527": {
+      "wayId": 39905163,
+      "nodeId": 12820609255,
+      "latitude": 61.0595559,
+      "longitude": 28.1756474,
+      "tags": {
+        "bicycle": "yes",
+        "foot": "yes",
+        "highway": "cycleway",
+        "horse": "yes",
+        "maxspeed": "30",
+        "motor_vehicle": "destination",
+        "motorcar": "destination",
+        "motorcycle": "destination",
+        "name": "Mannerheiminkatu",
+        "name:fi": "Mannerheiminkatu",
+        "surface": "asphalt"
+      }
+    },
+    "504,-525": {
+      "wayId": 39813699,
+      "nodeId": 287534024,
+      "latitude": 61.0626793,
+      "longitude": 28.1786024,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "moped": "no",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "623,-474": {
+      "wayId": 213220431,
+      "nodeId": 2229598841,
+      "latitude": 61.1780659,
+      "longitude": 28.7554762,
+      "tags": {
+        "highway": "path",
+        "piste:difficulty": "easy",
+        "piste:grooming": "scooter",
+        "piste:grooming:classic:lanes": "1",
+        "piste:lit": "no",
+        "piste:type": "nordic",
+        "surface": "fine_gravel"
+      }
+    },
+    "625,-475": {
+      "wayId": 371935026,
+      "nodeId": 1053534353,
+      "latitude": 61.1766412,
+      "longitude": 28.761636,
+      "tags": {
+        "bicycle": "designated",
+        "cycleway:surface": "asphalt",
+        "foot": "designated",
+        "footway:surface": "asphalt",
+        "highway": "cycleway",
+        "segregated": "yes",
+        "surface": "asphalt"
+      }
+    },
+    "625,-477": {
+      "wayId": 174067203,
+      "nodeId": 1630391584,
+      "latitude": 61.1704294,
+      "longitude": 28.7651138,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "segregated": "no",
+        "source": "bing;survey",
+        "surface": "asphalt"
+      }
+    },
+    "625,-479": {
+      "wayId": 128396264,
+      "nodeId": 3767487210,
+      "latitude": 61.1673159,
+      "longitude": 28.7613388,
+      "tags": {
+        "foot": "designated",
+        "highway": "cycleway",
+        "segregated": "no"
+      }
+    },
+    "622,-479": {
+      "wayId": 72879595,
+      "nodeId": 864940559,
+      "latitude": 61.1661355,
+      "longitude": 28.7477214,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "segregated": "no",
+        "surface": "paved"
+      }
+    },
+    "620,-478": {
+      "wayId": 370390690,
+      "nodeId": 1832181912,
+      "latitude": 61.1702364,
+      "longitude": 28.7391505,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "path",
+        "segregated": "no"
+      }
+    },
+    "621,-475": {
+      "wayId": 161511876,
+      "nodeId": 1674941058,
+      "latitude": 61.1765125,
+      "longitude": 28.7438606,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "-821,-334": {
+      "wayId": 34726640,
+      "nodeId": 404641435,
+      "latitude": 61.4918469,
+      "longitude": 21.7928882,
+      "tags": {
+        "bicycle": "yes",
+        "cycleway": "track",
+        "foot": "designated",
+        "highway": "footway",
+        "name": "Koivikkopolku",
+        "surface": "fine_gravel"
+      }
+    },
+    "-817,-336": {
+      "wayId": 43619629,
+      "nodeId": 2421276034,
+      "latitude": 61.4886406,
+      "longitude": 21.8088016,
+      "tags": {
+        "foot": "yes",
+        "highway": "cycleway",
+        "surface": "asphalt"
+      }
+    },
+    "-817,-338": {
+      "wayId": 174156730,
+      "nodeId": 1682240081,
+      "latitude": 61.4838994,
+      "longitude": 21.8102634,
+      "tags": {
+        "foot": "yes",
+        "highway": "cycleway"
+      }
+    },
+    "-818,-340": {
+      "wayId": 174490605,
+      "nodeId": 3073820453,
+      "latitude": 61.4793536,
+      "longitude": 21.8029248,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "-821,-340": {
+      "wayId": 43163899,
+      "nodeId": 1826846741,
+      "latitude": 61.4793616,
+      "longitude": 21.7918115,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "-822,-338": {
+      "wayId": 1186075920,
+      "nodeId": 11016710566,
+      "latitude": 61.4842253,
+      "longitude": 21.7845342,
+      "tags": {
+        "foot": "designated",
+        "footway": "sidewalk",
+        "highway": "footway",
+        "lit": "yes",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "-821,-335": {
+      "wayId": 485638272,
+      "nodeId": 247696084,
+      "latitude": 61.4898703,
+      "longitude": 21.7896713,
+      "tags": {
+        "highway": "pedestrian",
+        "name": "Annankatu"
+      }
+    },
+    "-879,-494": {
+      "wayId": 13052059,
+      "nodeId": 120104728,
+      "latitude": 61.133617,
+      "longitude": 21.5121679,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "moped": "yes",
+        "name": "Leikarinpolku",
+        "name:fi": "Leikarinpolku",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "-877,-495": {
+      "wayId": 128524996,
+      "nodeId": 1420187850,
+      "latitude": 61.1311961,
+      "longitude": 21.5213901,
+      "tags": {
+        "highway": "footway",
+        "surface": "asphalt"
+      }
+    },
+    "-877,-498": {
+      "wayId": 115966262,
+      "nodeId": 1308857258,
+      "latitude": 61.1237889,
+      "longitude": 21.5222603,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "segregated": "no"
+      }
+    },
+    "-878,-499": {
+      "wayId": 1192471544,
+      "nodeId": 11069722872,
+      "latitude": 61.1214176,
+      "longitude": 21.5165952,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "-880,-499": {
+      "wayId": 124090214,
+      "nodeId": 1382038454,
+      "latitude": 61.1214988,
+      "longitude": 21.5060809,
+      "tags": {
+        "highway": "footway"
+      }
+    },
+    "-882,-497": {
+      "wayId": 754064112,
+      "nodeId": 7044817595,
+      "latitude": 61.1266483,
+      "longitude": 21.4980132,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "moped": "yes",
+        "name": "Laivurinpolku",
+        "name:fi": "Laivurinpolku",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "-881,-495": {
+      "wayId": 756561385,
+      "nodeId": 7066382015,
+      "latitude": 61.1318645,
+      "longitude": 21.5034167,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "name": "Ajurinpolku"
+      }
+    },
+    "-544,-825": {
+      "wayId": 25411451,
+      "nodeId": 276944975,
+      "latitude": 60.3899838,
+      "longitude": 23.1253704,
+      "tags": {
+        "foot": "yes",
+        "highway": "cycleway",
+        "lit": "no",
+        "name": "Piritankatu",
+        "name:fi": "Piritankatu",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "-542,-826": {
+      "wayId": 1053384352,
+      "nodeId": 13061861046,
+      "latitude": 60.3865672,
+      "longitude": 23.1355082,
+      "tags": {
+        "footway": "sidewalk",
+        "highway": "footway",
+        "oneway": "no",
+        "surface": "paved"
+      }
+    },
+    "-542,-829": {
+      "wayId": 30072893,
+      "nodeId": 330315535,
+      "latitude": 60.3802796,
+      "longitude": 23.13648,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "name": "Perniöntie",
+        "name:fi": "Perniöntie",
+        "surface": "paved"
+      }
+    },
+    "-543,-831": {
+      "wayId": 30045617,
+      "nodeId": 330900715,
+      "latitude": 60.3772787,
+      "longitude": 23.130485,
+      "tags": {
+        "bicycle": "no",
+        "foot": "yes",
+        "highway": "path",
+        "horse": "no",
+        "motorcar": "no",
+        "ski": "no",
+        "snowmobile": "no",
+        "surface": "dirt"
+      }
+    },
+    "-545,-831": {
+      "wayId": 342720793,
+      "nodeId": 331552081,
+      "latitude": 60.376648,
+      "longitude": 23.1229239,
+      "tags": {
+        "foot": "yes",
+        "highway": "cycleway",
+        "lit": "yes",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "-547,-829": {
+      "wayId": 30120500,
+      "nodeId": 13013399390,
+      "latitude": 60.3817561,
+      "longitude": 23.1132993,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "-546,-826": {
+      "wayId": 30319101,
+      "nodeId": 5485643828,
+      "latitude": 60.3881019,
+      "longitude": 23.1176966,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "segregated": "no",
+        "surface": "paving_stones"
+      }
+    },
+    "-857,382": {
+      "wayId": 161337118,
+      "nodeId": 1733294497,
+      "latitude": 63.1013792,
+      "longitude": 21.6172123,
+      "tags": {
+        "highway": "footway",
+        "source": "bing"
+      }
+    },
+    "-855,381": {
+      "wayId": 1347292703,
+      "nodeId": 12462805975,
+      "latitude": 63.0992348,
+      "longitude": 21.6270463,
+      "tags": {
+        "highway": "footway"
+      }
+    },
+    "-854,379": {
+      "wayId": 161884501,
+      "nodeId": 1738391939,
+      "latitude": 63.0936305,
+      "longitude": 21.6300492,
+      "tags": {
+        "highway": "footway",
+        "source": "bing"
+      }
+    },
+    "-857,377": {
+      "wayId": 10313489,
+      "nodeId": 1494265634,
+      "latitude": 63.0884361,
+      "longitude": 21.617436,
+      "tags": {
+        "foot": "yes",
+        "highway": "cycleway",
+        "name": "Kivipainonkuja",
+        "name:fi": "Kivipainonkuja",
+        "name:sv": "Stentryckerigränden",
+        "oneway": "no",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "-858,377": {
+      "wayId": 161342645,
+      "nodeId": 1733329338,
+      "latitude": 63.0894359,
+      "longitude": 21.6104175,
+      "tags": {
+        "highway": "footway",
+        "source": "bing"
+      }
+    },
+    "-860,379": {
+      "wayId": 35144201,
+      "nodeId": 412237619,
+      "latitude": 63.0936946,
+      "longitude": 21.6027449,
+      "tags": {
+        "highway": "footway",
+        "source": "bing;survey",
+        "surface": "compacted"
+      }
+    },
+    "-859,381": {
+      "wayId": 755089956,
+      "nodeId": 1024923137,
+      "latitude": 63.0991486,
+      "longitude": 21.6059197,
+      "tags": {
+        "footway": "sidewalk",
+        "highway": "footway",
+        "source": "knowledge;survey",
+        "surface": "asphalt"
+      }
+    },
+    "-602,246": {
+      "wayId": 168256572,
+      "nodeId": 12367561741,
+      "latitude": 62.7961116,
+      "longitude": 22.8455467,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "name": "Mielikinsola",
+        "name:fi": "Mielikinsola",
+        "segregated": "no",
+        "surface": "compacted"
+      }
+    },
+    "-601,246": {
+      "wayId": 159923715,
+      "nodeId": 445506998,
+      "latitude": 62.7942319,
+      "longitude": 22.8510854,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "name": "Pultrantie",
+        "name:fi": "Pultrantie",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "-601,243": {
+      "wayId": 159923849,
+      "nodeId": 1719866336,
+      "latitude": 62.7885163,
+      "longitude": 22.8534995,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "-602,241": {
+      "wayId": 29224797,
+      "nodeId": 7932081277,
+      "latitude": 62.7845758,
+      "longitude": 22.8461246,
+      "tags": {
+        "bicycle": "yes",
+        "foot": "yes",
+        "highway": "cycleway",
+        "lit": "yes",
+        "segregated": "no",
+        "surface": "compacted",
+        "traffic_sign": "no",
+        "width": "3.5"
+      }
+    },
+    "-605,241": {
+      "wayId": 123722030,
+      "nodeId": 4662948078,
+      "latitude": 62.7847912,
+      "longitude": 22.8337274,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "-606,243": {
+      "wayId": 167597087,
+      "nodeId": 1719866307,
+      "latitude": 62.7884155,
+      "longitude": 22.8270403,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "moped": "no",
+        "name": "Kampusraitti",
+        "name:fi": "Kampusraitti",
+        "segregated": "no",
+        "source": "bing;survey",
+        "surface": "asphalt"
+      }
+    },
+    "-605,246": {
+      "wayId": 460222999,
+      "nodeId": 4558966486,
+      "latitude": 62.7955675,
+      "longitude": 22.8314149,
+      "tags": {
+        "bicycle": "designated",
+        "bridge": "yes",
+        "foot": "designated",
+        "highway": "cycleway",
+        "layer": "1",
+        "lit": "yes",
+        "material": "steel",
+        "name": "Lakeuden Aamunkoi",
+        "segregated": "no",
+        "start_date": "2017-07-07",
+        "surface": "asphalt"
+      }
+    },
+    "-544,713": {
+      "wayId": 28374624,
+      "nodeId": 213789732,
+      "latitude": 63.8446169,
+      "longitude": 23.1276053,
+      "tags": {
+        "bicycle": "yes",
+        "highway": "footway",
+        "lit": "no",
+        "motor_vehicle": "destination",
+        "name": "Puurokarinkuja",
+        "name:fi": "Puurokarinkuja",
+        "name:sv": "Puurokarigränd",
+        "source": "survey;mml",
+        "surface": "unpaved"
+      }
+    },
+    "-540,712": {
+      "wayId": 27189350,
+      "nodeId": 221138448,
+      "latitude": 63.8412532,
+      "longitude": 23.1438844,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "name": "Vaatturinpolku",
+        "name:fi": "Vaatturinpolku",
+        "name:sv": "Skräddarestigen",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "-540,710": {
+      "wayId": 20084596,
+      "nodeId": 544292258,
+      "latitude": 63.8373366,
+      "longitude": 23.1447112,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "segregated": "no",
+        "source": "survey",
+        "surface": "asphalt"
+      }
+    },
+    "-541,708": {
+      "wayId": 22634958,
+      "nodeId": 242802502,
+      "latitude": 63.8334027,
+      "longitude": 23.1388718,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "moped": "yes",
+        "segregated": "no",
+        "source": "survey",
+        "surface": "asphalt"
+      }
+    },
+    "-545,708": {
+      "wayId": 241727399,
+      "nodeId": 209082071,
+      "latitude": 63.8330769,
+      "longitude": 23.1231214,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "moped": "yes",
+        "segregated": "no",
+        "source": "survey",
+        "surface": "paved"
+      }
+    },
+    "-546,711": {
+      "wayId": 19795897,
+      "nodeId": 206256693,
+      "latitude": 63.8399702,
+      "longitude": 23.1161879,
+      "tags": {
+        "bicycle": "yes",
+        "highway": "footway",
+        "name": "Mäntykangas",
+        "name:fi": "Mäntykangas",
+        "name:sv": "Tallåsen",
+        "surface": "paved"
+      }
+    },
+    "-546,712": {
+      "wayId": 25541819,
+      "nodeId": 6270855744,
+      "latitude": 63.8426015,
+      "longitude": 23.1191695,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "source": "survey",
+        "surface": "paved"
+      }
+    },
+    "-634,640": {
+      "wayId": 34319138,
+      "nodeId": 11950731405,
+      "latitude": 63.6801033,
+      "longitude": 22.6947129,
+      "tags": {
+        "bicycle": "yes",
+        "covered": "no",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "name": "Djurgårdsleden",
+        "name:fi": "Hakamaanreitti",
+        "name:sv": "Djurgårdsleden",
+        "oneway": "no",
+        "surface": "unpaved",
+        "width": "2"
+      }
+    },
+    "-629,639": {
+      "wayId": 100230803,
+      "nodeId": 1158545761,
+      "latitude": 63.6780817,
+      "longitude": 22.7148488,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "oneway": "no",
+        "segregated": "no",
+        "source": "extrapolation",
+        "surface": "asphalt"
+      }
+    },
+    "-629,637": {
+      "wayId": 1355980051,
+      "nodeId": 12549450012,
+      "latitude": 63.6734269,
+      "longitude": 22.7175245,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "oneway": "no",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "-630,636": {
+      "wayId": 9894020,
+      "nodeId": 80279456,
+      "latitude": 63.6701232,
+      "longitude": 22.7116717,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "oneway": "no",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "-633,635": {
+      "wayId": 1549610919,
+      "nodeId": 14094384077,
+      "latitude": 63.6689437,
+      "longitude": 22.6975468,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "oneway": "no",
+        "oneway:bicycle": "yes",
+        "oneway:foot": "no",
+        "segregated": "yes"
+      }
+    },
+    "-635,637": {
+      "wayId": 1288988277,
+      "nodeId": 11952541963,
+      "latitude": 63.6741153,
+      "longitude": 22.6886321,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "oneway": "no",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "-633,640": {
+      "wayId": 34319138,
+      "nodeId": 393642040,
+      "latitude": 63.6799031,
+      "longitude": 22.6950862,
+      "tags": {
+        "bicycle": "yes",
+        "covered": "no",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "name": "Djurgårdsleden",
+        "name:fi": "Hakamaanreitti",
+        "name:sv": "Djurgårdsleden",
+        "oneway": "no",
+        "surface": "unpaved",
+        "width": "2"
+      }
+    },
+    "399,292": {
+      "wayId": 35146347,
+      "nodeId": 412258517,
+      "latitude": 62.8986753,
+      "longitude": 27.6759547,
+      "tags": {
+        "highway": "footway",
+        "name": "Pääkäytävä"
+      }
+    },
+    "402,290": {
+      "wayId": 601541259,
+      "nodeId": 1262483538,
+      "latitude": 62.8946896,
+      "longitude": 27.6896769,
+      "tags": {
+        "bicycle": "yes",
+        "crossing": "marked",
+        "crossing:markings": "yes",
+        "foot": "yes",
+        "footway": "crossing",
+        "highway": "footway",
+        "name": "Maljalahdenkatu",
+        "name:fi": "Maljalahdenkatu",
+        "surface": "asphalt"
+      }
+    },
+    "403,289": {
+      "wayId": 609235953,
+      "nodeId": 36684009,
+      "latitude": 62.8916591,
+      "longitude": 27.6904513,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "name": "Vahtivuorenkatu",
+        "name:fi": "Vahtivuorenkatu",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "402,287": {
+      "wayId": 25414238,
+      "nodeId": 276980148,
+      "latitude": 62.887524,
+      "longitude": 27.6862509,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "name": "Brahenkatu",
+        "name:fi": "Brahenkatu",
+        "source": "bing;survey",
+        "surface": "paved"
+      }
+    },
+    "398,287": {
+      "wayId": 1450203643,
+      "nodeId": 13301246743,
+      "latitude": 62.8869995,
+      "longitude": 27.6699067,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway"
+      }
+    },
+    "397,289": {
+      "wayId": 28173674,
+      "nodeId": 309450594,
+      "latitude": 62.8917945,
+      "longitude": 27.6633295,
+      "tags": {
+        "foot": "yes",
+        "highway": "cycleway"
+      }
+    },
+    "398,292": {
+      "wayId": 35146346,
+      "nodeId": 3879274382,
+      "latitude": 62.8975857,
+      "longitude": 27.6693539,
+      "tags": {
+        "highway": "footway",
+        "name": "Ratakäytävä"
+      }
+    },
+    "833,162": {
+      "wayId": 1296678709,
+      "nodeId": 253368146,
+      "latitude": 62.6073939,
+      "longitude": 29.7645852,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "name": "Kirkkokuja",
+        "segregated": "no",
+        "surface": "fine_gravel"
+      }
+    },
+    "834,162": {
+      "wayId": 519518332,
+      "nodeId": 415877582,
+      "latitude": 62.6060729,
+      "longitude": 29.7721121,
+      "tags": {
+        "bicycle": "designated",
+        "check_date:surface": "2023-04-22",
+        "cycleway:surface": "asphalt",
+        "foot": "designated",
+        "footway:surface": "asphalt",
+        "highway": "cycleway",
+        "lit": "yes",
+        "oneway": "no",
+        "segregated": "yes",
+        "snowplowing": "yes",
+        "surface": "asphalt"
+      }
+    },
+    "835,159": {
+      "wayId": 1349217896,
+      "nodeId": 12480515201,
+      "latitude": 62.5994856,
+      "longitude": 29.7762141,
+      "tags": {
+        "footway": "link",
+        "highway": "footway",
+        "level": "0",
+        "lit": "yes"
+      }
+    },
+    "832,157": {
+      "wayId": 49276659,
+      "nodeId": 5150305072,
+      "latitude": 62.5946464,
+      "longitude": 29.7637937,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "name": "Aittarannanpolku",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "833,157": {
+      "wayId": 49276659,
+      "nodeId": 5150305073,
+      "latitude": 62.594834,
+      "longitude": 29.7642563,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "name": "Aittarannanpolku",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "830,159": {
+      "wayId": 81081109,
+      "nodeId": 3713701526,
+      "latitude": 62.5991288,
+      "longitude": 29.7502748,
+      "tags": {
+        "highway": "footway",
+        "lit": "yes",
+        "surface": "fine_gravel"
+      }
+    },
+    "830,161": {
+      "wayId": 23423495,
+      "nodeId": 11169152990,
+      "latitude": 62.6048058,
+      "longitude": 29.7529291,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "318,-245": {
+      "wayId": 42825886,
+      "nodeId": 1683195916,
+      "latitude": 61.6933153,
+      "longitude": 27.2807212,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "name": "Saksalankatu",
+        "name:fi": "Saksalankatu",
+        "source": "survey",
+        "surface": "asphalt"
+      }
+    },
+    "318,-246": {
+      "wayId": 36909289,
+      "nodeId": 437645319,
+      "latitude": 61.6907867,
+      "longitude": 27.2831546,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "name": "Laiturikatu",
+        "name:fi": "Laiturikatu",
+        "segregated": "no",
+        "source": "survey",
+        "surface": "paved"
+      }
+    },
+    "319,-248": {
+      "wayId": 42296191,
+      "nodeId": 461851976,
+      "latitude": 61.6867826,
+      "longitude": 27.2866526,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "horse": "no",
+        "oneway": "no",
+        "segregated": "no",
+        "surface": "asphalt",
+        "traffic_sign": "FI:D6"
+      }
+    },
+    "318,-249": {
+      "wayId": 42831319,
+      "nodeId": 4838169353,
+      "latitude": 61.6828018,
+      "longitude": 27.282333,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "horse": "no",
+        "name": "Pursialankatu",
+        "name:fi": "Pursialankatu",
+        "segregated": "no",
+        "smoothness": "intermediate",
+        "source": "bing;survey",
+        "surface": "asphalt",
+        "traffic_sign": "FI:D6",
+        "width": "3"
+      }
+    },
+    "314,-250": {
+      "wayId": 36909255,
+      "nodeId": 596459429,
+      "latitude": 61.6820946,
+      "longitude": 27.2660941,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "name": "Brahenkuja",
+        "name:fi": "Brahenkuja",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "313,-247": {
+      "wayId": 42832138,
+      "nodeId": 12554945228,
+      "latitude": 61.6870606,
+      "longitude": 27.2612249,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "name": "Otavankatu",
+        "name:fi": "Otavankatu",
+        "segregated": "no",
+        "source": "survey",
+        "surface": "asphalt"
+      }
+    },
+    "314,-245": {
+      "wayId": 831186067,
+      "nodeId": 7760893583,
+      "latitude": 61.6921804,
+      "longitude": 27.2642411,
+      "tags": {
+        "footway": "sidewalk",
+        "highway": "footway",
+        "surface": "asphalt"
+      }
+    },
+    "649,-164": {
+      "wayId": 176786672,
+      "nodeId": 1872706993,
+      "latitude": 61.874249,
+      "longitude": 28.8788663,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "segregated": "no",
+        "smoothness": "excellent",
+        "snowplowing": "yes",
+        "surface": "asphalt"
+      }
+    },
+    "652,-166": {
+      "wayId": 68432809,
+      "nodeId": 266657812,
+      "latitude": 61.8698192,
+      "longitude": 28.8919978,
+      "tags": {
+        "bicycle": "yes",
+        "highway": "footway",
+        "lit": "yes",
+        "name": "Onnelistenpolku",
+        "surface": "asphalt"
+      }
+    },
+    "651,-168": {
+      "wayId": 156497764,
+      "nodeId": 974771310,
+      "latitude": 61.8646468,
+      "longitude": 28.8907747,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "name": "Timo Mustakallion puistotie",
+        "name:fi": "Timo Mustakallion puistotie",
+        "oneway": "no",
+        "segregated": "no",
+        "smoothness": "intermediate",
+        "source": "survey",
+        "surface": "fine_gravel"
+      }
+    },
+    "652,-168": {
+      "wayId": 32090659,
+      "nodeId": 974771904,
+      "latitude": 61.8644904,
+      "longitude": 28.8913456,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "name": "Martti Talvelan puistotie",
+        "segregated": "no",
+        "source": "survey",
+        "surface": "fine_gravel"
+      }
+    },
+    "647,-168": {
+      "wayId": 83534379,
+      "nodeId": 972725875,
+      "latitude": 61.865662,
+      "longitude": 28.8670154,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway"
+      }
+    },
+    "646,-168": {
+      "wayId": 83534379,
+      "nodeId": 972723142,
+      "latitude": 61.8657052,
+      "longitude": 28.8669104,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway"
+      }
+    },
+    "647,-165": {
+      "wayId": 240539978,
+      "nodeId": 979758818,
+      "latitude": 61.8727891,
+      "longitude": 28.8703777,
+      "tags": {
+        "foot": "designated",
+        "highway": "cycleway",
+        "name": "Talvisalonkatu",
+        "name:fi": "Talvisalonkatu",
+        "segregated": "no"
+      }
+    },
+    "410,887": {
+      "wayId": 1092194003,
+      "nodeId": 1250814654,
+      "latitude": 64.2335613,
+      "longitude": 27.7285457,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "mtb:scale": "0-",
+        "ski": "yes",
+        "width": "2"
+      }
+    },
+    "413,885": {
+      "wayId": 110433601,
+      "nodeId": 7714024167,
+      "latitude": 64.2296712,
+      "longitude": 27.7431994,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "name": "Kuurnantie",
+        "name:fi": "Kuurnantie",
+        "surface": "asphalt"
+      }
+    },
+    "413,883": {
+      "wayId": 173780344,
+      "nodeId": 8008922142,
+      "latitude": 64.2260005,
+      "longitude": 27.7425139,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "412,881": {
+      "wayId": 1473832781,
+      "nodeId": 13521371896,
+      "latitude": 64.2218925,
+      "longitude": 27.7354098,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lane_markings": "no",
+        "lit": "yes",
+        "motorcar": "destination",
+        "name": "Koulukatu",
+        "name:fi": "Koulukatu",
+        "surface": "asphalt"
+      }
+    },
+    "409,881": {
+      "wayId": 23444331,
+      "nodeId": 253897482,
+      "latitude": 64.2220461,
+      "longitude": 27.7216668,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "name": "Ridellinkuja",
+        "name:fi": "Ridellinkuja",
+        "segregated": "no",
+        "surface": "paved"
+      }
+    },
+    "407,883": {
+      "wayId": 109278436,
+      "nodeId": 6634274843,
+      "latitude": 64.2257981,
+      "longitude": 27.7143982,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway"
+      }
+    },
+    "408,885": {
+      "wayId": 108897115,
+      "nodeId": 1248373491,
+      "latitude": 64.2311029,
+      "longitude": 27.7175893,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway"
+      }
+    },
+    "-59,1236": {
+      "wayId": 28096794,
+      "nodeId": 308627545,
+      "latitude": 65.0176699,
+      "longitude": 25.4654665,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lanes": "3",
+        "lit": "yes",
+        "name": "Tervaporvarin sillat",
+        "oneway": "no",
+        "segregated": "yes",
+        "source": "name source: City of Oulu Town Plan",
+        "surface": "paved"
+      }
+    },
+    "-57,1235": {
+      "wayId": 39245717,
+      "nodeId": 470228445,
+      "latitude": 65.0163194,
+      "longitude": 25.4766669,
+      "tags": {
+        "bicycle": "no",
+        "bicycle:signed": "yes",
+        "highway": "footway",
+        "name": "Ainolanpolku",
+        "surface": "paving_stones"
+      }
+    },
+    "-56,1233": {
+      "wayId": 92003562,
+      "nodeId": 13873874474,
+      "latitude": 65.0107941,
+      "longitude": 25.4796424,
+      "tags": {
+        "highway": "footway",
+        "surface": "asphalt"
+      }
+    },
+    "-57,1231": {
+      "wayId": 28383866,
+      "nodeId": 610923452,
+      "latitude": 65.0062771,
+      "longitude": 25.4731262,
+      "tags": {
+        "foot": "yes",
+        "highway": "cycleway",
+        "lit": "yes",
+        "name": "Madetojanraitti",
+        "name:fi": "Madetojanraitti",
+        "segregated": "no",
+        "surface": "paving_stones"
+      }
+    },
+    "-61,1231": {
+      "wayId": 239362971,
+      "nodeId": 9885196872,
+      "latitude": 65.0074157,
+      "longitude": 25.4551053,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "name": "Ajurinpolku",
+        "oneway": "no",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "-62,1232": {
+      "wayId": 28849139,
+      "nodeId": 266589122,
+      "latitude": 65.0087451,
+      "longitude": 25.4526188,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "oneway": "no",
+        "surface": "fine_gravel"
+      }
+    },
+    "-57,1236": {
+      "wayId": 28764029,
+      "nodeId": 317174367,
+      "latitude": 65.0175623,
+      "longitude": 25.4749704,
+      "tags": {
+        "bicycle": "yes",
+        "highway": "footway",
+        "lit": "yes",
+        "name": "Ainolanpolku",
+        "surface": "unpaved"
+      }
+    },
+    "-263,1090": {
+      "wayId": 979705705,
+      "nodeId": 13818382091,
+      "latitude": 64.6896008,
+      "longitude": 24.4825974,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "-260,1088": {
+      "wayId": 1435123333,
+      "nodeId": 13190923074,
+      "latitude": 64.6868831,
+      "longitude": 24.4953744,
+      "tags": {
+        "highway": "footway",
+        "surface": "asphalt"
+      }
+    },
+    "-260,1085": {
+      "wayId": 1075137872,
+      "nodeId": 1122516618,
+      "latitude": 64.6797078,
+      "longitude": 24.4957319,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "name": "Koivukuja",
+        "segregated": "no",
+        "source": "Bing",
+        "surface": "asphalt"
+      }
+    },
+    "-262,1084": {
+      "wayId": 96922772,
+      "nodeId": 1123178476,
+      "latitude": 64.6772591,
+      "longitude": 24.488061,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "segregated": "no",
+        "surface": "fine_gravel"
+      }
+    },
+    "-264,1084": {
+      "wayId": 97085781,
+      "nodeId": 1122516861,
+      "latitude": 64.6766027,
+      "longitude": 24.4778995,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "name": "Ravipolku",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "-266,1087": {
+      "wayId": 361040876,
+      "nodeId": 3512833210,
+      "latitude": 64.6826922,
+      "longitude": 24.4687819,
+      "tags": {
+        "foot": "yes",
+        "highway": "cycleway",
+        "name": "Meripolku"
+      }
+    },
+    "-265,1088": {
+      "wayId": 1323886846,
+      "nodeId": 8097060340,
+      "latitude": 64.6870917,
+      "longitude": 24.4715168,
+      "tags": {
+        "highway": "footway",
+        "surface": "paved"
+      }
+    },
+    "-248,1558": {
+      "wayId": 120139805,
+      "nodeId": 9949806742,
+      "latitude": 65.7410591,
+      "longitude": 24.554556,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "name": "Ruutinrannanpolku",
+        "name:fi": "Ruutinrannanpolku",
+        "segregated": "no",
+        "surface": "gravel"
+      }
+    },
+    "-244,1558": {
+      "wayId": 622654048,
+      "nodeId": 5881000528,
+      "latitude": 65.7404947,
+      "longitude": 24.5740644,
+      "tags": {
+        "bicycle": "designated",
+        "crossing": "zebra",
+        "cycleway": "crossing",
+        "foot": "designated",
+        "highway": "cycleway",
+        "segregated": "no",
+        "surface": "paved"
+      }
+    },
+    "-243,1554": {
+      "wayId": 113841931,
+      "nodeId": 1290654784,
+      "latitude": 65.7326925,
+      "longitude": 24.576602,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "surface": "asphalt"
+      }
+    },
+    "-244,1553": {
+      "wayId": 65247249,
+      "nodeId": 797750141,
+      "latitude": 65.7305896,
+      "longitude": 24.5719685,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "segregated": "no",
+        "surface": "gravel"
+      }
+    },
+    "-247,1553": {
+      "wayId": 1349965799,
+      "nodeId": 12488207065,
+      "latitude": 65.7302371,
+      "longitude": 24.5574488,
+      "tags": {
+        "highway": "footway"
+      }
+    },
+    "-249,1555": {
+      "wayId": 97703614,
+      "nodeId": 1131118852,
+      "latitude": 65.7345957,
+      "longitude": 24.5497104,
+      "tags": {
+        "highway": "path",
+        "source": "Bing"
+      }
+    },
+    "-248,1557": {
+      "wayId": 120139805,
+      "nodeId": 8983078782,
+      "latitude": 65.7403447,
+      "longitude": 24.5547337,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "name": "Ruutinrannanpolku",
+        "name:fi": "Ruutinrannanpolku",
+        "segregated": "no",
+        "surface": "gravel"
+      }
+    },
+    "-332,1608": {
+      "wayId": 172295322,
+      "nodeId": 581158870,
+      "latitude": 65.8543783,
+      "longitude": 24.1489018,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "no",
+        "moped": "no",
+        "segregated": "no",
+        "source": "GPS",
+        "surface": "paved"
+      }
+    },
+    "-329,1606": {
+      "wayId": 49424429,
+      "nodeId": 562849278,
+      "latitude": 65.849336,
+      "longitude": 24.1617212,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "moped": "yes",
+        "segregated": "no"
+      }
+    },
+    "-329,1605": {
+      "wayId": 42466116,
+      "nodeId": 988606217,
+      "latitude": 65.8470666,
+      "longitude": 24.1615763,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "moped": "yes",
+        "segregated": "no"
+      }
+    },
+    "-332,1603": {
+      "wayId": 45894114,
+      "nodeId": 528008750,
+      "latitude": 65.8419505,
+      "longitude": 24.1476672,
+      "tags": {
+        "bicycle": "yes",
+        "foot": "yes",
+        "highway": "cycleway",
+        "lit": "no",
+        "moped": "yes",
+        "motor_vehicle": "no",
+        "name": "Rajakaari",
+        "segregated": "no",
+        "source": "GPS",
+        "surface": "paved"
+      }
+    },
+    "-333,1603": {
+      "wayId": 172295321,
+      "nodeId": 11895158761,
+      "latitude": 65.8419988,
+      "longitude": 24.1429733,
+      "tags": {
+        "bicycle": "yes",
+        "foot": "yes",
+        "highway": "cycleway",
+        "lit": "no",
+        "moped": "yes",
+        "motor_vehicle": "no",
+        "name": "Rajakaari",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "-335,1607": {
+      "wayId": 47133179,
+      "nodeId": 600927513,
+      "latitude": 65.8510433,
+      "longitude": 24.1346267,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "moped": "no",
+        "name": "Ylipäänkuja",
+        "name:fi": "Ylipäänkuja",
+        "segregated": "no",
+        "source": "GPS",
+        "surface": "paved"
+      }
+    },
+    "-334,1607": {
+      "wayId": 47133179,
+      "nodeId": 600927525,
+      "latitude": 65.8508783,
+      "longitude": 24.1367889,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "moped": "no",
+        "name": "Ylipäänkuja",
+        "name:fi": "Ylipäänkuja",
+        "segregated": "no",
+        "source": "GPS",
+        "surface": "paved"
+      }
+    },
+    "-5,1900": {
+      "wayId": 549969394,
+      "nodeId": 5312485768,
+      "latitude": 66.5100066,
+      "longitude": 25.7257073,
+      "tags": {
+        "highway": "path",
+        "lit": "no",
+        "surface": "fine_gravel"
+      }
+    },
+    "-3,1900": {
+      "wayId": 114928830,
+      "nodeId": 1300507564,
+      "latitude": 66.5099332,
+      "longitude": 25.7364655,
+      "tags": {
+        "bicycle": "designated",
+        "bridge": "yes",
+        "check_date:surface": "2026-03-07",
+        "foot": "designated",
+        "highway": "cycleway",
+        "layer": "2",
+        "lit": "yes",
+        "oneway": "no",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "-1,1897": {
+      "wayId": 895887573,
+      "nodeId": 12999651410,
+      "latitude": 66.5022685,
+      "longitude": 25.7449867,
+      "tags": {
+        "highway": "path",
+        "surface": "dirt"
+      }
+    },
+    "-3,1895": {
+      "wayId": 50297824,
+      "nodeId": 14318362230,
+      "latitude": 66.4983168,
+      "longitude": 25.7351269,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "motor_vehicle": "destination",
+        "name": "Koskenranta",
+        "name:fi": "Koskenranta",
+        "parking:lane:both": "no_parking",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "-6,1895": {
+      "wayId": 1571627930,
+      "nodeId": 13418414322,
+      "latitude": 66.4980945,
+      "longitude": 25.7227588,
+      "tags": {
+        "bicycle": "no",
+        "footway": "sidewalk",
+        "highway": "footway",
+        "surface": "asphalt"
+      }
+    },
+    "-7,1896": {
+      "wayId": 38295592,
+      "nodeId": 451933293,
+      "latitude": 66.5004782,
+      "longitude": 25.7149539,
+      "tags": {
+        "addr:city": "Rovaniemi",
+        "amenity": "marketplace",
+        "highway": "pedestrian",
+        "name": "Rovaniemen Kauppatori",
+        "name:en": "Rovaniemi Market Square"
+      }
+    },
+    "-8,1898": {
+      "wayId": 28469866,
+      "nodeId": 312770265,
+      "latitude": 66.5053856,
+      "longitude": 25.713158,
+      "tags": {
+        "bicycle": "yes",
+        "foot": "yes",
+        "highway": "cycleway",
+        "horse": "yes",
+        "name": "Vaarankatu",
+        "name:fi": "Vaarankatu"
+      }
+    },
+    "713,1660": {
+      "wayId": 1330829658,
+      "nodeId": 12313690517,
+      "latitude": 65.9705618,
+      "longitude": 29.1875505,
+      "tags": {
+        "highway": "steps",
+        "name": "Liikuntapuiston kuntoportaat",
+        "sport": "fitness"
+      }
+    },
+    "715,1659": {
+      "wayId": 535989768,
+      "nodeId": 4932282673,
+      "latitude": 65.9688224,
+      "longitude": 29.1995775,
+      "tags": {
+        "bicycle": "yes",
+        "bridge": "yes",
+        "highway": "footway",
+        "layer": "1"
+      }
+    },
+    "716,1656": {
+      "wayId": 754359850,
+      "nodeId": 7047527487,
+      "latitude": 65.9606613,
+      "longitude": 29.1996951,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "horse": "no",
+        "lit": "yes",
+        "motor_vehicle": "no",
+        "surface": "asphalt",
+        "width": "2"
+      }
+    },
+    "715,1655": {
+      "wayId": 604394180,
+      "nodeId": 5735054121,
+      "latitude": 65.9596952,
+      "longitude": 29.1979523,
+      "tags": {
+        "highway": "footway"
+      }
+    },
+    "711,1655": {
+      "wayId": 236914754,
+      "nodeId": 891828070,
+      "latitude": 65.9599622,
+      "longitude": 29.1784156,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "segregated": "no"
+      }
+    },
+    "710,1657": {
+      "wayId": 754982189,
+      "nodeId": 7052724352,
+      "latitude": 65.9635191,
+      "longitude": 29.1735635,
+      "tags": {
+        "highway": "footway"
+      }
+    },
+    "711,1659": {
+      "wayId": 754982231,
+      "nodeId": 772591310,
+      "latitude": 65.9680173,
+      "longitude": 29.1758306,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "horse": "no",
+        "motor_vehicle": "no",
+        "surface": "asphalt",
+        "width": "2"
+      }
+    },
+    "174,2307": {
+      "wayId": 827126202,
+      "nodeId": 2346279125,
+      "latitude": 67.4228021,
+      "longitude": 26.5883851,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway"
+      }
+    },
+    "177,2305": {
+      "wayId": 226433446,
+      "nodeId": 2352612773,
+      "latitude": 67.4195017,
+      "longitude": 26.6048267,
+      "tags": {
+        "foot": "yes",
+        "highway": "cycleway",
+        "smoothness": "intermediate",
+        "surface": "asphalt",
+        "width": "2"
+      }
+    },
+    "178,2303": {
+      "wayId": 225813079,
+      "nodeId": 2346187109,
+      "latitude": 67.4154566,
+      "longitude": 26.6059159,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "horse": "no",
+        "segregated": "no",
+        "smoothness": "intermediate",
+        "surface": "asphalt",
+        "width": "2"
+      }
+    },
+    "176,2301": {
+      "wayId": 397064223,
+      "nodeId": 3998900410,
+      "latitude": 67.4107454,
+      "longitude": 26.5966237,
+      "tags": {
+        "bicycle": "yes",
+        "highway": "footway",
+        "name": "Pappilanniemen polku"
+      }
+    },
+    "173,2301": {
+      "wayId": 1360135595,
+      "nodeId": 12590554188,
+      "latitude": 67.4112448,
+      "longitude": 26.583579,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "171,2303": {
+      "wayId": 261669774,
+      "nodeId": 8356134343,
+      "latitude": 67.414776,
+      "longitude": 26.5745172,
+      "tags": {
+        "highway": "path",
+        "operator": "Sodankylän kunta",
+        "snowmobile": "designated",
+        "website": "https://www.visitsodankyla.fi/tekemista-artikkeli/kelkkailu/"
+      }
+    },
+    "172,2306": {
+      "wayId": 125000712,
+      "nodeId": 5892733286,
+      "latitude": 67.4209154,
+      "longitude": 26.5771491,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "segregated": "no",
+        "source": "GPS",
+        "surface": "asphalt"
+      }
+    },
+    "264,2970": {
+      "wayId": 418360547,
+      "nodeId": 4187927619,
+      "latitude": 68.9122748,
+      "longitude": 27.0246467,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "265,2970": {
+      "wayId": 418360547,
+      "nodeId": 4187927617,
+      "latitude": 68.9123769,
+      "longitude": 27.0250345,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "268,2965": {
+      "wayId": 884129093,
+      "nodeId": 4187266387,
+      "latitude": 68.9015315,
+      "longitude": 27.0413849,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "footway": "sidewalk",
+        "highway": "footway",
+        "horse": "no",
+        "motor_vehicle": "no",
+        "oneway": "no",
+        "segregated": "no",
+        "surface": "asphalt",
+        "width": "3"
+      }
+    },
+    "267,2965": {
+      "wayId": 418292956,
+      "nodeId": 4187266503,
+      "latitude": 68.9016935,
+      "longitude": 27.0392345,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "horse": "no",
+        "motor_vehicle": "no",
+        "oneway": "no",
+        "segregated": "no",
+        "surface": "asphalt",
+        "width": "3"
+      }
+    },
+    "264,2964": {
+      "wayId": 1425804750,
+      "nodeId": 4187674784,
+      "latitude": 68.8998162,
+      "longitude": 27.0244801,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "262,2967": {
+      "wayId": 1352667241,
+      "nodeId": 12515563172,
+      "latitude": 68.9050764,
+      "longitude": 27.0113307,
+      "tags": {
+        "highway": "footway"
+      }
+    },
+    "262,2969": {
+      "wayId": 910750276,
+      "nodeId": 8456776744,
+      "latitude": 68.9099392,
+      "longitude": 27.0143911,
+      "tags": {
+        "highway": "footway"
+      }
+    },
+    "262,3414": {
+      "wayId": 428319519,
+      "nodeId": 4274409477,
+      "latitude": 69.9106413,
+      "longitude": 27.0111993,
+      "tags": {
+        "bicycle": "no",
+        "foot": "designated",
+        "highway": "path",
+        "horse": "no",
+        "motor_vehicle": "no",
+        "name": "Utsjoen retkeilyreitti",
+        "sac_scale": "mountain_hiking",
+        "surface": "dirt/sand",
+        "trail_visibility": "good"
+      }
+    },
+    "269,3414": {
+      "wayId": 645249335,
+      "nodeId": 6065976055,
+      "latitude": 69.9086815,
+      "longitude": 27.0462406,
+      "tags": {
+        "highway": "path",
+        "surface": "dirt"
+      }
+    },
+    "269,3413": {
+      "wayId": 645249335,
+      "nodeId": 6065976057,
+      "latitude": 69.908296,
+      "longitude": 27.0459642,
+      "tags": {
+        "highway": "path",
+        "surface": "dirt"
+      }
+    },
+    "267,3411": {
+      "wayId": 645249335,
+      "nodeId": 6065976084,
+      "latitude": 69.9036812,
+      "longitude": 27.0370201,
+      "tags": {
+        "highway": "path",
+        "surface": "dirt"
+      }
+    },
+    "263,3411": {
+      "wayId": 1350908726,
+      "nodeId": 12498117956,
+      "latitude": 69.9037352,
+      "longitude": 27.0195572,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "261,3414": {
+      "wayId": 428319519,
+      "nodeId": 4274409478,
+      "latitude": 69.9104306,
+      "longitude": 27.009733,
+      "tags": {
+        "bicycle": "no",
+        "foot": "designated",
+        "highway": "path",
+        "horse": "no",
+        "motor_vehicle": "no",
+        "name": "Utsjoen retkeilyreitti",
+        "sac_scale": "mountain_hiking",
+        "surface": "dirt/sand",
+        "trail_visibility": "good"
+      }
+    },
+    "263,3414": {
+      "wayId": 428319519,
+      "nodeId": 4274409472,
+      "latitude": 69.9105878,
+      "longitude": 27.016035,
+      "tags": {
+        "bicycle": "no",
+        "foot": "designated",
+        "highway": "path",
+        "horse": "no",
+        "motor_vehicle": "no",
+        "name": "Utsjoen retkeilyreitti",
+        "sac_scale": "mountain_hiking",
+        "surface": "dirt/sand",
+        "trail_visibility": "good"
+      }
+    },
+    "-439,2738": {
+      "wayId": 431054846,
+      "nodeId": 4302949534,
+      "latitude": 68.3919896,
+      "longitude": 23.6336354,
+      "tags": {
+        "bicycle": "yes",
+        "description": "Valaistu kuntorata",
+        "foot": "designated",
+        "highway": "footway",
+        "horse": "no",
+        "leisure": "track",
+        "lit": "yes",
+        "motor_vehicle": "no",
+        "mtb:scale": "0+",
+        "piste:type": "nordic",
+        "surface": "sand",
+        "width": "3"
+      }
+    },
+    "-436,2737": {
+      "wayId": 654722612,
+      "nodeId": 6135043375,
+      "latitude": 68.3894749,
+      "longitude": 23.6460674,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "-436,2735": {
+      "wayId": 1451967941,
+      "nodeId": 13316499171,
+      "latitude": 68.3844577,
+      "longitude": 23.648173,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "-436,2736": {
+      "wayId": 210425630,
+      "nodeId": 2204930839,
+      "latitude": 68.3864505,
+      "longitude": 23.6493209,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "horse": "no",
+        "motor_vehicle": "no",
+        "oneway": "no",
+        "segregated": "no",
+        "source": "survey",
+        "surface": "asphalt",
+        "width": "3"
+      }
+    },
+    "-442,2734": {
+      "wayId": 653765539,
+      "nodeId": 6126705674,
+      "latitude": 68.3835919,
+      "longitude": 23.6160811,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "-442,2735": {
+      "wayId": 1449604475,
+      "nodeId": 13296228091,
+      "latitude": 68.3840915,
+      "longitude": 23.6160199,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "-441,2738": {
+      "wayId": 231263868,
+      "nodeId": 2396685338,
+      "latitude": 68.3915343,
+      "longitude": 23.6232252,
+      "tags": {
+        "highway": "path",
+        "name": "Kärrötie",
+        "name:fi": "Kärrötie",
+        "tracktype": "grade1"
+      }
+    },
+    "-1206,-952": {
+      "wayId": 179548583,
+      "nodeId": 1769088085,
+      "latitude": 60.1036252,
+      "longitude": 19.9352207,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "-1204,-954": {
+      "wayId": 229020512,
+      "nodeId": 2786968016,
+      "latitude": 60.1012713,
+      "longitude": 19.9446686,
+      "tags": {
+        "highway": "footway",
+        "lit": "yes",
+        "motor_vehicle": "no",
+        "surface": "gravel"
+      }
+    },
+    "-1203,-956": {
+      "wayId": 69655024,
+      "nodeId": 833185909,
+      "latitude": 60.0959056,
+      "longitude": 19.947025,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "surface": "gravel"
+      }
+    },
+    "-1205,-958": {
+      "wayId": 35979834,
+      "nodeId": 1763692514,
+      "latitude": 60.0918317,
+      "longitude": 19.9403663,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "oneway": "no",
+        "segregated": "no",
+        "source": "survey",
+        "surface": "asphalt"
+      }
+    },
+    "-1207,-958": {
+      "wayId": 37913416,
+      "nodeId": 445011991,
+      "latitude": 60.0917723,
+      "longitude": 19.9295762,
+      "tags": {
+        "footway": "sidewalk",
+        "highway": "footway",
+        "surface": "paving_stones"
+      }
+    },
+    "-1208,-954": {
+      "wayId": 162451180,
+      "nodeId": 1751471909,
+      "latitude": 60.1004484,
+      "longitude": 19.9245011,
+      "tags": {
+        "access": "yes",
+        "cutting": "yes",
+        "handrail": "no",
+        "highway": "steps",
+        "incline": "up",
+        "name": "Kärlekstigen",
+        "ramp": "no",
+        "step_count": "74",
+        "surface": "wood"
+      }
+    },
+    "-1208,-953": {
+      "wayId": 36975849,
+      "nodeId": 429956375,
+      "latitude": 60.1015326,
+      "longitude": 19.9253781,
+      "tags": {
+        "est_width": "1.2",
+        "highway": "path",
+        "mtb:scale": "0",
+        "surface": "gravel",
+        "width": "1.5"
+      }
+    },
+    "-378,-322": {
+      "wayId": 20799852,
+      "nodeId": 223423675,
+      "latitude": 61.5187219,
+      "longitude": 23.9269605,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "name": "Tasanteenraitti",
+        "name:fi": "Tasanteenraitti",
+        "oneway": "no",
+        "segregated": "no",
+        "surface": "fine_gravel",
+        "traffic_sign": "FI:D6"
+      }
+    },
+    "-4,1898": {
+      "wayId": 25900259,
+      "nodeId": 282529343,
+      "latitude": 66.5039982,
+      "longitude": 25.7288693,
+      "tags": {
+        "bicycle": "designated",
+        "check_date:surface": "2025-12-01",
+        "foot": "designated",
+        "highway": "cycleway",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "-857,389": {
+      "wayId": 28909373,
+      "nodeId": 309117703,
+      "latitude": 63.115826,
+      "longitude": 21.6184733,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "moped": "no",
+        "ncn": "yes",
+        "oneway": "no",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "317,-247": {
+      "wayId": 36909291,
+      "nodeId": 429255742,
+      "latitude": 61.6867944,
+      "longitude": 27.2786622,
+      "tags": {
+        "bicycle": "designated",
+        "bridge": "yes",
+        "foot": "designated",
+        "highway": "cycleway",
+        "layer": "1",
+        "level": "1",
+        "segregated": "no",
+        "surface": "wood"
+      }
+    },
+    "814,-291": {
+      "wayId": 47262396,
+      "nodeId": 602210548,
+      "latitude": 61.5891888,
+      "longitude": 29.6768678,
+      "tags": {
+        "bicycle": "yes",
+        "foot": "yes",
+        "highway": "path",
+        "horse": "yes",
+        "ski": "yes",
+        "snowmobile": "yes",
+        "surface": "unpaved"
+      }
+    },
+    "112,939": {
+      "wayId": 67147136,
+      "nodeId": 9275581541,
+      "latitude": 64.3520333,
+      "longitude": 26.2883119,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "segregated": "no",
+        "surface": "asphalt",
+        "width": "2"
+      }
+    },
+    "660,-71": {
+      "wayId": 77464681,
+      "nodeId": 13252565714,
+      "latitude": 62.0842687,
+      "longitude": 28.9341954,
+      "tags": {
+        "foot": "yes",
+        "highway": "path",
+        "piste:grooming": "classic+skating",
+        "piste:lit": "yes",
+        "piste:type": "nordic"
+      }
+    },
+    "500,2249": {
+      "wayId": 79226071,
+      "nodeId": 925464251,
+      "latitude": 67.2923172,
+      "longitude": 28.1586563,
+      "tags": {
+        "crossing": "zebra",
+        "footway": "crossing",
+        "highway": "footway"
+      }
+    },
+    "-634,647": {
+      "wayId": 100721260,
+      "nodeId": 384340942,
+      "latitude": 63.6947422,
+      "longitude": 22.6948396,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "678,2092": {
+      "wayId": 107016042,
+      "nodeId": 5377751993,
+      "latitude": 66.941216,
+      "longitude": 29.019385,
+      "tags": {
+        "highway": "path",
+        "operator": "Sallan kunta",
+        "snowmobile": "designated",
+        "website": "loma.salla.fi/fi/eramaa/talven_aktiviteetit/moottorikelkkailu/"
+      }
+    },
+    "348,724": {
+      "wayId": 108342997,
+      "nodeId": 1243366387,
+      "latitude": 63.8691399,
+      "longitude": 27.4261219,
+      "tags": {
+        "bicycle": "designated",
+        "bridge": "yes",
+        "foot": "designated",
+        "highway": "cycleway",
+        "layer": "1",
+        "segregated": "no",
+        "surface": "paved"
+      }
+    },
+    "538,-607": {
+      "wayId": 111504818,
+      "nodeId": 1553732701,
+      "latitude": 60.8785328,
+      "longitude": 28.3424615,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "882,-214": {
+      "wayId": 125664685,
+      "nodeId": 364139644,
+      "latitude": 61.762103,
+      "longitude": 30.002727,
+      "tags": {
+        "highway": "path",
+        "source": "gps survey",
+        "surface": "unpaved"
+      }
+    },
+    "-643,509": {
+      "wayId": 137840176,
+      "nodeId": 1511578605,
+      "latitude": 63.3858737,
+      "longitude": 22.6511024,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "-842,369": {
+      "wayId": 142278324,
+      "nodeId": 7053637565,
+      "latitude": 63.0704048,
+      "longitude": 21.6895223,
+      "tags": {
+        "highway": "footway",
+        "source": "bing"
+      }
+    },
+    "-379,243": {
+      "wayId": 145263142,
+      "nodeId": 1587001417,
+      "latitude": 62.7877116,
+      "longitude": 23.9240176,
+      "tags": {
+        "highway": "footway"
+      }
+    },
+    "-327,1592": {
+      "wayId": 157376808,
+      "nodeId": 1696004001,
+      "latitude": 65.8178828,
+      "longitude": 24.1708576,
+      "tags": {
+        "highway": "path",
+        "source": "Bing"
+      }
+    },
+    "-192,-904": {
+      "wayId": 167827800,
+      "nodeId": 1791821221,
+      "latitude": 60.2125784,
+      "longitude": 24.8235229,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "name": "Everstinkatu",
+        "name:fi": "Everstinkatu",
+        "name:sv": "Överstegatan",
+        "segregated": "no",
+        "surface": "paving_stones"
+      }
+    },
+    "59,1262": {
+      "wayId": 167957944,
+      "nodeId": 1792836344,
+      "latitude": 65.0775571,
+      "longitude": 26.0319096,
+      "tags": {
+        "highway": "path",
+        "name": "Onkilammenpolku",
+        "source": "GeoEye 2010",
+        "surface": "dirt"
+      }
+    },
+    "-203,1249": {
+      "wayId": 180726990,
+      "nodeId": 1911853035,
+      "latitude": 65.0471341,
+      "longitude": 24.7709179,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "-205,1236": {
+      "wayId": 182237377,
+      "nodeId": 1925754053,
+      "latitude": 65.0181276,
+      "longitude": 24.7587664,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "-833,106": {
+      "wayId": 206355333,
+      "nodeId": 2163617830,
+      "latitude": 62.4802865,
+      "longitude": 21.7309137,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "-809,-290": {
+      "wayId": 207664631,
+      "nodeId": 2179180677,
+      "latitude": 61.5903703,
+      "longitude": 21.8506343,
+      "tags": {
+        "highway": "path",
+        "lit": "yes",
+        "mtb:scale": "1",
+        "mtb:winter": "no",
+        "name": "Kirkkokallion kuntorata",
+        "piste:grooming": "classic+skating"
+      }
+    },
+    "224,-370": {
+      "wayId": 213101212,
+      "nodeId": 2228516738,
+      "latitude": 61.4116953,
+      "longitude": 26.8277983,
+      "tags": {
+        "foot": "designated",
+        "highway": "footway",
+        "surface": "gravel",
+        "width": "2"
+      }
+    },
+    "-253,818": {
+      "wayId": 262783366,
+      "nodeId": 504652518,
+      "latitude": 64.0802627,
+      "longitude": 24.5277787,
+      "tags": {
+        "foot": "yes",
+        "highway": "cycleway",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "273,178": {
+      "wayId": 301813635,
+      "nodeId": 3059644400,
+      "latitude": 62.6412776,
+      "longitude": 27.0675648,
+      "tags": {
+        "highway": "path",
+        "mtb:scale": "0+",
+        "surface": "ground"
+      }
+    },
+    "372,2855": {
+      "wayId": 306370540,
+      "nodeId": 3112571185,
+      "latitude": 68.6543121,
+      "longitude": 27.542018,
+      "tags": {
+        "bicycle": "designated",
+        "crossing": "uncontrolled",
+        "crossing:island": "yes",
+        "crossing:markings": "zebra",
+        "cycleway": "crossing",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "smoothness": "intermediate",
+        "surface": "asphalt",
+        "tactile_paving": "no"
+      }
+    },
+    "644,2593": {
+      "wayId": 317355268,
+      "nodeId": 3236022968,
+      "latitude": 68.0664393,
+      "longitude": 28.8570275,
+      "tags": {
+        "foot": "designated",
+        "highway": "path",
+        "surface": "dirt"
+      }
+    },
+    "-365,2029": {
+      "wayId": 324185767,
+      "nodeId": 3309154633,
+      "latitude": 66.8000179,
+      "longitude": 23.9906564,
+      "tags": {
+        "bicycle": "designated",
+        "crossing": "zebra",
+        "foot": "designated",
+        "footway": "crossing",
+        "highway": "footway",
+        "lit": "yes",
+        "segregated": "no",
+        "surface": "asphalt",
+        "traffic_sign": "FI:423"
+      }
+    },
+    "911,245": {
+      "wayId": 326095598,
+      "nodeId": 3327129408,
+      "latitude": 62.7939225,
+      "longitude": 30.1443131,
+      "tags": {
+        "bicycle": "designated",
+        "check_date:surface": "2021-11-25",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "no",
+        "name": "Pitkospolku",
+        "smoothness": "bad",
+        "surface": "gravel"
+      }
+    },
+    "-63,860": {
+      "wayId": 329013802,
+      "nodeId": 3358308819,
+      "latitude": 64.1738681,
+      "longitude": 25.4469,
+      "tags": {
+        "highway": "path",
+        "mtb:scale": "1",
+        "name": "Korkatin Reittilatu",
+        "piste:difficulty": "easy",
+        "piste:grooming": "classic+skating",
+        "piste:lit": "no",
+        "piste:priority": "3",
+        "piste:type": "nordic",
+        "source": "GPS",
+        "website": "http://www.haapavesi.fi/vapaa-aika-ja-kulttuuri/liikunta-ja-vapaa-aika/latukartat.html"
+      }
+    },
+    "-577,-756": {
+      "wayId": 345102108,
+      "nodeId": 3517965035,
+      "latitude": 60.5443324,
+      "longitude": 22.9653192,
+      "tags": {
+        "bicycle": "yes",
+        "foot": "yes",
+        "highway": "path",
+        "mtb:scale": "1",
+        "mtb:type": "crosscountry",
+        "sac_scale": "hiking",
+        "surface": "ground",
+        "trail_visibility": "excellent"
+      }
+    },
+    "-369,-829": {
+      "wayId": 354106780,
+      "nodeId": 3598841902,
+      "latitude": 60.3815134,
+      "longitude": 23.9684228,
+      "tags": {
+        "highway": "footway"
+      }
+    },
+    "-324,132": {
+      "wayId": 356276545,
+      "nodeId": 3617395127,
+      "latitude": 62.5386954,
+      "longitude": 24.1859144,
+      "tags": {
+        "highway": "path",
+        "surface": "compacted"
+      }
+    },
+    "248,-791": {
+      "wayId": 364025684,
+      "nodeId": 6470893526,
+      "latitude": 60.4673201,
+      "longitude": 26.9448025,
+      "tags": {
+        "highway": "footway",
+        "name": "Kauppakatu",
+        "name:fi": "Kauppakatu",
+        "smoothness": "excellent",
+        "surface": "paving_stones"
+      }
+    },
+    "348,1571": {
+      "wayId": 374820651,
+      "nodeId": 3782008570,
+      "latitude": 65.7715847,
+      "longitude": 27.4296974,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "334,1553": {
+      "wayId": 380382247,
+      "nodeId": 3837203109,
+      "latitude": 65.7295356,
+      "longitude": 27.3617849,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "157,1642": {
+      "wayId": 409052336,
+      "nodeId": 4109433561,
+      "latitude": 65.9304528,
+      "longitude": 26.505885,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway"
+      }
+    },
+    "150,2745": {
+      "wayId": 416757000,
+      "nodeId": 3196975362,
+      "latitude": 68.4068077,
+      "longitude": 26.4744283,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "40,2900": {
+      "wayId": 417625076,
+      "nodeId": 4181439315,
+      "latitude": 68.7550338,
+      "longitude": 25.9446001,
+      "tags": {
+        "highway": "path",
+        "surface": "dirt"
+      }
+    },
+    "-432,2543": {
+      "wayId": 421633096,
+      "nodeId": 4213819866,
+      "latitude": 67.9533251,
+      "longitude": 23.6653234,
+      "tags": {
+        "crossing": "zebra",
+        "footway": "crossing",
+        "highway": "footway"
+      }
+    },
+    "228,2959": {
+      "wayId": 427485206,
+      "nodeId": 4266783194,
+      "latitude": 68.8869445,
+      "longitude": 26.84812,
+      "tags": {
+        "foot": "designated",
+        "highway": "path",
+        "horse": "no",
+        "motor_vehicle": "no",
+        "name": "Retkeilyreitti",
+        "sac_scale": "hiking",
+        "surface": "dirt",
+        "trail_visibility": "good"
+      }
+    },
+    "159,3281": {
+      "wayId": 427815358,
+      "nodeId": 4269923526,
+      "latitude": 69.6112893,
+      "longitude": 26.5169495,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "227,3289": {
+      "wayId": 427830398,
+      "nodeId": 864909130,
+      "latitude": 69.6300387,
+      "longitude": 26.844992,
+      "tags": {
+        "highway": "steps",
+        "incline": "up",
+        "lit": "no",
+        "name": "Kevon reitti",
+        "source": "survey",
+        "surface": "wood"
+      }
+    },
+    "605,2044": {
+      "wayId": 430038984,
+      "nodeId": 4292994427,
+      "latitude": 66.8328268,
+      "longitude": 28.6689084,
+      "tags": {
+        "highway": "footway"
+      }
+    },
+    "231,1849": {
+      "wayId": 435633166,
+      "nodeId": 4335338128,
+      "latitude": 66.3941888,
+      "longitude": 26.8617876,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "928,905": {
+      "wayId": 439026007,
+      "nodeId": 4328016001,
+      "latitude": 64.2742444,
+      "longitude": 30.2251509,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "687,2577": {
+      "wayId": 439909813,
+      "nodeId": 3235957944,
+      "latitude": 68.0298944,
+      "longitude": 29.0627875,
+      "tags": {
+        "bridge": "boardwalk",
+        "highway": "path",
+        "mtb:scale": "2",
+        "surface": "wood"
+      }
+    },
+    "718,2520": {
+      "wayId": 440056468,
+      "nodeId": 4377585473,
+      "latitude": 67.9009948,
+      "longitude": 29.2115014,
+      "tags": {
+        "from": "Mettopalo",
+        "highway": "path",
+        "sac_scale": "hiking",
+        "surface": "dirt",
+        "to": "Ylempi Hirvashauta"
+      }
+    },
+    "-30,1225": {
+      "wayId": 445431701,
+      "nodeId": 4428613225,
+      "latitude": 64.9942982,
+      "longitude": 25.603251,
+      "tags": {
+        "highway": "footway"
+      }
+    },
+    "-216,5": {
+      "wayId": 467643561,
+      "nodeId": 4622474354,
+      "latitude": 62.2546845,
+      "longitude": 24.709018,
+      "tags": {
+        "highway": "footway"
+      }
+    },
+    "-473,340": {
+      "wayId": 482859437,
+      "nodeId": 4756394526,
+      "latitude": 63.0062405,
+      "longitude": 23.4708787,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "moped": "yes",
+        "oneway": "no",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "-246,357": {
+      "wayId": 491093669,
+      "nodeId": 4832481931,
+      "latitude": 63.0442092,
+      "longitude": 24.5643402,
+      "tags": {
+        "foot": "designated",
+        "footway": "crossing",
+        "highway": "cycleway"
+      }
+    },
+    "655,1269": {
+      "wayId": 491681293,
+      "nodeId": 4837552510,
+      "latitude": 65.0929113,
+      "longitude": 28.9055821,
+      "tags": {
+        "highway": "path",
+        "surface": "grass"
+      }
+    },
+    "-197,283": {
+      "wayId": 494801702,
+      "nodeId": 4865580444,
+      "latitude": 62.8772171,
+      "longitude": 24.8009914,
+      "tags": {
+        "bicycle": "designated",
+        "cycleway": "crossing",
+        "foot": "designated",
+        "highway": "cycleway"
+      }
+    },
+    "667,2555": {
+      "wayId": 532567818,
+      "nodeId": 439171203,
+      "latitude": 67.9802691,
+      "longitude": 28.9638726,
+      "tags": {
+        "bridge": "boardwalk",
+        "from": "Kemihaara",
+        "highway": "path",
+        "mtb:scale": "0",
+        "mtb:scale:uphill": "0",
+        "name": "Mantoselän pyöräilyreitti",
+        "sac_scale": "hiking",
+        "source": "survey",
+        "surface": "dirt",
+        "to": "Manto-oja autiotupa",
+        "trail_visibility": "good"
+      }
+    },
+    "-431,733": {
+      "wayId": 536504031,
+      "nodeId": 5197088398,
+      "latitude": 63.8884004,
+      "longitude": 23.672947,
+      "tags": {
+        "highway": "path",
+        "source": "NLS.fi Topographic Database",
+        "surface": "ground"
+      }
+    },
+    "-201,1715": {
+      "wayId": 536674311,
+      "nodeId": 5198289365,
+      "latitude": 66.0938118,
+      "longitude": 24.7805864,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "path",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "721,2589": {
+      "wayId": 546924323,
+      "nodeId": 3235958105,
+      "latitude": 68.0570332,
+      "longitude": 29.2252912,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "471,1925": {
+      "wayId": 553527253,
+      "nodeId": 5342912075,
+      "latitude": 66.5647816,
+      "longitude": 28.0212637,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "681,894": {
+      "wayId": 560355347,
+      "nodeId": 5403906996,
+      "latitude": 64.2506225,
+      "longitude": 29.034155,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "442,1324": {
+      "wayId": 562247289,
+      "nodeId": 255365171,
+      "latitude": 65.2169531,
+      "longitude": 27.8800563,
+      "tags": {
+        "highway": "path",
+        "surface": "dirt"
+      }
+    },
+    "423,1703": {
+      "wayId": 568344395,
+      "nodeId": 5467981195,
+      "latitude": 66.0675605,
+      "longitude": 27.787723,
+      "tags": {
+        "highway": "path",
+        "surface": "dirt"
+      }
+    },
+    "-1122,-875": {
+      "wayId": 595185978,
+      "nodeId": 5673194529,
+      "latitude": 60.2784946,
+      "longitude": 20.3413577,
+      "tags": {
+        "fixme": "resurvey",
+        "highway": "footway"
+      }
+    },
+    "-927,3098": {
+      "wayId": 600272991,
+      "nodeId": 5708434627,
+      "latitude": 69.1999465,
+      "longitude": 21.278724,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "-806,-287": {
+      "wayId": 602581369,
+      "nodeId": 5723056535,
+      "latitude": 61.5979073,
+      "longitude": 21.8627881,
+      "tags": {
+        "highway": "footway"
+      }
+    },
+    "186,-113": {
+      "wayId": 610277972,
+      "nodeId": 5779804478,
+      "latitude": 61.9879872,
+      "longitude": 26.6446587,
+      "tags": {
+        "addr:city": "Kangasniemi",
+        "amenity": "marketplace",
+        "foot": "designated",
+        "highway": "pedestrian",
+        "lit": "yes",
+        "name": "Kangasniemen rantatori",
+        "surface": "paved"
+      }
+    },
+    "-38,-339": {
+      "wayId": 611612012,
+      "nodeId": 4398929801,
+      "latitude": 61.480682,
+      "longitude": 25.5666742,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "-503,-952": {
+      "wayId": 613812539,
+      "nodeId": 5806986540,
+      "latitude": 60.1055692,
+      "longitude": 23.3250153,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "821,168": {
+      "wayId": 619485323,
+      "nodeId": 5854054638,
+      "latitude": 62.6198695,
+      "longitude": 29.7095208,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "-65,828": {
+      "wayId": 624651991,
+      "nodeId": 436567606,
+      "latitude": 64.1022085,
+      "longitude": 25.4370261,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway"
+      }
+    },
+    "382,2362": {
+      "wayId": 669745353,
+      "nodeId": 6272044910,
+      "latitude": 67.5462458,
+      "longitude": 27.5914714,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "-399,2307": {
+      "wayId": 694202749,
+      "nodeId": 6517500842,
+      "latitude": 67.4243515,
+      "longitude": 23.826894,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "-343,-310": {
+      "wayId": 725785644,
+      "nodeId": 6805022079,
+      "latitude": 61.5469037,
+      "longitude": 24.0960546,
+      "tags": {
+        "highway": "path",
+        "mtb:scale": "1",
+        "sac_scale": "hiking",
+        "surface": "gravel",
+        "trail_visibility": "excellent",
+        "width": "1.5"
+      }
+    },
+    "-229,1973": {
+      "wayId": 750724115,
+      "nodeId": 7019319329,
+      "latitude": 66.6729318,
+      "longitude": 24.6464061,
+      "tags": {
+        "highway": "path",
+        "surface": "dirt"
+      }
+    },
+    "712,1659": {
+      "wayId": 756072289,
+      "nodeId": 7061617425,
+      "latitude": 65.9677971,
+      "longitude": 29.1833511,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "horse": "no",
+        "motor_vehicle": "no",
+        "surface": "asphalt",
+        "width": "3"
+      }
+    },
+    "707,1657": {
+      "wayId": 757626416,
+      "nodeId": 7047369347,
+      "latitude": 65.9633007,
+      "longitude": 29.1567686,
+      "tags": {
+        "highway": "path",
+        "surface": "ground",
+        "width": "1"
+      }
+    },
+    "849,1719": {
+      "wayId": 758530155,
+      "nodeId": 1212995206,
+      "latitude": 66.1035387,
+      "longitude": 29.845734,
+      "tags": {
+        "highway": "path",
+        "snowmobile": "permissive"
+      }
+    },
+    "-386,1937": {
+      "wayId": 765993541,
+      "nodeId": 7154118035,
+      "latitude": 66.5922751,
+      "longitude": 23.8863371,
+      "tags": {
+        "highway": "footway"
+      }
+    },
+    "673,209": {
+      "wayId": 771977560,
+      "nodeId": 7206840465,
+      "latitude": 62.7116769,
+      "longitude": 28.9970859,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway"
+      }
+    },
+    "-176,-717": {
+      "wayId": 777351683,
+      "nodeId": 7253681916,
+      "latitude": 60.6318629,
+      "longitude": 24.8994782,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway"
+      }
+    },
+    "55,-297": {
+      "wayId": 795678303,
+      "nodeId": 7442378763,
+      "latitude": 61.5747595,
+      "longitude": 26.0148399,
+      "tags": {
+        "highway": "footway",
+        "lit": "yes",
+        "surface": "asphalt"
+      }
+    },
+    "658,-14": {
+      "wayId": 797817499,
+      "nodeId": 1788416653,
+      "latitude": 62.2103546,
+      "longitude": 28.9204114,
+      "tags": {
+        "description": "Vaellusreitti",
+        "highway": "path",
+        "trail_visibility": "good"
+      }
+    },
+    "615,-470": {
+      "wayId": 798034337,
+      "nodeId": 7463970648,
+      "latitude": 61.1879008,
+      "longitude": 28.7166705,
+      "tags": {
+        "highway": "footway",
+        "surface": "unpaved"
+      }
+    },
+    "-281,-1009": {
+      "wayId": 807164226,
+      "nodeId": 7548200445,
+      "latitude": 59.9776157,
+      "longitude": 24.3922664,
+      "tags": {
+        "highway": "footway",
+        "wheelchair": "yes"
+      }
+    },
+    "-78,-567": {
+      "wayId": 813656948,
+      "nodeId": 2599811987,
+      "latitude": 60.9693991,
+      "longitude": 25.3757399,
+      "tags": {
+        "highway": "path",
+        "mtb:scale": "1",
+        "trail_visibility": "good",
+        "width": "2"
+      }
+    },
+    "-61,1241": {
+      "wayId": 815462015,
+      "nodeId": 4344270492,
+      "latitude": 65.0299188,
+      "longitude": 25.4550718,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "lit": "yes",
+        "name": "Sturenpolku",
+        "oneway": "no",
+        "segregated": "no",
+        "source": "survey",
+        "surface": "asphalt"
+      }
+    },
+    "-354,2038": {
+      "wayId": 822133850,
+      "nodeId": 7676363717,
+      "latitude": 66.8185003,
+      "longitude": 24.0429256,
+      "tags": {
+        "highway": "path",
+        "mtb:scale": "2"
+      }
+    },
+    "523,2332": {
+      "wayId": 826245879,
+      "nodeId": 7714434584,
+      "latitude": 67.4787403,
+      "longitude": 28.2734619,
+      "tags": {
+        "highway": "path",
+        "surface": "dirt"
+      }
+    },
+    "-14,-330": {
+      "wayId": 838178874,
+      "nodeId": 7822883200,
+      "latitude": 61.5016784,
+      "longitude": 25.68105,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "surface": "asphalt"
+      }
+    },
+    "288,-754": {
+      "wayId": 852423280,
+      "nodeId": 984632601,
+      "latitude": 60.5489101,
+      "longitude": 27.1391149,
+      "tags": {
+        "highway": "path",
+        "mtb:scale": "2"
+      }
+    },
+    "-744,-518": {
+      "wayId": 858930402,
+      "nodeId": 8006844550,
+      "latitude": 61.0803727,
+      "longitude": 22.1608351,
+      "tags": {
+        "highway": "path",
+        "mtb:scale": "1"
+      }
+    },
+    "115,1134": {
+      "wayId": 863404908,
+      "nodeId": 8043105908,
+      "latitude": 64.7886397,
+      "longitude": 26.3026734,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "-25,2456": {
+      "wayId": 878006012,
+      "nodeId": 8168883471,
+      "latitude": 67.7582937,
+      "longitude": 25.630264,
+      "tags": {
+        "highway": "path",
+        "surface": "dirt"
+      }
+    },
+    "-421,804": {
+      "wayId": 883925985,
+      "nodeId": 8220721082,
+      "latitude": 64.0481458,
+      "longitude": 23.7172497,
+      "tags": {
+        "highway": "path",
+        "mtb:scale": "1"
+      }
+    },
+    "-898,-645": {
+      "wayId": 897221043,
+      "nodeId": 8339413930,
+      "latitude": 60.7946104,
+      "longitude": 21.4173829,
+      "tags": {
+        "bridge": "yes",
+        "highway": "footway",
+        "layer": "1",
+        "mtb:scale": "0-",
+        "name": "Ykskoivun kuntopolku"
+      }
+    },
+    "724,179": {
+      "wayId": 914788712,
+      "nodeId": 8497754105,
+      "latitude": 62.6442162,
+      "longitude": 29.2430552,
+      "tags": {
+        "bicycle": "designated",
+        "crossing": "marked",
+        "crossing:island": "no",
+        "foot": "designated",
+        "footway": "crossing",
+        "highway": "footway",
+        "surface": "asphalt",
+        "tactile_paving": "no",
+        "width": "1"
+      }
+    },
+    "-566,-620": {
+      "wayId": 936498325,
+      "nodeId": 4841757993,
+      "latitude": 60.8502008,
+      "longitude": 23.0182017,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "403,2547": {
+      "wayId": 944841395,
+      "nodeId": 8747294389,
+      "latitude": 67.962744,
+      "longitude": 27.6910029,
+      "tags": {
+        "highway": "path",
+        "surface": "dirt"
+      }
+    },
+    "453,-511": {
+      "wayId": 948167004,
+      "nodeId": 8776675122,
+      "latitude": 61.0942395,
+      "longitude": 27.9359771,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "401,373": {
+      "wayId": 962640706,
+      "nodeId": 8904670115,
+      "latitude": 63.0792268,
+      "longitude": 27.6847526,
+      "tags": {
+        "highway": "footway"
+      }
+    },
+    "1009,101": {
+      "wayId": 965349836,
+      "nodeId": 8930443710,
+      "latitude": 62.4697869,
+      "longitude": 30.6165129,
+      "tags": {
+        "highway": "path",
+        "mtb:scale": "1",
+        "name": "Paimenpojan polku",
+        "source": "gps"
+      }
+    },
+    "-587,207": {
+      "wayId": 969301162,
+      "nodeId": 8969003078,
+      "latitude": 62.7077207,
+      "longitude": 22.9180599,
+      "tags": {
+        "bicycle": "yes",
+        "foot": "yes",
+        "highway": "path",
+        "mtb:scale": "2",
+        "obstacle": "vegetation",
+        "surface": "ground;dirt",
+        "trail_visibility": "bad",
+        "width": "1"
+      }
+    },
+    "-889,-485": {
+      "wayId": 970187050,
+      "nodeId": 8977986592,
+      "latitude": 61.1533914,
+      "longitude": 21.4645824,
+      "tags": {
+        "highway": "path",
+        "mtb:scale": "0"
+      }
+    },
+    "457,-533": {
+      "wayId": 974142010,
+      "nodeId": 9015437658,
+      "latitude": 61.0445472,
+      "longitude": 27.95492,
+      "tags": {
+        "highway": "path",
+        "mtb:scale": "2"
+      }
+    },
+    "-831,3076": {
+      "wayId": 983808027,
+      "nodeId": 9096918490,
+      "latitude": 69.1495622,
+      "longitude": 21.7406552,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "536,368": {
+      "wayId": 997971536,
+      "nodeId": 8704349367,
+      "latitude": 63.0683213,
+      "longitude": 28.3343384,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "layer": "1"
+      }
+    },
+    "-161,1103": {
+      "wayId": 1006307776,
+      "nodeId": 9284556869,
+      "latitude": 64.7193445,
+      "longitude": 24.9719616,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "230,597": {
+      "wayId": 1012154872,
+      "nodeId": 9337986262,
+      "latitude": 63.583176,
+      "longitude": 26.8599944,
+      "tags": {
+        "bicycle": "yes",
+        "foot": "yes",
+        "highway": "path",
+        "horse": "yes",
+        "lit": "yes",
+        "motor_vehicle": "no",
+        "surface": "woodchips",
+        "tracktype": "grade3",
+        "width": "3"
+      }
+    },
+    "-331,2397": {
+      "wayId": 1017099689,
+      "nodeId": 9381412423,
+      "latitude": 67.6268556,
+      "longitude": 24.1557579,
+      "tags": {
+        "highway": "path",
+        "lit": "no"
+      }
+    },
+    "581,593": {
+      "wayId": 1036366022,
+      "nodeId": 9548098591,
+      "latitude": 63.5741889,
+      "longitude": 28.5488078,
+      "tags": {
+        "highway": "path",
+        "surface": "dirt"
+      }
+    },
+    "609,1487": {
+      "wayId": 1039716507,
+      "nodeId": 9573846015,
+      "latitude": 65.5816301,
+      "longitude": 28.6861228,
+      "tags": {
+        "highway": "path",
+        "surface": "dirt"
+      }
+    },
+    "125,417": {
+      "wayId": 1059969168,
+      "nodeId": 9738557216,
+      "latitude": 63.179508,
+      "longitude": 26.352992,
+      "tags": {
+        "foot": "yes",
+        "highway": "cycleway",
+        "surface": "paved"
+      }
+    },
+    "714,2245": {
+      "wayId": 1062192407,
+      "nodeId": 9758248389,
+      "latitude": 67.2844481,
+      "longitude": 29.1901269,
+      "tags": {
+        "fixme": "continue",
+        "highway": "path"
+      }
+    },
+    "754,-368": {
+      "wayId": 1075642710,
+      "nodeId": 9864974973,
+      "latitude": 61.4172062,
+      "longitude": 29.3869609,
+      "tags": {
+        "bridge": "yes",
+        "highway": "path",
+        "layer": "1"
+      }
+    },
+    "648,3036": {
+      "wayId": 1084268741,
+      "nodeId": 9935870186,
+      "latitude": 69.0607274,
+      "longitude": 28.8746506,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "-279,28": {
+      "wayId": 1089936152,
+      "nodeId": 9984066463,
+      "latitude": 62.3059836,
+      "longitude": 24.4040822,
+      "tags": {
+        "highway": "path",
+        "mtb:scale": "1"
+      }
+    },
+    "-247,1094": {
+      "wayId": 1097259800,
+      "nodeId": 8242524026,
+      "latitude": 64.6988564,
+      "longitude": 24.558661,
+      "tags": {
+        "highway": "path",
+        "mtb:scale": "1",
+        "surface": "ground"
+      }
+    },
+    "182,628": {
+      "wayId": 1097471007,
+      "nodeId": 10048935862,
+      "latitude": 63.6526172,
+      "longitude": 26.6274685,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "smoothness": "intermediate",
+        "surface": "unpaved",
+        "width": "2"
+      }
+    },
+    "-993,-1024": {
+      "wayId": 1101185924,
+      "nodeId": 10077482953,
+      "latitude": 59.9423344,
+      "longitude": 20.962322,
+      "tags": {
+        "highway": "footway"
+      }
+    },
+    "908,-63": {
+      "wayId": 1115577740,
+      "nodeId": 10202588999,
+      "latitude": 62.1006443,
+      "longitude": 30.1287042,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway"
+      }
+    },
+    "260,1266": {
+      "wayId": 1125895429,
+      "nodeId": 10295539130,
+      "latitude": 65.0847619,
+      "longitude": 27.0022257,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "-273,2129": {
+      "wayId": 1131000427,
+      "nodeId": 10541275760,
+      "latitude": 67.022788,
+      "longitude": 24.4315835,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "-179,-930": {
+      "wayId": 1133482318,
+      "nodeId": 674770137,
+      "latitude": 60.1537712,
+      "longitude": 24.8848491,
+      "tags": {
+        "crossing": "uncontrolled",
+        "footway": "crossing",
+        "highway": "footway",
+        "lit": "yes",
+        "surface": "asphalt"
+      }
+    },
+    "-777,3002": {
+      "wayId": 1135372854,
+      "nodeId": 10583651191,
+      "latitude": 68.9834947,
+      "longitude": 22.0026247,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "898,597": {
+      "wayId": 1147041223,
+      "nodeId": 10673688638,
+      "latitude": 63.5824184,
+      "longitude": 30.078266,
+      "tags": {
+        "bridge": "boardwalk",
+        "highway": "path",
+        "layer": "1",
+        "surface": "wood"
+      }
+    },
+    "830,1309": {
+      "wayId": 1147342619,
+      "nodeId": 5430919223,
+      "latitude": 65.1822143,
+      "longitude": 29.7512388,
+      "tags": {
+        "bridge": "boardwalk",
+        "foot": "designated",
+        "highway": "path",
+        "layer": "1",
+        "sac_scale": "hiking",
+        "surface": "wood",
+        "trail_visibility": "good",
+        "width": "0.3"
+      }
+    },
+    "536,1487": {
+      "wayId": 1148904754,
+      "nodeId": 8687407096,
+      "latitude": 65.5814244,
+      "longitude": 28.334028,
+      "tags": {
+        "bridge": "boardwalk",
+        "foot": "designated",
+        "highway": "path",
+        "layer": "1",
+        "mtb:scale": "4",
+        "surface": "wood",
+        "trail_visibility": "horrible",
+        "width": "0.3"
+      }
+    },
+    "310,2135": {
+      "wayId": 1157397338,
+      "nodeId": 4008306039,
+      "latitude": 67.0367754,
+      "longitude": 27.2448359,
+      "tags": {
+        "highway": "path",
+        "surface": "dirt"
+      }
+    },
+    "-706,2820": {
+      "wayId": 1162422863,
+      "nodeId": 10810916469,
+      "latitude": 68.5749057,
+      "longitude": 22.343025,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "-773,3030": {
+      "wayId": 1163544290,
+      "nodeId": 10821172881,
+      "latitude": 69.0480386,
+      "longitude": 22.0236271,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "-775,3032": {
+      "wayId": 1163544290,
+      "nodeId": 10821172891,
+      "latitude": 69.0521892,
+      "longitude": 22.0147949,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "-603,244": {
+      "wayId": 1173595034,
+      "nodeId": 11598626115,
+      "latitude": 62.7913269,
+      "longitude": 22.8406982,
+      "tags": {
+        "highway": "footway",
+        "surface": "asphalt"
+      }
+    },
+    "716,701": {
+      "wayId": 1174852904,
+      "nodeId": 10916696775,
+      "latitude": 63.8175653,
+      "longitude": 29.2015043,
+      "tags": {
+        "highway": "path",
+        "mtb:scale": "1+"
+      }
+    },
+    "-202,-744": {
+      "wayId": 1179940920,
+      "nodeId": 9111507398,
+      "latitude": 60.5728783,
+      "longitude": 24.7749896,
+      "tags": {
+        "highway": "path",
+        "mtb:scale": "1"
+      }
+    },
+    "-1009,-764": {
+      "wayId": 1189093872,
+      "nodeId": 11041764936,
+      "latitude": 60.5269266,
+      "longitude": 20.8863951,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "36,2237": {
+      "wayId": 1208185664,
+      "nodeId": 11195051436,
+      "latitude": 67.266276,
+      "longitude": 25.9250257,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "709,3260": {
+      "wayId": 1225500274,
+      "nodeId": 11364777379,
+      "latitude": 69.5630201,
+      "longitude": 29.168534,
+      "tags": {
+        "foot": "designated",
+        "ford": "yes",
+        "highway": "path",
+        "surface": "ground"
+      }
+    },
+    "659,3253": {
+      "wayId": 1228225136,
+      "nodeId": 11389713498,
+      "latitude": 69.5484755,
+      "longitude": 28.929574,
+      "tags": {
+        "highway": "path",
+        "surface": "dirt"
+      }
+    },
+    "723,3210": {
+      "wayId": 1229701228,
+      "nodeId": 11403430828,
+      "latitude": 69.4509581,
+      "longitude": 29.2338752,
+      "tags": {
+        "foot": "designated",
+        "highway": "path",
+        "surface": "sand",
+        "width": "1"
+      }
+    },
+    "272,3034": {
+      "wayId": 1237246471,
+      "nodeId": 4275546598,
+      "latitude": 69.0559149,
+      "longitude": 27.0624596,
+      "tags": {
+        "highway": "path",
+        "surface": "dirt"
+      }
+    },
+    "55,-501": {
+      "wayId": 1246020359,
+      "nodeId": 11583920456,
+      "latitude": 61.1166283,
+      "longitude": 26.0147201,
+      "tags": {
+        "highway": "footway",
+        "surface": "unpaved",
+        "width": "2"
+      }
+    },
+    "210,312": {
+      "wayId": 1250722354,
+      "nodeId": 11626314034,
+      "latitude": 62.943844,
+      "longitude": 26.7621421,
+      "tags": {
+        "golf": "path",
+        "highway": "footway"
+      }
+    },
+    "884,481": {
+      "wayId": 1260529628,
+      "nodeId": 11716024233,
+      "latitude": 63.3227053,
+      "longitude": 30.0101095,
+      "tags": {
+        "bicycle": "designated",
+        "crossing": "marked",
+        "crossing:island": "yes",
+        "crossing:markings": "yes",
+        "cycleway": "crossing",
+        "foot": "designated",
+        "highway": "cycleway",
+        "segregated": "no",
+        "surface": "asphalt",
+        "tactile_paving": "no",
+        "width": "2"
+      }
+    },
+    "-565,-1059": {
+      "wayId": 1267923850,
+      "nodeId": 11775536234,
+      "latitude": 59.8653102,
+      "longitude": 23.0260201,
+      "tags": {
+        "highway": "path",
+        "mtb:scale": "4",
+        "trail_visibility": "intermediate"
+      }
+    },
+    "-478,-1010": {
+      "wayId": 1280603209,
+      "nodeId": 11886884215,
+      "latitude": 59.9752321,
+      "longitude": 23.4425965,
+      "tags": {
+        "highway": "footway",
+        "lit": "yes",
+        "smoothness": "good",
+        "surface": "asphalt"
+      }
+    },
+    "76,2": {
+      "wayId": 1288950165,
+      "nodeId": 11952246089,
+      "latitude": 62.2467671,
+      "longitude": 26.1138635,
+      "tags": {
+        "highway": "path",
+        "source": "MML"
+      }
+    },
+    "-541,-707": {
+      "wayId": 1289184141,
+      "nodeId": 11954333440,
+      "latitude": 60.6550102,
+      "longitude": 23.1408897,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway"
+      }
+    },
+    "500,-525": {
+      "wayId": 1299108227,
+      "nodeId": 12033930713,
+      "latitude": 61.0645353,
+      "longitude": 28.1615777,
+      "tags": {
+        "highway": "path",
+        "horse": "no",
+        "surface": "fine_gravel"
+      }
+    },
+    "-388,-343": {
+      "wayId": 1304484422,
+      "nodeId": 12080549050,
+      "latitude": 61.4724948,
+      "longitude": 23.8783426,
+      "tags": {
+        "highway": "footway"
+      }
+    },
+    "1179,305": {
+      "wayId": 1307669171,
+      "nodeId": 1960829210,
+      "latitude": 62.928461,
+      "longitude": 31.4325285,
+      "tags": {
+        "foot": "yes",
+        "highway": "path",
+        "mtb:scale": "1",
+        "surface": "dirt",
+        "width": "0.7"
+      }
+    },
+    "883,1082": {
+      "wayId": 1307983216,
+      "nodeId": 11113812764,
+      "latitude": 64.6725671,
+      "longitude": 30.0095459,
+      "tags": {
+        "foot": "designated",
+        "highway": "path",
+        "sac_scale": "hiking",
+        "surface": "dirt/sand",
+        "trail_visibility": "good"
+      }
+    },
+    "-785,-891": {
+      "wayId": 1308118743,
+      "nodeId": 888196335,
+      "latitude": 60.2413406,
+      "longitude": 21.9660672,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "-471,-336": {
+      "wayId": 1312290611,
+      "nodeId": 12146588343,
+      "latitude": 61.4876948,
+      "longitude": 23.4770627,
+      "tags": {
+        "highway": "footway"
+      }
+    },
+    "369,2757": {
+      "wayId": 1316460148,
+      "nodeId": 3757709775,
+      "latitude": 68.4340564,
+      "longitude": 27.5298257,
+      "tags": {
+        "foot": "designated",
+        "from": "Vellinsärpimä",
+        "highway": "path",
+        "mtb:scale": "1-",
+        "sac_scale": "hiking",
+        "surface": "sand",
+        "trail_visibility": "excellent",
+        "width": "1.5"
+      }
+    },
+    "-112,-159": {
+      "wayId": 1323666370,
+      "nodeId": 12248736580,
+      "latitude": 61.8856109,
+      "longitude": 25.2095282,
+      "tags": {
+        "highway": "path",
+        "mtb:scale": "1",
+        "trail_visibility": "bad"
+      }
+    },
+    "449,34": {
+      "wayId": 1324143583,
+      "nodeId": 12253155827,
+      "latitude": 62.3195241,
+      "longitude": 27.9165986,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "-355,2779": {
+      "wayId": 1329611246,
+      "nodeId": 12301548845,
+      "latitude": 68.4844637,
+      "longitude": 24.0363399,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "130,389": {
+      "wayId": 1333702214,
+      "nodeId": 12339175731,
+      "latitude": 63.1161816,
+      "longitude": 26.3771832,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "701,714": {
+      "wayId": 1340858593,
+      "nodeId": 4622271862,
+      "latitude": 63.8459396,
+      "longitude": 29.1295265,
+      "tags": {
+        "highway": "path",
+        "mtb:scale": "2",
+        "surface": "dirt",
+        "width": "0.3"
+      }
+    },
+    "-619,110": {
+      "wayId": 1348772884,
+      "nodeId": 12476305200,
+      "latitude": 62.4886159,
+      "longitude": 22.7628968,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "path",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "-123,-879": {
+      "wayId": 1359647714,
+      "nodeId": 1363655413,
+      "latitude": 60.2688629,
+      "longitude": 25.1583918,
+      "tags": {
+        "highway": "path",
+        "mtb:scale": "2"
+      }
+    },
+    "699,1129": {
+      "wayId": 1362286272,
+      "nodeId": 12612697927,
+      "latitude": 64.7787786,
+      "longitude": 29.1203758,
+      "tags": {
+        "highway": "path",
+        "source": "MML/NLS"
+      }
+    },
+    "886,479": {
+      "wayId": 1362800717,
+      "nodeId": 12617761519,
+      "latitude": 63.3178801,
+      "longitude": 30.0217056,
+      "tags": {
+        "fixme": "verify if still exists",
+        "highway": "path"
+      }
+    },
+    "349,1206": {
+      "wayId": 1363830482,
+      "nodeId": 1180700861,
+      "latitude": 64.9520169,
+      "longitude": 27.4315103,
+      "tags": {
+        "bridge": "yes",
+        "highway": "path",
+        "layer": "1",
+        "operator": "Puolangan kunta",
+        "snowmobile": "permissive",
+        "surface": "ground",
+        "toll": "snowmobile",
+        "tracktype": "grade5",
+        "website": "https://kuhmo.cpu.fi/tuote-osasto/kainuun-uraluvat/"
+      }
+    },
+    "-492,2815": {
+      "wayId": 1365948330,
+      "nodeId": 12649567199,
+      "latitude": 68.5652072,
+      "longitude": 23.3764089,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "-732,-824": {
+      "wayId": 1376689663,
+      "nodeId": 12747416255,
+      "latitude": 60.3909899,
+      "longitude": 22.2185352,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "name": "Kaletonpolku",
+        "name:fi": "Kaletonpolku",
+        "name:sv": "Kalettostigen",
+        "oneway": "no",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "-342,968": {
+      "wayId": 1379317097,
+      "nodeId": 10737170651,
+      "latitude": 64.4167151,
+      "longitude": 24.0984171,
+      "tags": {
+        "highway": "path",
+        "surface": "unpaved"
+      }
+    },
+    "7,10": {
+      "wayId": 1382391893,
+      "nodeId": 12798578416,
+      "latitude": 62.2653441,
+      "longitude": 25.7816218,
+      "tags": {
+        "highway": "path",
+        "mtb:scale": "0+"
+      }
+    },
+    "1108,345": {
+      "wayId": 1388704884,
+      "nodeId": 12854816148,
+      "latitude": 63.0180415,
+      "longitude": 31.0908712,
+      "tags": {
+        "highway": "path",
+        "source": "MML25"
+      }
+    },
+    "-495,2790": {
+      "wayId": 1388988557,
+      "nodeId": 12855195931,
+      "latitude": 68.5081145,
+      "longitude": 23.3637184,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "78,8": {
+      "wayId": 1390746619,
+      "nodeId": 5345861151,
+      "latitude": 62.2611824,
+      "longitude": 26.1243102,
+      "tags": {
+        "highway": "path",
+        "mtb:scale": "0",
+        "width": "1"
+      }
+    },
+    "-860,-421": {
+      "wayId": 1408501980,
+      "nodeId": 12944210923,
+      "latitude": 61.29774,
+      "longitude": 21.6041534,
+      "tags": {
+        "highway": "path",
+        "mtb:scale": "0"
+      }
+    },
+    "-130,219": {
+      "wayId": 1425891290,
+      "nodeId": 13107398062,
+      "latitude": 62.7337526,
+      "longitude": 25.1219438,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "-40,2663": {
+      "wayId": 1429902891,
+      "nodeId": 13144003249,
+      "latitude": 68.2234035,
+      "longitude": 25.5561715,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "-430,1807": {
+      "wayId": 1431059334,
+      "nodeId": 301423703,
+      "latitude": 66.3008443,
+      "longitude": 23.677376,
+      "tags": {
+        "bicycle": "designated",
+        "cycleway": "designated",
+        "foot": "designated",
+        "highway": "cycleway"
+      }
+    },
+    "299,-746": {
+      "wayId": 1431559461,
+      "nodeId": 13158560434,
+      "latitude": 60.5680979,
+      "longitude": 27.1921871,
+      "tags": {
+        "footway": "sidewalk",
+        "highway": "footway"
+      }
+    },
+    "-569,693": {
+      "wayId": 1443078419,
+      "nodeId": 9894942746,
+      "latitude": 63.7982968,
+      "longitude": 23.0082782,
+      "tags": {
+        "highway": "path",
+        "mtb:scale": "0"
+      }
+    },
+    "522,846": {
+      "wayId": 1443243987,
+      "nodeId": 13243436623,
+      "latitude": 64.1431006,
+      "longitude": 28.2649357,
+      "tags": {
+        "highway": "path",
+        "mtb:scale": "0",
+        "width": "1.5"
+      }
+    },
+    "456,1110": {
+      "wayId": 1443503012,
+      "nodeId": 13240554641,
+      "latitude": 64.7343564,
+      "longitude": 27.948133,
+      "tags": {
+        "highway": "path",
+        "note": "is this a real path???\nIt's a very old abandoned hiking path (like nearby UKK and Köngäskierros), some blue markings here and there... in trees but mostly no visible path! I just checked both ends. Maybe delete, but then somebody ads it back?",
+        "visibility": "horrible",
+        "width": "0.1"
+      }
+    },
+    "-333,-200": {
+      "wayId": 1445391991,
+      "nodeId": 13261271899,
+      "latitude": 61.794098,
+      "longitude": 24.142966,
+      "tags": {
+        "highway": "path",
+        "visibility": "bad",
+        "width": "0.5"
+      }
+    },
+    "484,1015": {
+      "wayId": 1447164954,
+      "nodeId": 13277909807,
+      "latitude": 64.5222218,
+      "longitude": 28.083145,
+      "tags": {
+        "highway": "path",
+        "source": "MML/NLS"
+      }
+    },
+    "-6,1900": {
+      "wayId": 1457262406,
+      "nodeId": 312769699,
+      "latitude": 66.5095717,
+      "longitude": 25.7196098,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "611,3016": {
+      "wayId": 1472886978,
+      "nodeId": 9068797913,
+      "latitude": 69.0167875,
+      "longitude": 28.6953837,
+      "tags": {
+        "description": "Rajavyöhyke / Border Zone",
+        "fixme": "check location",
+        "highway": "path"
+      }
+    },
+    "309,2119": {
+      "wayId": 1473316734,
+      "nodeId": 11357632894,
+      "latitude": 67.0020644,
+      "longitude": 27.2405558,
+      "tags": {
+        "bridge": "boardwalk",
+        "highway": "path",
+        "mtb:scale": "0",
+        "surface": "wood"
+      }
+    },
+    "-717,-784": {
+      "wayId": 1485999714,
+      "nodeId": 13622671993,
+      "latitude": 60.4810029,
+      "longitude": 22.2909455,
+      "tags": {
+        "highway": "footway"
+      }
+    },
+    "748,-365": {
+      "wayId": 1496295008,
+      "nodeId": 1453635477,
+      "latitude": 61.4235759,
+      "longitude": 29.3574381,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway",
+        "horse": "no",
+        "lit": "no",
+        "motor_vehicle": "permit",
+        "segregated": "no",
+        "surface": "asphalt"
+      }
+    },
+    "635,2467": {
+      "wayId": 1512148202,
+      "nodeId": 13818538143,
+      "latitude": 67.7818655,
+      "longitude": 28.8092184,
+      "tags": {
+        "highway": "path",
+        "source": "Ortophoto"
+      }
+    },
+    "472,-637": {
+      "wayId": 1526346120,
+      "nodeId": 13911716964,
+      "latitude": 60.8123268,
+      "longitude": 28.0267942,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "49,624": {
+      "wayId": 1527336546,
+      "nodeId": 13918491685,
+      "latitude": 63.6440174,
+      "longitude": 25.9853516,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "-1,1882": {
+      "wayId": 1533505901,
+      "nodeId": 13974558337,
+      "latitude": 66.469088,
+      "longitude": 25.7467462,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "269,947": {
+      "wayId": 1535796340,
+      "nodeId": 13992070543,
+      "latitude": 64.3691661,
+      "longitude": 27.0477886,
+      "tags": {
+        "highway": "path",
+        "mtb:scale": "0+"
+      }
+    },
+    "-656,618": {
+      "wayId": 1547486560,
+      "nodeId": 14074994436,
+      "latitude": 63.6313975,
+      "longitude": 22.5851783,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "697,1705": {
+      "wayId": 1547547731,
+      "nodeId": 14075530200,
+      "latitude": 66.072175,
+      "longitude": 29.1116245,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "656,1713": {
+      "wayId": 1547734566,
+      "nodeId": 14077181705,
+      "latitude": 66.0901641,
+      "longitude": 28.9114987,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "172,3162": {
+      "wayId": 1551288080,
+      "nodeId": 14109756139,
+      "latitude": 69.3441377,
+      "longitude": 26.5771903,
+      "tags": {
+        "highway": "path",
+        "source": "MML26"
+      }
+    },
+    "-28,-531": {
+      "wayId": 1552273805,
+      "nodeId": 14122492481,
+      "latitude": 61.0492222,
+      "longitude": 25.6143309,
+      "tags": {
+        "highway": "path",
+        "mtb:scale": "1",
+        "surface": "ground"
+      }
+    },
+    "277,3290": {
+      "wayId": 1554615806,
+      "nodeId": 14143122468,
+      "latitude": 69.6319679,
+      "longitude": 27.0845833,
+      "tags": {
+        "highway": "path",
+        "source": "MML26"
+      }
+    },
+    "-328,543": {
+      "wayId": 1556841594,
+      "nodeId": 14160193606,
+      "latitude": 63.4628706,
+      "longitude": 24.1697768,
+      "tags": {
+        "highway": "path"
+      }
+    },
+    "-949,317": {
+      "wayId": 1557946908,
+      "nodeId": 2620048534,
+      "latitude": 62.9540517,
+      "longitude": 21.1714654,
+      "tags": {
+        "highway": "path",
+        "name": "Bergön vaellusreitti",
+        "sac_scale": "mountain_hiking",
+        "surface": "ground",
+        "trail_visibility": "excellent"
+      }
+    },
+    "72,1947": {
+      "wayId": 1558081737,
+      "nodeId": 4336881994,
+      "latitude": 66.6158831,
+      "longitude": 26.0961951,
+      "tags": {
+        "bridge": "boardwalk",
+        "foot": "designated",
+        "highway": "path",
+        "horse": "no",
+        "motor_vehicle": "no",
+        "name": "Rompanpolku",
+        "sac_scale": "hiking",
+        "source": "MML 2016",
+        "surface": "wood",
+        "trail_visibility": "excellent"
+      }
+    },
+    "672,828": {
+      "wayId": 1558866437,
+      "nodeId": 14180915342,
+      "latitude": 64.1016871,
+      "longitude": 28.9919218,
+      "tags": {
+        "highway": "path",
+        "source": "MML Orthofoto"
+      }
+    },
+    "-1071,3040": {
+      "wayId": 1566805399,
+      "nodeId": 10918110646,
+      "latitude": 69.0690121,
+      "longitude": 20.5873847,
+      "tags": {
+        "bicycle": "no",
+        "bridge": "boardwalk",
+        "foot": "designated",
+        "highway": "path",
+        "horse": "no",
+        "motor_vehicle": "no",
+        "sac_scale": "mountain_hiking",
+        "smoothness": "very_horrible",
+        "source": "strava.com heatmap (2023-05-22)",
+        "surface": "dirt",
+        "tracktype": "grade3",
+        "trail_visibility": "excellent",
+        "website": "https://www.luontoon.fi/kalottireitti",
+        "wheelchair": "no",
+        "width": "1"
+      }
+    },
+    "-75,1850": {
+      "wayId": 1567268199,
+      "nodeId": 14272887118,
+      "latitude": 66.3978456,
+      "longitude": 25.3863796,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway"
+      }
+    },
+    "-164,752": {
+      "wayId": 1567746035,
+      "nodeId": 14277957969,
+      "latitude": 63.932191,
+      "longitude": 24.9569909,
+      "tags": {
+        "bicycle": "designated",
+        "foot": "designated",
+        "highway": "cycleway"
+      }
+    }
+  }
+}

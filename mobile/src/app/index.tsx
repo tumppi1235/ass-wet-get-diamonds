@@ -15,6 +15,7 @@ import { availableRelics, beginQuest, captureAt, captureTarget, relicPoint } fro
 import {adventureActive,applyExplorationFix,endAdventure,requestAdventure} from '../game/adventure';
 import {APP_ENV} from '../config/environment';
 import {recordArtifactEvidence} from '../game/achievements';
+import {groundDistance,groundBearing} from '../map/geodesy';
 type Point = { x: number; y: number };
 const Streets = require('../../../public/streets.js');
 const streetData = require('../../../public/streets-osm.json');
@@ -44,7 +45,9 @@ export default function Explore() {
   const available = availableRelics(game, navigationPoint),inTile=captureTarget(game,navigationPoint),capturable = eligible ? inTile : undefined;
   const next = capturable || available.find(r => r.id === selectedId) || available[0];
   const destination = next && relicPoint(next), dx = destination ? destination.x - navigationPoint.x : 0, dy = destination ? destination.y - navigationPoint.y : 1;
-  const distance = Math.hypot(dx, dy), angle = Math.atan2(dx, dy) * 180 / Math.PI;
+  const hereGeo=G.geo(navigationPoint.x,navigationPoint.y),nextGeo=destination?G.geo(destination.x,destination.y):hereGeo;
+  const origin={latitude:hereGeo.lat,longitude:hereGeo.lon},target={latitude:nextGeo.lat,longitude:nextGeo.lon};
+  const distance = APP_ENV==='development'?groundDistance(origin,target):Math.hypot(dx,dy), angle=APP_ENV==='development'?groundBearing(origin,target):Math.atan2(dx,dy)*180/Math.PI;
   const capture = () => {const live=modeRef.current==='demo'?state.current:latestFix()?.position;if(!live||state.current?.adventure?.pendingStart){setMessage('Waiting for a fresh, accurate GPS fix. Your adventure is still active.');return;}change(s => {const result=captureAt(s,live,true);if(APP_ENV==='development'&&modeRef.current!=='demo'&&result.status==='success')recordArtifactEvidence(s,result.item!,Date.now());setMessage(result.status==='success'?'Collected! '+result.item!.name+' is saved in your collection.':result.status==='miss'?'Search unsuccessful. One attempt per artefact per adventure; try on your next outing.':'Enter the artefact’s tile with accurate GPS, or check whether it was already attempted.');});void flush().catch(()=>{});};
   const tile=selectedTile || currentTile(game),claim=claims[tile],price=claimPrice(claim),owned=claim?.ownerId===session.user.id;
   const visited=!!tilePoint(tile)&&game.visits[tile]>0;

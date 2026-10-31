@@ -2,16 +2,19 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import G from '../src/game/engine';
 import { availableRelics, beginQuest, captureAt, LANDMARKS, relicPoint, seedLandmarks } from '../src/game/landmarks';
-import { isInJyvaskyla } from '../src/map/region';
+import { isPlayablePoint } from '../src/map/region';
+import original from '../assets/landmarks.json';
+import national from '../assets/finland-relics.json';
+import {APP_ENV} from '../src/config/environment';
 test('landmarks include reachable Haukkala and Sippulanniemi destinations with unique cells', () => {
-  assert.equal(LANDMARKS.length, 23); assert.equal(new Set(LANDMARKS.map(r => r.id)).size, 23);
+  assert.equal(LANDMARKS.length,23+(APP_ENV==='development'?national.length:0)); assert.equal(new Set(LANDMARKS.map(r => r.id)).size,LANDMARKS.length);assert.deepEqual(LANDMARKS.slice(0,23),original);
   for(const area of ['Haukkala','Sippulanniemi']){
     const finds=LANDMARKS.filter(r=>r.landmark!.startsWith(area));
     assert.equal(finds.length,7);
     assert.deepEqual(finds.map(r=>r.name).sort(),['Compass','Rune','Stone','Shard','Crown','Key','Lantern'].sort());
     for(const r of finds)assert.match(r.source!,/^https:\/\/www.openstreetmap.org\/way\/\d+$/);
   }
-  for (const r of LANDMARKS) { const p = relicPoint(r); assert.ok(isInJyvaskyla(p)); const c = G.cell(p.x, p.y); assert.equal(r.id, G.key(c.i, c.j)); }
+  for (const r of LANDMARKS) { const p = relicPoint(r); assert.ok(isPlayablePoint(p)); const c = G.cell(p.x, p.y); assert.equal(r.id, G.key(c.i, c.j)); }
 });
 test('landmark collection requires its own tile and an eligible fix and remains collected after reseeding', () => {
   const state = G.initial(), r = LANDMARKS[0], p = relicPoint(r); state.x = p.x; state.y = p.y; G.enter(state);

@@ -6,6 +6,7 @@ import { Button } from './ui';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import './quest-map.css';
 import type { createQuestMap } from '../map/vector-runtime.web';
+import {GAME_REGION} from '../map/region';
 
 export function CityMap(props: CityMapProps) {
   const host=useRef<HTMLDivElement>(null),latest=useRef(props),controller=useRef<ReturnType<typeof createQuestMap> | null>(null);
@@ -24,7 +25,7 @@ export function CityMap(props: CityMapProps) {
   },[fallback]);
   if(fallback)return <RasterMap {...props}/>;
   return <View style={{height,backgroundColor:'#C3CA96',position:'relative'}}>
-    <div ref={host} className="quest-vector-map" role="region" aria-label="Interactive Jyväskylä map" style={{position:'absolute',inset:0}}/>
+    <div ref={host} className="quest-vector-map" role="region" aria-label={'Interactive '+GAME_REGION+' map'} style={{position:'absolute',inset:0}}/>
     <View style={{position:'absolute',right:10,top:12,gap:6}}>
       <Button title="Me" quiet busy={props.locating} onPress={()=>controller.current?.locate()}/>
     </View>

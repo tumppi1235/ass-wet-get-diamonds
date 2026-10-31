@@ -29,6 +29,10 @@ Every release records the source SHA, browser/device, date, expected/actual beha
 | LIFE-01 | TR-078 evidence | Retain accepted GPS distance/time/tile/find history across quests/reloads; no duplicate timestamp/find, gap mileage/time or demo evidence | Foundation and account suites; phone PENDING |
 | XP-01 | TR-051/087 | Six independent saved XP totals, exact quadratic boundaries and environment config isolation; no unapproved XP awards | Foundation/account suites; XP earning NOT IMPLEMENTED |
 | SAVE-01 | Legacy migration | Preserve old gold, visits, inventory and claim receipts; do not infer lifetime mileage from current quest; legacy evidence distinguished | `foundations.test.ts`; dev UI/phone retest PENDING |
+| FIN-01 | National catalog | All seven types in 35 towns + rural finds; every coordinate is a sourced outdoor way node inside Finland; original 23 unchanged | `finland.test.ts`; physical access checks PENDING |
+| FIN-02 | Country gameplay | GPS/visits/collection/gold/claims work nationally, including Åland/north/coastal cells; neighbouring countries rejected | Country tests; phone field checks PENDING |
+| FIN-03 | Distance and scale | Ground metres/bearings/accuracy rings remain correct at northern latitudes; existing saved IDs and balances retained | Geodesy + GPS resource regressions |
+| FIN-04 | National navigation | Search Helsinki/Oulu/Utsjoki/Mariehamn, page results, zoom out to country overview and return with Me; no huge tile grid | Browser check + bounded overlay tests; physical touch PENDING |
 
 ## iPhone Chrome field pass
 

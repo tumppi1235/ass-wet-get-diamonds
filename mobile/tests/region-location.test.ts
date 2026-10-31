@@ -39,7 +39,7 @@ test('approximate fixes locate the player without rewarding distance or enabling
   assert.equal(precise.eligible, true); assert.equal(precise.startSegment, true); assert.equal(precise.distance, 0, 'no distance for the initial fix or improved accuracy');
   const p = G.xy(62.4, 25.635), moved = G.geo(p.x + 10, p.y);
   now += 2000; assert.ok(tracker.accept(fix(moved.lat, moved.lon), now)!.distance > 9.9);
-  now += 1000; const outside = tracker.accept(fix(60.17, 24.94), now)!; assert.equal(outside.reason, 'outside'); assert.equal(outside.distance, 0); assert.equal(outside.eligible, false); assert.equal(outside.position.latitude, 60.17);
+  now += 1000; const outside = tracker.accept(fix(59.3293,18.0686),now)!; assert.equal(outside.reason, 'outside'); assert.equal(outside.distance, 0); assert.equal(outside.eligible, false); assert.equal(outside.position.latitude, 59.3293);
   now += 1000; assert.equal(tracker.accept(fix(62.4, 25.635, 5, 30), now)!.eligible, false);
   now += 1000; const resumed = tracker.accept(fix(62.4, 25.635), now)!; assert.equal(resumed.distance, 0);
   assert.equal(tracker.accept(fix(62.4, 25.635), now), null, 'duplicate timestamps ignored');

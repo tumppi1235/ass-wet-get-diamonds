@@ -7,6 +7,7 @@ import { Button, colors, pixelFont, styles } from './ui';
 import { FeltBackground } from './felt-background';
 import { PixelIcon } from './pixel-icon';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import {GAME_REGION} from '../map/region';
 export function Frame({ children, footer }: { children: React.ReactNode; footer?: React.ReactNode }) {
   const insets = useSafeAreaInsets(), compact = useWindowDimensions().width < 700;
   const { session, logout } = useSession(), { game, flush, error } = useGame(), path = usePathname();
@@ -19,6 +20,6 @@ export function Frame({ children, footer }: { children: React.ReactNode; footer?
         <View style={[styles.row, { gap: 12, position: compact ? 'absolute' : 'relative', right: compact ? 0 : undefined, top: compact ? 0 : undefined }]}>{!compact && <><View accessibilityLabel={'Gold balance: ' + (game?.gold || 0)} style={{ flexDirection: 'row', alignItems: 'center', gap: 8, borderColor: '#8B7448', borderWidth: 2, backgroundColor: '#302F28', paddingHorizontal: 12, paddingVertical: 6 }}><PixelIcon name="coin" size={28} /><Text style={{ color: '#F3D081', fontFamily: pixelFont, fontSize: 25 }}>{game?.gold || 0}</Text></View><View><Text style={{ color: colors.ink, fontFamily: pixelFont, fontSize: 17 }}>{session?.user.displayName}</Text><Text style={styles.small}>LOCAL PLAYER</Text></View></>}<Button title="Sign out" quiet onPress={() => { void flush().then(logout).then(() => router.replace('/login')); }} /></View>
       </View>
     </View>
-    <View style={[styles.shell, compact && { padding: 12, gap: 12 }]}>{error ? <Text accessibilityRole="alert" style={styles.error}>{error}</Text> : null}{children}<View style={[styles.spread, { borderTopWidth: 1, borderTopColor: '#59644D', paddingTop: 20, marginTop: 12 }]}><Text style={[styles.small, { fontFamily: pixelFont, color: colors.gold }]}>YOUR NEXT ADVENTURE IS A WALK AWAY.</Text><Text style={styles.small}>Jyväskylä · Saved locally · {session?.user.username}</Text></View></View>
+    <View style={[styles.shell, compact && { padding: 12, gap: 12 }]}>{error ? <Text accessibilityRole="alert" style={styles.error}>{error}</Text> : null}{children}<View style={[styles.spread, { borderTopWidth: 1, borderTopColor: '#59644D', paddingTop: 20, marginTop: 12 }]}><Text style={[styles.small, { fontFamily: pixelFont, color: colors.gold }]}>YOUR NEXT ADVENTURE IS A WALK AWAY.</Text><Text style={styles.small}>{GAME_REGION} · Saved locally · {session?.user.username}</Text></View></View>
   </ScrollView>{footer && <View style={{ position: 'absolute', bottom: 0, left: 0, right: 0, backgroundColor: '#142A2B', borderTopColor: colors.gold, borderTopWidth: 2, paddingTop: 10, paddingHorizontal: 14, paddingBottom: Math.max(10, insets.bottom) }}>{footer}</View>}</View>;
 }

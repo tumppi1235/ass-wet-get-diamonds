@@ -1,6 +1,9 @@
 import type { Feature, FeatureCollection, Position } from 'geojson';
 import G from '../game/engine';
-import { LANDMARKS, relicPoint } from '../game/landmarks';
+import { LANDMARKS, relicPoint,relicDistance } from '../game/landmarks';
+import {APP_ENV} from '../config/environment';
+import {FINLAND} from './country';
+import {groundDestination} from './geodesy';
 import type { GameState, Relic } from '../game/types';
 import type { PlayerPosition } from '../location/tracker';
 import { JYVASKYLA, visibleGameTiles, type Point } from './region';
@@ -20,7 +23,7 @@ export function relicData(game: GameState, point: Point, selected?: string, capt
   return collection([...relics.values()].map(r=>({ ...feature({type:'Point',coordinates:coordinates(relicPoint(r))},{
     relicId:r.id, name:r.name, landmark:r.landmark || r.name, rarity:r.rarity, icon:relicIcon(r.name),
     collected:found.has(r.id), searched:!!game.searched[r.id], selected:r.id===selected, collectable:r.id===capturable,
-    distance:Math.round(Math.hypot(relicPoint(r).x-point.x,relicPoint(r).y-point.y)),
+    distance:Math.round(relicDistance(r,point)),
   }), id:r.id })));
 }
 export function trailData(game: GameState) {
@@ -35,7 +38,7 @@ export function playerData(player: PlayerPosition | null, demo: Point | null) {
 }
 export function accuracyData(player: PlayerPosition | null) {
   if(!player)return collection();
-  const ring=Array.from({length:65},(_,i)=>{const angle=i/64*Math.PI*2;return coordinates({x:player.x+Math.sin(angle)*player.accuracy,y:player.y+Math.cos(angle)*player.accuracy});});
+  const ring=Array.from({length:65},(_,i)=>{if(APP_ENV==='development'){const p=groundDestination(player,player.accuracy,i/64*360);return[p.longitude,p.latitude];}const angle=i/64*Math.PI*2;return coordinates({x:player.x+Math.sin(angle)*player.accuracy,y:player.y+Math.cos(angle)*player.accuracy});});
   return collection([feature({type:'Polygon',coordinates:[ring]},{precise:player.precise})]);
 }
 export function overlayData(game: GameState, others: Record<string,number>, center: Point, width: number, height: number, scale: number) {
@@ -45,7 +48,7 @@ export function overlayData(game: GameState, others: Record<string,number>, cent
   const grid=collection(cells.map(([i,j])=>feature({type:'Polygon',coordinates:[ring(i*250,j*250,250)]})));
   return {visits,grid,cells};
 }
-export const boundaryData = collection([feature({type:'MultiPolygon',coordinates:JYVASKYLA.polygons.map(p=>[p.outer,...p.holes].map(r=>{const coords=r.map(([x,y])=>coordinates({x,y}));return [...coords,coords[0]];}))})]);
+export const boundaryData = collection([feature({type:'MultiPolygon',coordinates:APP_ENV==='development'?FINLAND.polygons.map(p=>[p.outer,...p.holes]):JYVASKYLA.polygons.map(p=>[p.outer,...p.holes].map(r=>{const coords=r.map(([x,y])=>coordinates({x,y}));return [...coords,coords[0]];}))})]);
 export function claimsData(claims:TileClaims,ownerId?:string,selectedId?:string){
   return collection(Object.entries(claims).filter(([id])=>tilePoint(id)).map(([id,c])=>{
     const [i,j]=id.split(',').map(Number);

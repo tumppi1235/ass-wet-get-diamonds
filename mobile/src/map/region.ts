@@ -1,7 +1,21 @@
 import boundary from '../../assets/jyvaskyla-boundary.json';
 import G from '../game/engine';
+import {APP_ENV} from '../config/environment';
+import {isInFinland,intersectsFinland} from './country';
 export type Point = { x: number; y: number };
 export const JYVASKYLA = boundary;
+export const GAME_REGION=APP_ENV==='development'?'Finland':'Jyväskylä';
+export function isPlayablePoint(point:Point){const p=G.geo(point.x,point.y);return APP_ENV==='development'?isInFinland(p.lat,p.lon):isInJyvaskyla(point);}
+const tileEligibility=new Map<string,boolean>();
+export function isPlayableCell(i:number,j:number){
+  const center={x:(i+.5)*250,y:(j+.5)*250};
+  if(APP_ENV!=='development')return isInJyvaskyla(center);
+  const key=G.key(i,j),cached=tileEligibility.get(key);if(cached!==undefined)return cached;
+  const sw=G.geo(i*250,j*250),ne=G.geo((i+1)*250,(j+1)*250);
+  const valid=intersectsFinland(sw.lon,sw.lat,ne.lon,ne.lat);
+  if(tileEligibility.size>=2048)tileEligibility.delete(tileEligibility.keys().next().value!);
+  tileEligibility.set(key,valid);return valid;
+}
 function inRing(p: Point, ring: number[][]) {
   let inside = false;
   for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
@@ -24,8 +38,8 @@ export function visibleGameTiles(center: Point, width: number, height: number, s
   const halfW = width / scale / 2, halfH = height / scale / 2;
   const i0 = Math.floor((center.x - halfW) / 250), i1 = Math.floor((center.x + halfW) / 250), j0 = Math.floor((center.y - halfH) / 250), j1 = Math.floor((center.y + halfH) / 250);
   if ((i1 - i0 + 1) * (j1 - j0 + 1) > 400) return [];
-  const here = current && isInJyvaskyla(current) ? G.cell(current.x, current.y) : null;
+  const here = current && isPlayablePoint(current) ? G.cell(current.x, current.y) : null;
   const result: [number, number][] = [];
-  for (let i = i0; i <= i1; i++) for (let j = j0; j <= j1; j++) if (isInJyvaskyla({ x: (i + .5) * 250, y: (j + .5) * 250 }) || (here?.i === i && here.j === j)) result.push([i, j]);
+  for (let i = i0; i <= i1; i++) for (let j = j0; j <= j1; j++) if (isPlayableCell(i,j) || (here?.i === i && here.j === j)) result.push([i, j]);
   return result;
 }

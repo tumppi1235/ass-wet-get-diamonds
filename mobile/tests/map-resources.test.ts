@@ -7,6 +7,8 @@ import { gridForView } from '../src/map/grid';
 import { PositionTracker } from '../src/location/tracker';
 import { mapDetail, visitAreas } from '../src/map/visits';
 import { beginQuest } from '../src/game/landmarks';
+import {APP_ENV} from '../src/config/environment';
+import {groundDistance} from '../src/map/geodesy';
 
 test('gold carries partial walking distance across saves without retroactive rewards', () => {
   let state = restoreResources({ ...G.initial(), meters: 12000 });
@@ -27,9 +29,9 @@ test('GPS gold uses accepted walking distance, excluding coarse fixes and telepo
   const state = restoreResources(G.initial()), tracker = new PositionTracker(); let time = 1_000_000;
   const accept = (x: number, accuracy: number) => { const p = G.geo(x, 0); const result = tracker.accept({ latitude: p.lat, longitude: p.lon, accuracy, timestamp: time, speed: 1 }, time); if (result?.eligible) creditWalkingGold(state, result.distance); time += 10000; };
   accept(0, 800); accept(200, 800); assert.equal(state.goldMetres, 0);
-  accept(0, 5); accept(50, 5); accept(100, 5); assert.equal(state.gold, 0);assert.ok(Math.abs(state.goldMetres-100)<1e-6);
-  accept(150,5);accept(200,5);accept(250,5);assert.equal(state.gold,1);
-  accept(2000, 5); assert.equal(state.gold, 1); assert.ok(state.goldMetres < 1e-7);
+  accept(0, 5); accept(50, 5); accept(100, 5); assert.equal(state.gold, 0);const start=G.geo(0,0),end=G.geo(100,0),expected=APP_ENV==='development'?groundDistance({latitude:start.lat,longitude:start.lon},{latitude:end.lat,longitude:end.lon}):100;assert.ok(Math.abs(state.goldMetres-expected)<.0001);
+  accept(150,5);accept(200,5);accept(251,5);assert.equal(state.gold,1);
+  const carry=state.goldMetres;accept(2000,5);assert.equal(state.gold,1);assert.equal(state.goldMetres,carry);
 });
 test('first tile exploration pays once; revisits still accumulate distance across quests',()=>{
   let state=G.initial();G.enter(state);assert.equal(state.gold,1,'first explored tile');

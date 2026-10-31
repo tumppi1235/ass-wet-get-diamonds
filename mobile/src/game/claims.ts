@@ -1,5 +1,5 @@
 import G from './engine';
-import { isInJyvaskyla } from '../map/region';
+import { isPlayableCell } from '../map/region';
 export type TileClaim = { ownerId: string; ownerName: string; pricePaid: number; claimedAt: number };
 export type TileClaims = Record<string, TileClaim>;
 export function tilePoint(id: string) {
@@ -7,7 +7,7 @@ export function tilePoint(id: string) {
   const [i,j]=id.split(',').map(Number);
   if (!Number.isSafeInteger(i) || !Number.isSafeInteger(j) || G.key(i,j)!==id) return null;
   const point={x:(i+.5)*250,y:(j+.5)*250};
-  return isInJyvaskyla(point)?point:null;
+  return isPlayableCell(i,j)?point:null;
 }
 export const claimPrice = (claim?: TileClaim) => (claim?.pricePaid || 0) + 1;
 export const currentTile = (point:{x:number;y:number}) => { const c=G.cell(point.x,point.y);return G.key(c.i,c.j); };

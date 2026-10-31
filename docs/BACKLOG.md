@@ -77,11 +77,11 @@ Automated repair evidence and remaining iPhone field gates: [P0 report](P0-EXPLO
 
 | ID | Priority | Status | Story / outcome | Dependencies | Acceptance and implementation notes |
 | --- | --- | --- | --- | --- | --- |
-| TR-026 | P0 | Backlog | Support geographic tiles throughout Finland | TR-001 | Eligible test coordinates across Finland have stable cells without a Jyväskylä-only gate. |
-| TR-027 | P0 | Backlog | Remove Jyväskylä-specific game logic and configuration | TR-026 | Region policy is configuration, with saved-ID compatibility and migration evidence. |
-| TR-028 | P0 | Backlog | Support countrywide artifact spawning and visitation statistics | TR-003, TR-005, TR-026 | National spawn/visit queries return bounded region data and consistent world IDs. |
+| TR-026 | P0 | In Progress | Support geographic tiles throughout Finland | TR-001 | Dev uses a Finland multipolygon including Åland, with stable legacy tile IDs, metric GPS distance and coast-intersecting claim cells. Countrywide automated cases pass; physical coast/border tests and any future metric-grid migration remain pending. |
+| TR-027 | P0 | In Progress | Remove Jyväskylä-specific game logic and configuration | TR-026 | Dev GPS, gold, tile claims/overlays, labels and collection use Finland policy; production scope stays unchanged. Existing save IDs retained; old distance/coins are not recalculated. See FINLAND-PLAYTEST.md. |
+| TR-028 | P0 | In Progress | Support countrywide artifact spawning and visitation statistics | TR-003, TR-005, TR-026 | Dev adds 450 sourced path-side relics (35 towns plus rural trails) and local visits. This finite catalog does not complete server spawn generation, global visitation or shared queries. |
 | TR-029 | P1 | Backlog | Add configurable regions for testing and events | TR-026 | Test/event regions can be configured without code or accidental live-world changes. |
-| TR-030 | P1 | Backlog | Optimize map and artifact queries for national coverage | TR-026, TR-028 | Viewport queries remain bounded at country and close navigation zooms. |
+| TR-030 | P1 | In Progress | Optimize map and artifact queries for national coverage | TR-026, TR-028 | Country map clusters markers, close grid stays capped at 400 cells, eligibility cache is bounded, and searchable Relics renders 48 rows at a time. Server query/load work remains pending. |
 
 ## TR-E03 — Administration & Simulation
 

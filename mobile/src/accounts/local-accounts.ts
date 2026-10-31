@@ -4,6 +4,7 @@ import { bytesToHex, hexToBytes } from '@noble/hashes/utils.js';
 import { claimPrice, reconcileClaimGold, tilePoint, type TileClaims } from '../game/claims';
 import type { GameState } from '../game/types';
 import {APP_ENV,storageKeys} from '../config/environment';
+import {GAME_REGION} from '../map/region';
 
 export interface Storage { getItem(key: string): Promise<string | null>; setItem(key: string, value: string): Promise<void>; removeItem(key: string): Promise<void> }
 export type User = { id: string; username: string; displayName: string; role: 'admin' | 'player'; createdAt: number };
@@ -99,7 +100,7 @@ export class LocalAccounts {
     return this.serial(async()=>{
       const db=await this.read(),{user}=await this.verified(db,token);
       if(user.id!==ownerId)throw new Error('This saved game belongs to a different profile.');
-      if(!tilePoint(id))throw new Error('Choose a tile inside Jyväskylä.');
+      if(!tilePoint(id))throw new Error('Choose a tile inside '+GAME_REGION+'.');
       if(!(snapshot.visits?.[id]>0))throw new Error('Visit this tile before claiming it.');
       const previous=db.tileClaims?.[id],price=claimPrice(previous);
       if(previous?.ownerId===user.id)throw new Error('You already own this tile.');
