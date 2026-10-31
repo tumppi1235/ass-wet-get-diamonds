@@ -7,12 +7,12 @@ test('local accounts keep credentials, roles, sessions and player progress separ
   const store = new Memory(); let clock = 1000; const service = new LocalAccounts(store, async n => randomBytes(n), () => clock);
   await service.bootstrap(); const original = store.items.get(DATABASE_KEY)!; await service.bootstrap(); assert.equal(store.items.get(DATABASE_KEY), original, 'bootstrap never resets users');
   assert.ok(!original.includes('Admin123!') && !original.includes('Test123!'), 'no plaintext passwords stored');
-  const db = JSON.parse(original); assert.notEqual(db.users[0].salt, db.users[1].salt); assert.equal(db.users.length, 2);
+  const db = JSON.parse(original); assert.notEqual(db.users[0].salt, db.users[1].salt); assert.equal(db.users.length, 3); assert.equal(db.users.find((u: { username: string }) => u.username === 'tuomas.jokela').role, 'player');
   await assert.rejects(service.login('admin', 'Wrong123!'), /incorrect/);
   assert.equal(await service.current(), null);
   const admin = await service.login(' ADMIN ', 'Admin123!'); assert.equal(admin.user.role, 'admin'); assert.ok(!('passwordHash' in admin.user));
   await service.saveProgress(admin.token, admin.user.id, { collection: [{ id: '1,1' }], meters: 123, visits: { '1,1': 3, '-1,0': 1, '0,0': 0, invalid: 9 }, path: [{ x: 17, y: 23 }] });
-  const users = await service.listUsers(admin.token); assert.equal(users.length, 2); assert.equal(users.find(u => u.username === 'admin')!.finds, 1); assert.ok(!JSON.stringify(users).includes('passwordHash'));
+  const users = await service.listUsers(admin.token); assert.equal(users.length, 3); assert.equal(users.find(u => u.username === 'admin')!.finds, 1); assert.ok(!JSON.stringify(users).includes('passwordHash'));
   await service.logout(); await assert.rejects(service.listUsers(admin.token), /sign in/);
   const player = await service.login('test', 'Test123!'); assert.equal(player.user.role, 'player');
   await assert.rejects(service.listUsers(player.token), /Administrator/);

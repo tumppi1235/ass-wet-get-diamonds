@@ -1,7 +1,7 @@
 # Trail Relics
 ## Current app: React Native, browser first
 
-The main game is now in [mobile](mobile): React Native + Expo, with local login, separate saved profiles, a municipality-wide Jyväskylä outdoor map and a collection. Outdoor terrain/trail tiles load online with street-map fallback; bundled offline detail covers downtown only. Find my location shows actual position and accuracy, with game progress enabled for accurate fixes inside the city. Android/iOS packaging is paused. Garmin remains the planned compact collector/navigation companion; real watch pairing and sync are not connected yet.
+The main game is now in [mobile](mobile): React Native + Expo, with local login, separate saved profiles, a municipality-wide Jyväskylä outdoor map and a collection. Street and terrain maps load online; bundled offline detail covers downtown only. Me shows actual position and accuracy, with game progress enabled for accurate fixes inside the city. Android/iOS packaging is paused. Garmin remains the planned compact collector/navigation companion; real watch pairing and sync are not connected yet.
 
 Start **START-WINDOWS.bat**, or run `cd mobile`, `npm ci`, then `npm run web -- --host localhost`. Open http://localhost:8081/.
 
@@ -12,7 +12,9 @@ Start **START-WINDOWS.bat**, or run `cd mobile`, `npm ci`, then `npm run web -- 
 
 Profiles and progress stay on this device. Defaults are seeded only on first launch. Change passwords in Profile. [Full account and storage details](mobile/README.md).
 
-The game UI uses an original pixel RPG theme while keeping the terrain map readable. The map opens with a visible 250 m grid; buttons, mouse wheel, double click and pinch control zoom. Green/purple/teal overlays distinguish your visits, other local profiles and shared areas, with simplified groups at city scale. Walking earns 1 gold per 100 m, saved with the profile. Other-player visits are local-device data only; cross-phone sharing is not connected.
+The game UI uses an original pixel RPG theme while keeping the terrain map readable. The full-screen map has only Street, Terrain and Me, a small compass, and a collapsible quest drawer. Relic destinations have their own tab. A visible 250 m grid, mouse wheel, double click and pinch support exploration. Green/purple/teal overlays distinguish your visits, other local profiles and shared areas, with simplified groups at city scale. Walking earns 1 gold per 100 m, saved with the profile. Other-player visits are local-device data only; cross-phone sharing is not connected.
+
+Phone playtest instructions: [WEB-PLAYTEST](docs/WEB-PLAYTEST.md). Saved guild, raid, tile-ownership and NPC ideas: [GAME-ROADMAP](docs/GAME-ROADMAP.md).
 
 The earlier v0.2 native packages and simulator described below are retained as legacy snapshots.
 

@@ -7,6 +7,7 @@ export type User = { id: string; username: string; displayName: string; role: 'a
 type StoredUser = User & { salt: string; passwordHash: string; passwordVersion: number };
 type Database = { version: 1; users: StoredUser[]; progress: Record<string, unknown> };
 type Session = { userId: string; token: string; expiresAt: number; passwordVersion: number };
+const provisioned = require('./provisioned-players.json') as Omit<StoredUser, 'createdAt'>[];
 export const DATABASE_KEY = 'trail-relics.profiles.v1';
 export const SESSION_KEY = 'trail-relics.session.v1';
 export const DEMO_ACCOUNTS = [
@@ -35,9 +36,14 @@ export class LocalAccounts {
   private async credential(password: string) { passwordValid(password); const salt = bytesToHex(await this.random(16)); return { salt, passwordHash: await derive(password, salt) }; }
   async bootstrap() {
     return this.serial(async () => {
-      if (await this.storage.getItem(DATABASE_KEY)) { await this.read(); return; }
+      if (await this.storage.getItem(DATABASE_KEY)) {
+        const db = await this.read(), missing = provisioned.filter(p => !db.users.some(u => u.id === p.id || u.username === p.username));
+        if (missing.length) { db.users.push(...missing.map(p => ({ ...p, createdAt: this.now() }))); await this.write(db); }
+        return;
+      }
       const users: StoredUser[] = [];
       for (const account of DEMO_ACCOUNTS) { const { password, ...user } = account; users.push({ ...user, createdAt: this.now(), passwordVersion: 1, ...await this.credential(password) }); }
+      users.push(...provisioned.map(p => ({ ...p, createdAt: this.now() })));
       await this.write({ version: 1, users, progress: {} });
     });
   }

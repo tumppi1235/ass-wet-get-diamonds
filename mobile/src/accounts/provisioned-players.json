@@ -1,0 +1,11 @@
+[
+  {
+    "id": "local-tuomas-jokela",
+    "username": "tuomas.jokela",
+    "displayName": "Tuomas Jokela",
+    "role": "player",
+    "salt": "af94055d0cbaa61be6118336100fa762",
+    "passwordHash": "10a2bb1ef9677b5f37c6e6c8c24ced9440ca533957ab589f4c3d6767373cdbf0",
+    "passwordVersion": 1
+  }
+]
