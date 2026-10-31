@@ -17,7 +17,7 @@ const ring = (x: number, y: number, size: number) => [[x,y],[x+size,y],[x+size,y
 export function relicIcon(name: string) { return ({ Compass: 'relic', Rune: 'rune', Stone: 'stone', Shard: 'crystal', Crystal: 'crystal', Crown: 'mythic', Mythic: 'mythic', Key: 'key', Lantern: 'lantern' } as Record<string,string>)[name] || 'stone'; }
 export function relicData(game: GameState, point: Point, selected?: string, capturable?: string, includeDistance=true) {
   const found = new Set(game.collection.map(r=>r.id));
-  const relics = new Map<string,Relic>(LANDMARKS.map(r=>[r.id,r]));
+  const relics = new Map<string,Relic>((game.sharedSpawnsOnly?[]:LANDMARKS).map(r=>[r.id,r]));
   for (const r of Object.values(game.revealed)) if(r) relics.set(r.id,r);
   for (const r of game.collection) relics.set(r.id,r);
   return collection([...relics.values()].map(r=>({ ...feature({type:'Point',coordinates:coordinates(relicPoint(r))},{

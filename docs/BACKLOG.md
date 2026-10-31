@@ -30,24 +30,24 @@ Automated repair evidence and remaining iPhone field gates: [P0 report](P0-EXPLO
 | --- | --- | --- | --- | --- | --- |
 | TR-001 | P0 | Done | Define shared geographic grid and cell IDs | — | The same coordinate maps to the same stable 250m ID across existing clients; existing saves retain their IDs. Existing prototype uses common 250m IDs; national projection/migration remains TR-026/027. |
 | TR-002 | P0 | Done | Create artifact spawn data model | TR-001 | Versioned spawn contract, validated identity/tile/coordinates/type/rarity/timestamps/policy, personal owner and legacy adapter in `game/spawns.ts`; tested in `foundations.test.ts`. Model only: no server generator, shared claims or new live appearances. |
-| TR-003 | P0 | Backlog | Implement deterministic server-side spawn generation | TR-001, TR-002, TR-112 | Identical world inputs yield the same recorded spawns on every client. |
-| TR-004 | P0 | Backlog | Implement rarity tiers and weighted selection | TR-002, TR-003 | Configured weighted rarity selection is repeatable under a seeded test and respects all supported tiers. |
-| TR-005 | P0 | In Progress | Add cell visitation statistics | TR-001, TR-112 | Shared dev D1 keys visits by tile/player and exposes bounded other-player aggregates, independently of raw GPS samples. Local SQL/API tests pass; density-based detection and hosted/field verification remain. |
+| TR-003 | P0 | Done | Implement deterministic server-side spawn generation | TR-001, TR-002, TR-112 | Shared dev records deterministic revision/source/window spawns at sourced path coordinates. SQL and seeded tests; see DEV-SPAWNS.md. |
+| TR-004 | P0 | Done | Implement rarity tiers and weighted selection | TR-002, TR-003 | Configurable Common/Rare/Legendary weights use repeatable seeded selection; distribution and tier tests pass. |
+| TR-005 | P0 | Done | Add cell visitation statistics | TR-001, TR-112 | D1 unique tile/player visits are separate from personal rewards; independent-newcomer SQL tests pass. |
 | TR-006 | P1 | Backlog | Add terrain and accessibility modifiers | TR-001, TR-029 | Placement uses mapped accessible terrain and excludes restricted routes. |
 | TR-007 | P1 | Backlog | Add time, weather and seasonal modifiers | TR-003, TR-033 | Configured time/weather/season inputs change appearance without changing claim ownership. |
-| TR-008 | P1 | Backlog | Implement spawn expiration and regeneration | TR-002, TR-003 | Expired spawns are unavailable and regeneration produces new recorded IDs. |
-| TR-009 | P0 | Backlog | Add artifact discovery and claim API | TR-003, TR-010, TR-113 | Authenticated discovery and claim operations return consistent eligibility and inventory results. |
-| TR-010 | P0 | Backlog | Prevent duplicate claims across Garmin and mobile | TR-002, TR-113 | Replayed event/activity IDs cannot award an inventory item twice. |
-| TR-011 | P1 | Backlog | Create developer spawn simulator for Jyväskylä | TR-003, TR-033 | A developer can simulate spawn inputs and inspect outcomes without changing live world state. |
+| TR-008 | P1 | Done | Implement spawn expiration and regeneration | TR-002, TR-003 | Expired records are unavailable; later UTC windows create new identities without changing existing inventory. |
+| TR-009 | P0 | In Progress | Add artifact discovery and claim API | TR-003, TR-010, TR-113 | Shared APIs enforce fresh own-tile eligibility and atomic spawn/player claim receipts. Web SQL tests pass; device integration/field checks remain. |
+| TR-010 | P0 | In Progress | Prevent duplicate claims across Garmin and mobile | TR-002, TR-113 | Atomic per-spawn/player ledger and event replay prevent duplicate shared web rewards. Garmin bridge remains TR-157–160. |
+| TR-011 | P1 | Done | Create developer spawn simulator for Jyväskylä | TR-003, TR-033 | Protected zero-write simulation uses actual generation for 501 sourced positions including Jyväskylä. Local browser verified. |
 | TR-012 | P2 | Backlog | Add spawn balancing and analytics | TR-011 | Spawn/reward rates are measurable by region and configuration revision. |
 | TR-013 | P0 | Done | Track explored tiles separately for each player | TR-001 | Each player retains their own explored cells after reload and account switching. Existing per-profile local saves implement this; shared identity is separate. |
-| TR-014 | P0 | In Progress | Grant XP on first tile visit | TR-013, TR-051, TR-087 | Shared dev accepted first-tile events award configured experimental Exploration XP once; receipt replay and config changes cannot repay old visits. SQL/regression tests pass; shared service/field verification pending. |
-| TR-015 | P0 | Backlog | Implement first-visit artifact discovery rolls | TR-002, TR-013 | A first personal visit can roll a personal drop independently of persistent world spawns. |
-| TR-016 | P0 | Backlog | Keep personal exploration separate from global visitation statistics | TR-005, TR-013 | One player’s old tiles do not suppress another newcomer’s personal first-visit rewards. |
-| TR-017 | P1 | Backlog | Allow repeat visits to discover newly spawned world artifacts | TR-008, TR-009 | Returning to a familiar cell can find a later spawn without repaying first-visit XP. |
-| TR-018 | P0 | Backlog | Calculate artifact detection radius from global tile visitation | TR-005, TR-016 | Capped global visit density deterministically controls configurable detection range. |
+| TR-014 | P0 | Done | Grant XP on first tile visit | TR-013, TR-051, TR-087 | Experimental first-tile Exploration XP is awarded once; other visitors, replay and config edits cannot repay it. SQL verified. |
+| TR-015 | P0 | Done | Implement first-visit artifact discovery rolls | TR-002, TR-013 | First accepted visit to a sourced tile independently rolls a personal drop; later visits/config edits cannot reroll. No unsafe unsourced placement. |
+| TR-016 | P0 | Done | Keep personal exploration separate from global visitation statistics | TR-005, TR-013 | Personal coverage and global density are separate; two-newcomer SQL tests prove independent owner-only rewards. |
+| TR-017 | P1 | In Progress | Allow repeat visits to discover newly spawned world artifacts | TR-008, TR-009 | Returning can detect new window identities without first-tile XP. Software tested; physical return visit pending. |
+| TR-018 | P0 | Done | Calculate artifact detection radius from global tile visitation | TR-005, TR-016 | Configurable capped unique-visitor density controls detection range, preserving own-tile eligibility. Boundary/cap tests pass. |
 | TR-019 | P0 | In Progress | Replace separate collection radius with tile-based collection eligibility. | — | An accurate point anywhere inside the artefact tile is eligible; a closer point in another tile is not. |
-| TR-020 | P1 | Backlog | Reveal distant artifacts on the map | TR-018, TR-019 | Map clues follow detection eligibility without allowing remote collection. |
+| TR-020 | P1 | In Progress | Reveal distant artifacts on the map | TR-018, TR-019 | Shared map shows detected nearby spawns while collection still needs own-tile GPS. Legacy catalog suppressed only in shared mode; field checks pending. |
 | TR-021 | P1 | Backlog | Add Garmin proximity and direction indicators | TR-018, TR-155 | The watch displays direction/distance to an eligible detected artefact within its UI constraints. |
 | TR-022 | P2 | Backlog | Introduce rarity-based clues and visibility modifiers | TR-004, TR-018 | Rarity changes clue presentation using documented configurable thresholds. |
 | TR-023 | P0 | In Progress | Implement tile-entry detection with GPS accuracy handling. | TR-153 | Validated boundary crossings update the active tile; coarse/stale fixes cannot silently enable collection. |
@@ -87,16 +87,16 @@ Automated repair evidence and remaining iPhone field gates: [P0 report](P0-EXPLO
 
 | ID | Priority | Status | Story / outcome | Dependencies | Acceptance and implementation notes |
 | --- | --- | --- | --- | --- | --- |
-| TR-031 | P0 | In Progress | Create separate admin web application | TR-112, TR-113 | Separate Vinext admin client at /admin-world uses the shared dev API; Expo/local administration is retained. Local sign-in/database/role routing verified; broader admin tools remain. |
-| TR-032 | P0 | In Progress | Implement admin authentication and permissions | TR-031, TR-113 | Platform identity and persisted server roles protect APIs and admin rendering; requested roles are ignored. Direct-request rejection tests and local owner routing pass; hosted identity verification pending. |
+| TR-031 | P0 | Done | Create separate admin web application | TR-112, TR-113 | Separate Vinext admin client uses protected shared dev APIs; hosted owner routing verified. Individual tools retain their own stories. |
+| TR-032 | P0 | Done | Implement admin authentication and permissions | TR-031, TR-113 | Platform identity and server roles guard admin rendering/APIs. Escalation/request rejection and local/hosted owner checks pass. |
 | TR-033 | P0 | In Progress | Create editable game-parameter configuration | TR-032 | Experimental XP/movement balance is validated, optimistic-versioned and audited through a real admin UI. Local D1 save verified; broader spawn/loot parameters and explicit rollback UI remain. |
 | TR-034 | P0 | Backlog | Search and inspect player accounts | TR-032 | An authorized admin can locate a player and inspect the intended account only. |
 | TR-035 | P0 | Backlog | Add, remove and modify player inventory items | TR-034 | Inventory edits persist, validate item IDs and produce an audit event. |
-| TR-036 | P0 | Backlog | Manually place artifacts on geographic tiles | TR-032, TR-002 | An authorized placement creates a visible world artefact in the chosen geographic tile. |
-| TR-037 | P0 | Backlog | View and remove existing world artifacts | TR-036 | World edits/removal propagate consistently and invalidate stale client availability. |
+| TR-036 | P0 | In Progress | Manually place artifacts on geographic tiles | TR-032, TR-002 | Protected manual Finland placement and map-ready records have audits and expiry. SQL verified; manual access review/field placement checks remain. |
+| TR-037 | P0 | Done | View and remove existing world artifacts | TR-036 | Bounded inspection and audited retirement invalidate availability without removing prior inventory. SQL and local browser verified. |
 | TR-038 | P1 | Backlog | Simulate artifact spawning and collection | TR-033, TR-009 | Spawn/claim simulation uses the actual rules in an isolated test world. |
 | TR-039 | P1 | Backlog | Reset individual players' exploration progress | TR-034 | A targeted reset leaves other players and production inventories intact. |
-| TR-040 | P1 | In Progress | Create admin audit logs for changes | TR-032 | Balance edits persist actor/time/target/before-after without credentials; protected bounded audit endpoint/UI verified locally. Other admin operations will use the same ledger. |
+| TR-040 | P1 | Done | Create admin audit logs for changes | TR-032 | Protected bounded audit API/UI records balance and spawn edits/retirement with actor/time/before-after, without credentials. |
 | TR-041 | P1 | Backlog | Manage test-player invitations and access | TR-032 | Test access and invitations cannot escalate ordinary player permissions. |
 | TR-042 | P1 | Backlog | Create a world map showing artifacts and visitation density | TR-005, TR-036 | World artefacts and visitation density can be inspected with bounded map queries. |
 
@@ -140,7 +140,7 @@ Automated repair evidence and remaining iPhone field gates: [P0 report](P0-EXPLO
 
 | ID | Priority | Status | Story / outcome | Dependencies | Acceptance and implementation notes |
 | --- | --- | --- | --- | --- | --- |
-| TR-051 | P0 | In Progress | Implement player XP, level and six core attributes | TR-078, TR-087 | Dev saves contain six independent XP totals, with attribute levels/next thresholds in Profile and account reload tests. XP earning and the broader player progression design remain pending; no invented rates or gold-to-XP conversion. |
+| TR-051 | P0 | In Progress | Implement player XP, level and six core attributes | TR-078, TR-087 | Six saved totals and quadratic levels; four earned sources use authorized experimental shared dev rates. Power/Fellowship and broader progression remain. |
 | TR-052 | P0 | In Progress | Award attribute XP from verified activities and exploration | TR-051, TR-079 | Shared dev computes first-tile Exploration, regional Agility, accepted-distance Endurance and collection Perception from versioned experimental rules. Power/Fellowship and imported/provider evidence remain unimplemented. |
 | TR-053 | P0 | Superseded | Apply player attributes to boss combat | — | Replaced by TR-070/071: attributes affect loot rather than bypassing physical victory. |
 | TR-054 | P1 | Superseded | Add attribute progression and diminishing returns | — | Consolidated into TR-087/088 and TR-076; do not implement a second progression curve. |
@@ -202,13 +202,13 @@ Automated repair evidence and remaining iPhone field gates: [P0 report](P0-EXPLO
 | --- | --- | --- | --- | --- | --- |
 | TR-111 | P0 | In Progress | Establish separate Development and Production environments | — | Development and production are explicitly identified and independently deployable. |
 | TR-112 | P0 | In Progress | Create separate databases, storage and game-world state | TR-111 | Mutable world/player data and storage are isolated, with an isolation test. |
-| TR-113 | P0 | In Progress | Configure environment-specific APIs, secrets and authentication | TR-111 | Shared dev uses a same-origin API guarded by runtime environment, platform subject and own-origin writes. No local passwords are uploaded; production remains unchanged. Hosted runtime/identity validation pending. |
+| TR-113 | P0 | In Progress | Configure environment-specific APIs, secrets and authentication | TR-111 | Hosted dev API guards runtime environment, platform identity and own-origin writes. Hosted identity verified; production/native services remain separate. |
 | TR-114 | P1 | In Progress | Implement automated build, test and deployment pipelines | TR-111 | Versioned builds run required validation before a deployable artifact is produced. |
 | TR-115 | P0 | In Progress | Support independent game-balance configurations for Dev and Prod | TR-111, TR-033 | Progression curves have independent environment/version configuration, tested against mutation leakage. Other balance settings and authenticated admin configuration remain pending. |
 | TR-116 | P1 | In Progress | Create a controlled Dev → Prod release process | TR-114, TR-115 | A specific validated revision is promoted with an auditable rollback path. |
 | TR-117 | P1 | Backlog | Add production monitoring, error logging and alerts | TR-113 | Production failures are observable without leaking precise location histories. |
 | TR-118 | P0 | Backlog | Implement database backups, migrations and rollback procedures | TR-112 | A tested migration/backup/restore path preserves player inventories and progress. |
-| TR-119 | P0 | In Progress | Separate test players, artifacts, bosses and inventories from production | TR-111, TR-112 | Shared dev data is separately modeled under the private dev Site and its DB; legacy local namespaces remain. Tests cover environment rejection and per-account pending/state isolation. Boss/spawn administration still pending. |
+| TR-119 | P0 | In Progress | Separate test players, artifacts, bosses and inventories from production | TR-111, TR-112 | Dev Site/D1, test spawns and inventories stay isolated from production. Boss isolation will follow its implementation. |
 | TR-120 | P1 | In Progress | Document release procedures and environment configuration | TR-116, TR-118 | A new maintainer can follow promotion, rollback and recovery instructions. |
 
 ## TR-E08 — Movement & Effort Balancing

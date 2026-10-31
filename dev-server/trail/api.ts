@@ -1,12 +1,21 @@
 import {applyWorldEvent,loadWorld,WorldError} from './world-store';
 import type {D1Database} from '@cloudflare/workers-types';
 import {loadBalance,saveBalance} from './balance-store';
+import {querySpawns,readBounds,placeSpawn,removeSpawn,loadSpawnRules,saveSpawnRules} from './spawn-store';
+import {generateWorldSpawn,validateSpawnRules,type SpawnRules} from '../../mobile/src/game/world-spawns';
+import {LANDMARKS} from '../../mobile/src/game/landmarks';
+import G from '../../mobile/src/game/engine';
 type Bindings={DB?:D1Database;TRAIL_ENV?:string;TRAIL_ADMIN_EMAIL?:string;TRAIL_PUBLIC_ORIGIN?:string};
 type Member={id:string;display_name:string;role:'admin'|'player';created_at:number};
 class ApiError extends Error{constructor(public status:number,message:string){super(message);}}
 const json=(data:unknown,status=200)=>new Response(JSON.stringify(data),{status,headers:{'Content-Type':'application/json','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}});
 const name=(value:unknown)=>{if(typeof value!=='string'||!value.trim()||value.trim().length>40)throw new ApiError(400,'Use a display name of 1–40 characters.');return value.trim();};
-async function body(request:Request){const raw=await request.text();if(raw.length>131072)throw new ApiError(413,'Request is too large.');try{const value=JSON.parse(raw);if(!value||typeof value!=='object'||Array.isArray(value))throw new Error();return value;}catch{throw new ApiError(400,'Invalid JSON object.');}}
+async function body(request:Request){
+  const reader=request.body?.getReader(),parts:Uint8Array[]=[];let size=0;
+  if(reader)try{while(true){const chunk=await reader.read();if(chunk.done)break;size+=chunk.value.byteLength;if(size>131072){await reader.cancel();throw new ApiError(413,'Request is too large.');}parts.push(chunk.value);}}finally{reader.releaseLock();}
+  const bytes=new Uint8Array(size);let offset=0;for(const part of parts){bytes.set(part,offset);offset+=part.byteLength;}
+  try{const value=JSON.parse(new TextDecoder().decode(bytes));if(!value||typeof value!=='object'||Array.isArray(value))throw new Error();return value;}catch{throw new ApiError(400,'Invalid JSON object.');}
+}
 function identity(request:Request){const id=request.headers.get('oai-authenticated-user-id');if(!id||id.length>250)throw new ApiError(401,'Sign in with ChatGPT to use the shared dev world.');return id;}
 export async function trailApi(request:Request,env:Bindings){
   try{
@@ -29,6 +38,31 @@ export async function trailApi(request:Request,env:Bindings){
       await db.prepare('UPDATE trail_members SET display_name=? WHERE id=?').bind(displayName,id).run();return json({saved:true});
     }
     if(path==='/api/trail/world'&&request.method==='GET')return json(await loadWorld(db,id));
+    if(path==='/api/trail/admin/spawn-rules'&&request.method==='GET'){
+      if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');return json({rules:await loadSpawnRules(db)});
+    }
+    if(path==='/api/trail/admin/spawn-rules'&&request.method==='PUT'){
+      if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');const input=await body(request);
+      try{return json(await saveSpawnRules(db,id,input.rules,input.revision));}catch(e){if(e instanceof WorldError)throw e;throw new ApiError(400,(e as Error).message);}
+    }
+    if(path==='/api/trail/admin/spawn-simulation'&&request.method==='POST'){
+      if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');
+      const input=await body(request);let rules:SpawnRules;try{rules=validateSpawnRules(input.rules);}catch(e){throw new ApiError(400,(e as Error).message);}
+      if(!Number.isSafeInteger(input.at)||input.at<0)throw new ApiError(400,'Invalid simulation time');
+      const places=LANDMARKS.filter(r=>r.latitude!=null&&r.longitude!=null&&r.source),spawns=places.map(p=>generateWorldSpawn(p,input.at,rules));
+      return json({simulation:true,writes:0,count:spawns.length,rarities:Object.fromEntries(['Common','Rare','Legendary'].map(r=>[r,spawns.filter(s=>s.rarity===r).length])),sample:spawns.slice(0,20)});
+    }
+    if(path==='/api/trail/admin/spawns'&&request.method==='POST'){
+      if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');
+      const input=await body(request),now=Date.now(),point=G.xy(input.latitude,input.longitude),tile=G.cell(point.x,point.y);
+      try{return json({spawn:await placeSpawn(db,id,{version:1,id:'manual:'+crypto.randomUUID(),tileId:G.key(tile.i,tile.j),artifactType:input.artifactType,rarity:input.rarity,kind:'dynamic',position:{latitude:input.latitude,longitude:input.longitude},createdAt:now,expiresAt:now+86400000,claimPolicy:'once-per-player',origin:'world'},now)});}catch(e){if(e instanceof WorldError)throw e;throw new ApiError(400,(e as Error).message);}
+    }
+    if(path==='/api/trail/admin/spawns'&&request.method==='DELETE'){
+      if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');const input=await body(request);if(typeof input.id!=='string'||input.id.length>200)throw new ApiError(400,'Invalid spawn identity');return json(await removeSpawn(db,id,input.id));
+    }
+    if(path==='/api/trail/admin/spawns'&&request.method==='GET'){
+      if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');return json(await querySpawns(db,id,readBounds(url.searchParams),Date.now(),url.searchParams.get('after')||'',Number(url.searchParams.get('limit')||100),true));
+    }
     if(path==='/api/trail/events'&&request.method==='POST'){
       const input=await body(request);return json(await applyWorldEvent(db,id,input.id,input.revision,input.event));
     }

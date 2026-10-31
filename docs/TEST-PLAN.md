@@ -27,7 +27,7 @@ Every release records the source SHA, browser/device, date, expected/actual beha
 | COMPASS-01 | TR-165 actual heading | Rotate phone through north/east/south/west and portrait/landscape: arrow responds relative to facing, with no wraparound flip. Denied/unavailable/stale data falls back explicitly. | `compass.test.ts` simulated PASS; dev browser fallback/layout QA; physical iPhone Chrome and magnetic variation checks PENDING. See DEV-COMPASS.md. |
 | SPAWN-01 | TR-002 contract | Stable spawn identity separate from tile; valid position, expiry and owner policy; legacy landmarks unchanged | `foundations.test.ts`; server generation NOT IMPLEMENTED |
 | LIFE-01 | TR-078 evidence | Retain accepted GPS distance/time/tile/find history across quests/reloads; no duplicate timestamp/find, gap mileage/time or demo evidence | Foundation and account suites; phone PENDING |
-| XP-01 | TR-051/087 | Six independent saved XP totals, exact quadratic boundaries and environment config isolation; no unapproved XP awards | Foundation/account suites; XP earning NOT IMPLEMENTED |
+| XP-01 | TR-051/087 | Six independent saved XP totals, exact quadratic boundaries and environment config isolation; no unapproved XP awards | Foundation/account suites; four experimental dev sources tested, Power/Fellowship pending |
 | SAVE-01 | Legacy migration | Preserve old gold, visits, inventory and claim receipts; do not infer lifetime mileage from current quest; legacy evidence distinguished | `foundations.test.ts`; dev UI/phone retest PENDING |
 | FIN-01 | National catalog | All seven types in 35 towns + rural finds; every coordinate is a sourced outdoor way node inside Finland; original 23 unchanged | `finland.test.ts`; physical access checks PENDING |
 | FIN-02 | Country gameplay | GPS/visits/collection/gold/claims work nationally, including Åland/north/coastal cells; neighbouring countries rejected | Country tests; phone field checks PENDING |
@@ -51,3 +51,5 @@ Use an outdoor public path in Jyväskylä with precise location enabled. Record 
 ## GitHub evidence
 
 `npm --prefix mobile run quality` writes actual exit codes, logs, JUnit XML and summary to ignored `test-results/`. CI uploads these under Actions for both environments and puts the summary on the run page. Use the issue template for field observations; include the tested commit. Keep automated PASS, manual PENDING, known browser limitation and planned feature separate.
+
+Shared spawn evidence: DEV-SPAWNS.md. SQL covers two-player first visits, capture/replay, retirement, pages and zero-write simulation; physical return visits pending.

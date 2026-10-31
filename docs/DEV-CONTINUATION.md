@@ -12,6 +12,6 @@ User authorization on 2026-10-31: continue until backlog work is exhausted, **de
 
 ## Current state
 
-Starting shared dev server: official Sites Vinext starter in `dev-server/`, preserving platform sign-in. Existing app remains Expo; its tested web export will be served as static assets by the same dev origin. Browser-local mode and its saves remain available. Shared mode is opt-in and does not upload old passwords or automatically merge histories. Access remains owner-private unless user explicitly requests sharing changes.
+Shared dev server deployed: official Sites Vinext starter in `dev-server/`, preserving platform sign-in. Hosted Tumppi profile/admin access verified; all initial GitHub checks passed. Existing Expo export and the Worker share the dev origin. Browser-local mode and saves remain available. Shared mode is opt-in and never uploads old passwords or merges histories. Access remains owner-private. The next increment implements recorded spawns, first personal drops, density detection and protected spawn tools; see DEV-SPAWNS.md. Continue with admin player tools/recovery, then progression/boss/recommendation dependencies.
 
 Physical tests pending: GPS/route/collection recovery, national field access, iPhone compass and Enduro 3 activity/connectivity. Experimental rates must be labeled and recorded in a config revision, with no retroactive rewards or production changes.

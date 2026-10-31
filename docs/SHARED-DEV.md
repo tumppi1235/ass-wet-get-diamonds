@@ -1,6 +1,6 @@
 # Shared development world — first service increment
 
-User authorized a shared backend and configurable experimental XP/loot values in development only. Production remains the existing public static playtest. The existing private dev Site is being upgraded to a Worker plus its own D1 database, retaining its URL, audience and local-storage keys.
+User authorized a shared backend and configurable experimental XP/loot values in development only. Production remains the existing public static playtest. The existing private dev Site now runs a Worker plus its own D1 database, retaining its URL, audience and local-storage keys. Hosted platform identity, Tumppi profile creation and protected admin reads passed.
 
 ## Two explicit play modes
 
@@ -38,7 +38,7 @@ The separate Vinext admin client at `/admin-world` uses the same protected API. 
 
 Local end-to-end browser testing used only the official loopback Sites test identity (`local_seedy`), never real user credentials: shared profile creation, state loading, owner/admin routing and an actual audited configuration edit passed against the local D1 emulator. No location was injected or fabricated. Cloud platform identity and physical phone GPS/compass acceptance remain separate checks.
 
-GPS validation is basic consistency checking, not hardware attestation. Finite curated relics still use the existing collection rules; deterministic world regeneration, worldwide exclusive claims, density-based detection, six-source XP, co-op/bosses, admin reset/restore, invitations, offline watch reconciliation and country query pagination remain pending.
+GPS validation is basic consistency checking, not hardware attestation. See DEV-SPAWNS.md for deterministic regeneration, personal discovery, density detection and bounded spawn queries. Worldwide-exclusive claims, six-source XP, co-op/bosses, admin reset/restore, invitations and offline watch reconciliation remain pending. Raw shared GPS transport now replaces stalled watchers, ignores old/background callbacks and resumes an active quest after reload; gaps still earn no invented distance.
 
 ## Build and recovery
 

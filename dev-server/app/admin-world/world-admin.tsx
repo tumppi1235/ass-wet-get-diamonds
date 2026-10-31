@@ -1,6 +1,7 @@
 'use client';
 /* eslint-disable @next/next/no-html-link-for-pages -- Game pages are a separate Expo static app; cross-client navigation must reload. */
 import {useCallback,useEffect,useState} from 'react';
+import SpawnAdmin from './spawn-admin';
 type Balance={revision:string;tileXp:number;regionXp:number;findXp:number;enduranceMetersPerXp:number;footFactor:number;bicycleFactor:number;footMaxSpeed:number;bicycleMaxSpeed:number};
 type Player={id:string;display_name:string;role:string;revision:number};
 type Audit={id:string;action:string;target:string;created_at:number};
@@ -12,8 +13,9 @@ export default function WorldAdmin(){
   useEffect(()=>{let cancelled=false;void Promise.all([api<Config>('balance'),api<{players:Player[]}>('admin/players'),api<{audit:Audit[]}>('admin/audit')]).then(([c,p,a])=>{if(!cancelled){setConfig(c);setPlayers(p.players);setAudit(a.audit);}}).catch(e=>{if(!cancelled)setMessage(e.message);});return()=>{cancelled=true;};},[]);
   async function save(){if(!config)return;setBusy(true);try{await api('admin/balance','PUT',config);await reload();setMessage('Experimental balance saved as a new dev revision. Existing XP was not recalculated.');}catch(e){setMessage((e as Error).message);}finally{setBusy(false);}}
   const labels:Record<Exclude<keyof Balance,'revision'>,string>={tileXp:'Exploration XP per first tile',regionXp:'Agility XP per first regional block',findXp:'Perception XP per collected artefact',enduranceMetersPerXp:'Equivalent metres per Endurance XP',footFactor:'Foot effort factor',bicycleFactor:'Bicycle effort factor',footMaxSpeed:'Foot speed limit (m/s)',bicycleMaxSpeed:'Bicycle speed limit (m/s)'};
-  return <main style={{maxWidth:1000,margin:'auto',padding:24,background:'#142A2B',color:'#F5E7BB',fontFamily:'monospace',minHeight:'100vh'}}><h1>TRAIL RELICS · DEV ADMIN</h1><p>Shared development only. Production and phone-local saves are separate.</p><nav><a href="/shared" style={{color:'#E6B653'}}>Shared game</a> · <a href="/" style={{color:'#E6B653'}}>Local game</a></nav>{message&&<p role="status">{message}</p>}
+  return <main className="trail-admin" style={{maxWidth:1000,margin:'auto',padding:24,background:'#142A2B',color:'#F5E7BB',fontFamily:'monospace',minHeight:'100vh'}}><h1>TRAIL RELICS · DEV ADMIN</h1><p>Shared development only. Production and phone-local saves are separate.</p><nav><a href="/shared" style={{color:'#E6B653'}}>Shared game</a> · <a href="/" style={{color:'#E6B653'}}>Local game</a></nav>{message&&<p role="status">{message}</p>}
     <section style={{border:'2px solid #E6B653',padding:20,marginTop:20}}><h2>Experimental balance</h2><p>Revision {config?.balance.revision}. Changes affect future accepted events, without retroactive XP.</p>{config&&Object.entries(labels).map(([key,label])=><label key={key} style={{display:'flex',gap:20,justifyContent:'space-between',padding:8}}>{label}<input aria-label={label} type="number" step={key.endsWith('Factor')?'.1':'1'} value={config.balance[key as keyof typeof labels]} onChange={e=>setConfig({...config,balance:{...config.balance,[key]:Number(e.target.value)}})} style={{width:100,color:'#142A2B',background:'#F5E7BB',padding:6}}/></label>)}<button disabled={busy||!config} onClick={()=>{void save();}}>Save new dev revision</button></section>
     <section style={{padding:20}}><h2>Shared players</h2><table><thead><tr><th>Name</th><th>Role</th><th>Save revision</th></tr></thead><tbody>{players.map(p=><tr key={p.id}><td>{p.display_name}</td><td>{p.role}</td><td>{p.revision??0}</td></tr>)}</tbody></table></section>
+    <SpawnAdmin/>
     <section style={{padding:20}}><h2>Recent audit</h2><ul>{audit.map(a=><li key={a.id}>{new Date(a.created_at).toLocaleString()} · {a.action} · {a.target}</li>)}</ul></section></main>;
 }

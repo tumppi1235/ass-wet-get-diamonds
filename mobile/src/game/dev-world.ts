@@ -21,7 +21,7 @@ export function validateBalance(value:DevBalance){
   for(const key of ['footMaxSpeed','bicycleMaxSpeed']as const)if(!Number.isFinite(value[key])||value[key]<1||value[key]>30)throw new Error('Invalid '+key);
   return{...value};
 }
-export function newDevWorld():DevWorld{return{version:1,game:G.initial(),movement:'foot',previous:null,anchor:null,latestGpsValid:false,regions:{},xpRemainder:0,configRevision:DEV_BALANCE.revision};}
+export function newDevWorld():DevWorld{const game=G.initial();game.sharedSpawnsOnly=true;game.revealed={};game.progression=newProgression();return{version:1,game,movement:'foot',previous:null,anchor:null,latestGpsValid:false,regions:{},xpRemainder:0,configRevision:DEV_BALANCE.revision};}
 /** Pure authoritative event reducer, also used by isolated balancing simulations. */
 export function reduceDevEvent(original:DevWorld,event:DevEvent,now:number,balance=DEV_BALANCE,random=()=>crypto.getRandomValues(new Uint32Array(1))[0]/2**32){
   validateBalance(balance);const world:DevWorld=JSON.parse(JSON.stringify(original)),s=world.game;

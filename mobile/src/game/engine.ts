@@ -11,6 +11,7 @@ function safeRelic(i:number,j:number,visits:Record<string,number>){
   return shared.relic(i,j,visits);
 }
 function vision(s:import('./types').GameState){
+  if(s.sharedSpawnsOnly)return Object.values(s.revealed).filter((r):r is import('./types').Relic=>!!r);
   if(!RELEASE_FEATURES.nationalExploration)return shared.vision(s);
   const c=shared.cell(s.x,s.y),found=[];
   for(let i=c.i-1;i<=c.i+1;i++)for(let j=c.j-1;j<=c.j+1;j++){

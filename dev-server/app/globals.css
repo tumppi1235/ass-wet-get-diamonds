@@ -2,6 +2,18 @@
 @import "tw-animate-css";
 @import "../vendor/shadcn-tailwind-4.13.0.css";
 
+.trail-admin h1 { font-size: 1.4rem; margin-bottom: 12px; }
+.trail-admin h2 { font-size: 1.2rem; margin: 8px 0 16px; color: #E6B653; }
+.trail-admin h3 { font-size: 1.05rem; margin: 18px 0 10px; }
+.trail-admin p { margin: 10px 0; line-height: 1.6; }
+.trail-admin input:not([type="checkbox"]), .trail-admin select { color: #142A2B; background: #F5E7BB; padding: 8px; border: 1px solid #E6B653; max-width: 180px; min-height: 42px; }
+.trail-admin button { border: 1px solid #E6B653; background: #294A40; color: #F5E7BB; padding: 10px; min-height: 44px; margin: 4px; cursor: pointer; }
+.trail-admin button:disabled { opacity: .5; cursor: default; }
+.trail-admin table { width: 100%; text-align: left; }
+.trail-admin th, .trail-admin td { padding: 10px; border-bottom: 1px solid #68856C; }
+.trail-admin li { padding: 8px 0; border-bottom: 1px solid #68856C; }
+.trail-admin :focus-visible { outline: 3px solid #70D1C4; outline-offset: 3px; }
+
 @utility scrollbar-thin {
   scrollbar-width: thin;
 }

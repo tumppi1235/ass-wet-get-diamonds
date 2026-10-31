@@ -17,6 +17,7 @@ import G from '../game/engine';
 import {groundBearing} from '../map/geodesy';
 import {useCompass} from '../location/use-compass';
 import {relativeBearing} from '../location/compass';
+import {RawLocationSession} from '../location/raw-session';
 export default function SharedWorld(){
   const [client]=useState(()=>new SharedWorldClient(AsyncStorage));
   const [loading,setLoading]=useState(true);
@@ -27,10 +28,10 @@ export default function SharedWorld(){
   const [claims,setClaims]=useState<TileClaims>({}),[selectedTile,setSelectedTile]=useState<string>();
   const [now,setNow]=useState(()=>Date.now());useEffect(()=>{const timer=setInterval(()=>setNow(Date.now()),1000);return()=>clearInterval(timer);},[]);
   const refreshClaims=useCallback(async()=>{const result=await client.claims();setClaims(Object.fromEntries(result.claims.map(c=>[c.tile,{ownerId:c.owner,ownerName:c.display_name,pricePaid:c.price,claimedAt:c.updated_at}])));},[client]);
-  const refresh=useCallback(async()=>{const who=await client.profile();setUser(who);const state=await client.load();setSnapshot(state);setMode(state.world.movement);setPending(await client.pending());const visits=await client.visits();setOthers(Object.fromEntries(visits.visits.map(v=>[v.tile,v.players])));setError('');},[client]);
+  const refresh=useCallback(async()=>{const who=await client.profile();setUser(who);const state=await client.load();setSnapshot(state);setMode(state.world.movement);setTracking(state.world.game.adventure?.status==='active');setPending(await client.pending());const visits=await client.visits();setOthers(Object.fromEntries(visits.visits.map(v=>[v.tile,v.players])));setError('');},[client]);
   useEffect(()=>{
     if(APP_ENV!=='development')return;let cancelled=false;
-    void client.profile().then(async who=>{const[state,waiting,visits,owned]=await Promise.all([client.load(),client.pending(),client.visits(),client.claims()]);if(cancelled)return;setUser(who);setSnapshot(state);setMode(state.world.movement);setPending(waiting);setOthers(Object.fromEntries(visits.visits.map(v=>[v.tile,v.players])));setClaims(Object.fromEntries(owned.claims.map(c=>[c.tile,{ownerId:c.owner,ownerName:c.display_name,pricePaid:c.price,claimedAt:c.updated_at}])));setError('');}).catch(e=>{if(!cancelled)setError(e.message);}).finally(()=>{if(!cancelled)setLoading(false);});
+    void client.profile().then(async who=>{const[state,waiting,visits,owned]=await Promise.all([client.load(),client.pending(),client.visits(),client.claims()]);if(cancelled)return;setUser(who);setSnapshot(state);setMode(state.world.movement);setTracking(state.world.game.adventure?.status==='active');setPending(waiting);setOthers(Object.fromEntries(visits.visits.map(v=>[v.tile,v.players])));setClaims(Object.fromEntries(owned.claims.map(c=>[c.tile,{ownerId:c.owner,ownerName:c.display_name,pricePaid:c.price,claimedAt:c.updated_at}])));setError('');}).catch(e=>{if(!cancelled)setError(e.message);}).finally(()=>{if(!cancelled)setLoading(false);});
     return()=>{cancelled=true;};
   },[client]);
   const send=useCallback(async(event:DevEvent)=>{
@@ -42,10 +43,10 @@ export default function SharedWorld(){
   },[client,refreshClaims]);
   useEffect(()=>{
     if(!tracking||pending)return;
-    let subscription:{remove():void}|null=null,cancelled=false,visible=true;
-    const stop=observeLocationLifecycle(value=>{visible=value;});
-    watchPlayerLocation(fix=>{if(!cancelled&&visible)void send({kind:'gps',fix});},failure=>{if(!cancelled)setError(failure.message);}).then(s=>{if(cancelled)s.remove();else subscription=s;}).catch(e=>setError(e.message));
-    return()=>{cancelled=true;stop();subscription?.remove();};
+    const session=new RawLocationSession(watchPlayerLocation,fix=>{void send({kind:'gps',fix});},setError);
+    const stop=observeLocationLifecycle(value=>{if(value)session.resume();else session.suspend();});
+    const timer=setInterval(()=>session.tick(),5000);void session.start();
+    return()=>{clearInterval(timer);stop();session.stop();};
   },[tracking,pending,send]);
   async function retry(){setBusy(true);setError('');try{const result=await client.retry();setSnapshot(result);setPending(false);setNotice(result.receipt.reason);}catch(e){setError((e as Error).message);}finally{setBusy(false);}}
   if(APP_ENV!=='development')return <Redirect href="/"/>;

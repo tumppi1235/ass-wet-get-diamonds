@@ -1,4 +1,4 @@
-import {test} from 'node:test';
+import {test,mock} from 'node:test';
 import assert from 'node:assert/strict';
 import {DatabaseSync} from 'node:sqlite';
 import {readdirSync,readFileSync} from 'node:fs';
@@ -6,6 +6,94 @@ import {newDevWorld,reduceDevEvent,type DevEvent,DEV_BALANCE} from '../src/game/
 import G from '../src/game/engine';
 import {trailApi} from '../../dev-server/trail/api';
 import {SharedWorldClient} from '../src/accounts/shared-world';
+import {LANDMARKS,captureTarget} from '../src/game/landmarks';
+import {generateWorldSpawn,firstVisitSpawn,SPAWN_RULES,weightedRarity,detectionMeters} from '../src/game/world-spawns';
+import {hydrateSpawns,querySpawns,nearbyBounds,removeSpawn} from '../../dev-server/trail/spawn-store';
+import {applyWorldEvent} from '../../dev-server/trail/world-store';
+import {spawnVisibleTo} from '../src/game/spawns';
+import {relicData} from '../src/map/vector-data';
+import {RawLocationSession} from '../src/location/raw-session';
+
+test('TR-003/004/008/015/016/018 deterministic world windows, personal rolls and capped density stay independent',()=>{
+  const place=LANDMARKS[0],now=Date.now(),a=generateWorldSpawn(place,now),b=generateWorldSpawn(place,now);
+  assert.deepEqual(a,b);assert.notEqual(generateWorldSpawn(place,a.expiresAt!).id,a.id);assert.equal(spawnVisibleTo(a,'any',a.expiresAt!),false);
+  assert.equal(firstVisitSpawn(place,'one',now,{...SPAWN_RULES,firstVisitChance:0}),null);
+  const personal=firstVisitSpawn(place,'one',now,{...SPAWN_RULES,firstVisitChance:1})!;
+  assert.equal(spawnVisibleTo(personal,'two',now),false);assert.equal(spawnVisibleTo(personal,'one',now),true);
+  assert.equal(firstVisitSpawn(place,'one',now+1,{...SPAWN_RULES,firstVisitChance:1})!.id,personal.id,'one personal identity per player/tile');
+  assert.notEqual(firstVisitSpawn(place,'two',now,{...SPAWN_RULES,firstVisitChance:1})!.id,personal.id);
+  assert.equal(detectionMeters(0),2000);assert.equal(detectionMeters(20),300);assert.equal(detectionMeters(100000),300);
+  for(const rarity of ['Common','Rare','Legendary']as const)assert.equal(weightedRarity('same',{...SPAWN_RULES,weights:{Common:0,Rare:0,Legendary:0,[rarity]:1}}),rarity);
+  const counts={Common:0,Rare:0,Legendary:0};for(let i=0;i<10000;i++)counts[weightedRarity('seed:'+i)]++;
+  assert.ok(counts.Common>6500&&counts.Common<8500);assert.ok(counts.Legendary>100&&counts.Legendary<600);
+});
+
+test('TR-009/010/017/030 shared spawns capture atomically, replay once, retire safely and use bounded pages',async()=>{
+  const{db,sql}=database(),databaseBinding=db as never,now=Date.now(),place=LANDMARKS[0];
+  sql.prepare('INSERT INTO trail_members(id,display_name,role,created_at) VALUES(?,?,?,?)').run('player','P','player',now);
+  const world=newDevWorld(),point=G.xy(place.latitude!,place.longitude!);world.previous={...point,latitude:place.latitude!,longitude:place.longitude!,accuracy:5,timestamp:now,inside:true,precise:true};world.latestGpsValid=true;world.game.x=point.x;world.game.y=point.y;world.game.energy=100000;
+  await hydrateSpawns(databaseBinding,'player',world,now);
+  assert.ok(world.game.sharedSpawnsOnly);const target=captureTarget(world.game,point)!;assert.ok(target?.id.startsWith('world:'));
+  assert.ok(Object.keys(world.game.revealed).length<LANDMARKS.length);assert.equal(relicData(world.game,point).features.length,Object.keys(world.game.revealed).length,'map must not leak full legacy catalog into shared view');
+  sql.prepare('INSERT INTO trail_players(id,state,revision,updated_at) VALUES(?,?,0,?)').run('player',JSON.stringify(world),now);
+  const rng=mock.method(globalThis.crypto,'getRandomValues',(values:Uint32Array)=>{values.fill(0);return values;});
+  try{
+    const result=await applyWorldEvent(databaseBinding,'player','spawn:capture:1',0,{kind:'capture'},now);
+    assert.equal(result.receipt.collected,target.id);assert.equal(result.world.game.collection.length,1);
+    const replay=await applyWorldEvent(databaseBinding,'player','spawn:capture:1',0,{kind:'capture'},now);assert.equal(replay.replayed,true);assert.equal(replay.world.game.collection.length,1);
+    assert.equal(sql.prepare('SELECT COUNT(*) AS n FROM trail_spawn_claims').get()!.n,1);
+    assert.equal(sql.prepare('SELECT COUNT(*) AS n FROM trail_events').get()!.n,1);
+  }finally{rng.mock.restore();}
+  const bounds=nearbyBounds(place.latitude!,place.longitude!),first=await querySpawns(databaseBinding,'player',bounds,now,'',2,true);assert.ok(first.spawns.length<=2);assert.ok(first.next);
+  const second=await querySpawns(databaseBinding,'player',bounds,now,first.next!,2,true);assert.ok(!second.spawns.some(x=>first.spawns.some(y=>x.spawn.id===y.spawn.id)));
+  assert.ok(![...first.spawns,...second.spawns].some(x=>x.spawn.id===target.id),'claimed items leave available queries');
+  const retiring=first.spawns[0].spawn;await removeSpawn(databaseBinding,'owner',retiring.id,now);await hydrateSpawns(databaseBinding,'player',world,now);assert.equal(world.game.revealed[retiring.id],undefined);
+  assert.equal(sql.prepare('SELECT COUNT(*) AS n FROM trail_audit').get()!.n,1);assert.equal((await querySpawns(databaseBinding,'player',bounds,now,'',100,true)).spawns.some(x=>x.spawn.id===retiring.id),false);
+  await assert.rejects(()=>querySpawns(databaseBinding,'player',bounds,now,'',101),/Invalid spawn page/);
+});
+
+test('TR-011/033/036/037 spawn admin validates positions, permissions, simulation isolation and rules revision',async()=>{
+  const{db,sql}=database(),env={DB:db as never,TRAIL_ENV:'development',TRAIL_ADMIN_EMAIL:'owner@example.invalid'};
+  const call=async(owner:string,path:string,method='GET',input?:unknown)=>{const response=await trailApi(new Request('https://dev.example/api/trail/'+path,{method,headers:{'oai-authenticated-user-id':owner,'oai-authenticated-user-email':owner==='admin'?'owner@example.invalid':'player@example.invalid',origin:'https://dev.example'},...(input!==undefined?{body:JSON.stringify(input)}:{})}),env);return{status:response.status,data:await response.json()};};
+  await call('admin','me','POST',{displayName:'Owner'});await call('player','me','POST',{displayName:'P'});
+  const params={latitude:62.241,longitude:25.747,artifactType:'Rune',rarity:'Rare'};
+  assert.equal((await call('player','admin/spawns','POST',params)).status,403);
+  assert.equal((await call('admin','admin/spawns','POST',{...params,latitude:NaN})).status,400);
+  assert.equal((await call('admin','admin/spawns','POST',{...params,latitude:0,longitude:0})).status,400);
+  const sim=await call('admin','admin/spawn-simulation','POST',{rules:SPAWN_RULES,at:Date.now()});assert.equal(sim.data.writes,0);assert.equal(sim.data.count,501);assert.equal(sql.prepare('SELECT COUNT(*) AS n FROM trail_spawns').get()!.n,0);
+  const placed=await call('admin','admin/spawns','POST',params);assert.equal(placed.status,200);
+  assert.equal((await call('player','admin/spawns','DELETE',{id:placed.data.spawn.id})).status,403);
+  assert.equal((await call('admin','admin/spawns','DELETE',{id:placed.data.spawn.id})).status,200);
+  assert.equal((await call('admin','admin/spawns?south=59&north=71&west=19&east=32')).status,400);
+  const changed=await call('admin','admin/spawn-rules','PUT',{rules:{...SPAWN_RULES,firstVisitChance:1},revision:SPAWN_RULES.revision});assert.equal(changed.status,200);
+  assert.equal((await call('admin','admin/spawn-rules','PUT',{rules:SPAWN_RULES,revision:SPAWN_RULES.revision})).status,409);
+  assert.equal(sql.prepare('SELECT COUNT(*) AS n FROM trail_audit').get()!.n,3);
+  const tooLarge=await call('admin','admin/spawn-simulation','POST',{padding:'X'.repeat(131073)});assert.equal(tooLarge.status,413);
+});
+
+test('TR-015/016 first personal visits are independent from global density and never reroll after returning',async()=>{
+  const{db,sql}=database(),binding=db as never,place=LANDMARKS[0],now=Date.now();
+  sql.prepare('INSERT INTO trail_configs(id,revision,document,updated_by,updated_at) VALUES(?,1,?,?,?)').run('spawns',JSON.stringify({...SPAWN_RULES,firstVisitChance:1}),'admin',now);
+  for(const owner of ['first','newcomer']){
+    sql.prepare('INSERT INTO trail_members(id,display_name,role,created_at) VALUES(?,?,?,?)').run(owner,owner,'player',now);
+    const gps={kind:'gps' as const,fix:{latitude:place.latitude!,longitude:place.longitude!,timestamp:now,accuracy:5,speed:0}};
+    const initial=await applyWorldEvent(binding,owner,owner+':first:visit',0,gps,now);assert.equal(initial.receipt.awards.exploration,5);
+    const again=await applyWorldEvent(binding,owner,owner+':return:visit',1,{...gps,fix:{...gps.fix,timestamp:now+1000}},now+1000);assert.equal(again.receipt.awards.exploration,undefined);
+    assert.equal(Object.values(again.world.game.revealed).filter(r=>r?.id.startsWith('personal:')).length,1);
+  }
+  assert.equal(sql.prepare("SELECT COUNT(*) AS n FROM trail_spawns WHERE owner IS NOT NULL").get()!.n,2);
+  assert.equal(sql.prepare('SELECT COUNT(*) AS n FROM trail_visits WHERE tile=?').get(place.id)!.n,2);
+});
+
+test('TR-146/153 shared raw GPS transport recovers after suspension and stalls without applying foot-only reward rules',async()=>{
+  let now=100000,starts=0,removals=0,received=0;const callbacks:((f:import('../src/location/tracker').LocationFix)=>void)[]=[];
+  const session=new RawLocationSession(async fix=>{starts++;callbacks.push(fix);return{remove(){removals++;}};},()=>received++,()=>{},()=>now);
+  await session.start();callbacks[0]({latitude:62.24,longitude:25.74,timestamp:now,speed:12,accuracy:5});assert.equal(received,1,'bike transport is not filtered as walking');
+  session.suspend();callbacks[0]({latitude:62.24,longitude:25.74,timestamp:now,speed:12,accuracy:5});assert.equal(received,1);
+  now+=5000;session.resume();await Promise.resolve();assert.equal(starts,2);assert.equal(removals,1);
+  callbacks[0]({latitude:62.24,longitude:25.74,timestamp:now,accuracy:5});assert.equal(received,1,'late replaced callback is ignored');
+  now+=30000;session.tick();await Promise.resolve();assert.equal(starts,3);session.stop();assert.equal(removals,3);
+});
 
 function database(){
   const sql=new DatabaseSync(':memory:');sql.exec('PRAGMA foreign_keys=ON');
