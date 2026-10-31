@@ -22,7 +22,7 @@ const boundaryPath = JYVASKYLA.polygons.map(p => line(p.outer) + 'Z' + p.holes.m
 const identify = 'TrailRelics/0.4 (+https://github.com/tumppi1235/ass-wet-get-diamonds)';
 
 type Props = CityMapProps;
-export function CityMap({ game, communityVisits, onDiscover, player, focusKey, demo, locating, onLocate, fullScreen = false }: Props) {
+export function CityMap({ game, communityVisits, onDiscover, player, focusKey, demo, locating, onLocate, claims = {}, ownerId, fullScreen = false }: Props) {
   const [width, setWidth] = useState(750), [mapStyle, setMapStyle] = useState<MapStyle>('street'), [failed, setFailed] = useState<Record<string, boolean>>({});
   const { height: screenHeight, width: screenWidth } = useWindowDimensions();
   const height = fullScreen ? screenHeight : screenWidth < 700 ? Math.max(330, Math.min(480, screenHeight * .52)) : 560, area = useMemo(() => fitJyvaskyla(width, height), [width, height]);
@@ -84,6 +84,7 @@ export function CityMap({ game, communityVisits, onDiscover, player, focusKey, d
           <Group clipPath="url(#municipal-grid)">{explored.areas.map(a => <Rect key={a.x + ',' + a.y} x={a.x} y={-a.y - a.size} width={a.size} height={a.size} fill={a.mine && a.others ? '#218A8750' : a.mine ? '#59843B50' : '#8662B550'} stroke={a.mine && a.others ? '#176D6A' : a.mine ? '#355E27' : '#69428D'} strokeWidth={1 / scale} />)}</Group>
           {grid && <Group clipPath="url(#municipal-grid)"><Path d={grid} stroke="#FFFFFF70" strokeWidth={1.8 / scale} fill="none" /><Path d={grid} stroke="#456C5B55" strokeWidth={.65 / scale} fill="none" /></Group>}
           <Path d={boundaryPath} fill="#2D624A0A" stroke="#4E7354" strokeWidth={1.5 / scale} strokeDasharray={`${7 / scale},${5 / scale}`} fillRule="evenodd" />
+          {Object.entries(claims).map(([id,c])=>{const [i,j]=id.split(',').map(Number);return <Rect key={id} x={i*250} y={-(j+1)*250} width={250} height={250} fill={c.ownerId===ownerId?'#E6B65330':'#A17DC430'} stroke={c.ownerId===ownerId?'#AD7D1F':'#725198'} strokeWidth={2.5/scale}/>;})}
           {trail && <><Path d={trail} stroke="#FFFFEE" strokeWidth={5 / scale} fill="none" /><Path d={trail} stroke="#B9703B" strokeWidth={2.5 / scale} fill="none" /></>}
           {game.lastCell && gameTiles.map(([i, j]) => {
             const id = G.key(i, j), relic = game.revealed[id]?.landmarkId ? null : game.revealed[id], here = i === current.i && j === current.j, x = (i + .5) * 250, y = -(j + .5) * 250;
@@ -102,7 +103,7 @@ export function CityMap({ game, communityVisits, onDiscover, player, focusKey, d
           <Path d={`M${center.x - halfW + 16 / scale},${-center.y + halfH - 24 / scale}h${scaleMeters}`} stroke="#374D35" strokeWidth={2 / scale} /><SvgText x={center.x - halfW + 16 / scale} y={-center.y + halfH - 32 / scale} fontSize={10 / scale} fill="#374D35">{scaleMeters >= 1000 ? `${scaleMeters / 1000} km` : `${scaleMeters} m`}</SvgText>
         </Svg>
       </MapSurface>
-      {fullScreen ? <View style={{ position: 'absolute', right: 10, top: 12, gap: 6 }}><Button title="Street" quiet={mapStyle !== 'street'} onPress={() => { setMapStyle('street'); setFailed({}); }} /><Button title="Terrain" quiet={mapStyle !== 'outdoor'} onPress={() => { setMapStyle('outdoor'); setFailed({}); }} /><Button title="Me" quiet onPress={() => player ? setCamera({ mode: 'player', center: player, scale: Math.max(.25, scale), focusKey }) : onLocate()} /></View> : <>      <View style={{ position: 'absolute', right: 12, top: 12, gap: 6 }}><Button title="+" quiet onPress={() => zoom(1.6)} /><Button title="−" quiet onPress={() => zoom(1 / 1.6)} />{target && <Button title="◎ Me" quiet onPress={() => setCamera({ mode: 'player', center: target, scale: Math.max(.25, scale), focusKey })} />}</View>
+      {fullScreen ? <View style={{ position: 'absolute', right: 10, top: 12, gap: 6 }}><Button title="Me" quiet busy={locating} onPress={() => { onLocate(); if(target) setCamera({ mode: 'player', center: target, scale: Math.max(.25, scale), focusKey }); }} /></View> : <>      <View style={{ position: 'absolute', right: 12, top: 12, gap: 6 }}><Button title="+" quiet onPress={() => zoom(1.6)} /><Button title="−" quiet onPress={() => zoom(1 / 1.6)} />{target && <Button title="◎ Me" quiet onPress={() => setCamera({ mode: 'player', center: target, scale: Math.max(.25, scale), focusKey })} />}</View>
 </>}
       {!fullScreen && <View pointerEvents="none" style={{ position: 'absolute', left: 12, top: 12, backgroundColor: '#FFFFF0EA', padding: 8, borderRadius: 5 }}><Text style={{ fontSize: 10, letterSpacing: 1, color: '#41593D' }}>NORTH ↑  /  {mode === 'area' ? 'WHOLE CITY' : 'TRAIL VIEW'}</Text></View>}
     </View>

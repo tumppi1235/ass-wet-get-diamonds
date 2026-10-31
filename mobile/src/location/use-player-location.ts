@@ -5,7 +5,7 @@ import { PositionTracker, type PlayerPosition, type TrackedFix } from './tracker
 export function usePlayerLocation(onGameFix: (fix: TrackedFix) => void) {
   const [position, setPosition] = useState<PlayerPosition | null>(null), [tracking, setTracking] = useState(false), [locating, setLocating] = useState(false), [message, setMessage] = useState('Find your location to centre the map on you.'), [fresh, setFresh] = useState(0), [focusRequest, setFocusRequest] = useState(0);
   const subscription = useRef<LocationSubscription | null>(null), generation = useRef(0);
-  const stop = useCallback(() => { generation.current++; subscription.current?.remove(); subscription.current = null; setTracking(false); setLocating(false); setFresh(0); }, []);
+  const stop = useCallback(() => { generation.current++; subscription.current?.remove(); subscription.current = null; setTracking(false); setLocating(false); setFresh(0); setMessage('Location paused. Tap Me to locate yourself again.'); }, []);
   const start = useCallback(async () => {
     stop(); const request = ++generation.current, tracker = new PositionTracker(); let focused = false;
     setPosition(null); setLocating(true); setTracking(true); setMessage('Allow location in your browser or device prompt. Finding your position…');
@@ -23,8 +23,7 @@ export function usePlayerLocation(onGameFix: (fix: TrackedFix) => void) {
         }
       }, error => {
         if (request !== generation.current) return;
-        setLocating(false); setFresh(0); setMessage(error.message);
-        if (error.denied) stop();
+        setLocating(false); setFresh(0); if (error.denied) stop(); setMessage(error.message);
       });
       if (request !== generation.current) watcher.remove(); else subscription.current = watcher;
     } catch (e) { if (request === generation.current) { stop(); setMessage((e as Error).message); } }

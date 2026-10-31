@@ -1,11 +1,13 @@
 import { pbkdf2Async } from '@noble/hashes/pbkdf2.js';
 import { sha256 } from '@noble/hashes/sha2.js';
 import { bytesToHex, hexToBytes } from '@noble/hashes/utils.js';
+import { claimPrice, reconcileClaimGold, tilePoint, type TileClaims } from '../game/claims';
+import type { GameState } from '../game/types';
 
 export interface Storage { getItem(key: string): Promise<string | null>; setItem(key: string, value: string): Promise<void>; removeItem(key: string): Promise<void> }
 export type User = { id: string; username: string; displayName: string; role: 'admin' | 'player'; createdAt: number };
 type StoredUser = User & { salt: string; passwordHash: string; passwordVersion: number };
-type Database = { version: 1; users: StoredUser[]; progress: Record<string, unknown> };
+type Database = { version: 1; users: StoredUser[]; progress: Record<string, unknown>; tileClaims?: TileClaims; claimSpending?: Record<string, number> };
 type Session = { userId: string; token: string; expiresAt: number; passwordVersion: number };
 const provisioned = require('./provisioned-players.json') as Omit<StoredUser, 'createdAt'>[];
 export const DATABASE_KEY = 'trail-relics.profiles.v1';
@@ -81,12 +83,37 @@ export class LocalAccounts {
     });
   }
   async progress<T>(token: string, ownerId: string): Promise<T | null> {
-    return this.serial(async () => { const db = await this.read(), { user } = await this.verified(db, token); if (user.id !== ownerId) throw new Error('This saved game belongs to a different profile.'); return (db.progress[user.id] as T) || null; });
+    return this.serial(async () => { const db = await this.read(), { user } = await this.verified(db, token); if (user.id !== ownerId) throw new Error('This saved game belongs to a different profile.'); const saved=db.progress[user.id] as GameState | undefined; return (saved && typeof saved.gold==='number' && db.claimSpending?.[user.id] ? reconcileClaimGold(saved,db.claimSpending[user.id]) : saved) as T || null; });
   }
   async saveProgress(token: string, ownerId: string, value: unknown) {
     // Serialize a snapshot before waiting, so later game mutations cannot change this save.
     const snapshot = JSON.parse(JSON.stringify(value));
-    return this.serial(async () => { const db = await this.read(), { user } = await this.verified(db, token); if (user.id !== ownerId) throw new Error('This saved game belongs to a different profile.'); db.progress[user.id] = snapshot; await this.write(db); });
+    return this.serial(async () => { const db = await this.read(), { user } = await this.verified(db, token); if (user.id !== ownerId) throw new Error('This saved game belongs to a different profile.'); db.progress[user.id] = snapshot && typeof snapshot.gold==='number' && db.claimSpending?.[user.id] ? reconcileClaimGold(snapshot,db.claimSpending[user.id]) : snapshot; await this.write(db); });
+  }
+  async tileClaims(token:string):Promise<TileClaims> {
+    return this.serial(async()=>{const db=await this.read();await this.verified(db,token);return db.tileClaims || {};});
+  }
+  async claimTile(token:string,ownerId:string,value:GameState,id:string,expectedPrice:number) {
+    const snapshot=JSON.parse(JSON.stringify(value)) as GameState;
+    return this.serial(async()=>{
+      const db=await this.read(),{user}=await this.verified(db,token);
+      if(user.id!==ownerId)throw new Error('This saved game belongs to a different profile.');
+      if(!tilePoint(id))throw new Error('Choose a tile inside Jyväskylä.');
+      if(!(snapshot.visits?.[id]>0))throw new Error('Visit this tile before claiming it.');
+      const previous=db.tileClaims?.[id],price=claimPrice(previous);
+      if(previous?.ownerId===user.id)throw new Error('You already own this tile.');
+      if(!Number.isSafeInteger(price)||price!==expectedPrice)throw new Error('This tile price changed. Review its new price and try again.');
+      const spent=db.claimSpending?.[user.id] || 0;
+      const state=reconcileClaimGold(snapshot,spent);
+      if(!Number.isSafeInteger(state.gold)||state.gold<price)throw new Error(`You need ${price} gold to claim this tile.`);
+      if(!Number.isSafeInteger(spent+price))throw new Error('The gold total is too large.');
+      const claim={ownerId:user.id,ownerName:user.displayName,pricePaid:price,claimedAt:this.now()};
+      db.claimSpending={...db.claimSpending,[user.id]:spent+price};
+      db.tileClaims={...db.tileClaims,[id]:claim};
+      db.progress[user.id]={...state,gold:state.gold-price,claimGoldSpent:spent+price};
+      await this.write(db);
+      return {claims:db.tileClaims,spentTotal:spent+price,price};
+    });
   }
   async communityVisits(token: string): Promise<Record<string, number>> {
     return this.serial(async () => {

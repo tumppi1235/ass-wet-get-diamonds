@@ -2,7 +2,7 @@ import { Map, Popup, setWorkerUrl, setWorkerCount, getVersion, type GeoJSONSourc
 import type { FeatureCollection } from 'geojson';
 import G from '../game/engine';
 import type { CityMapProps } from '../components/city-map.types';
-import { accuracyData, boundaryData, collection, coordinates, overlayData, playerData, relicData, trailData } from './vector-data';
+import { accuracyData, boundaryData, claimsData, collection, coordinates, overlayData, playerData, relicData, selectedTileData, trailData } from './vector-data';
 import { revision } from './style-revision.json';
 
 export function createQuestMap(container: HTMLDivElement, read: () => CityMapProps, onReady: () => void, onError: (message: string) => void) {
@@ -11,16 +11,16 @@ export function createQuestMap(container: HTMLDivElement, read: () => CityMapPro
   const initial = read(), target = initial.player || initial.game;
   const map = new Map({ container, style:'/maps/trail-retro-style.json?v='+revision, center:coordinates(target),zoom:14.4,
     transformStyle:(_previous,next)=>({...next,sprite:typeof next.sprite==='string'?new URL(next.sprite,window.location.href).href:next.sprite}),
-    minZoom:7,maxZoom:19,maxBounds:[[24.7,61.5],[26.6,62.8]],bearing:0,pitch:0,
+    minZoom:7,maxZoom:19,bearing:0,pitch:0,
     dragRotate:false,touchPitch:false,attributionControl:false,fadeDuration:0,
     canvasContextAttributes:{antialias:false},pixelRatio:Math.min(window.devicePixelRatio || 1,2),
   });
   map.touchZoomRotate.disableRotation();
   map.keyboard.disableRotation();
   map.getCanvas().setAttribute('aria-label','Jyväskylä adventure map. Drag to pan and pinch or scroll to zoom.');
-  let ready=false,follow=false,focus=initial.focusKey,terrain=false,popup:Popup | null=null,popupId:string | null=null;
+  let ready=false,follow=!!initial.player||initial.demo,focus=initial.focusKey,terrain=true,popup:Popup | null=null,popupId:string | null=null;
   let popupNodes:{title:HTMLElement;detail:HTMLElement;status:HTMLElement} | null=null;
-  const sources = ['visits','grid','trail','accuracy','player','relics','boundary'];
+  const sources = ['visits','grid','trail','accuracy','player','relics','boundary','claims','selected-tile'];
   const data=(id:string,value:FeatureCollection)=>{(map.getSource(id) as GeoJSONSource | undefined)?.setData(value);};
   const viewport=()=>{
     const c=map.getCenter(),center=G.xy(c.lat,c.lng), canvas=map.getCanvas();
@@ -39,6 +39,7 @@ export function createQuestMap(container: HTMLDivElement, read: () => CityMapPro
     status.textContent=a.collected?'Collected':a.searched?'Searched this quest':a.collectable?'Ready to collect · open Quest':`${p.player||p.demo?'Follow your compass':'Find your location'} · open Quest to collect`;
   }
   function update(){if(!ready)return;const p=read(),point=p.player || p.game;
+    data('claims',claimsData(p.claims || {},p.ownerId,p.selectedTileId));data('selected-tile',selectedTileData(p.selectedTileId));
     data('trail',trailData(p.game));data('relics',relicData(p.game,point,p.selectedRelicId,p.capturableId));
     data('player',playerData(p.player,p.demo?p.game:null));data('accuracy',accuracyData(p.player));
     if(p.focusKey && p.focusKey!==focus){focus=p.focusKey;follow=true;map.jumpTo({center:coordinates(point),zoom:Math.max(14.4,map.getZoom())});}
@@ -53,6 +54,10 @@ export function createQuestMap(container: HTMLDivElement, read: () => CityMapPro
     add({id:'visit-fill',type:'fill',source:'visits',paint:{'fill-color':visitColor,'fill-opacity':.18}});
     add({id:'visit-edge',type:'line',source:'visits',paint:{'line-color':visitColor,'line-width':1.5,'line-opacity':.8}});
     add({id:'game-grid',type:'line',source:'grid',minzoom:13,paint:{'line-color':'#305B49','line-width':.65,'line-opacity':.25}});
+    add({id:'claimed-fill',type:'fill',source:'claims',paint:{'fill-color':['case',['get','mine'],'#E6B653','#A17DC4'],'fill-opacity':.18}});
+    add({id:'claimed-border',type:'line',source:'claims',paint:{'line-color':['case',['get','mine'],'#AD7D1F','#725198'],'line-width':2.5}});
+    add({id:'selected-tile-border',type:'line',source:'selected-tile',paint:{'line-color':'#FFF4BB','line-width':4,'line-dasharray':[3,2]}});
+    add({id:'claimed-owner',type:'symbol',source:'claims',minzoom:15,layout:{'text-field':['concat','CLAIMED · ',['get','owner']],'text-font':['Noto Sans Regular'],'text-size':11,'text-max-width':12},paint:{'text-color':'#423B22','text-halo-color':'#FFF0B9','text-halo-width':1.5}});
     add({id:'municipal-boundary',type:'line',source:'boundary',maxzoom:13,paint:{'line-color':'#376747','line-width':1.5,'line-dasharray':[4,3]}});
     add({id:'route-casing',type:'line',source:'trail',layout:{'line-cap':'round','line-join':'round'},paint:{'line-color':'#FFF3CF','line-width':5}});
     add({id:'route-line',type:'line',source:'trail',layout:{'line-cap':'round','line-join':'round'},paint:{'line-color':'#B4613E','line-width':2.5}});
@@ -76,7 +81,7 @@ export function createQuestMap(container: HTMLDivElement, read: () => CityMapPro
   map.on('error',e=>{console.warn('Quest map:',e.error?.message);if(!ready)onError('Map could not load. Check your connection.');});
   map.on('click',async e=>{
     if(!ready)return;
-    const features=map.queryRenderedFeatures(e.point,{layers:['relic-icons','relic-dots','relic-clusters']});const f=features[0];if(!f)return;
+    const features=map.queryRenderedFeatures(e.point,{layers:['relic-icons','relic-dots','relic-clusters']});const f=features[0];if(!f){const point=G.xy(e.lngLat.lat,e.lngLat.lng),c=G.cell(point.x,point.y);read().onSelectTile?.(G.key(c.i,c.j));return;}
     if(f.properties.point_count){const zoom=await (map.getSource('relics') as GeoJSONSource).getClusterExpansionZoom(f.properties.cluster_id);if(!map.getSource('relics'))return;map.jumpTo({center:(f.geometry as GeoJSON.Point).coordinates as [number,number],zoom});return;}
     const id=String(f.properties.relicId);read().onSelectRelic?.(id);popup?.remove();popupNodes=null;popupId=id;
     popup=new Popup({offset:[0,-45],closeButton:true,closeOnClick:true,maxWidth:'245px',className:'quest-relic-popup'}).setLngLat((f.geometry as GeoJSON.Point).coordinates as [number,number]);
@@ -91,5 +96,5 @@ export function createQuestMap(container: HTMLDivElement, read: () => CityMapPro
     map.setPaintProperty('grass-texture','fill-opacity',enabled?.75:.35);
   }
   const observer=new ResizeObserver(()=>map.resize());observer.observe(container);
-  return {update,setTerrain,locate(){const p=read(),point=p.player || (p.demo?p.game:null);if(point){follow=true;map.jumpTo({center:coordinates(point),zoom:Math.max(14.4,map.getZoom())});}else p.onLocate();},destroy(){observer.disconnect();popup?.remove();map.remove();}};
+  return {update,locate(){const p=read(),point=p.player || (p.demo?p.game:null);if(point){follow=true;map.jumpTo({center:coordinates(point),zoom:Math.max(14.4,map.getZoom())});}p.onLocate();},destroy(){observer.disconnect();popup?.remove();map.remove();}};
 }

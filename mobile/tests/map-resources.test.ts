@@ -6,18 +6,19 @@ import { panViewport, zoomViewport } from '../src/map/camera';
 import { gridForView } from '../src/map/grid';
 import { PositionTracker } from '../src/location/tracker';
 import { mapDetail, visitAreas } from '../src/map/visits';
+import { beginQuest } from '../src/game/landmarks';
 
 test('gold carries partial walking distance across saves without retroactive rewards', () => {
   let state = restoreResources({ ...G.initial(), meters: 12000 });
   assert.equal(state.gold, 0); assert.equal(state.goldMetres, 0);
   creditWalkingGold(state, 69.5);
   state = restoreResources(JSON.parse(JSON.stringify(state)));
-  creditWalkingGold(state, 30.5); assert.equal(state.gold, 1); assert.equal(state.goldMetres, 0);
-  creditWalkingGold(state, 251); assert.equal(state.gold, 3); assert.equal(state.goldMetres, 51);
+  creditWalkingGold(state, 180.5); assert.equal(state.gold, 1); assert.equal(state.goldMetres, 0);
+  creditWalkingGold(state, 551); assert.equal(state.gold, 3); assert.equal(state.goldMetres, 51);
   for (const invalid of [0, -4, NaN, Infinity]) creditWalkingGold(state, invalid);
   assert.equal(state.gold, 3); assert.equal(state.goldMetres, 51);
   state = restoreResources(JSON.parse(JSON.stringify(state)));
-  for (let i = 0; i < 490; i++) creditWalkingGold(state, .1);
+  for (let i = 0; i < 1990; i++) creditWalkingGold(state, .1);
   assert.equal(state.gold, 4); assert.ok(state.goldMetres < 1e-7);
   assert.equal(restoreResources(G.initial()).gold, 0, 'a different profile starts with its own balance');
 });
@@ -26,8 +27,25 @@ test('GPS gold uses accepted walking distance, excluding coarse fixes and telepo
   const state = restoreResources(G.initial()), tracker = new PositionTracker(); let time = 1_000_000;
   const accept = (x: number, accuracy: number) => { const p = G.geo(x, 0); const result = tracker.accept({ latitude: p.lat, longitude: p.lon, accuracy, timestamp: time, speed: 1 }, time); if (result?.eligible) creditWalkingGold(state, result.distance); time += 10000; };
   accept(0, 800); accept(200, 800); assert.equal(state.goldMetres, 0);
-  accept(0, 5); accept(50, 5); accept(100, 5); assert.equal(state.gold, 1);
+  accept(0, 5); accept(50, 5); accept(100, 5); assert.equal(state.gold, 0);assert.ok(Math.abs(state.goldMetres-100)<1e-6);
+  accept(150,5);accept(200,5);accept(250,5);assert.equal(state.gold,1);
   accept(2000, 5); assert.equal(state.gold, 1); assert.ok(state.goldMetres < 1e-7);
+});
+test('first tile exploration pays once; revisits still accumulate distance across quests',()=>{
+  let state=G.initial();G.enter(state);assert.equal(state.gold,1,'first explored tile');
+  G.enter(state);assert.equal(state.gold,1,'standing still does not farm gold');
+  G.move(state,260,0);creditWalkingGold(state,260);
+  assert.equal(state.gold,3,'one new tile plus one distance coin');assert.ok(Math.abs(state.goldMetres-10)<1e-7);
+  G.move(state,-260,0);creditWalkingGold(state,260);
+  assert.equal(state.gold,4,'returning to an old tile still pays distance');
+  const before=state.gold,partial=state.goldMetres;
+  state=restoreResources(JSON.parse(JSON.stringify(state)));beginQuest(state);
+  assert.equal(state.gold,before);assert.equal(state.goldMetres,partial);
+  G.enter(state);assert.equal(state.gold,before,'starting again does not repay an old tile');
+  G.move(state,20,0);creditWalkingGold(state,20);assert.equal(state.gold,before);
+  creditWalkingGold(state,210);assert.equal(state.gold,before+1,'partial progress crosses outings');
+  const old=restoreResources({...G.initial(),gold:9,goldMetres:85,meters:5000,visits:{'0,0':3}});
+  G.enter(old);assert.equal(old.gold,9,'old visits never earn retroactive bonuses');assert.equal(old.goldMetres,85);
 });
 
 test('zoom preserves the point under the pointer, respects limits and reverses cleanly', () => {

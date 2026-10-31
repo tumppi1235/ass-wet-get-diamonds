@@ -5,6 +5,7 @@ import type { GameState, Relic } from '../game/types';
 import type { PlayerPosition } from '../location/tracker';
 import { JYVASKYLA, visibleGameTiles, type Point } from './region';
 import { visitAreas } from './visits';
+import { tilePoint, type TileClaims } from '../game/claims';
 
 export const collection = (features: Feature[] = []): FeatureCollection => ({ type: 'FeatureCollection', features });
 export const coordinates = (p: Point): [number, number] => { const g = G.geo(p.x, p.y); return [g.lon, g.lat]; };
@@ -45,3 +46,10 @@ export function overlayData(game: GameState, others: Record<string,number>, cent
   return {visits,grid,cells};
 }
 export const boundaryData = collection([feature({type:'MultiPolygon',coordinates:JYVASKYLA.polygons.map(p=>[p.outer,...p.holes].map(r=>{const coords=r.map(([x,y])=>coordinates({x,y}));return [...coords,coords[0]];}))})]);
+export function claimsData(claims:TileClaims,ownerId?:string,selectedId?:string){
+  return collection(Object.entries(claims).filter(([id])=>tilePoint(id)).map(([id,c])=>{
+    const [i,j]=id.split(',').map(Number);
+    return feature({type:'Polygon',coordinates:[ring(i*250,j*250,250)]},{mine:c.ownerId===ownerId,owner:c.ownerName,price:c.pricePaid,selected:id===selectedId});
+  }));
+}
+export function selectedTileData(id?:string){if(!id||!tilePoint(id))return collection();const [i,j]=id.split(',').map(Number);return collection([feature({type:'Polygon',coordinates:[ring(i*250,j*250,250)]})]);}

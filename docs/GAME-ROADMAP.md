@@ -17,9 +17,11 @@ Tiles should also be purchasable using gold. The user specified:
 
 **Next purchase price for a tile = that tile's previous purchase price + 1 gold.**
 
-Example, if the first purchase is set to 1 gold: 1 → 2 → 3 → 4 gold for successive purchases of the same tile. The increment is per tile, not a global increase across all tiles. The starting price was not explicitly specified and remains a design choice.
+Implemented for the local playtest: the first purchase costs 1 gold, followed by 2 → 3 → 4 gold for successive purchases of the same tile. The increment is per tile, not a global increase across all tiles.
 
-Open details: whether buying an owned tile transfers ownership, whether the previous owner receives gold, how guild ownership interacts with personal ownership, whether resources and gold are alternative claim methods, and how long claims last.
+Players must visit a tile before claiming it. Tap an explored tile on the map, or use the current explored tile in the quest drawer. Buying a tile owned by another profile transfers ownership; gold is spent and is not paid to the former owner. Buying your own tile is blocked. Claims persist across quests and are visible in gold for your profile and purple for other profiles on the same installation. They are shared only between profiles on that browser/phone, without cross-phone synchronization. A spending receipt prevents queued autosaves from refunding purchases.
+
+Still open: guild ownership, woodland resources as alternative claim methods, expiry, and a server-backed market shared between phones.
 
 ## Future NPC encounters and combat
 

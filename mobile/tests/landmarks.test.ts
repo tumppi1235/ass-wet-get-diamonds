@@ -25,7 +25,7 @@ test('every regional artefact type can be collected at its real path coordinate'
     const state=G.initial(),p=relicPoint(relic);state.x=p.x;state.y=p.y;G.enter(state);
     assert.equal(captureAt(state,p,false,()=>0).status,'unavailable');
     const result=captureAt(state,p,true,()=>0);
-    assert.equal(result.status,'success',relic.landmark);
+    assert.equal(result.status,'success',relic.landmark!);
     assert.equal(result.item!.name,relic.name);assert.equal(result.item!.id,relic.id);
   }
 });
