@@ -71,7 +71,6 @@ Automated repair evidence and remaining iPhone field gates: [P0 report](P0-EXPLO
 | TR-161 | P0 | Backlog | Record distance, speed, elevation and activity metadata | TR-156 | Activity evidence retains the fields needed for future configurable effort rules. |
 | TR-162 | P0 | Backlog | Field-test normal Enduro 3 activity to game tile synchronization | TR-156, TR-158, TR-159, TR-160 | An Enduro 3 field test updates game cells/inventory without phone recording. |
 | TR-163 | P2 | Backlog | Investigate completed-activity Garmin reconciliation | TR-157, TR-160, TR-161 | Current Garmin program/API feasibility and required approvals are verified before reconciliation work. |
-
 | TR-165 | P1 | Backlog | Make the phone compass follow the actual device heading | TR-153 | The compass responds while the phone rotates, shows actual heading and points toward the selected artefact relative to the facing direction. Handle north wraparound, screen orientation, sensor permission and unavailable/stale heading explicitly; label any north-up fallback. Verify on iPhone Chrome. |
 
 ## TR-E02 — Finland-wide Game World
