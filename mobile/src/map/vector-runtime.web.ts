@@ -3,13 +3,14 @@ import type { FeatureCollection } from 'geojson';
 import G from '../game/engine';
 import type { CityMapProps } from '../components/city-map.types';
 import { accuracyData, boundaryData, collection, coordinates, overlayData, playerData, relicData, trailData } from './vector-data';
+import { revision } from './style-revision.json';
 
 export function createQuestMap(container: HTMLDivElement, read: () => CityMapProps, onReady: () => void, onError: (message: string) => void) {
   setWorkerUrl(new URL('/maps/maplibre-worker-'+getVersion()+'.js',window.location.href).href);
   setWorkerCount(2);
   const initial = read(), target = initial.player || initial.game;
-  const map = new Map({ container, style:'/maps/trail-retro-style.json', center:coordinates(target),zoom:14.4,
-    transformStyle:(_previous,next)=>({...next,sprite:new URL('/maps/trail-sprites',window.location.href).href}),
+  const map = new Map({ container, style:'/maps/trail-retro-style.json?v='+revision, center:coordinates(target),zoom:14.4,
+    transformStyle:(_previous,next)=>({...next,sprite:typeof next.sprite==='string'?new URL(next.sprite,window.location.href).href:next.sprite}),
     minZoom:7,maxZoom:19,maxBounds:[[24.7,61.5],[26.6,62.8]],bearing:0,pitch:0,
     dragRotate:false,touchPitch:false,attributionControl:false,fadeDuration:0,
     canvasContextAttributes:{antialias:false},pixelRatio:Math.min(window.devicePixelRatio || 1,2),

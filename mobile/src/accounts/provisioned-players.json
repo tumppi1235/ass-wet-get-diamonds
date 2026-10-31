@@ -7,5 +7,14 @@
     "salt": "af94055d0cbaa61be6118336100fa762",
     "passwordHash": "10a2bb1ef9677b5f37c6e6c8c24ced9440ca533957ab589f4c3d6767373cdbf0",
     "passwordVersion": 1
+  },
+  {
+    "id": "local-tumppi",
+    "username": "tumppi",
+    "displayName": "Tumppi",
+    "role": "player",
+    "salt": "145697382866ef5e897e7b0e76665b63",
+    "passwordHash": "37e721d09c6288f4f4772184fd65a472d6a12e713b528c3905f474ba86478554",
+    "passwordVersion": 1
   }
 ]

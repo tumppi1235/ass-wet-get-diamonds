@@ -1,5 +1,5 @@
 // Original pixel artwork and reproducible MapLibre assets. No geographic downloads.
-const fs = require('node:fs'), path = require('node:path'), zlib = require('node:zlib');
+const fs = require('node:fs'), path = require('node:path'), zlib = require('node:zlib'), crypto = require('node:crypto');
 const root = path.resolve(__dirname, '..'), out = path.join(root, 'mobile/public/maps');
 fs.mkdirSync(out, {recursive:true});
 const crc = b => { let c=0xffffffff; for(const v of b){c^=v;for(let k=0;k<8;k++)c=(c>>>1)^((c&1)?0xedb88320:0);}return (c^0xffffffff)>>>0; };
@@ -20,14 +20,18 @@ pattern('forest-pattern',r=>{for(const [x,y] of [[9,7],[38,30]]){r(x+5,y+21,3,7,
 pattern('grass-pattern',r=>{for(const [x,y]of[[8,13],[39,42],[53,7]]){r(x,y,2,4,'87A36B');r(x-2,y+2,2,2,'A2B77D');r(x+2,y+2,2,2,'87A36B');}});
 pattern('rock-pattern',r=>{for(const [x,y]of[[8,10],[40,39]]){r(x,y+3,10,5,'797B68');r(x+2,y,6,3,'AEA58A');r(x+1,y+3,4,2,'C9BDA0');r(x,y+8,10,2,'6C715F');}});
 pattern('water-pattern',r=>{for(const [x,y]of[[5,8],[32,28],[12,47],[49,56]]){r(x,y,8,2,'6AADC2');r(x+8,y-2,4,2,'589EBB');r(x+2,y+3,3,1,'3A7B9F');}});
+const atlases=[];
 for(const ratio of [1,2]){
  const atlas=canvas(512*ratio,256*ratio),meta={};let x=0,y=0,row=0;
  for(const [name,img]of Object.entries(images)){if(x+img.w>512){x=0;y+=row+2;row=0;}meta[name]={x:x*ratio,y:y*ratio,width:img.w*ratio,height:img.h*ratio,pixelRatio:ratio};
  for(let j=0;j<img.h;j++)for(let i=0;i<img.w;i++)for(let sy=0;sy<ratio;sy++)for(let sx=0;sx<ratio;sx++){const a=(j*img.w+i)*4,b=(((y+j)*ratio+sy)*atlas.w+(x+i)*ratio+sx)*4;img.pixels.copy(atlas.pixels,b,a,a+4);}x+=img.w+2;row=Math.max(row,img.h);}
- const suffix=ratio===2?'@2x':'';fs.writeFileSync(path.join(out,'trail-sprites'+suffix+'.png'),png(atlas.w,atlas.h,atlas.pixels));fs.writeFileSync(path.join(out,'trail-sprites'+suffix+'.json'),JSON.stringify(meta,null,2)+'\n');
+ const suffix=ratio===2?'@2x':'',bytes=png(atlas.w,atlas.h,atlas.pixels),json=JSON.stringify(meta,null,2)+'\n';atlases.push({suffix,bytes,json});fs.writeFileSync(path.join(out,'trail-sprites'+suffix+'.png'),bytes);fs.writeFileSync(path.join(out,'trail-sprites'+suffix+'.json'),json);
 }
+const version=crypto.createHash('sha256').update(Buffer.concat(atlases.flatMap(a=>[a.bytes,Buffer.from(a.json)]))).digest('hex').slice(0,12),base='trail-sprites-'+version;
+for(const a of atlases){fs.writeFileSync(path.join(out,base+a.suffix+'.png'),a.bytes);fs.writeFileSync(path.join(out,base+a.suffix+'.json'),a.json);}
+fs.writeFileSync(path.join(out,'sprite-manifest.json'),JSON.stringify({base})+'\n');
 // Versioned, same-origin ES module worker and its shared module (MapLibre 6).
 const pkg=JSON.parse(fs.readFileSync(path.join(root,'mobile/node_modules/maplibre-gl/package.json')));
 fs.copyFileSync(path.join(root,'mobile/node_modules/maplibre-gl/dist/maplibre-gl-worker.mjs'),path.join(out,'maplibre-worker-'+pkg.version+'.js'));
 fs.copyFileSync(path.join(root,'mobile/node_modules/maplibre-gl/LICENSE.txt'),path.join(out,'MAPLIBRE-LICENSE.txt'));
-console.log('Built original pixel atlas, six PNG items, terrain patterns and MapLibre '+pkg.version+' worker.');
+console.log('Built original pixel atlas, '+Object.keys(art).length+' PNG items, terrain patterns and MapLibre '+pkg.version+' worker.');

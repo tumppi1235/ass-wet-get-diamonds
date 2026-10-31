@@ -10,7 +10,7 @@ export const collection = (features: Feature[] = []): FeatureCollection => ({ ty
 export const coordinates = (p: Point): [number, number] => { const g = G.geo(p.x, p.y); return [g.lon, g.lat]; };
 const feature = (geometry: Feature['geometry'], properties: Feature['properties'] = {}): Feature => ({ type: 'Feature', properties, geometry });
 const ring = (x: number, y: number, size: number) => [[x,y],[x+size,y],[x+size,y+size],[x,y+size],[x,y]].map(([x,y])=>coordinates({x,y}));
-export function relicIcon(name: string) { return ({ Compass: 'relic', Rune: 'rune', Stone: 'stone', Shard: 'crystal', Crystal: 'crystal', Crown: 'mythic', Mythic: 'mythic', Key: 'relic', Lantern: 'relic' } as Record<string,string>)[name] || 'stone'; }
+export function relicIcon(name: string) { return ({ Compass: 'relic', Rune: 'rune', Stone: 'stone', Shard: 'crystal', Crystal: 'crystal', Crown: 'mythic', Mythic: 'mythic', Key: 'key', Lantern: 'lantern' } as Record<string,string>)[name] || 'stone'; }
 export function relicData(game: GameState, point: Point, selected?: string, capturable?: string) {
   const found = new Set(game.collection.map(r=>r.id));
   const relics = new Map<string,Relic>(LANDMARKS.map(r=>[r.id,r]));

@@ -1,0 +1,86 @@
+{
+  "coin": {
+    "x": 0,
+    "y": 0,
+    "width": 40,
+    "height": 48,
+    "pixelRatio": 1
+  },
+  "stone": {
+    "x": 42,
+    "y": 0,
+    "width": 40,
+    "height": 48,
+    "pixelRatio": 1
+  },
+  "rune": {
+    "x": 84,
+    "y": 0,
+    "width": 40,
+    "height": 48,
+    "pixelRatio": 1
+  },
+  "relic": {
+    "x": 126,
+    "y": 0,
+    "width": 40,
+    "height": 48,
+    "pixelRatio": 1
+  },
+  "crystal": {
+    "x": 168,
+    "y": 0,
+    "width": 40,
+    "height": 48,
+    "pixelRatio": 1
+  },
+  "mythic": {
+    "x": 210,
+    "y": 0,
+    "width": 40,
+    "height": 48,
+    "pixelRatio": 1
+  },
+  "key": {
+    "x": 252,
+    "y": 0,
+    "width": 40,
+    "height": 48,
+    "pixelRatio": 1
+  },
+  "lantern": {
+    "x": 294,
+    "y": 0,
+    "width": 40,
+    "height": 48,
+    "pixelRatio": 1
+  },
+  "forest-pattern": {
+    "x": 336,
+    "y": 0,
+    "width": 64,
+    "height": 64,
+    "pixelRatio": 1
+  },
+  "grass-pattern": {
+    "x": 402,
+    "y": 0,
+    "width": 64,
+    "height": 64,
+    "pixelRatio": 1
+  },
+  "rock-pattern": {
+    "x": 0,
+    "y": 66,
+    "width": 64,
+    "height": 64,
+    "pixelRatio": 1
+  },
+  "water-pattern": {
+    "x": 66,
+    "y": 66,
+    "width": 64,
+    "height": 64,
+    "pixelRatio": 1
+  }
+}

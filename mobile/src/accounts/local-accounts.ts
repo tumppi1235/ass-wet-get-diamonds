@@ -55,8 +55,8 @@ export class LocalAccounts {
     if (!user || session.expiresAt <= this.now() || session.passwordVersion !== user.passwordVersion || (expectedToken && expectedToken !== session.token)) throw new Error('Your session has ended. Please sign in again.');
     return { user, session };
   }
-  async current(): Promise<{ user: User; token: string } | null> {
-    return this.serial(async () => { const db = await this.read(); try { const { user, session } = await this.verified(db); return { user: cleanUser(user), token: session.token }; } catch { await this.storage.removeItem(SESSION_KEY); return null; } });
+  async current(): Promise<{ user: User; token: string; expiresAt: number } | null> {
+    return this.serial(async () => { const db = await this.read(); try { const { user, session } = await this.verified(db); return { user: cleanUser(user), token: session.token, expiresAt: session.expiresAt }; } catch { await this.storage.removeItem(SESSION_KEY); return null; } });
   }
   async login(username: string, password: string) {
     return this.serial(async () => {
@@ -66,7 +66,7 @@ export class LocalAccounts {
       if (!user || !equal(verifier, user.passwordHash)) throw new Error('Username or password is incorrect.');
       const session: Session = { userId: user.id, token: bytesToHex(await this.random(32)), expiresAt: this.now() + 8 * 60 * 60 * 1000, passwordVersion: user.passwordVersion };
       await this.storage.setItem(SESSION_KEY, JSON.stringify(session));
-      return { user: cleanUser(user), token: session.token };
+      return { user: cleanUser(user), token: session.token, expiresAt: session.expiresAt };
     });
   }
   async logout() { return this.serial(() => this.storage.removeItem(SESSION_KEY)); }

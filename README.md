@@ -11,8 +11,10 @@ Start **START-WINDOWS.bat**, or run `cd mobile`, `npm ci`, then `npm run web -- 
 | --- | --- | --- |
 | admin | Admin123! | Local user administration and game |
 | test | Test123! | Normal explorer game |
+| tumppi | Delivered privately in chat | Tumppi's separate explorer profile |
+| tuomas.jokela | Delivered privately in chat | Tuomas Jokela's separate explorer profile |
 
-Profiles and progress stay on this device. Defaults are seeded only on first launch. Change passwords in Profile. [Full account and storage details](mobile/README.md).
+Manual sign-in is required; admin/test shortcuts have been removed. Profiles and progress stay on this device. Missing provisioned players are added on upgrade without replacing existing passwords or progress. Change passwords in Profile. [Full account and storage details](mobile/README.md).
 
 The game UI uses an original pixel RPG theme while keeping the terrain map readable. The full-screen map has only Street, Terrain and Me, a small compass, and a collapsible quest drawer. Relic destinations have their own tab. A visible 250 m grid, mouse wheel, double click and pinch support exploration. Green/purple/teal overlays distinguish your visits, other local profiles and shared areas, with simplified groups at city scale. Walking earns 1 gold per 100 m, saved with the profile. Other-player visits are local-device data only; cross-phone sharing is not connected.
 

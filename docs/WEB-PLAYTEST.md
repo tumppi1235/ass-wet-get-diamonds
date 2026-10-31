@@ -13,17 +13,21 @@ The Expo web build is published through the existing **Trail Relics · Jyväskyl
 
 The map fills the game screen. Its only map selections are **Street**, **Terrain** and **Me**. A small compass sits at the top left, and quest controls stay hidden in the bottom drawer. The **Relics** tab lists destinations, including Haukkala and Sippulanniemi, with navigation choices; Collection and Profile are also available from the drawer. Leaving the map pauses the quest. **Me** can locate you without awarding quest progress; start a quest to earn resources.
 
-The default map uses clearer OpenStreetMap street tiles at a zoom that avoids enlarging raster imagery. A subtle web-only color treatment softens saturation and warms the paper tones to fit the game UI, without filtering game markers or labels drawn by the game. Terrain remains available. At wider zoom levels, visited areas are grouped and minor details disappear. Pinch, drag, double click and mouse wheel control zoom. No "Show 250 m tiles" button is needed.
+The browser map uses accurate OpenStreetMap vectors with a retro palette, original pixel terrain patterns and framed artefact icons. Terrain optionally adds Mapzen elevation shading. At wider zoom levels, visited areas are grouped and minor details disappear. Pinch, drag, double click and mouse wheel control zoom. No "Show 250 m tiles" button is needed.
 
 Profiles and progress remain local to each browser/phone, as requested earlier. Friends see the same landmark world but their own collection and gold. Purple visit overlays cover other profiles on that same installation; this release does not upload players' tracks or synchronize friends' visits. Moving between localhost and the hosted address uses separate storage. Clearing site data loses that installation's progress.
 
-## Provisioned player
+## Sign-in and provisioned players
 
-Username: `tuomas.jokela`. Display name: Tuomas Jokela. The generated password is delivered privately in the chat; source contains only its salted PBKDF2 verifier. Bootstrap adds this explorer profile without resetting existing users or progress. It does not overwrite an existing matching username or restore a changed password.
+Sign-in is required for every game screen; the admin/test credential shortcuts have been removed. Existing valid sessions last up to eight hours, and an open game returns to sign-in when its session expires. The `admin` and `test` profiles remain available through manual sign-in.
+
+Provisioned player usernames are `tuomas.jokela` (Tuomas Jokela) and `tumppi` (Tumppi). Generated passwords are delivered privately in the chat; source contains only their salted PBKDF2 verifiers. Bootstrap adds missing explorer profiles without resetting existing passwords, sessions or progress. It does not overwrite an existing matching username or restore a changed password. These remain local profiles, without hosted authentication or cross-phone synchronization.
 
 ## Landmark data
 
-13 relic locations are snapped to mapped walking paths: two at Haukkala, two at Sippulanniemi, and destinations at Harju, Nero stairs, Kirkkopuisto, Toivola, Lutakko harbour, Kuokkala bridge, Ylistö bridge, Tourujoki and Viitaniemi. Coordinates/source references are in `mobile/assets/landmarks.json` (© OpenStreetMap contributors, ODbL).
+23 relic locations are on mapped walking paths: seven at Haukkala, seven at Sippulanniemi, and the existing nine city destinations. Both areas include Compass, Rune, Stone, Shard, Crown, Key and Lantern. Each artefact has a distinct pixel marker; gold remains a walking resource. Existing coordinates and collected finds are preserved. Coordinates/source references are in `mobile/assets/landmarks.json` (© OpenStreetMap contributors, ODbL).
+
+`tools/Add-RegionalRelics.cjs` reads the retained local OSM extracts and adds missing types at public-path nodes in distinct game cells at least 140m apart. It makes no network requests and does not replace existing landmarks. The additional locations are distributed within the extracts' Haukkala/Sippulanniemi area bounds.
 
 The city describes the [Sippulanniemi nature trail](https://www.jyvaskyla.fi/liikunta/reitit-ulkoilu-ja-virkistys/luontopolut/sippulanniemen-luontopolku) and local tourism lists [Jyväskylä landmarks](https://visitjyvaskyla.fi/en/tour/landmarks-in-jyvaskyla/). Use posted access and seasonal route instructions when visiting. Game relics are fictional and are not physical objects placed at these locations.
 

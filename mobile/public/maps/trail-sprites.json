@@ -41,29 +41,43 @@
     "height": 48,
     "pixelRatio": 1
   },
-  "forest-pattern": {
+  "key": {
     "x": 252,
+    "y": 0,
+    "width": 40,
+    "height": 48,
+    "pixelRatio": 1
+  },
+  "lantern": {
+    "x": 294,
+    "y": 0,
+    "width": 40,
+    "height": 48,
+    "pixelRatio": 1
+  },
+  "forest-pattern": {
+    "x": 336,
     "y": 0,
     "width": 64,
     "height": 64,
     "pixelRatio": 1
   },
   "grass-pattern": {
-    "x": 318,
+    "x": 402,
     "y": 0,
     "width": 64,
     "height": 64,
     "pixelRatio": 1
   },
   "rock-pattern": {
-    "x": 384,
-    "y": 0,
+    "x": 0,
+    "y": 66,
     "width": 64,
     "height": 64,
     "pixelRatio": 1
   },
   "water-pattern": {
-    "x": 0,
+    "x": 66,
     "y": 66,
     "width": 64,
     "height": 64,

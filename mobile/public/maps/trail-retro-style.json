@@ -6,7 +6,7 @@
     "description": "Accurate OSM vectors with original pixel patterns. Decoration never changes geography."
   },
   "glyphs": "https://tiles.openfreemap.org/fonts/{fontstack}/{range}.pbf",
-  "sprite": "/maps/trail-sprites",
+  "sprite": "/maps/trail-sprites-f03555b5b0f5",
   "sources": {
     "osm": {
       "type": "vector",

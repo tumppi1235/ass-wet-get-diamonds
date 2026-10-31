@@ -1,4 +1,4 @@
-const fs=require('node:fs'),path=require('node:path');
+const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
 const layers=[];
 const kinds=(...v)=>['in',['get','kind'],['literal',v]];
 function fill(id,layer,color,filter,minzoom=0){layers.push({id,type:'fill',source:'osm','source-layer':layer,minzoom,...(filter?{filter}:{}),paint:{'fill-color':color}});}
@@ -47,7 +47,9 @@ label('lake-labels','water_polygons_labels',10,['interpolate',['linear'],['zoom'
 label('street-labels','street_labels',14,11,{'symbol-placement':'line','symbol-spacing':260,'text-max-angle':35});
 label('place-labels','place_labels',7,['interpolate',['linear'],['zoom'],7,11,12,15,16,18]);
 const style={version:8,name:'Trail Relics · Jyväskylä',metadata:{schema:'Shortbread 1.1',description:'Accurate OSM vectors with original pixel patterns. Decoration never changes geography.'},
- glyphs:'https://tiles.openfreemap.org/fonts/{fontstack}/{range}.pbf',sprite:'/maps/trail-sprites',
+ glyphs:'https://tiles.openfreemap.org/fonts/{fontstack}/{range}.pbf',sprite:'/maps/'+JSON.parse(fs.readFileSync(path.join(__dirname,'../mobile/public/maps/sprite-manifest.json'),'utf8')).base,
  sources:{osm:{type:'vector',url:'https://vector.openstreetmap.org/shortbread_v1/tilejson.json'}},layers};
-fs.writeFileSync(path.join(__dirname,'../mobile/public/maps/trail-retro-style.json'),JSON.stringify(style,null,2)+'\n');
+const json=JSON.stringify(style,null,2)+'\n';
+fs.writeFileSync(path.join(__dirname,'../mobile/public/maps/trail-retro-style.json'),json);
+fs.writeFileSync(path.join(__dirname,'../mobile/src/map/style-revision.json'),JSON.stringify({revision:crypto.createHash('sha256').update(json).digest('hex').slice(0,12)})+'\n');
 console.log('Built retro Shortbread map style ('+layers.length+' layers).');

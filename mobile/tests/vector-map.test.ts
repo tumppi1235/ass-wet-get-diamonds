@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 import { validateStyleMin } from '@maplibre/maplibre-gl-style-spec';
 import G from '../src/game/engine';
 import { LANDMARKS, captureTarget, relicPoint } from '../src/game/landmarks';
-import { coordinates, overlayData, relicData, trailData } from '../src/map/vector-data';
+import { coordinates, overlayData, relicData, relicIcon, trailData } from '../src/map/vector-data';
 
 test('retro style validates against MapLibre and uses the verified Shortbread schema',()=>{
   const style=JSON.parse(readFileSync(new URL('../public/maps/trail-retro-style.json',import.meta.url),'utf8'));
@@ -24,6 +24,9 @@ test('pixel atlas keeps every image inside the PNG at normal and retina sizes',(
     const png=readFileSync(new URL(`../public/maps/trail-sprites${suffix}.png`,import.meta.url));
     const width=png.readUInt32BE(16),height=png.readUInt32BE(20);
     const meta=JSON.parse(readFileSync(new URL(`../public/maps/trail-sprites${suffix}.json`,import.meta.url),'utf8'));
+    const names=['Compass','Rune','Stone','Shard','Crown','Key','Lantern'].map(relicIcon);
+    assert.equal(new Set(names).size,7,'each artefact has a distinct icon');
+    for(const name of names)assert.ok(meta[name]);
     for(const sprite of Object.values(meta) as {x:number;y:number;width:number;height:number}[]){assert.ok(sprite.x+sprite.width<=width);assert.ok(sprite.y+sprite.height<=height);}
   }
 });

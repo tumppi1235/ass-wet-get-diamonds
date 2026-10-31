@@ -20,8 +20,10 @@ Open http://localhost:8081/. Keep this origin and port to reopen the same local 
 | --- | --- | --- |
 | admin | Admin123! | Administrator |
 | test | Test123! | Explorer |
+| tumppi | Delivered privately in chat | Explorer |
+| tuomas.jokela | Delivered privately in chat | Explorer |
 
-Profiles are created on first launch of each browser/device installation. Starter passwords are development defaults and can be changed on the Profile screen. Existing users, password changes and saved games are never overwritten by seeding.
+Profiles are created on first launch of each browser/device installation. Missing provisioned explorers are added on upgrade. Starter passwords are development defaults and can be changed on the Profile screen. Existing users, password changes and saved games are never overwritten by seeding. Manual sign-in is required; the admin/test shortcuts have been removed.
 
 The admin screen lists local profiles with collection counts and distance, and can create more test players. All new profiles have explorer access. Normal users cannot load admin user-management data, even if they enter the admin route manually. Profile display names and passwords can be changed by their signed-in owners.
 
