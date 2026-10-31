@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Link, Redirect, useLocalSearchParams } from 'expo-router';
+import { Link, Redirect, router, useLocalSearchParams } from 'expo-router';
 import { AppState, Pressable, ScrollView, Text, View } from 'react-native';
 import { usePlayerLocation } from '../location/use-player-location';
 import type { TrackedFix } from '../location/tracker';
@@ -47,7 +47,7 @@ export default function Explore() {
   const distance = Math.hypot(dx, dy), angle = Math.atan2(dx, dy) * 180 / Math.PI;
   const capture = () => change(s => { const result = captureAt(s, navigationPoint, eligible); setMessage(result.status === 'success' ? 'Collected! ' + result.item!.name + ' is saved in your collection.' : result.status === 'miss' ? 'The relic slipped away. Try this place on your next quest.' : 'Move closer with an accurate location to collect.'); });
   return <View style={{ flex: 1, backgroundColor: colors.paper }}>
-    <CityMap fullScreen game={game} communityVisits={communityVisits} onDiscover={discover} player={source === 'gps' ? position : null} demo={source === 'demo'} focusKey={source === 'demo' ? 'demo:' + demoRun : source === 'gps' && position ? 'gps:' + focusRequest : ''} locating={locating} onLocate={locate} />
+    <CityMap fullScreen game={game} communityVisits={communityVisits} onDiscover={discover} player={source === 'gps' ? position : null} demo={source === 'demo'} focusKey={source === 'demo' ? 'demo:' + demoRun : source === 'gps' && position ? 'gps:' + focusRequest : ''} locating={locating} onLocate={locate} selectedRelicId={next?.id} capturableId={capturable?.id} onSelectRelic={id=>router.setParams({target:id})} />
     <Pressable accessibilityRole="button" accessibilityLabel="Open quest details" onPress={() => setDrawer(true)} style={{ position: 'absolute', left: 10, top: 12, width: 108, minHeight: 110, padding: 10, alignItems: 'center', backgroundColor: '#152D2AF2', borderColor: colors.gold, borderWidth: 2, borderRadius: 3 }}>
       <Text style={{ fontFamily: pixelFont, color: colors.gold, fontSize: 11 }}>N ↑</Text><Text style={{ fontFamily: pixelFont, fontSize: 39, lineHeight: 44, color: colors.gold, transform: [{ rotate: angle + 'deg' }] }}>{next ? '↑' : '✥'}</Text><Text numberOfLines={2} style={{ color: colors.ink, fontSize: 10, textAlign: 'center' }}>{next?.landmark || next?.name || 'Explore'}</Text><Text style={{ color: colors.gold, fontFamily: pixelFont, fontSize: 14 }}>{next ? Math.round(distance) + ' m' : ''}</Text>
     </Pressable>
