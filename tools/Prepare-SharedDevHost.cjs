@@ -8,6 +8,7 @@ for(const name of paths){if(!/^(dev-server\/|mobile\/|tools\/|public\/(engine\.j
 fs.mkdirSync(path.join(host,'dev-server/.openai'),{recursive:true});fs.copyFileSync(path.join(root,'dev-server/.openai/hosting.json'),path.join(host,'dev-server/.openai/hosting.json'));
 fs.copyFileSync(path.join(root,'dev-server/.openai/hosting.json'),path.join(host,'.openai/hosting.json'));
 fs.writeFileSync(path.join(host,'package.json'),JSON.stringify({name:'trail-relics-shared-dev-host',private:true,scripts:{build:'node tools/Build-HostedSharedDev.cjs'}},null,2));
-for(const name of ['_expo','maps','assets']){const old=path.join(host,'dist',name);if(fs.existsSync(old))fs.cpSync(old,path.join(artifact,'client',name),{recursive:true,force:false});}
+// Worker builds put public assets under dist/client; retain previous lazy bundles for tabs already open.
+for(const layout of ['client',''])for(const name of ['_expo','maps','assets']){const old=path.join(host,'dist',layout,name);if(fs.existsSync(old))fs.cpSync(old,path.join(artifact,'client',name),{recursive:true,force:false});}
 fs.cpSync(artifact,path.join(host,'dist'),{recursive:true});
 console.log('Prepared existing development Site source and Worker artifact. Production untouched.');

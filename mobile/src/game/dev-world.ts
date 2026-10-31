@@ -12,7 +12,7 @@ import {DEV_BALANCE,validateBalance} from './dev-balance';
 export {DEV_BALANCE,validateBalance,type DevBalance} from './dev-balance';
 
 export type Movement='foot'|'bicycle';
-export type DevWorld={version:1;game:GameState;movement:Movement;previous:PlayerPosition|null;anchor:PlayerPosition|null;latestGpsValid:boolean;regions:Record<string,true>;xpRemainder:number;configRevision:string;curveCoefficient?:number;rewardedTiles?:Record<string,boolean>};
+export type DevWorld={version:1;game:GameState;movement:Movement;previous:PlayerPosition|null;anchor:PlayerPosition|null;latestGpsValid:boolean;regions:Record<string,true>;xpRemainder:number;configRevision:string;curveCoefficient?:number;spawnContextRevision?:string;rewardedTiles?:Record<string,boolean>};
 export type DevEvent={kind:'start';movement:Movement}|{kind:'stop'}|{kind:'gps';fix:LocationFix}|{kind:'capture'}|{kind:'claim';tile:string;price:number};
 export type DevReceipt={accepted:boolean;reason:string;tile?:string;awards:Partial<Record<Attribute,number>>;collected?:string;balanceRevision:string};
 export function newDevWorld():DevWorld{const game=G.initial();game.sharedSpawnsOnly=true;game.revealed={};game.progression=newProgression();return{version:1,game,movement:'foot',previous:null,anchor:null,latestGpsValid:false,regions:{},xpRemainder:0,configRevision:DEV_BALANCE.revision};}

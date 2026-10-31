@@ -32,3 +32,5 @@ Source baseline: [shared discussion](https://chatgpt.com/share/6ae5b6f5-4554-83e
 Open decisions: final spawn/rarity formulas, national tile projection/migration, production shared identity/backend migration, supported Garmin bridge, Strava permissions, exact boss individual minimums and activity-window boundaries, final XP earning rates, amulet thresholds, long-term location-data retention, native distribution route.
 
 D-025 (dev experiment under D-024): the active shared curve is a versioned coefficient over unchanged earned XP. Balance recovery copies values into a new revision. Simulations reuse earning arithmetic and never write rewards; unsupported elevation/cooperation remain zero. Experimental values are not final fairness approval.
+
+D-026 (dev experiment under D-024): admin-classified regions supply explicit test terrain/weather and active windows; no live-weather claim. Blocked areas invalidate placement/collection, with transactional region-revision checks. Recorded appearances/ownership stay immutable; new contexts receive new identities.

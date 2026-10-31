@@ -3,10 +3,11 @@ import {validateSpawn} from './spawns';
 import type {Relic,Rarity} from './types';
 import {groundDistance} from '../map/geodesy';
 
-export type SpawnRules={revision:string;windowHours:number;weights:Record<Rarity,number>;firstVisitChance:number;minimumDetectionMeters:number;maximumDetectionMeters:number;densityCap:number};
+export type SpawnRules={revision:string;context?:string;windowHours:number;weights:Record<Rarity,number>;firstVisitChance:number;minimumDetectionMeters:number;maximumDetectionMeters:number;densityCap:number};
 export const SPAWN_RULES:SpawnRules={revision:'spawn-experiment-1',windowHours:24,weights:{Common:75,Rare:22,Legendary:3},firstVisitChance:.25,minimumDetectionMeters:300,maximumDetectionMeters:2000,densityCap:20};
 export function validateSpawnRules(r:SpawnRules){
   if(!r||!/^[a-z0-9-]{3,60}$/.test(r.revision)||!Number.isInteger(r.windowHours)||r.windowHours<1||r.windowHours>168)throw new Error('Invalid spawn window');
+  if(r.context!==undefined&&!/^[a-z0-9-]{3,60}$/.test(r.context))throw new Error('Invalid spawn context');
   if(!r.weights||!(['Common','Rare','Legendary']as const).every(k=>Number.isSafeInteger(r.weights[k])&&r.weights[k]>=0&&r.weights[k]<=10000)||Object.values(r.weights).reduce((a,b)=>a+b,0)<=0)throw new Error('Invalid rarity weights');
   if(!Number.isFinite(r.firstVisitChance)||r.firstVisitChance<0||r.firstVisitChance>1||!Number.isSafeInteger(r.densityCap)||r.densityCap<1||r.densityCap>10000)throw new Error('Invalid discovery rules');
   if(![r.minimumDetectionMeters,r.maximumDetectionMeters].every(v=>Number.isSafeInteger(v)&&v>=0&&v<=10000)||r.minimumDetectionMeters>r.maximumDetectionMeters)throw new Error('Invalid detection range');
@@ -20,7 +21,7 @@ export function weightedRarity(seed:string,rules=SPAWN_RULES):Rarity{
 }
 export function generateWorldSpawn(place:Relic,now:number,rules=SPAWN_RULES):ArtifactSpawn{
   validateSpawnRules(rules);if(!Number.isSafeInteger(now)||now<0||place.latitude==null||place.longitude==null||!place.source)throw new Error('A sourced outdoor position is required');
-  const duration=rules.windowHours*3600000,start=Math.floor(now/duration)*duration,seed=`${rules.revision}:${place.landmarkId||place.id}:${start}`;
+  const duration=rules.windowHours*3600000,start=Math.floor(now/duration)*duration,seed=`${rules.revision}:${rules.context?rules.context+':':''}${place.landmarkId||place.id}:${start}`;
   return validateSpawn({version:1,id:'world:'+seed,tileId:place.id,artifactType:place.name,rarity:weightedRarity(seed,rules),kind:'dynamic',position:{latitude:place.latitude,longitude:place.longitude},createdAt:start,expiresAt:start+duration,claimPolicy:'once-per-player',origin:'world'});
 }
 export function firstVisitSpawn(place:Relic,owner:string,at:number,rules=SPAWN_RULES):ArtifactSpawn|null{

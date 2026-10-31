@@ -8,7 +8,7 @@ import {trailApi} from '../../dev-server/trail/api';
 import {SharedWorldClient} from '../src/accounts/shared-world';
 import {LANDMARKS,captureTarget} from '../src/game/landmarks';
 import {generateWorldSpawn,firstVisitSpawn,SPAWN_RULES,weightedRarity,detectionMeters} from '../src/game/world-spawns';
-import {hydrateSpawns,querySpawns,nearbyBounds,removeSpawn} from '../../dev-server/trail/spawn-store';
+import {hydrateSpawns,querySpawns,nearbyBounds,removeSpawn,placeSpawn} from '../../dev-server/trail/spawn-store';
 import {applyWorldEvent} from '../../dev-server/trail/world-store';
 import {spawnVisibleTo} from '../src/game/spawns';
 import {relicData} from '../src/map/vector-data';
@@ -17,6 +17,52 @@ import {editPlayer} from '../../dev-server/trail/player-admin';
 import {emergingArchetype} from '../src/game/archetypes';
 import {estimateProgression,simulateHistory,scenarioHistory,PROGRESSION_SCENARIOS} from '../src/game/reward-rates';
 import {levelProgress} from '../src/game/progression';
+import {WORLD_REGIONS,rulesForPlace,blockedAt,validateRegions,type WorldRegion} from '../src/game/world-regions';
+import {loadRegions,saveRegions,queryDensity} from '../../dev-server/trail/region-store';
+
+test('TR-006/007/029 region terrain/weather/time modifiers are deterministic, capped, versioned and block restricted placements',()=>{
+  const place=LANDMARKS[0],at=Date.UTC(2026,0,10,0),region:WorldRegion={id:'test-forest',name:'Test forest',south:place.latitude!-.01,north:place.latitude!+.01,west:place.longitude!-.01,east:place.longitude!+.01,terrain:'woodland',weather:'rain',blocked:false,startsAt:at-1000,endsAt:at+3600000,rarityFactor:2};
+  const config={...WORLD_REGIONS,revision:'regions-test-2',regions:[region],winterFactor:2,nightFactor:2,rainFactor:2,woodlandFactor:2};
+  const adjusted=rulesForPlace(place,at,SPAWN_RULES,config)!;assert.equal(adjusted.weights.Rare,SPAWN_RULES.weights.Rare*10,'combined modifier is capped');assert.deepEqual(adjusted,rulesForPlace(place,at,SPAWN_RULES,config));
+  assert.notEqual(generateWorldSpawn(place,at,adjusted).id,generateWorldSpawn(place,at,SPAWN_RULES).id);
+  assert.notEqual(rulesForPlace(place,at,SPAWN_RULES,config)!.context,rulesForPlace(place,region.endsAt,SPAWN_RULES,config)!.context,'event phases cannot give the same identity different weights');
+  const restricted={...config,regions:[{...region,blocked:true}]};assert.equal(rulesForPlace(place,at,SPAWN_RULES,restricted),null);assert.equal(blockedAt({latitude:place.latitude!,longitude:place.longitude!},at,restricted),true);
+  assert.equal(blockedAt({latitude:place.latitude!,longitude:place.longitude!},region.endsAt,restricted),false);
+  assert.throws(()=>validateRegions({...config,regions:[region,region]}),/unique/);assert.throws(()=>validateRegions({...config,winterFactor:100}),/0.1 and 5/);
+});
+
+test('TR-029/030/042 shared regions are protected and blocked areas invalidate collection; density uses unique indexed cells',async()=>{
+  const{db,sql}=database(),binding=db as never,now=Date.now(),place=LANDMARKS[0];
+  for(const owner of ['one','two']){
+    sql.prepare('INSERT INTO trail_members(id,display_name,role,created_at) VALUES(?,?,?,?)').run(owner,owner,'player',now);
+    await applyWorldEvent(binding,owner,owner+':region:gps',0,{kind:'gps',fix:{latitude:place.latitude!,longitude:place.longitude!,timestamp:now,accuracy:5,speed:0}},now);
+  }
+  const bounds=nearbyBounds(place.latitude!,place.longitude!),counts=await queryDensity(binding,bounds);assert.equal(counts.density.find(r=>r.tile===place.id)!.players,2);assert.equal((await queryDensity(binding,bounds,'one')).density.find(r=>r.tile===place.id)!.players,1);assert.equal(counts.geojson.features[0].geometry.type,'Polygon');
+  const region:WorldRegion={id:'closed-path',name:'Restricted test path',...bounds,terrain:'trail',weather:'clear',blocked:true,rarityFactor:1,startsAt:now-1000,endsAt:now+86400000};
+  const saved=await saveRegions(binding,'admin',{...WORLD_REGIONS,regions:[region]},WORLD_REGIONS.revision);assert.notEqual(saved.configuration.revision,WORLD_REGIONS.revision);assert.equal((await loadRegions(binding)).regions[0].name,region.name);
+  await assert.rejects(()=>saveRegions(binding,'admin',WORLD_REGIONS,WORLD_REGIONS.revision),/changed/);
+  const before=sql.prepare('SELECT state FROM trail_players WHERE id=?').get('one')!.state as string,world=JSON.parse(before);await hydrateSpawns(binding,'one',world,now);assert.equal(Object.keys(world.game.revealed).length,0);
+  const attempt=await applyWorldEvent(binding,'one','blocked:capture:1',1,{kind:'capture'},now);assert.equal(attempt.receipt.accepted,false);assert.equal(attempt.world.game.collection.length,0);
+  await assert.rejects(()=>placeSpawn(binding,'admin',{...generateWorldSpawn(place,now),id:'manual:blocked-test',createdAt:now,expiresAt:now+100000},now),/blocked for placement/);
+  const response=await trailApi(new Request('https://dev.example/api/trail/admin/regions',{headers:{'oai-authenticated-user-id':'one'}}),{DB:binding,TRAIL_ENV:'development'});assert.equal(response.status,403);
+  assert.ok(sql.prepare('EXPLAIN QUERY PLAN SELECT tile FROM trail_visits WHERE cell_i>=? AND cell_i<=? AND cell_j>=? AND cell_j<=?').all(-20,20,0,30).some(r=>String(r.detail).includes('visit_bounds')));
+});
+
+test('TR-006 region changes racing a capture roll back its inventory, receipt and claim ledger atomically',async()=>{
+  const{db,sql}=database(),binding=db as never,place=LANDMARKS[0],now=Date.now();sql.prepare('INSERT INTO trail_members(id,display_name,role,created_at) VALUES(?,?,?,?)').run('race','Race','player',now);
+  const world=newDevWorld(),p=G.xy(place.latitude!,place.longitude!);world.previous={...p,latitude:place.latitude!,longitude:place.longitude!,timestamp:now,accuracy:5,inside:true,precise:true};world.latestGpsValid=true;world.game.x=p.x;world.game.y=p.y;world.game.energy=100000;await hydrateSpawns(binding,'race',world,now);
+  sql.prepare('INSERT INTO trail_players(id,state,revision,updated_at) VALUES(?,?,0,?)').run('race',JSON.stringify(world),now);
+  const batch=db.batch.bind(db),rng=mock.method(globalThis.crypto,'getRandomValues',(values:Uint32Array)=>{values.fill(0);return values;});let changed=false;
+  db.batch=async statements=>{if(!changed){changed=true;sql.prepare('INSERT INTO trail_configs(id,revision,document,updated_by,updated_at) VALUES(?,1,?,?,?)').run('world-regions',JSON.stringify({...WORLD_REGIONS,revision:'regions-racing-change'}),'admin',now);}return batch(statements);};
+  try{await assert.rejects(()=>applyWorldEvent(binding,'race','capture:region:race',0,{kind:'capture'},now),/changed during/);}finally{rng.mock.restore();}
+  assert.equal(sql.prepare('SELECT COUNT(*) AS n FROM trail_spawn_claims').get()!.n,0);assert.equal(sql.prepare('SELECT COUNT(*) AS n FROM trail_events').get()!.n,0);assert.equal(JSON.parse(String(sql.prepare('SELECT state FROM trail_players WHERE id=?').get('race')!.state)).game.collection.length,0);
+});
+
+test('TR-030 geographic index migration backfills existing tile IDs without losing visitor history',()=>{
+  const sql=new DatabaseSync(':memory:'),folder=new URL('../../dev-server/drizzle/',import.meta.url),files=readdirSync(folder).filter(x=>x.endsWith('.sql')).sort();for(const file of files.slice(0,3))sql.exec(readFileSync(new URL(file,folder),'utf8'));
+  sql.prepare('INSERT INTO trail_members(id,display_name,role,created_at) VALUES(?,?,?,?)').run('old','Old','player',1);sql.prepare('INSERT INTO trail_visits(tile,owner,first_at,last_at) VALUES(?,?,?,?)').run('-11,13','old',10,20);
+  sql.exec(readFileSync(new URL(files[3],folder),'utf8'));const row=sql.prepare('SELECT * FROM trail_visits').get()!;assert.equal(row.cell_i,-11);assert.equal(row.cell_j,13);assert.equal(row.first_at,10);assert.equal(row.last_at,20);assert.equal(row.owner,'old');
+});
 
 test('TR-003/004/008/015/016/018 deterministic world windows, personal rolls and capped density stay independent',()=>{
   const place=LANDMARKS[0],now=Date.now(),a=generateWorldSpawn(place,now),b=generateWorldSpawn(place,now);
@@ -48,9 +94,10 @@ test('TR-009/010/017/030 shared spawns capture atomically, replay once, retire s
     assert.equal(sql.prepare('SELECT COUNT(*) AS n FROM trail_spawn_claims').get()!.n,1);
     assert.equal(sql.prepare('SELECT COUNT(*) AS n FROM trail_events').get()!.n,1);
   }finally{rng.mock.restore();}
-  const bounds=nearbyBounds(place.latitude!,place.longitude!),first=await querySpawns(databaseBinding,'player',bounds,now,'',2,true);assert.ok(first.spawns.length<=2);assert.ok(first.next);
-  const second=await querySpawns(databaseBinding,'player',bounds,now,first.next!,2,true);assert.ok(!second.spawns.some(x=>first.spawns.some(y=>x.spawn.id===y.spawn.id)));
+  const bounds=nearbyBounds(place.latitude!,place.longitude!),first=await querySpawns(databaseBinding,'player',bounds,now,'',2,false);assert.ok(first.spawns.length<=2);assert.ok(first.next);
+  const second=await querySpawns(databaseBinding,'player',bounds,now,first.next!,2,false);assert.ok(!second.spawns.some(x=>first.spawns.some(y=>x.spawn.id===y.spawn.id)));
   assert.ok(![...first.spawns,...second.spawns].some(x=>x.spawn.id===target.id),'claimed items leave available queries');
+  assert.ok((await querySpawns(databaseBinding,'player',bounds,now,'',100,true)).spawns.some(x=>x.spawn.id===target.id),'admin inspection retains world records collected by this player');
   const retiring=first.spawns[0].spawn;await removeSpawn(databaseBinding,'owner',retiring.id,now);await hydrateSpawns(databaseBinding,'player',world,now);assert.equal(world.game.revealed[retiring.id],undefined);
   assert.equal(sql.prepare('SELECT COUNT(*) AS n FROM trail_audit').get()!.n,1);assert.equal((await querySpawns(databaseBinding,'player',bounds,now,'',100,true)).spawns.some(x=>x.spawn.id===retiring.id),false);
   await assert.rejects(()=>querySpawns(databaseBinding,'player',bounds,now,'',101),/Invalid spawn page/);

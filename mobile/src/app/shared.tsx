@@ -30,17 +30,19 @@ export default function SharedWorld(){
   const [claims,setClaims]=useState<TileClaims>({}),[selectedTile,setSelectedTile]=useState<string>();
   const [now,setNow]=useState(()=>Date.now());useEffect(()=>{const timer=setInterval(()=>setNow(Date.now()),1000);return()=>clearInterval(timer);},[]);
   const refreshClaims=useCallback(async()=>{const result=await client.claims();setClaims(Object.fromEntries(result.claims.map(c=>[c.tile,{ownerId:c.owner,ownerName:c.display_name,pricePaid:c.price,claimedAt:c.updated_at}])));},[client]);
-  const refresh=useCallback(async()=>{const who=await client.profile();setUser(who);const state=await client.load();setSnapshot(state);setMode(state.world.movement);setTracking(state.world.game.adventure?.status==='active');setPending(await client.pending());const visits=await client.visits();setOthers(Object.fromEntries(visits.visits.map(v=>[v.tile,v.players])));setError('');},[client]);
+  const refresh=useCallback(async()=>{const who=await client.profile();setUser(who);const state=await client.load();setSnapshot(state);setMode(state.world.movement);setTracking(state.world.game.adventure?.status==='active');setPending(await client.pending());setError('');},[client]);
   useEffect(()=>{
     if(APP_ENV!=='development')return;let cancelled=false;
-    void client.profile().then(async who=>{const[state,waiting,visits,owned]=await Promise.all([client.load(),client.pending(),client.visits(),client.claims()]);if(cancelled)return;setUser(who);setSnapshot(state);setMode(state.world.movement);setTracking(state.world.game.adventure?.status==='active');setPending(waiting);setOthers(Object.fromEntries(visits.visits.map(v=>[v.tile,v.players])));setClaims(Object.fromEntries(owned.claims.map(c=>[c.tile,{ownerId:c.owner,ownerName:c.display_name,pricePaid:c.price,claimedAt:c.updated_at}])));setError('');}).catch(e=>{if(!cancelled)setError(e.message);}).finally(()=>{if(!cancelled)setLoading(false);});
+    void client.profile().then(async who=>{const[state,waiting]=await Promise.all([client.load(),client.pending()]);if(cancelled)return;setUser(who);setSnapshot(state);setMode(state.world.movement);setTracking(state.world.game.adventure?.status==='active');setPending(waiting);setError('');}).catch(e=>{if(!cancelled)setError(e.message);}).finally(()=>{if(!cancelled)setLoading(false);});
     return()=>{cancelled=true;};
   },[client]);
+  const sharedOwner=user?.id,communityTile=snapshot?currentTile(snapshot.world.game):'';
+  useEffect(()=>{if(!sharedOwner||!communityTile)return;let cancelled=false;void Promise.all([client.visits(),client.claims()]).then(([visits,owned])=>{if(cancelled)return;setOthers(Object.fromEntries(visits.visits.map(v=>[v.tile,v.players])));setClaims(Object.fromEntries(owned.claims.map(c=>[c.tile,{ownerId:c.owner,ownerName:c.display_name,pricePaid:c.price,claimedAt:c.updated_at}])));}).catch(e=>{if(!cancelled)setError(e.message);});return()=>{cancelled=true;};},[client,sharedOwner,communityTile]);
   const send=useCallback(async(event:DevEvent)=>{
     if(lock.current||!latest.current)return false;
     lock.current=true;if(event.kind!=='gps')setBusy(true);setError('');
     try{const result=await client.dispatch(event,latest.current.revision);latest.current=result;setSnapshot(result);setNotice(result.receipt.reason);setPending(false);if(event.kind==='claim')await refreshClaims();return true;}
-    catch(e){setError((e as Error).message);setPending(await client.pending());return false;}
+    catch(e){setError((e as Error).message);setPending(await client.pending());if(event.kind==='claim')void refreshClaims().catch(()=>{});return false;}
     finally{lock.current=false;if(event.kind!=='gps')setBusy(false);}
   },[client,refreshClaims]);
   useEffect(()=>{
@@ -50,7 +52,7 @@ export default function SharedWorld(){
     const timer=setInterval(()=>session.tick(),5000);void session.start();
     return()=>{clearInterval(timer);stop();session.stop();};
   },[tracking,pending,send]);
-  async function retry(){setBusy(true);setError('');try{const result=await client.retry();setSnapshot(result);setPending(false);setNotice(result.receipt.reason);}catch(e){setError((e as Error).message);}finally{setBusy(false);}}
+  async function retry(){setBusy(true);setError('');try{const result=await client.retry();setSnapshot(result);setPending(false);setNotice(result.receipt.reason);if(['adventure started','adventure stopped','already active'].includes(result.receipt.reason))setTracking(result.world.game.adventure?.status==='active');}catch(e){setError((e as Error).message);}finally{setBusy(false);}}
   if(APP_ENV!=='development')return <Redirect href="/"/>;
   if(loading)return <Loading message="Opening shared dev progress…"/>;
   if(!user||!snapshot)return <ScrollView style={styles.page} contentContainerStyle={{padding:22,gap:18}}><Text style={styles.title}>Shared dev world</Text><Text style={styles.body}>A separate shared profile for development. Your phone profiles, passwords and saved games stay where they are.</Text>{error&&<Text style={styles.error}>{error}</Text>}<Field label="Shared display name" value={name} onChangeText={setName} maxLength={40}/><Button title="Create shared dev profile" disabled={!name.trim()} busy={busy} onPress={()=>{setBusy(true);void client.join(name).then(refresh).then(refreshClaims).catch(e=>setError(e.message)).finally(()=>setBusy(false));}}/>{Platform.OS==='web'&&<a href="/signin-with-chatgpt?return_to=/shared" target="_top" style={{color:colors.gold}}>Sign in with ChatGPT</a>}<Button title="Retry connection" quiet onPress={()=>{void refresh().then(refreshClaims).catch(e=>setError(e.message));}}/><Link href="/" style={styles.body}>Return to local game</Link></ScrollView>;
@@ -78,7 +80,7 @@ export default function SharedWorld(){
       <Button title={claims[selectedTile||currentTile(game)]?.ownerId===user.id?'Tile is yours':`Claim ${selectedTile||currentTile(game)} · ${claimPrice(claims[selectedTile||currentTile(game)])} gold`} quiet busy={busy} disabled={pending||claims[selectedTile||currentTile(game)]?.ownerId===user.id||!(game.visits[selectedTile||currentTile(game)]>0)||game.gold<claimPrice(claims[selectedTile||currentTile(game)])} onPress={()=>{const tile=selectedTile||currentTile(game);void send({kind:'claim',tile,price:claimPrice(claims[tile])});}}/>
       <Text style={styles.small}>Exploration level {levelProgress(game.progression?.xp.exploration||0,snapshot.world.curveCoefficient).level} · Endurance level {levelProgress(game.progression?.xp.endurance||0,snapshot.world.curveCoefficient).level} · Agility level {levelProgress(game.progression?.xp.agility||0,snapshot.world.curveCoefficient).level}</Text>
       {notice&&<Text style={styles.body}>{notice}</Text>}{error&&<Text style={styles.error}>{error}</Text>}
-      {pending&&<><Button title="Retry pending action" busy={busy} onPress={()=>{void retry();}}/><Button title="Reload server progress" quiet busy={busy} onPress={()=>{setBusy(true);void client.discardStalePending().then(state=>{setSnapshot(state);setPending(false);setError('');}).catch(e=>setError(e.message)).finally(()=>setBusy(false));}}/></>}
+      {pending&&<><Button title="Retry pending action" busy={busy} onPress={()=>{void retry();}}/><Button title="Reload server progress" quiet busy={busy} onPress={()=>{setBusy(true);void client.discardStalePending().then(state=>{setSnapshot(state);setMode(state.world.movement);setTracking(state.world.game.adventure?.status==='active');setPending(false);setError('');void refreshClaims().catch(()=>{});}).catch(e=>setError(e.message)).finally(()=>setBusy(false));}}/></>}
       <Text style={styles.small}>GPS gaps add no distance or XP. Browser screen-lock recording is still limited. Shared events use server validation; they do not prove that GPS cannot be spoofed.</Text>{user.role==='admin'&&Platform.OS==='web'&&<a href="/admin-world" style={{color:colors.gold}}>Shared world administration</a>}<Link href="/" style={styles.body}>Return to local game</Link>
       </>}
     </ScrollView>}

@@ -21,3 +21,5 @@ The current Sites service issues short-lived source credentials through its conn
 TR-E07 still includes future shared-service isolation: independent databases, world state, inventories, auth/secrets, configs, monitoring, tested migrations and backups. Client namespaces and candidate artifacts do not complete that server work. See [TEST-PLAN.md](TEST-PLAN.md) and [P0-EXPLORATION-REPORT.md](P0-EXPLORATION-REPORT.md).
 
 Browser acceptance must distinguish logical adventure persistence from physical screen-off GPS availability. iPhone Chrome field tests are required after the P0 recovery fix. Continuous recording requires an appropriate native or independent Garmin recording path; no Apple Developer account is available in the current browser test scope.
+
+Shared dev host preparation retains prior lazy assets from both dist/client (Worker) and legacy static layouts. This keeps open tabs able to fetch older hashed bundles while new source/artifacts remain exact. Refresh to see new features; no player storage is copied.

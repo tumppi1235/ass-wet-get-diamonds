@@ -4,6 +4,7 @@ import {useCallback,useEffect,useState} from 'react';
 import SpawnAdmin from './spawn-admin';
 import PlayerAdmin from './player-admin';
 import ProgressionAdmin from './progression-admin';
+import WorldMap from './world-map';
 import type {DevBalance} from '../../../mobile/src/game/dev-world';
 type Balance=DevBalance;
 type Audit={id:string;action:string;target:string;created_at:number};
@@ -20,5 +21,6 @@ export default function WorldAdmin(){
     {config&&<ProgressionAdmin balance={config.balance} onUseHistory={balance=>{setConfig({...config,balance:{...balance,revision:config.balance.revision}});setMessage('Earlier balance copied into the draft. Review it, then save a new dev revision.');}}/>}
     <PlayerAdmin/>
     <SpawnAdmin/>
+    <WorldMap/>
     <section style={{padding:20}}><h2>Recent audit</h2><button onClick={()=>{void reload().catch(e=>setMessage(e.message));}}>Refresh audit</button><ul>{audit.map(a=><li key={a.id}>{new Date(a.created_at).toLocaleString()} · {a.action} · {a.target}</li>)}</ul></section></main>;
 }

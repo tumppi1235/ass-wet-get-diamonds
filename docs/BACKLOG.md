@@ -33,8 +33,8 @@ Automated repair evidence and remaining iPhone field gates: [P0 report](P0-EXPLO
 | TR-003 | P0 | Done | Implement deterministic server-side spawn generation | TR-001, TR-002, TR-112 | Shared dev records deterministic revision/source/window spawns at sourced path coordinates. SQL and seeded tests; see DEV-SPAWNS.md. |
 | TR-004 | P0 | Done | Implement rarity tiers and weighted selection | TR-002, TR-003 | Configurable Common/Rare/Legendary weights use repeatable seeded selection; distribution and tier tests pass. |
 | TR-005 | P0 | Done | Add cell visitation statistics | TR-001, TR-112 | D1 unique tile/player visits are separate from personal rewards; independent-newcomer SQL tests pass. |
-| TR-006 | P1 | Backlog | Add terrain and accessibility modifiers | TR-001, TR-029 | Placement uses mapped accessible terrain and excludes restricted routes. |
-| TR-007 | P1 | Backlog | Add time, weather and seasonal modifiers | TR-003, TR-033 | Configured time/weather/season inputs change appearance without changing claim ownership. |
+| TR-006 | P1 | In Progress | Add terrain and accessibility modifiers | TR-001, TR-029 | Sourced paths plus manually classified event terrain and blocked-area checks are implemented in shared dev, including capture/config race rollback. Automatic terrain classification and physical access verification remain. |
+| TR-007 | P1 | Done | Add time, weather and seasonal modifiers | TR-003, TR-033 | Versioned UTC window-season/night and configured test-weather modifiers alter future appearance, preserve recorded claims and cap combined factors; phase identity tests pass. |
 | TR-008 | P1 | Done | Implement spawn expiration and regeneration | TR-002, TR-003 | Expired records are unavailable; later UTC windows create new identities without changing existing inventory. |
 | TR-009 | P0 | In Progress | Add artifact discovery and claim API | TR-003, TR-010, TR-113 | Shared APIs enforce fresh own-tile eligibility and atomic spawn/player claim receipts. Web SQL tests pass; device integration/field checks remain. |
 | TR-010 | P0 | In Progress | Prevent duplicate claims across Garmin and mobile | TR-002, TR-113 | Atomic per-spawn/player ledger and event replay prevent duplicate shared web rewards. Garmin bridge remains TR-157–160. |
@@ -80,8 +80,8 @@ Automated repair evidence and remaining iPhone field gates: [P0 report](P0-EXPLO
 | TR-026 | P0 | In Progress | Support geographic tiles throughout Finland | TR-001 | Dev uses a Finland multipolygon including Åland, with stable legacy tile IDs, metric GPS distance and coast-intersecting claim cells. Countrywide automated cases pass; physical coast/border tests and any future metric-grid migration remain pending. |
 | TR-027 | P0 | In Progress | Remove Jyväskylä-specific game logic and configuration | TR-026 | Dev GPS, gold, tile claims/overlays, labels and collection use Finland policy; production scope stays unchanged. Existing save IDs retained; old distance/coins are not recalculated. See FINLAND-PLAYTEST.md. |
 | TR-028 | P0 | In Progress | Support countrywide artifact spawning and visitation statistics | TR-003, TR-005, TR-026 | Dev adds 450 sourced path-side relics (35 towns plus rural trails) and local visits. This finite catalog does not complete server spawn generation, global visitation or shared queries. |
-| TR-029 | P1 | Backlog | Add configurable regions for testing and events | TR-026 | Test/event regions can be configured without code or accidental live-world changes. |
-| TR-030 | P1 | In Progress | Optimize map and artifact queries for national coverage | TR-026, TR-028 | Country map clusters markers, close grid stays capped at 400 cells, eligibility cache is bounded, and searchable Relics renders 48 rows at a time. Server query/load work remains pending. |
+| TR-029 | P1 | Done | Add configurable regions for testing and events | TR-026 | Protected visual-map region drafts, local active windows, terrain/weather/factor settings and access blocking persist with optimistic revisions and audit. Local D1/browser save passed. |
+| TR-030 | P1 | In Progress | Optimize map and artifact queries for national coverage | TR-026, TR-028 | Country client rendering, bounded spawn pages and indexed 500-cell density/community queries implemented; legacy visits backfilled safely. Claims pagination/full national load validation remain. |
 
 ## TR-E03 — Administration & Simulation
 
@@ -98,7 +98,7 @@ Automated repair evidence and remaining iPhone field gates: [P0 report](P0-EXPLO
 | TR-039 | P1 | Done | Reset individual players' exploration progress | TR-034 | Recoverable map/route reset stops the target quest, preserving gold/inventory/XP/ownership and permanent reward history. Other players unaffected; no first-visit farming. |
 | TR-040 | P1 | Done | Create admin audit logs for changes | TR-032 | Protected bounded audit API/UI records balance and spawn edits/retirement with actor/time/before-after, without credentials. |
 | TR-041 | P1 | Backlog | Manage test-player invitations and access | TR-032 | Test access and invitations cannot escalate ordinary player permissions. |
-| TR-042 | P1 | Backlog | Create a world map showing artifacts and visitation density | TR-005, TR-036 | World artefacts and visitation density can be inspected with bounded map queries. |
+| TR-042 | P1 | Done | Create a world map showing artifacts and visitation density | TR-005, TR-036 | Separate admin MapLibre world map shows paged rarity-sized artefacts and indexed unique visitor density, with draft region overlays. SQL and local browser loading verified. |
 
 ## TR-E04 — World Bosses & Cooperative Adventures
 

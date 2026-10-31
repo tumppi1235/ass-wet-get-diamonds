@@ -19,3 +19,5 @@ Physical tests pending: GPS/route/collection recovery, national field access, iP
 Player tools/journal increment: protected search/inventory/XP edits, per-edit snapshots, safe exploration-map reset and guarded restore, shared Character/Collection. See DEV-PLAYER-TOOLS.md. Next: versioned XP curve/simulations, remaining spawn region/modifier/map tools, then boss dependencies.
 
 Progression laboratory increment: protected versioned coefficient/history/draft recovery, shared earning arithmetic, zero-write estimates and chronological casual/regular/highly-active Foot/Bicycle histories. See DEV-PROGRESSION-LAB.md. Continue remaining world-region/modifier/admin map stories, then encounter effort/loot foundations.
+
+World-region increment: protected event/blocked regions, configurable appearance factors, bounded admin world/density map, indexed visits and community refresh. See DEV-WORLD-REGIONS.md. Next dependency-ready P0: boss definitions and explicit encounter lifecycle with server-recorded activity evidence; keep provider/device proof separate. Spawn analytics/collection simulation, claims pagination and recovery/export remain actionable later work.

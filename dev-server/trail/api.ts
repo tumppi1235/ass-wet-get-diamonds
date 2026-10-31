@@ -1,12 +1,14 @@
 import {applyWorldEvent,loadWorld,WorldError} from './world-store';
 import type {D1Database} from '@cloudflare/workers-types';
 import {loadBalance,saveBalance} from './balance-store';
-import {querySpawns,readBounds,placeSpawn,removeSpawn,loadSpawnRules,saveSpawnRules} from './spawn-store';
+import {querySpawns,readBounds,nearbyBounds,placeSpawn,removeSpawn,loadSpawnRules,saveSpawnRules} from './spawn-store';
 import {generateWorldSpawn,validateSpawnRules,type SpawnRules} from '../../mobile/src/game/world-spawns';
 import {LANDMARKS} from '../../mobile/src/game/landmarks';
 import G from '../../mobile/src/game/engine';
 import {inspectPlayer,editPlayer} from './player-admin';
 import {DEV_BALANCE,validateBalance} from '../../mobile/src/game/dev-world';
+import {loadRegions,saveRegions,queryDensity} from './region-store';
+import {rulesForPlace} from '../../mobile/src/game/world-regions';
 type Bindings={DB?:D1Database;TRAIL_ENV?:string;TRAIL_ADMIN_EMAIL?:string;TRAIL_PUBLIC_ORIGIN?:string};
 type Member={id:string;display_name:string;role:'admin'|'player';created_at:number};
 class ApiError extends Error{constructor(public status:number,message:string){super(message);}}
@@ -51,8 +53,17 @@ export async function trailApi(request:Request,env:Bindings){
       if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');
       const input=await body(request);let rules:SpawnRules;try{rules=validateSpawnRules(input.rules);}catch(e){throw new ApiError(400,(e as Error).message);}
       if(!Number.isSafeInteger(input.at)||input.at<0)throw new ApiError(400,'Invalid simulation time');
-      const places=LANDMARKS.filter(r=>r.latitude!=null&&r.longitude!=null&&r.source),spawns=places.map(p=>generateWorldSpawn(p,input.at,rules));
+      const regions=await loadRegions(db),places=LANDMARKS.filter(r=>r.latitude!=null&&r.longitude!=null&&r.source),spawns=places.flatMap(p=>{const adjusted=rulesForPlace(p,input.at,rules,regions);return adjusted?[generateWorldSpawn(p,input.at,adjusted)]:[];});
       return json({simulation:true,writes:0,count:spawns.length,rarities:Object.fromEntries(['Common','Rare','Legendary'].map(r=>[r,spawns.filter(s=>s.rarity===r).length])),sample:spawns.slice(0,20)});
+    }
+    if(path==='/api/trail/admin/regions'&&request.method==='GET'){
+      if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');return json({configuration:await loadRegions(db)});
+    }
+    if(path==='/api/trail/admin/regions'&&request.method==='PUT'){
+      if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');const input=await body(request);try{return json(await saveRegions(db,id,input.configuration,input.revision));}catch(e){if(e instanceof WorldError)throw e;throw new ApiError(400,(e as Error).message);}
+    }
+    if(path==='/api/trail/admin/density'&&request.method==='GET'){
+      if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');return json(await queryDensity(db,readBounds(url.searchParams)));
     }
     if(path==='/api/trail/admin/spawns'&&request.method==='POST'){
       if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');
@@ -69,7 +80,7 @@ export async function trailApi(request:Request,env:Bindings){
       const input=await body(request);return json(await applyWorldEvent(db,id,input.id,input.revision,input.event));
     }
     if(path==='/api/trail/visits'&&request.method==='GET'){
-      const rows=await db.prepare('SELECT tile,COUNT(*) AS players FROM trail_visits WHERE owner<>? GROUP BY tile ORDER BY MAX(last_at) DESC LIMIT 1000').bind(id).all();return json({visits:rows.results});
+      const state=(await loadWorld(db,id)).world,p=state.previous||(()=>{const point=G.geo(state.game.x,state.game.y);return{latitude:point.lat,longitude:point.lon};})(),rows=await queryDensity(db,nearbyBounds(p.latitude,p.longitude),id);return json({visits:rows.density.map(row=>({tile:row.tile,players:row.players})),truncated:rows.truncated});
     }
     if(path==='/api/trail/claims'&&request.method==='GET'){
       const rows=await db.prepare('SELECT c.tile,c.owner,c.price,c.updated_at,m.display_name FROM trail_claims c JOIN trail_members m ON m.id=c.owner ORDER BY c.updated_at DESC LIMIT 1000').all();return json({claims:rows.results});
