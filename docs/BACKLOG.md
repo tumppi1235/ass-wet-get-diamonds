@@ -70,7 +70,7 @@ Automated repair evidence and remaining iPhone field gates: [P0 report](P0-EXPLO
 | TR-160 | P0 | Backlog | Deduplicate phone, Garmin and imported activity rewards | TR-159 | One outing recorded/imported from multiple sources produces one reward set. |
 | TR-161 | P0 | In Progress | Record distance, speed, elevation and activity metadata | TR-156 | Data-field prototype observes SDK distance/timer/ascent and tile-entry locations separately from game-validated evidence. Quality is not metre accuracy; provider completion/metadata validation remain. |
 | TR-162 | P0 | Backlog | Field-test normal Enduro 3 activity to game tile synchronization | TR-156, TR-158, TR-159, TR-160 | An Enduro 3 field test updates game cells/inventory without phone recording. |
-| TR-163 | P2 | Backlog | Investigate completed-activity Garmin reconciliation | TR-157, TR-160, TR-161 | Current Garmin program/API feasibility and required approvals are verified before reconciliation work. |
+| TR-163 | P2 | Done | Investigate completed-activity Garmin reconciliation | TR-157, TR-160, TR-161 | Official Personal/Business paths, separate terms/credentials, callback/evidence and dedup gates documented in CONNECTIVITY-FEASIBILITY.md. Investigation only; no completed import or live provider test. |
 | TR-165 | P1 | In Progress | Make the phone compass follow the actual device heading | TR-153 | Dev-only browser implementation and simulated tests: opt-in orientation permission, screen-top heading, relative arrow, circular smoothing, rotation/lifecycle cleanup and explicit north-up fallback. iPhone magnetic data labeled approximate; true-north correction/native support and physical iPhone Chrome verification remain pending. See DEV-COMPASS.md. |
 
 ## TR-E02 — Finland-wide Game World
@@ -180,7 +180,7 @@ Automated repair evidence and remaining iPhone field gates: [P0 report](P0-EXPLO
 | TR-094 | P1 | Backlog | Route generation using real trail and geographic data | TR-026, TR-101 | Routes follow real usable geographic paths and have valid GPX coordinates. |
 | TR-095 | P1 | In Progress | Estimated attribute XP for recommendations | TR-079, TR-087 | Ideas UI projects conditional ordinary XP/current levels with saved fractional credit and explicit one-tile/region/find assumptions. Accepted Foot/Bicycle arithmetic parity tested; real route/elevation integration remains. |
 | TR-096 | P1 | Backlog | Include artifact and boss opportunities in recommendations | TR-094, TR-003, TR-043 | Relevant detected artefacts/bosses can be included without forcing extra collection range. |
-| TR-097 | P2 | Backlog | Evaluate Strava segments as potential training suggestions | TR-164 | Feasibility, permissions and permitted Strava segment use are documented before implementation. |
+| TR-097 | P2 | Done | Evaluate Strava segments as potential training suggestions | TR-164 | Feasibility decision: no persistent segment recommendation cache under assumed permissions; endpoint, deletion and data-use gates documented. No connected segment feature. See CONNECTIVITY-FEASIBILITY.md. |
 | TR-098 | P1 | Backlog | GPX export for Garmin and other navigation devices | TR-094 | A generated GPX route can be exported and validated in a supported navigation workflow. |
 | TR-099 | P2 | Backlog | Compare predicted versus actual adventure rewards | TR-095 | Verified actual rewards can be compared with estimates without double rewards. |
 | TR-100 | P2 | Backlog | Add group adventure and boss-route planning | TR-094, TR-130 | A party route includes encounter timing and each member’s required tile visit. |
@@ -194,7 +194,7 @@ Automated repair evidence and remaining iPhone field gates: [P0 report](P0-EXPLO
 | TR-108 | P2 | Deferred | Show live quest progress during Garmin activities | — | Deferred formal-quest design; ordinary recommendation XP is handled in TR-092–110, without a completion bonus. |
 | TR-109 | P1 | In Progress | Generate non-route training suggestions, including hill repeats | TR-092, TR-095 | Ordinary distance/new-tile/new-region/collection guidance implemented without plan bonuses. Power/hill-repeat earning awaits supported elevation evidence. |
 | TR-110 | P1 | In Progress | Recommend adventures that introduce new sports, terrain or regions | TR-082, TR-093 | New-region ideas exclude already rewarded personal regional blocks. Sport/terrain diversity requires further evidence and earning rules. |
-| TR-164 | P2 | Backlog | Investigate optional Strava activity/account connectivity | TR-113, TR-160 | Strava is optional; verify permissions, account linking, activity deduplication and data-use constraints. |
+| TR-164 | P2 | Done | Investigate optional Strava activity/account connectivity | TR-113, TR-160 | Current OAuth/capacity/webhooks and June 2026 retention/data-use constraints checked; permanent/shared rewards need provider clarification. Optional path stays disconnected. See CONNECTIVITY-FEASIBILITY.md. |
 
 ## TR-E07 — Environments, Deployment & Release Management
 
