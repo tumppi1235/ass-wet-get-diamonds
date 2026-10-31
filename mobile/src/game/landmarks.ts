@@ -1,13 +1,14 @@
 import places from '../../assets/landmarks.json';
 import nationalPlaces from '../../assets/finland-relics.json';
-import {APP_ENV} from '../config/environment';
+import haukivuoriPlaces from '../../assets/haukivuori-relics.json';
+import {RELEASE_FEATURES} from '../config/features';
 import {groundDistance} from '../map/geodesy';
 import type { Engine, GameState, Relic } from './types';
 // eslint-disable-next-line @typescript-eslint/no-require-imports -- Shared prototype engine is a CommonJS module.
 const rules: Engine = require('../../../public/engine.js');
-export const LANDMARKS = (APP_ENV==='development'?[...places,...nationalPlaces]:places) as Relic[];
+export const LANDMARKS = (RELEASE_FEATURES.nationalExploration?[...places,...nationalPlaces,...haukivuoriPlaces]:places) as Relic[];
 export const relicPoint = (r: Relic) => r.latitude != null && r.longitude != null ? rules.xy(r.latitude, r.longitude) : { x: (r.i + .5) * 250, y: (r.j + .5) * 250 };
-export function relicDistance(r:Relic,p:{x:number;y:number}){const target=relicPoint(r);if(APP_ENV!=='development')return Math.hypot(target.x-p.x,target.y-p.y);const a=rules.geo(p.x,p.y),b=rules.geo(target.x,target.y);return groundDistance({latitude:a.lat,longitude:a.lon},{latitude:b.lat,longitude:b.lon});}
+export function relicDistance(r:Relic,p:{x:number;y:number}){const target=relicPoint(r);if(!RELEASE_FEATURES.nationalExploration)return Math.hypot(target.x-p.x,target.y-p.y);const a=rules.geo(p.x,p.y),b=rules.geo(target.x,target.y);return groundDistance({latitude:a.lat,longitude:a.lon},{latitude:b.lat,longitude:b.lon});}
 export function seedLandmarks(s: GameState) { for (const r of LANDMARKS) if (!s.collection.some(a => a.id === r.id)) s.revealed[r.id] = { ...r }; return s; }
 export function availableRelics(s: GameState, p: { x: number; y: number }) {
   const unavailable=new Set([...Object.keys(s.searched).filter(id=>s.searched[id]),...s.collection.map(r=>r.id)]);

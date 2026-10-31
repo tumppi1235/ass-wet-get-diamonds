@@ -5,9 +5,10 @@ import {lifetimeSummary} from '../game/achievements';
 import {ATTRIBUTES,ATTRIBUTE_LABELS,levelProgress} from '../game/progression';
 import {progressionConfig} from '../config/progression';
 import {APP_ENV} from '../config/environment';
+import {RELEASE_FEATURES} from '../config/features';
 import {styles,colors} from './ui';
 export function LifetimeJournal({game}:{game:GameState|null}){
-  if(APP_ENV!=='development'||!game?.lifetime)return null;
+  if(!RELEASE_FEATURES.lifetimeJournal||!game?.lifetime)return null;
   const stats=lifetimeSummary(game.lifetime),curve=progressionConfig(APP_ENV);
   return <View style={[styles.panel,{gap:12}]}>
     <Text style={styles.eyebrow}>ADVENTURE JOURNAL</Text>

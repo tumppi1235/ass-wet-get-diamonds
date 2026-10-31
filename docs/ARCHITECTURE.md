@@ -4,7 +4,7 @@
 
 `mobile/` is the Expo 58 / React Native app and Expo Router web export. The public playtest is static hosting. `src/accounts/` implements installation-local PBKDF2 profiles, session checks and per-profile saved games. `src/game/` wraps the shared prototype engine in `public/engine.js`; gold, claims, landmarks and persistence live here. `src/location/` validates GPS fixes, while `src/map/` converts the same geographic coordinates/tile IDs into map overlays. Web uses MapLibre with OSM Shortbread vectors and approved Mapzen terrain; native/fallback uses the existing lightweight renderer. `garmin/source/` contains a standalone Connect IQ prototype, not an authenticated link to the phone account.
 
-There is no production game API or cloud inventory. Local ownership and visit sharing operate only between profiles in one installation. Development now uses Finland geographic eligibility and a finite 473-destination catalog; production retains Jyväskylä and its original 23 finds until promoted. See FINLAND-PLAYTEST.md for stable saved IDs versus geographic movement calculations and remaining national service/migration work.
+There is no production game API or cloud inventory. Local ownership and visit sharing operate only between profiles in one installation. The user-authorized release enables Finland eligibility and a finite 501-destination catalog in both builds, including 28 Rantalantie/Haukivuori additions. Production and development retain separate origins and storage keys. See FINLAND-PLAYTEST.md and PRODUCTION-FINLAND-RELEASE.md for geographic compatibility and remaining national service/device work.
 
 ## P0 browser exploration pipeline
 

@@ -1,5 +1,7 @@
 # Playtest deployment and future production gates
 
+Latest authorization: the user requested production promotion of Finland/journal features plus the Haukivuori/Rantalantie cluster. Both variants now share released features while keeping their separate save namespaces. See [PRODUCTION-FINLAND-RELEASE.md](PRODUCTION-FINLAND-RELEASE.md) for content, compatibility, pending device checks and rollback. Earlier dev-only restrictions in iteration notes are historical.
+
 Current public playtest: https://trail-relics-jyvaskyla.tuomasl.chatgpt.site. It is the existing static Sites project `appgprj_6ae4783f8fcc8191a8e97464e8375938`, with Expo web output. GitHub source and managed hosting source are separate repositories. Follow [WEB-PLAYTEST.md](WEB-PLAYTEST.md) and the Sites skill for the authorized release workflow. Keep credentials in memory/stdin and exclude player saves and plaintext generated passwords from source/archive content.
 
 For a code release: identify stories; run focused regressions and required mobile lint/typecheck; export the web build; preview using an isolated local profile; preserve live player data; record exact source/build commits; publish through the existing approved workflow. Documentation-only organization does not need publication. Do not silently change the Site audience.

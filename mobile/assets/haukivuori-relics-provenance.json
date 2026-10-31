@@ -1,0 +1,537 @@
+{
+  "license": "ODbL-1.0",
+  "attribution": "© OpenStreetMap contributors / Geofabrik",
+  "source": "https://download.geofabrik.de/europe/finland-latest.osm.pbf",
+  "sourceChecksum": "5b113c7a2c31d8465eead4a958eab97b  finland-latest.osm.pbf",
+  "road": {
+    "wayId": 1156889836,
+    "tags": {
+      "highway": "unclassified",
+      "name": "Rantalantie",
+      "name:fi": "Rantalantie"
+    },
+    "geometry": [
+      {
+        "lat": 62.1214686,
+        "lon": 27.0840884,
+        "nodeId": 3942162041
+      },
+      {
+        "lat": 62.1214419,
+        "lon": 27.0837963,
+        "nodeId": 10905243370
+      },
+      {
+        "lat": 62.1214313,
+        "lon": 27.0836806,
+        "nodeId": 10758372098
+      },
+      {
+        "lat": 62.1212558,
+        "lon": 27.082833,
+        "nodeId": 10758372097
+      },
+      {
+        "lat": 62.1211654,
+        "lon": 27.0827579,
+        "nodeId": 10758372096
+      },
+      {
+        "lat": 62.1209355,
+        "lon": 27.0827646,
+        "nodeId": 10905243383
+      },
+      {
+        "lat": 62.1207942,
+        "lon": 27.0827687,
+        "nodeId": 10758372095
+      },
+      {
+        "lat": 62.1205137,
+        "lon": 27.0827387,
+        "nodeId": 10905243381
+      },
+      {
+        "lat": 62.1203928,
+        "lon": 27.0827258,
+        "nodeId": 10758372094
+      },
+      {
+        "lat": 62.1197758,
+        "lon": 27.0826936,
+        "nodeId": 10758372093
+      },
+      {
+        "lat": 62.1195399,
+        "lon": 27.0826614,
+        "nodeId": 10758372092
+      },
+      {
+        "lat": 62.1190382,
+        "lon": 27.0821142,
+        "nodeId": 10758372091
+      },
+      {
+        "lat": 62.1188676,
+        "lon": 27.0820391,
+        "nodeId": 10758372090
+      },
+      {
+        "lat": 62.1186017,
+        "lon": 27.0820284,
+        "nodeId": 10758372089
+      },
+      {
+        "lat": 62.1182957,
+        "lon": 27.0819425,
+        "nodeId": 10758372088
+      },
+      {
+        "lat": 62.1178792,
+        "lon": 27.0818245,
+        "nodeId": 10758372087
+      },
+      {
+        "lat": 62.1174126,
+        "lon": 27.0816958,
+        "nodeId": 10758372086
+      },
+      {
+        "lat": 62.1171467,
+        "lon": 27.0816529,
+        "nodeId": 10758372085
+      },
+      {
+        "lat": 62.1168858,
+        "lon": 27.0815778,
+        "nodeId": 10758372084
+      },
+      {
+        "lat": 62.1167453,
+        "lon": 27.0814705,
+        "nodeId": 10758372083
+      },
+      {
+        "lat": 62.116655,
+        "lon": 27.0812774,
+        "nodeId": 10758372082
+      },
+      {
+        "lat": 62.1164944,
+        "lon": 27.080462,
+        "nodeId": 10758372081
+      },
+      {
+        "lat": 62.1164041,
+        "lon": 27.080065,
+        "nodeId": 10758372080
+      },
+      {
+        "lat": 62.1163288,
+        "lon": 27.0794535,
+        "nodeId": 10758372079
+      },
+      {
+        "lat": 62.1162586,
+        "lon": 27.0793462,
+        "nodeId": 10758372078
+      },
+      {
+        "lat": 62.1161181,
+        "lon": 27.0793462,
+        "nodeId": 10758372077
+      },
+      {
+        "lat": 62.1158973,
+        "lon": 27.0795071,
+        "nodeId": 10758372076
+      },
+      {
+        "lat": 62.1154206,
+        "lon": 27.0799899,
+        "nodeId": 10758372075
+      },
+      {
+        "lat": 62.1151597,
+        "lon": 27.0803761,
+        "nodeId": 10758372074
+      },
+      {
+        "lat": 62.1149138,
+        "lon": 27.0807624,
+        "nodeId": 10758372073
+      },
+      {
+        "lat": 62.1147633,
+        "lon": 27.0811593,
+        "nodeId": 10758372072
+      },
+      {
+        "lat": 62.1146127,
+        "lon": 27.0816207,
+        "nodeId": 10758372071
+      },
+      {
+        "lat": 62.1144321,
+        "lon": 27.0820498,
+        "nodeId": 10758372070
+      },
+      {
+        "lat": 62.1143067,
+        "lon": 27.0822966,
+        "nodeId": 10758372069
+      },
+      {
+        "lat": 62.1141461,
+        "lon": 27.0824146,
+        "nodeId": 10758372068
+      },
+      {
+        "lat": 62.1139152,
+        "lon": 27.0823288,
+        "nodeId": 10758372067
+      },
+      {
+        "lat": 62.1136844,
+        "lon": 27.0820928,
+        "nodeId": 10758372066
+      }
+    ]
+  },
+  "count": 28,
+  "maxDistance": 805.6209512974553,
+  "records": {
+    "277,-54": {
+      "wayId": 1156889836,
+      "nodeId": 3942162041,
+      "latitude": 62.1214686,
+      "longitude": 27.0840884,
+      "distanceToRantalantie": 0,
+      "tags": {
+        "highway": "unclassified",
+        "name": "Rantalantie",
+        "name:fi": "Rantalantie"
+      }
+    },
+    "276,-57": {
+      "wayId": 1156889836,
+      "nodeId": 10758372075,
+      "latitude": 62.1154206,
+      "longitude": 27.0799899,
+      "distanceToRantalantie": 0,
+      "tags": {
+        "highway": "unclassified",
+        "name": "Rantalantie",
+        "name:fi": "Rantalantie"
+      }
+    },
+    "276,-56": {
+      "wayId": 1156889836,
+      "nodeId": 10758372087,
+      "latitude": 62.1178792,
+      "longitude": 27.0818245,
+      "distanceToRantalantie": 0,
+      "tags": {
+        "highway": "unclassified",
+        "name": "Rantalantie",
+        "name:fi": "Rantalantie"
+      }
+    },
+    "276,-55": {
+      "wayId": 1156889836,
+      "nodeId": 10758372093,
+      "latitude": 62.1197758,
+      "longitude": 27.0826936,
+      "distanceToRantalantie": 0,
+      "tags": {
+        "highway": "unclassified",
+        "name": "Rantalantie",
+        "name:fi": "Rantalantie"
+      }
+    },
+    "276,-54": {
+      "wayId": 1156889836,
+      "nodeId": 10758372097,
+      "latitude": 62.1212558,
+      "longitude": 27.082833,
+      "distanceToRantalantie": 0,
+      "tags": {
+        "highway": "unclassified",
+        "name": "Rantalantie",
+        "name:fi": "Rantalantie"
+      }
+    },
+    "277,-57": {
+      "wayId": 391054936,
+      "nodeId": 3942162011,
+      "latitude": 62.1136096,
+      "longitude": 27.0840425,
+      "distanceToRantalantie": 95.38423377367046,
+      "tags": {
+        "highway": "track",
+        "name": "Hämeensalontie",
+        "name:fi": "Hämeensalontie",
+        "surface": "unpaved"
+      }
+    },
+    "277,-58": {
+      "wayId": 391054936,
+      "nodeId": 3942162010,
+      "latitude": 62.1131299,
+      "longitude": 27.0837717,
+      "distanceToRantalantie": 106.89218100147616,
+      "tags": {
+        "highway": "track",
+        "name": "Hämeensalontie",
+        "name:fi": "Hämeensalontie",
+        "surface": "unpaved"
+      }
+    },
+    "278,-54": {
+      "wayId": 391054943,
+      "nodeId": 1207014131,
+      "latitude": 62.1221602,
+      "longitude": 27.0883261,
+      "distanceToRantalantie": 233.37017227988667,
+      "tags": {
+        "highway": "track",
+        "surface": "unpaved"
+      }
+    },
+    "278,-57": {
+      "wayId": 391054936,
+      "nodeId": 3942162015,
+      "latitude": 62.1145115,
+      "longitude": 27.0889577,
+      "distanceToRantalantie": 342.7035458318906,
+      "tags": {
+        "highway": "track",
+        "name": "Hämeensalontie",
+        "name:fi": "Hämeensalontie",
+        "surface": "unpaved"
+      }
+    },
+    "278,-53": {
+      "wayId": 391054943,
+      "nodeId": 3942162044,
+      "latitude": 62.1226098,
+      "longitude": 27.0910815,
+      "distanceToRantalantie": 385.1043720301649,
+      "tags": {
+        "highway": "track",
+        "surface": "unpaved"
+      }
+    },
+    "277,-59": {
+      "wayId": 391054945,
+      "nodeId": 3942161993,
+      "latitude": 62.1090741,
+      "longitude": 27.0840717,
+      "distanceToRantalantie": 522.8731964611768,
+      "tags": {
+        "highway": "track",
+        "surface": "unpaved"
+      }
+    },
+    "277,-60": {
+      "wayId": 391054945,
+      "nodeId": 3942161987,
+      "latitude": 62.1088841,
+      "longitude": 27.0846694,
+      "distanceToRantalantie": 550.3362777896762,
+      "tags": {
+        "highway": "track",
+        "surface": "unpaved"
+      }
+    },
+    "275,-52": {
+      "wayId": 1149824422,
+      "nodeId": 10696463418,
+      "latitude": 62.1257014,
+      "longitude": 27.0775365,
+      "distanceToRantalantie": 565.8537537359377,
+      "tags": {
+        "highway": "unclassified",
+        "name": "Aittokalliontie",
+        "name:fi": "Aittokalliontie"
+      }
+    },
+    "276,-52": {
+      "wayId": 391054938,
+      "nodeId": 1207032930,
+      "latitude": 62.126046,
+      "longitude": 27.0782942,
+      "distanceToRantalantie": 582.5781858881992,
+      "tags": {
+        "highway": "unclassified",
+        "surface": "unpaved"
+      }
+    },
+    "274,-53": {
+      "wayId": 1149824422,
+      "nodeId": 10696463441,
+      "latitude": 62.1228786,
+      "longitude": 27.0721149,
+      "distanceToRantalantie": 585.241349415655,
+      "tags": {
+        "highway": "unclassified",
+        "name": "Aittokalliontie",
+        "name:fi": "Aittokalliontie"
+      }
+    },
+    "274,-59": {
+      "wayId": 1150133161,
+      "nodeId": 10699238909,
+      "latitude": 62.1108997,
+      "longitude": 27.0724115,
+      "distanceToRantalantie": 591.1182741706457,
+      "tags": {
+        "highway": "track",
+        "name": "Pohjaniementie",
+        "name:fi": "Pohjaniementie"
+      }
+    },
+    "274,-58": {
+      "wayId": 1150133161,
+      "nodeId": 10699238910,
+      "latitude": 62.1112682,
+      "longitude": 27.0719075,
+      "distanceToRantalantie": 593.9748348027167,
+      "tags": {
+        "highway": "track",
+        "name": "Pohjaniementie",
+        "name:fi": "Pohjaniementie"
+      }
+    },
+    "277,-52": {
+      "wayId": 391054938,
+      "nodeId": 3942162056,
+      "latitude": 62.1268542,
+      "longitude": 27.0843972,
+      "distanceToRantalantie": 599.0673869849994,
+      "tags": {
+        "highway": "unclassified",
+        "surface": "unpaved"
+      }
+    },
+    "275,-59": {
+      "wayId": 1150133161,
+      "nodeId": 10699238905,
+      "latitude": 62.1100568,
+      "longitude": 27.0733051,
+      "distanceToRantalantie": 609.5987257459493,
+      "tags": {
+        "highway": "track",
+        "name": "Pohjaniementie",
+        "name:fi": "Pohjaniementie"
+      }
+    },
+    "279,-56": {
+      "wayId": 391054936,
+      "nodeId": 3942162023,
+      "latitude": 62.1158477,
+      "longitude": 27.0938706,
+      "distanceToRantalantie": 625.1014261565807,
+      "tags": {
+        "highway": "track",
+        "name": "Hämeensalontie",
+        "name:fi": "Hämeensalontie",
+        "surface": "unpaved"
+      }
+    },
+    "277,-51": {
+      "wayId": 391054938,
+      "nodeId": 3942162060,
+      "latitude": 62.1271282,
+      "longitude": 27.0833122,
+      "distanceToRantalantie": 630.6121944698141,
+      "tags": {
+        "highway": "unclassified",
+        "surface": "unpaved"
+      }
+    },
+    "276,-51": {
+      "wayId": 391054938,
+      "nodeId": 3942162059,
+      "latitude": 62.1271173,
+      "longitude": 27.0816469,
+      "distanceToRantalantie": 640.8051533730077,
+      "tags": {
+        "highway": "unclassified",
+        "surface": "unpaved"
+      }
+    },
+    "278,-60": {
+      "wayId": 391054945,
+      "nodeId": 3942161980,
+      "latitude": 62.1083059,
+      "longitude": 27.0877446,
+      "distanceToRantalantie": 666.4041290617741,
+      "tags": {
+        "highway": "track",
+        "surface": "unpaved"
+      }
+    },
+    "273,-58": {
+      "wayId": 1150133161,
+      "nodeId": 10699238918,
+      "latitude": 62.1127876,
+      "longitude": 27.0682812,
+      "distanceToRantalantie": 675.6652371948438,
+      "tags": {
+        "highway": "track",
+        "name": "Pohjaniementie",
+        "name:fi": "Pohjaniementie"
+      }
+    },
+    "274,-52": {
+      "wayId": 1149824422,
+      "nodeId": 10696463426,
+      "latitude": 62.1249303,
+      "longitude": 27.0722705,
+      "distanceToRantalantie": 684.4882384688924,
+      "tags": {
+        "highway": "unclassified",
+        "name": "Aittokalliontie",
+        "name:fi": "Aittokalliontie"
+      }
+    },
+    "275,-60": {
+      "wayId": 1150133161,
+      "nodeId": 10699214702,
+      "latitude": 62.1083297,
+      "longitude": 27.0747113,
+      "distanceToRantalantie": 708.4657081185294,
+      "tags": {
+        "highway": "track",
+        "name": "Pohjaniementie",
+        "name:fi": "Pohjaniementie"
+      }
+    },
+    "273,-57": {
+      "wayId": 1150133161,
+      "nodeId": 10699238938,
+      "latitude": 62.1138601,
+      "longitude": 27.0659566,
+      "distanceToRantalantie": 740.2196376210484,
+      "tags": {
+        "highway": "track",
+        "name": "Pohjaniementie",
+        "name:fi": "Pohjaniementie"
+      }
+    },
+    "279,-60": {
+      "wayId": 1146991266,
+      "nodeId": 3942161981,
+      "latitude": 62.1084409,
+      "longitude": 27.0927815,
+      "distanceToRantalantie": 805.6209512974553,
+      "tags": {
+        "highway": "track",
+        "name": "Pohjakalliontie",
+        "name:fi": "Pohjakalliontie",
+        "surface": "unpaved"
+      }
+    }
+  }
+}

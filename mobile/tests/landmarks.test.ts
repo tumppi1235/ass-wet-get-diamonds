@@ -5,9 +5,10 @@ import { availableRelics, beginQuest, captureAt, LANDMARKS, relicPoint, seedLand
 import { isPlayablePoint } from '../src/map/region';
 import original from '../assets/landmarks.json';
 import national from '../assets/finland-relics.json';
-import {APP_ENV} from '../src/config/environment';
+import haukivuori from '../assets/haukivuori-relics.json';
+import {RELEASE_FEATURES} from '../src/config/features';
 test('landmarks include reachable Haukkala and Sippulanniemi destinations with unique cells', () => {
-  assert.equal(LANDMARKS.length,23+(APP_ENV==='development'?national.length:0)); assert.equal(new Set(LANDMARKS.map(r => r.id)).size,LANDMARKS.length);assert.deepEqual(LANDMARKS.slice(0,23),original);
+  assert.equal(LANDMARKS.length,23+(RELEASE_FEATURES.nationalExploration?national.length+haukivuori.length:0)); assert.equal(new Set(LANDMARKS.map(r => r.id)).size,LANDMARKS.length);assert.deepEqual(LANDMARKS.slice(0,23),original);
   for(const area of ['Haukkala','Sippulanniemi']){
     const finds=LANDMARKS.filter(r=>r.landmark!.startsWith(area));
     assert.equal(finds.length,7);

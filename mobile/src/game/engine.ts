@@ -2,16 +2,16 @@ import type { Engine } from './types';
 import { seedLandmarks } from './landmarks';
 import { GOLD_PER_NEW_TILE, restoreResources } from './resources';
 import { isInJyvaskyla,isPlayablePoint } from '../map/region';
-import {APP_ENV} from '../config/environment';
+import {RELEASE_FEATURES} from '../config/features';
 // Keep the same tested deterministic engine as the browser prototype.
 const shared: Engine = require('../../../public/engine.js');
 function safeRelic(i:number,j:number,visits:Record<string,number>){
   // The new national catalog uses verified path coordinates. Do not create random building/sea-centre destinations elsewhere.
-  if(APP_ENV==='development'&&!isInJyvaskyla({x:(i+.5)*250,y:(j+.5)*250}))return null;
+  if(RELEASE_FEATURES.nationalExploration&&!isInJyvaskyla({x:(i+.5)*250,y:(j+.5)*250}))return null;
   return shared.relic(i,j,visits);
 }
 function vision(s:import('./types').GameState){
-  if(APP_ENV!=='development')return shared.vision(s);
+  if(!RELEASE_FEATURES.nationalExploration)return shared.vision(s);
   const c=shared.cell(s.x,s.y),found=[];
   for(let i=c.i-1;i<=c.i+1;i++)for(let j=c.j-1;j<=c.j+1;j++){
     const id=shared.key(i,j);if(!Object.hasOwn(s.revealed,id))s.revealed[id]=safeRelic(i,j,s.visits);
@@ -20,7 +20,7 @@ function vision(s:import('./types').GameState){
   return found;
 }
 function enter(s:import('./types').GameState){
-  if(APP_ENV!=='development')return shared.enter(s);
+  if(!RELEASE_FEATURES.nationalExploration)return shared.enter(s);
   const c=shared.cell(s.x,s.y),id=shared.key(c.i,c.j);vision(s);if(s.lastCell===id)return false;
   s.lastCell=id;s.visits[id]=(s.visits[id]||0)+1;return true;
 }

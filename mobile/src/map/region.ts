@@ -1,15 +1,15 @@
 import boundary from '../../assets/jyvaskyla-boundary.json';
 import G from '../game/engine';
-import {APP_ENV} from '../config/environment';
+import {RELEASE_FEATURES} from '../config/features';
 import {isInFinland,intersectsFinland} from './country';
 export type Point = { x: number; y: number };
 export const JYVASKYLA = boundary;
-export const GAME_REGION=APP_ENV==='development'?'Finland':'Jyväskylä';
-export function isPlayablePoint(point:Point){const p=G.geo(point.x,point.y);return APP_ENV==='development'?isInFinland(p.lat,p.lon):isInJyvaskyla(point);}
+export const GAME_REGION=RELEASE_FEATURES.nationalExploration?'Finland':'Jyväskylä';
+export function isPlayablePoint(point:Point){const p=G.geo(point.x,point.y);return RELEASE_FEATURES.nationalExploration?isInFinland(p.lat,p.lon):isInJyvaskyla(point);}
 const tileEligibility=new Map<string,boolean>();
 export function isPlayableCell(i:number,j:number){
   const center={x:(i+.5)*250,y:(j+.5)*250};
-  if(APP_ENV!=='development')return isInJyvaskyla(center);
+  if(!RELEASE_FEATURES.nationalExploration)return isInJyvaskyla(center);
   const key=G.key(i,j),cached=tileEligibility.get(key);if(cached!==undefined)return cached;
   const sw=G.geo(i*250,j*250),ne=G.geo((i+1)*250,(j+1)*250);
   const valid=intersectsFinland(sw.lon,sw.lat,ne.lon,ne.lat);

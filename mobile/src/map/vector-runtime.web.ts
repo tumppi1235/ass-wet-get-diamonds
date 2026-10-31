@@ -5,7 +5,7 @@ import type { CityMapProps } from '../components/city-map.types';
 import { accuracyData, boundaryData, claimsData, collection, coordinates, overlayData, playerData, relicData, selectedTileData, trailData } from './vector-data';
 import { revision } from './style-revision.json';
 import {GAME_REGION} from './region';
-import {APP_ENV} from '../config/environment';
+import {RELEASE_FEATURES} from '../config/features';
 
 export function createQuestMap(container: HTMLDivElement, read: () => CityMapProps, onReady: () => void, onError: (message: string) => void) {
   setWorkerUrl(new URL('/maps/maplibre-worker-'+getVersion()+'.js',window.location.href).href);
@@ -13,7 +13,7 @@ export function createQuestMap(container: HTMLDivElement, read: () => CityMapPro
   const initial = read(), target = initial.player || initial.game;
   const map = new Map({ container, style:'/maps/trail-retro-style.json?v='+revision, center:coordinates(target),zoom:14.4,
     transformStyle:(_previous,next)=>({...next,sprite:typeof next.sprite==='string'?new URL(next.sprite,window.location.href).href:next.sprite}),
-    minZoom:APP_ENV==='development'?4:7,maxZoom:19,bearing:0,pitch:0,
+    minZoom:RELEASE_FEATURES.nationalExploration?4:7,maxZoom:19,bearing:0,pitch:0,
     dragRotate:false,touchPitch:false,attributionControl:false,fadeDuration:0,
     canvasContextAttributes:{antialias:false},pixelRatio:Math.min(window.devicePixelRatio || 1,2),
   });

@@ -1,9 +1,9 @@
 import G from '../game/engine';
 import { isPlayablePoint, type Point } from '../map/region';
-import {APP_ENV} from '../config/environment';
+import {RELEASE_FEATURES} from '../config/features';
 import {groundDistance,type Geographic} from '../map/geodesy';
 type Sample=Point&Geographic;
-const distanceBetween=(a:Sample,b:Sample)=>APP_ENV==='development'?groundDistance(a,b):Math.hypot(a.x-b.x,a.y-b.y);
+const distanceBetween=(a:Sample,b:Sample)=>RELEASE_FEATURES.nationalExploration?groundDistance(a,b):Math.hypot(a.x-b.x,a.y-b.y);
 export type LocationFix = { latitude: number; longitude: number; accuracy: number | null; timestamp: number; speed?: number | null };
 export type PlayerPosition = Point & { latitude: number; longitude: number; accuracy: number; timestamp: number; inside: boolean; precise: boolean };
 export type TrackedFix = { position: PlayerPosition; eligible: boolean; distance: number; startSegment: boolean; reason: 'accurate' | 'approximate' | 'outside' | 'speed' | 'jump' };

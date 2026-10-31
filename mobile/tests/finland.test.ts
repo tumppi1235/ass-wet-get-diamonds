@@ -5,8 +5,9 @@ import {readFileSync} from 'node:fs';
 import national from '../assets/finland-relics.json';
 import provenance from '../assets/finland-relics-provenance.json';
 import original from '../assets/landmarks.json';
+import haukivuori from '../assets/haukivuori-relics.json';
 import G from '../src/game/engine';
-import {APP_ENV} from '../src/config/environment';
+import {RELEASE_FEATURES} from '../src/config/features';
 import {isInFinland} from '../src/map/country';
 import {isPlayablePoint,visibleGameTiles,isPlayableCell} from '../src/map/region';
 import {groundDistance,groundBearing,groundDestination} from '../src/map/geodesy';
@@ -32,19 +33,19 @@ test('every new relic is an eligible outdoor OSM way node in a valid Finland cel
     const tags=p.tags as Record<string,string>;assert.ok(['footway','path','pedestrian','steps','cycleway'].includes(tags.highway));
     assert.ok(!blocked.includes(tags.access));assert.ok(!blocked.includes(tags.foot));assert.ok(!tags.indoor||tags.indoor==='no');assert.ok(!tags.tunnel||tags.tunnel==='no');assert.notEqual(tags.covered,'yes');assert.notEqual(tags.area,'yes');
     assert.ok(isInFinland(r.latitude,r.longitude),r.landmark);const point=G.xy(r.latitude,r.longitude);assert.equal(currentTile(point),r.id);
-    if(APP_ENV==='development'){assert.ok(isPlayableCell(r.i,r.j));assert.ok(tilePoint(r.id));}
+    if(RELEASE_FEATURES.nationalExploration){assert.ok(isPlayableCell(r.i,r.j));assert.ok(tilePoint(r.id));}
   }
 });
-test('national eligibility includes Åland and Lapland and rejects neighbouring countries; production keeps its scope',()=>{
+test('released national eligibility includes Åland and Lapland and rejects neighbouring countries',()=>{
   for(const r of national.filter(r=>['Helsinki','Turku','Tampere','Oulu','Mariehamn','Inari','Utsjoki','Enontekiö'].includes(r.locality))){
-    assert.ok(isInFinland(r.latitude,r.longitude));assert.equal(isPlayablePoint(G.xy(r.latitude,r.longitude)),APP_ENV==='development');
+    assert.ok(isInFinland(r.latitude,r.longitude));assert.equal(isPlayablePoint(G.xy(r.latitude,r.longitude)),RELEASE_FEATURES.nationalExploration);
   }
   for(const [lat,lon]of [[59.3293,18.0686],[59.437,24.7536],[69.6492,18.9553],[59.9343,30.3351]])assert.equal(isInFinland(lat,lon),false);
   assert.equal(isInFinland(NaN,25),false);assert.equal(isInFinland(0,0),false);
-  assert.equal(LANDMARKS.length,23+(APP_ENV==='development'?national.length:0));
+  assert.equal(LANDMARKS.length,23+(RELEASE_FEATURES.nationalExploration?national.length+haukivuori.length:0));
 });
 test('country collection, visits and bounded tile overlays work while preserving IDs and collected saves',()=>{
-  if(APP_ENV!=='development')return;
+  if(!RELEASE_FEATURES.nationalExploration)return;
   for(const r of national){
     const s=G.initial(),point=G.xy(r.latitude,r.longitude);s.x=point.x;s.y=point.y;G.enter(s);
     assert.equal(currentTile(s),r.id);assert.equal(s.gold,1);assert.equal(captureAt(s,point,false,()=>0).status,'unavailable');
@@ -59,7 +60,7 @@ test('ground distance, bearing and accuracy rings remain metric at southern and 
   }
 });
 test('GPS walking gold uses real ground metres nationwide, not the legacy tile projection',()=>{
-  if(APP_ENV!=='development')return;
+  if(!RELEASE_FEATURES.nationalExploration)return;
   for(const latitude of [60.1699,67.4167]){
     const start={latitude,longitude:latitude<62?24.9384:26.59},tracker=new PositionTracker(),s=G.initial();let at=1_000_000;requestAdventure(s,at);
     for(let index=0;index<=6;index++){

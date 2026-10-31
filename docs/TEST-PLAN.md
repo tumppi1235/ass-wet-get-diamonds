@@ -33,6 +33,8 @@ Every release records the source SHA, browser/device, date, expected/actual beha
 | FIN-02 | Country gameplay | GPS/visits/collection/gold/claims work nationally, including Åland/north/coastal cells; neighbouring countries rejected | Country tests; phone field checks PENDING |
 | FIN-03 | Distance and scale | Ground metres/bearings/accuracy rings remain correct at northern latitudes; existing saved IDs and balances retained | Geodesy + GPS resource regressions |
 | FIN-04 | National navigation | Search Helsinki/Oulu/Utsjoki/Mariehamn, page results, zoom out to country overview and return with Me; no huge tile grid | Browser check + bounded overlay tests; physical touch PENDING |
+| HAU-01 | Rantalantie density | 28 sourced outdoor locations within 900m of exact Rantalantie, Haukivuori; four of each type, no duplicate cells or existing ID overwrite | `production-release.test.ts`; physical access PENDING |
+| PROD-01 | Production promotion | Production bundle enables released national/journal features, uses original profile/session keys, keeps old progress, shows no DEV TEST badge and returns 28 Rantalantie results | Release/account suites + production browser smoke check; phone PENDING |
 
 ## iPhone Chrome field pass
 

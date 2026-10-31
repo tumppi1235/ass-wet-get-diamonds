@@ -1,6 +1,6 @@
 # Finland playtest data
 
-The development catalog adds **450** path-side relics: 245 in 35 towns (seven types each) and 205 rural trail finds. The original `landmarks.json` remains byte-for-byte unchanged (23 Jyväskylä finds). Production keeps that original catalog until explicitly promoted.
+The national catalog adds **450** path-side relics: 245 in 35 towns (seven types each) and 205 rural trail finds. The original `landmarks.json` remains byte-for-byte unchanged (23 Jyväskylä finds). The user-authorized production promotion additionally includes **28** Rantalantie/Haukivuori relics in a separate catalog: **501 total**. Exact road/node provenance and source checksum are in `haukivuori-relics-provenance.json`; roads usable on foot are screened to exclude private access, driveways and motorroads.
 
 Sources: © [OpenStreetMap contributors](https://www.openstreetmap.org/copyright), [Geofabrik Finland extract](https://download.geofabrik.de/europe/finland.html), ODbL 1.0. Exact extract MD5, way/node IDs, coordinates, selection version and relevant tags are in `finland-relics-provenance.json`. Contributor identities and player locations are not included. The approximately 738 MB source PBF and node cache stay in ignored `.tools/`, outside app/Git/hosting archives.
 

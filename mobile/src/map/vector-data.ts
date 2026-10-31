@@ -1,7 +1,7 @@
 import type { Feature, FeatureCollection, Position } from 'geojson';
 import G from '../game/engine';
 import { LANDMARKS, relicPoint,relicDistance } from '../game/landmarks';
-import {APP_ENV} from '../config/environment';
+import {RELEASE_FEATURES} from '../config/features';
 import {FINLAND} from './country';
 import {groundDestination} from './geodesy';
 import type { GameState, Relic } from '../game/types';
@@ -38,7 +38,7 @@ export function playerData(player: PlayerPosition | null, demo: Point | null) {
 }
 export function accuracyData(player: PlayerPosition | null) {
   if(!player)return collection();
-  const ring=Array.from({length:65},(_,i)=>{if(APP_ENV==='development'){const p=groundDestination(player,player.accuracy,i/64*360);return[p.longitude,p.latitude];}const angle=i/64*Math.PI*2;return coordinates({x:player.x+Math.sin(angle)*player.accuracy,y:player.y+Math.cos(angle)*player.accuracy});});
+  const ring=Array.from({length:65},(_,i)=>{if(RELEASE_FEATURES.nationalExploration){const p=groundDestination(player,player.accuracy,i/64*360);return[p.longitude,p.latitude];}const angle=i/64*Math.PI*2;return coordinates({x:player.x+Math.sin(angle)*player.accuracy,y:player.y+Math.cos(angle)*player.accuracy});});
   return collection([feature({type:'Polygon',coordinates:[ring]},{precise:player.precise})]);
 }
 export function overlayData(game: GameState, others: Record<string,number>, center: Point, width: number, height: number, scale: number) {
@@ -48,7 +48,7 @@ export function overlayData(game: GameState, others: Record<string,number>, cent
   const grid=collection(cells.map(([i,j])=>feature({type:'Polygon',coordinates:[ring(i*250,j*250,250)]})));
   return {visits,grid,cells};
 }
-export const boundaryData = collection([feature({type:'MultiPolygon',coordinates:APP_ENV==='development'?FINLAND.polygons.map(p=>[p.outer,...p.holes]):JYVASKYLA.polygons.map(p=>[p.outer,...p.holes].map(r=>{const coords=r.map(([x,y])=>coordinates({x,y}));return [...coords,coords[0]];}))})]);
+export const boundaryData = collection([feature({type:'MultiPolygon',coordinates:RELEASE_FEATURES.nationalExploration?FINLAND.polygons.map(p=>[p.outer,...p.holes]):JYVASKYLA.polygons.map(p=>[p.outer,...p.holes].map(r=>{const coords=r.map(([x,y])=>coordinates({x,y}));return [...coords,coords[0]];}))})]);
 export function claimsData(claims:TileClaims,ownerId?:string,selectedId?:string){
   return collection(Object.entries(claims).filter(([id])=>tilePoint(id)).map(([id,c])=>{
     const [i,j]=id.split(',').map(Number);

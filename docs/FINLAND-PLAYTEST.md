@@ -1,6 +1,6 @@
-# Finland relics — development only
+# Finland relics — playtest
 
-TR-026/027/028/030 now have a browser playtest implementation on `develop`. Publish only to the private development Site. Production retains its previous source SHA/catalog and player storage.
+TR-026/027/028/030 began as a development playtest. The user subsequently authorized public promotion plus 28 Rantalantie/Haukivuori finds: **501 total**. [PRODUCTION-FINLAND-RELEASE.md](PRODUCTION-FINLAND-RELEASE.md) supersedes the original dev-only publication restriction and describes production compatibility.
 
 - **473 landmark destinations total:** original 23 preserved, plus 450 sourced additions. Seven relic types in each of 35 towns from Helsinki/Turku to Utsjoki/Enontekiö and Mariehamn; 205 additional rural trail locations.
 - All new positions come from actual outdoor walking-way nodes in the Geofabrik Finland OSM extract. Stable node/way provenance, source checksum, licensing and reproducible selection are in [FINLAND-DATA.md](../mobile/assets/FINLAND-DATA.md). Catalog construction does not send player GPS to a path-query provider.
@@ -15,4 +15,4 @@ TR-026/027/028/030 now have a browser playtest implementation on `develop`. Publ
 
 Physical phone checks remain pending: precise GPS across a tile edge in Helsinki, a coast/island tile, and a northern town; collect/reload; earn the first distance coin; claim the visited tile. The existing iPhone screen-lock limitation remains. Source-map tags/boundary simplification cannot guarantee present-day path access or survey accuracy.
 
-No cloud accounts/worlds, global visit sharing, live Garmin sync, new XP earning formula or production promotion is introduced.
+No cloud accounts/worlds, global visit sharing, live Garmin sync or new XP earning formula is introduced. Phone field checks remain pending after the authorized public playtest promotion.

@@ -8,7 +8,7 @@ import {newProgression,validateProgression,xpForLevel,levelProgress,ATTRIBUTES} 
 import {progressionConfig} from '../src/config/progression';
 import {requestAdventure,endAdventure,applyExplorationFix} from '../src/game/adventure';
 import {restoreDevelopmentState} from '../src/game/development-state';
-import {APP_ENV} from '../src/config/environment';
+import {RELEASE_FEATURES} from '../src/config/features';
 import type {TrackedFix} from '../src/location/tracker';
 
 function fix(at:number,x=10,distance=0,startSegment=false):TrackedFix{
@@ -73,9 +73,9 @@ test('TR-115 progression configuration is independently scoped; changing a copy 
   const dev=progressionConfig('development');dev.coefficient=100;
   assert.equal(progressionConfig('production').coefficient,25);assert.equal(progressionConfig('development').coefficient,25);
 });
-test('development foundations remain disabled in production and do not infer XP from gold or demo records',()=>{
+test('released foundations preserve raw evidence without inferring XP from gold or demo records',()=>{
   const s=G.initial();s.gold=123;restoreDevelopmentState(s,1000);requestAdventure(s,1000);applyExplorationFix(s,fix(1000,10,0,true));
-  if(APP_ENV==='development'){
+  if(RELEASE_FEATURES.lifetimeJournal){
     assert.ok(s.lifetime);assert.ok(s.progression);assert.equal(lifetimeSummary(s.lifetime!).verifiedTiles,1);
     assert.deepEqual(Object.values(s.progression!.xp),[0,0,0,0,0,0]);
     const before=JSON.stringify(s.lifetime);G.move(s,10,0);assert.equal(JSON.stringify(s.lifetime),before,'demo engine never writes GPS evidence');
