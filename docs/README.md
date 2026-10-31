@@ -18,6 +18,8 @@ Working title: Trail Relics. Vision: an outdoor RPG where greater effort and exp
 | [GRAPHIFY.md](GRAPHIFY.md) | Local code graph, queries, CI artifacts and coverage limits |
 | [GPS-MAP-STABILITY.md](GPS-MAP-STABILITY.md) | GPS flicker, route continuity and tile visibility follow-up |
 | [DEV-COMPASS.md](DEV-COMPASS.md) | Dev-only opt-in heading, fallback states and physical sensor test gate |
+| [SHARED-DEV.md](SHARED-DEV.md) | Shared dev services, platform identity, event ledger, experimental balance and admin client |
+| [DEV-CONTINUATION.md](DEV-CONTINUATION.md) | Continuous dev-only backlog execution and outstanding gates |
 | [DEV-FOUNDATIONS.md](DEV-FOUNDATIONS.md) | Development-only spawn, lifetime evidence and XP foundation scope |
 | [FINLAND-PLAYTEST.md](FINLAND-PLAYTEST.md) | National dev catalog, geographic compatibility and field tests |
 | [PRODUCTION-FINLAND-RELEASE.md](PRODUCTION-FINLAND-RELEASE.md) | Authorized public promotion, Rantalantie cluster and save compatibility |

@@ -26,3 +26,8 @@ mobile/android/
 mobile/ios/
 test-results/
 graphify-out/
+dev-server/dist/
+dev-server/game-export/
+dev-server/.vinext/
+dev-server/.wrangler/
+dev-server/.sites-runtime/

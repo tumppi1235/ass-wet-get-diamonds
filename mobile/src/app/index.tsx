@@ -75,6 +75,7 @@ export default function Explore() {
           <Text style={styles.small}>{source==='demo'?'Demo uses north-up guidance. Enable compass during a real walk.':compass.message}</Text>
           <Button title={['off','denied','unavailable'].includes(compass.status)?'Enable compass':['stale','waiting'].includes(compass.status)?'Retry compass':'Turn compass off'} quiet busy={compass.status==='starting'} disabled={source==='demo'} onPress={()=>{if(['off','denied','unavailable','stale','waiting'].includes(compass.status)){compass.stop();compass.start();}else compass.stop();}}/>
         </View>}
+        {APP_ENV==='development'&&<Link href="/shared" style={[styles.body,{color:colors.gold}]}>Open shared dev world →</Link>}
         <Text style={{color:colors.gold,fontSize:12,fontVariant:['tabular-nums']}}>{eligible?'Active tile':'Last validated tile'} {currentTile(game)} · {source==='demo'?'Demo':position?`GPS ±${Math.round(position.accuracy)} m`:'Waiting for GPS'}{selectedTile?` · selected purchase tile ${selectedTile}`:''}</Text>
         {source==='gps'&&<Text style={styles.small}>{active?'Adventure saved and active.':'Discovery mode · collection is available without recording an adventure.'}</Text>}
         <Text style={[styles.body,{minHeight:54}]}>{source === 'gps' && (tracking || locating || !position) ? locationMessage : 'GPS is off. Tap Me to refresh your position, or start a quest.'}</Text><Text accessibilityLiveRegion="polite" style={{ color: colors.gold, fontSize: 12 }}>{message}</Text>

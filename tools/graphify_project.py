@@ -29,18 +29,34 @@ def validate():
     for edge in edges:
         if edge["source"] not in ids or edge["target"] not in ids:
             raise ValueError("Relationship refers to a missing node")
+    dependencies = set()
+    for manifest in (ROOT / "mobile/package.json", ROOT / "dev-server/package.json"):
+        if manifest.is_file():
+            package = json.loads(manifest.read_text(encoding="utf-8"))
+            dependencies.update(package.get("dependencies", {}))
+            dependencies.update(package.get("devDependencies", {}))
     files = set()
+    external_modules = set()
+    source_aliases = {}
     for node in nodes:
         source = node.get("source_file")
         if not source:
             continue  # External/unresolved symbols need not have a source file.
+        if node.get("type") == "module" and (source.startswith("node:") or any(source == dep or source.startswith(dep + "/") for dep in dependencies)):
+            external_modules.add(source)
+            continue  # Upstream may put a declared package name in source_file; it is not a repo path.
         path = Path(source.replace("\\", "/"))
         if path.is_absolute():
             path = path.relative_to(ROOT)
         if ".." in path.parts or FORBIDDEN.intersection(path.parts) or path.name.startswith(".env"):
             raise ValueError(f"Excluded source leaked into graph: {path}")
         if not (ROOT / path).is_file():
-            raise ValueError(f"Source no longer exists: {path}")
+            candidates = {".mjs": [".mts"], ".cjs": [".cts"], ".js": [".ts", ".tsx"]}.get(path.suffix, [])
+            resolved = next((path.with_suffix(ext) for ext in candidates if (ROOT / path.with_suffix(ext)).is_file()), None)
+            if resolved is None:
+                raise ValueError(f"Source no longer exists: {path}")
+            source_aliases[path.as_posix()] = resolved.as_posix()
+            path = resolved
         files.add(path.as_posix())
     for required in ("mobile/src/location/tracker.ts", "mobile/src/game/engine.ts", "mobile/src/accounts/local-accounts.ts"):
         if required not in files:
@@ -54,6 +70,8 @@ def validate():
         "workingTreeDirty": bool(subprocess.check_output(["git", "status", "--porcelain"], cwd=ROOT, text=True).strip()),
         "mode": "local-code-only", "nodes": len(nodes), "edges": len(edges),
         "indexedSourceFiles": len(files),
+        "declaredExternalModules": len(external_modules),
+        "typescriptSourceAliases": source_aliases,
         "confidence": dict(Counter(e.get("confidence", "UNSPECIFIED") for e in edges)),
         "limits": "No semantic document/media indexing; Monkey C unsupported. Relationships do not prove correctness or completed backlog items.",
     }

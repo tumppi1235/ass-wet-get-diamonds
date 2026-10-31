@@ -32,6 +32,8 @@ The `Project knowledge graph` GitHub workflow builds on pull requests, develop/m
 
 Supported source/config languages include TypeScript/TSX, JavaScript, Python, Java and Swift. This index does not semantically index Markdown/media or parse Garmin Monkey C. Some files yield no symbols, including data-only code or anonymous test callbacks. Consult actual files and test reports for these gaps. Highly connected code is a review clue, not an automatic reason to refactor.
 
+The shared dev service adds declared external package nodes and TypeScript `.mjs` import specifiers backed by `.mts` source. Integrity checks distinguish declared dependencies from repository paths and record actual source aliases in release.json. Raw SQL parsing is optional and currently absent; the Drizzle TypeScript schema is indexed, while SQL migrations are verified by real database tests.
+
 Use these explicit document entry points alongside graph queries:
 
 | Area | Source entry point | Rules and evidence |

@@ -8,6 +8,8 @@ For a code release: identify stories; run focused regressions and required mobil
 
 ## Implemented client environments and CI
 
+Shared dev increment D-024 adds the protected Worker/D1 service on the existing private dev Site only. `tools/Build-SharedDev.cjs` produces the combined Expo/Worker artifact; `Prepare-SharedDevHost.cjs` guards the exact dev project ID while mirroring committed source and preserving old immutable assets. The `Shared development backend` workflow builds/tests it without automatically publishing. Runtime owner/environment settings are configured through Sites; no cloud password copies or audience changes occur. Production retains its existing static manifest and is not a target of these tools.
+
 Use Node 22 and `npm ci` in `mobile/`. `EXPO_PUBLIC_APP_ENV=development` produces a development build using `trail-relics.dev.*` storage; production uses the original `trail-relics.*` keys. Unknown values fail closed. These are public build labels, never credentials. Use separate hosting origins as well; no automatic copying of player saves or test fixtures. Leave the current public URL on production to preserve existing data. No backend/database service exists yet.
 
 `.github/workflows/web-ci.yml` checks pull requests and pushes to `develop`/`main`. Both environment variants run lint, types and all regression tests, publishing JUnit, logs and run summaries even on failure. Passing variants produce separate web archives with source SHA, run ID and SHA-256 checksum. A failed check cannot produce its build artifact; promotion additionally requires the entire run to succeed.

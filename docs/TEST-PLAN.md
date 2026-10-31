@@ -38,6 +38,10 @@ Every release records the source SHA, browser/device, date, expected/actual beha
 
 ## iPhone Chrome field pass
 
+SHARED-01: actual SQL migrations, platform-subject ownership, own-origin mutation enforcement, non-admin rejection, event replay/payload conflicts, stale revisions, lost-response recovery and account namespace isolation. Automated shared-world suite; hosted identity and phone pass remain distinct.
+
+SHARED-02: Foot/Bicycle have full geographic credit, configured effort XP, no coarse/long-gap rewards, atomic shared tile prices/spending and immutable audited balance revisions. Simulated/SQLite tests plus local D1 browser profile/admin/config/start-stop pass; physical shared GPS PENDING.
+
 GPS-MAP-01 (TR-167): alternate precise/coarse fixes during a walk; coarse fixes cannot move the validated marker or enable collection, short dips preserve the next valid route segment, and >30s gaps never bridge or pay distance. Automated coverage in exploration/vector-map suites; physical iPhone PENDING.
 
 GPS-MAP-02 (TR-168): explored tiles show teal dashed boundaries, own claims gold solid cased borders, other claims violet, with readable legend/labels and a clearly visible route on streets/forest/water. Browser demo review plus physical phone PENDING. See GPS-MAP-STABILITY.md.

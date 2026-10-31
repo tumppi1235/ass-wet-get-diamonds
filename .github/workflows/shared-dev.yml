@@ -1,0 +1,49 @@
+name: Shared development backend
+on:
+  pull_request:
+  push:
+    branches: [develop]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  shared:
+    runs-on: ubuntu-latest
+    env:
+      EXPO_PUBLIC_APP_ENV: development
+      CI: 'true'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: |
+            mobile/package-lock.json
+            dev-server/package-lock.json
+      - run: npm ci
+        working-directory: mobile
+      - run: npm ci
+        working-directory: dev-server
+      - name: Shared API, SQL transaction and app regressions
+        run: npm run quality
+        working-directory: mobile
+      - name: Server lint and types
+        run: |
+          npm run lint
+          node node_modules/typescript/bin/tsc --noEmit
+        working-directory: dev-server
+      - name: Build isolated dev Worker and game
+        run: node tools/Build-SharedDev.cjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: shared-dev-worker
+          path: .tools/shared-dev-build/
+          include-hidden-files: true
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: shared-dev-tests
+          path: test-results/
+          retention-days: 30

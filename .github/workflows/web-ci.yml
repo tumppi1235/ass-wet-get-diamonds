@@ -28,6 +28,9 @@ jobs:
           cache-dependency-path: mobile/package-lock.json
       - run: npm ci
         working-directory: mobile
+      - name: Install shared dev service types
+        run: npm ci
+        working-directory: dev-server
       - name: Lint, types and regression tests
         run: npm run quality
         working-directory: mobile

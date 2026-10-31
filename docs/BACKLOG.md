@@ -32,7 +32,7 @@ Automated repair evidence and remaining iPhone field gates: [P0 report](P0-EXPLO
 | TR-002 | P0 | Done | Create artifact spawn data model | TR-001 | Versioned spawn contract, validated identity/tile/coordinates/type/rarity/timestamps/policy, personal owner and legacy adapter in `game/spawns.ts`; tested in `foundations.test.ts`. Model only: no server generator, shared claims or new live appearances. |
 | TR-003 | P0 | Backlog | Implement deterministic server-side spawn generation | TR-001, TR-002, TR-112 | Identical world inputs yield the same recorded spawns on every client. |
 | TR-004 | P0 | Backlog | Implement rarity tiers and weighted selection | TR-002, TR-003 | Configured weighted rarity selection is repeatable under a seeded test and respects all supported tiers. |
-| TR-005 | P0 | Backlog | Add cell visitation statistics | TR-001, TR-112 | Unique/capped player visitation is stored separately from raw GPS sample counts. |
+| TR-005 | P0 | In Progress | Add cell visitation statistics | TR-001, TR-112 | Shared dev D1 keys visits by tile/player and exposes bounded other-player aggregates, independently of raw GPS samples. Local SQL/API tests pass; density-based detection and hosted/field verification remain. |
 | TR-006 | P1 | Backlog | Add terrain and accessibility modifiers | TR-001, TR-029 | Placement uses mapped accessible terrain and excludes restricted routes. |
 | TR-007 | P1 | Backlog | Add time, weather and seasonal modifiers | TR-003, TR-033 | Configured time/weather/season inputs change appearance without changing claim ownership. |
 | TR-008 | P1 | Backlog | Implement spawn expiration and regeneration | TR-002, TR-003 | Expired spawns are unavailable and regeneration produces new recorded IDs. |
@@ -41,7 +41,7 @@ Automated repair evidence and remaining iPhone field gates: [P0 report](P0-EXPLO
 | TR-011 | P1 | Backlog | Create developer spawn simulator for Jyväskylä | TR-003, TR-033 | A developer can simulate spawn inputs and inspect outcomes without changing live world state. |
 | TR-012 | P2 | Backlog | Add spawn balancing and analytics | TR-011 | Spawn/reward rates are measurable by region and configuration revision. |
 | TR-013 | P0 | Done | Track explored tiles separately for each player | TR-001 | Each player retains their own explored cells after reload and account switching. Existing per-profile local saves implement this; shared identity is separate. |
-| TR-014 | P0 | Backlog | Grant XP on first tile visit | TR-013, TR-051, TR-087 | Each personal first tile visit grants configured Exploration XP once. |
+| TR-014 | P0 | In Progress | Grant XP on first tile visit | TR-013, TR-051, TR-087 | Shared dev accepted first-tile events award configured experimental Exploration XP once; receipt replay and config changes cannot repay old visits. SQL/regression tests pass; shared service/field verification pending. |
 | TR-015 | P0 | Backlog | Implement first-visit artifact discovery rolls | TR-002, TR-013 | A first personal visit can roll a personal drop independently of persistent world spawns. |
 | TR-016 | P0 | Backlog | Keep personal exploration separate from global visitation statistics | TR-005, TR-013 | One player’s old tiles do not suppress another newcomer’s personal first-visit rewards. |
 | TR-017 | P1 | Backlog | Allow repeat visits to discover newly spawned world artifacts | TR-008, TR-009 | Returning to a familiar cell can find a later spawn without repaying first-visit XP. |
@@ -87,16 +87,16 @@ Automated repair evidence and remaining iPhone field gates: [P0 report](P0-EXPLO
 
 | ID | Priority | Status | Story / outcome | Dependencies | Acceptance and implementation notes |
 | --- | --- | --- | --- | --- | --- |
-| TR-031 | P0 | Backlog | Create separate admin web application | TR-112, TR-113 | Admins use a separate client against the same authenticated game services. |
-| TR-032 | P0 | Backlog | Implement admin authentication and permissions | TR-031, TR-113 | Server-side roles reject unauthorized administration even with direct requests. |
-| TR-033 | P0 | Backlog | Create editable game-parameter configuration | TR-032 | Validated versioned parameters can be inspected/edited and reverted by authorized admins. |
+| TR-031 | P0 | In Progress | Create separate admin web application | TR-112, TR-113 | Separate Vinext admin client at /admin-world uses the shared dev API; Expo/local administration is retained. Local sign-in/database/role routing verified; broader admin tools remain. |
+| TR-032 | P0 | In Progress | Implement admin authentication and permissions | TR-031, TR-113 | Platform identity and persisted server roles protect APIs and admin rendering; requested roles are ignored. Direct-request rejection tests and local owner routing pass; hosted identity verification pending. |
+| TR-033 | P0 | In Progress | Create editable game-parameter configuration | TR-032 | Experimental XP/movement balance is validated, optimistic-versioned and audited through a real admin UI. Local D1 save verified; broader spawn/loot parameters and explicit rollback UI remain. |
 | TR-034 | P0 | Backlog | Search and inspect player accounts | TR-032 | An authorized admin can locate a player and inspect the intended account only. |
 | TR-035 | P0 | Backlog | Add, remove and modify player inventory items | TR-034 | Inventory edits persist, validate item IDs and produce an audit event. |
 | TR-036 | P0 | Backlog | Manually place artifacts on geographic tiles | TR-032, TR-002 | An authorized placement creates a visible world artefact in the chosen geographic tile. |
 | TR-037 | P0 | Backlog | View and remove existing world artifacts | TR-036 | World edits/removal propagate consistently and invalidate stale client availability. |
 | TR-038 | P1 | Backlog | Simulate artifact spawning and collection | TR-033, TR-009 | Spawn/claim simulation uses the actual rules in an isolated test world. |
 | TR-039 | P1 | Backlog | Reset individual players' exploration progress | TR-034 | A targeted reset leaves other players and production inventories intact. |
-| TR-040 | P1 | Backlog | Create admin audit logs for changes | TR-032 | Changes record actor, time, target and before/after details without credentials. |
+| TR-040 | P1 | In Progress | Create admin audit logs for changes | TR-032 | Balance edits persist actor/time/target/before-after without credentials; protected bounded audit endpoint/UI verified locally. Other admin operations will use the same ledger. |
 | TR-041 | P1 | Backlog | Manage test-player invitations and access | TR-032 | Test access and invitations cannot escalate ordinary player permissions. |
 | TR-042 | P1 | Backlog | Create a world map showing artifacts and visitation density | TR-005, TR-036 | World artefacts and visitation density can be inspected with bounded map queries. |
 
@@ -141,7 +141,7 @@ Automated repair evidence and remaining iPhone field gates: [P0 report](P0-EXPLO
 | ID | Priority | Status | Story / outcome | Dependencies | Acceptance and implementation notes |
 | --- | --- | --- | --- | --- | --- |
 | TR-051 | P0 | In Progress | Implement player XP, level and six core attributes | TR-078, TR-087 | Dev saves contain six independent XP totals, with attribute levels/next thresholds in Profile and account reload tests. XP earning and the broader player progression design remain pending; no invented rates or gold-to-XP conversion. |
-| TR-052 | P0 | Backlog | Award attribute XP from verified activities and exploration | TR-051, TR-079 | Verified exploration/activity events grant the correct attribute XP once. |
+| TR-052 | P0 | In Progress | Award attribute XP from verified activities and exploration | TR-051, TR-079 | Shared dev computes first-tile Exploration, regional Agility, accepted-distance Endurance and collection Perception from versioned experimental rules. Power/Fellowship and imported/provider evidence remain unimplemented. |
 | TR-053 | P0 | Superseded | Apply player attributes to boss combat | — | Replaced by TR-070/071: attributes affect loot rather than bypassing physical victory. |
 | TR-054 | P1 | Superseded | Add attribute progression and diminishing returns | — | Consolidated into TR-087/088 and TR-076; do not implement a second progression curve. |
 | TR-055 | P1 | Backlog | Create player character and statistics screen | TR-051 | The player can see lifetime attribute levels, XP and next-level progress. |
@@ -157,11 +157,11 @@ Automated repair evidence and remaining iPhone field gates: [P0 report](P0-EXPLO
 | TR-076 | P1 | Backlog | Add diminishing returns and progression balancing | TR-087, TR-088 | Repeated high levels do not create unbounded loot probability. |
 | TR-077 | P1 | Backlog | Create admin loot-probability simulator | TR-033, TR-071 | The admin simulator reports base chance, relative modifiers and final capped probability. |
 | TR-078 | P0 | In Progress | Record lifetime player achievements and activity statistics | TR-013 | Dev records local GPS distance, observed duration, unique tiles/finds and per-adventure totals independently of XP. Demo and gaps excluded; legacy history labeled, unknown distance not guessed. Imported activity/elevation/cooperation evidence and physical phone verification remain pending. See DEV-FOUNDATIONS.md. |
-| TR-079 | P0 | Backlog | Convert verified exploration and activities into attribute XP | TR-078, TR-121 | An event ledger derives the correct XP without duplicate activity rewards. |
+| TR-079 | P0 | In Progress | Convert verified exploration and activities into attribute XP | TR-078, TR-121 | Atomic server event receipts derive four supported XP sources, persist config revisions and reject replay/stale state. Actual provider activities, elevation and cooperation remain separate sources. |
 | TR-080 | P0 | Superseded | Implement progressive XP-to-level curves | — | Use the explicitly approved quadratic curve in TR-087. |
 | TR-081 | P1 | Backlog | Add activity-specific XP calculations | TR-079, TR-121 | Activity categories use independently configurable XP earning rules. |
 | TR-082 | P1 | Backlog | Earn Agility through terrain, sport and geographic diversity | TR-078, TR-086 | Terrain/sport variety and geographic spread increase Agility; raw pace does not. Revised at source turn 38; earlier personal-pace wording is superseded. |
-| TR-083 | P0 | Backlog | Prevent repetitive XP farming and duplicate rewards | TR-078, TR-160 | Replayed activities and repeated first-visit events cannot duplicate XP. |
+| TR-083 | P0 | In Progress | Prevent repetitive XP farming and duplicate rewards | TR-078, TR-160 | Shared event ID/payload hash, state revision, per-player visits and pending-event replay prevent duplicate tested web rewards. Cross-provider activity identity/dedup remains TR-160. |
 | TR-084 | P1 | Backlog | Display lifetime achievements and attribute progression | TR-051, TR-078 | Players can inspect the achievements underlying their XP. |
 | TR-085 | P1 | Backlog | Add attribute progression simulator to admin console | TR-033, TR-079 | Simulation can replay representative activity histories with versioned rules. |
 | TR-086 | P1 | Backlog | Track geographic adventure diversity | TR-026, TR-078 | Large-cell/region spread is tracked separately from small-tile coverage. |
@@ -202,25 +202,25 @@ Automated repair evidence and remaining iPhone field gates: [P0 report](P0-EXPLO
 | --- | --- | --- | --- | --- | --- |
 | TR-111 | P0 | In Progress | Establish separate Development and Production environments | — | Development and production are explicitly identified and independently deployable. |
 | TR-112 | P0 | In Progress | Create separate databases, storage and game-world state | TR-111 | Mutable world/player data and storage are isolated, with an isolation test. |
-| TR-113 | P0 | Backlog | Configure environment-specific APIs, secrets and authentication | TR-111 | Clients cannot mix environment APIs, auth or secret scopes. |
+| TR-113 | P0 | In Progress | Configure environment-specific APIs, secrets and authentication | TR-111 | Shared dev uses a same-origin API guarded by runtime environment, platform subject and own-origin writes. No local passwords are uploaded; production remains unchanged. Hosted runtime/identity validation pending. |
 | TR-114 | P1 | In Progress | Implement automated build, test and deployment pipelines | TR-111 | Versioned builds run required validation before a deployable artifact is produced. |
 | TR-115 | P0 | In Progress | Support independent game-balance configurations for Dev and Prod | TR-111, TR-033 | Progression curves have independent environment/version configuration, tested against mutation leakage. Other balance settings and authenticated admin configuration remain pending. |
 | TR-116 | P1 | In Progress | Create a controlled Dev → Prod release process | TR-114, TR-115 | A specific validated revision is promoted with an auditable rollback path. |
 | TR-117 | P1 | Backlog | Add production monitoring, error logging and alerts | TR-113 | Production failures are observable without leaking precise location histories. |
 | TR-118 | P0 | Backlog | Implement database backups, migrations and rollback procedures | TR-112 | A tested migration/backup/restore path preserves player inventories and progress. |
-| TR-119 | P0 | Backlog | Separate test players, artifacts, bosses and inventories from production | TR-111, TR-112 | Test players, inventories and placed spawns cannot enter production accidentally. |
+| TR-119 | P0 | In Progress | Separate test players, artifacts, bosses and inventories from production | TR-111, TR-112 | Shared dev data is separately modeled under the private dev Site and its DB; legacy local namespaces remain. Tests cover environment rejection and per-account pending/state isolation. Boss/spawn administration still pending. |
 | TR-120 | P1 | In Progress | Document release procedures and environment configuration | TR-116, TR-118 | A new maintainer can follow promotion, rollback and recovery instructions. |
 
 ## TR-E08 — Movement & Effort Balancing
 
 | ID | Priority | Status | Story / outcome | Dependencies | Acceptance and implementation notes |
 | --- | --- | --- | --- | --- | --- |
-| TR-121 | P0 | Backlog | Implement Foot and Bicycle movement categories | — | Walk/run/hike map to Foot and cycling maps to Bicycle. |
+| TR-121 | P0 | In Progress | Implement Foot and Bicycle movement categories | — | Shared dev offers explicit Foot/Bicycle, locks movement within an active adventure and validates with mode-specific limits. Original local mode remains walking-only. Physical/import type validation pending. |
 | TR-122 | P0 | Backlog | Map Garmin and imported activity types to movement categories | TR-121, TR-155 | Known imported activity types map deterministically; unknowns are not guessed from speed alone. |
-| TR-123 | P0 | Backlog | Implement configurable movement-based XP multipliers | TR-121, TR-079 | Initial Foot 1.0 and Bicycle 0.4 factors are versioned and configurable. |
+| TR-123 | P0 | In Progress | Implement configurable movement-based XP multipliers | TR-121, TR-079 | Shared Endurance effort uses versioned Foot 1.0/Bicycle 0.4 defaults; protected admin configuration affects future events only. Broader six-attribute/provider effort remains pending. |
 | TR-124 | P1 | Backlog | Implement movement-based boss damage multipliers | TR-121, TR-044 | Boss distance damage uses the configured 2/0.8 HP per km baseline. |
-| TR-125 | P0 | Backlog | Give both movement categories full geographic discovery credit | TR-121, TR-013 | Both modes receive full valid geographic discovery credit. |
-| TR-126 | P1 | Backlog | Add activity validation and basic anti-cheat checks | TR-121, TR-153 | Implausible motion and replayed activity evidence cannot create rewards. |
+| TR-125 | P0 | In Progress | Give both movement categories full geographic discovery credit | TR-121, TR-013 | Tests show equal first-tile/regional discovery XP for Foot/Bicycle, independent of effort scaling. Shared server world and physical validation pending. |
+| TR-126 | P1 | In Progress | Add activity validation and basic anti-cheat checks | TR-121, TR-153 | Shared dev rejects invalid/coarse/stale/future/implausible GPS and duplicate events, with no long-gap rewards. This is consistency checking, not hardware anti-spoofing; provider validation remains. |
 | TR-127 | P1 | Backlog | Add movement balancing controls to admin console | TR-033, TR-123, TR-124 | Admins can simulate and tune movement factors without touching production tests. |
 | TR-128 | P2 | Deferred | Support mixed-mode adventures in a future release | TR-121, TR-126 | A later design can split a recorded adventure into verified movement segments. |
 

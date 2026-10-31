@@ -4,7 +4,7 @@ Read `docs/README.md`, `docs/BACKLOG.md`, `docs/ARCHITECTURE.md` and `docs/DECIS
 
 - Use the existing source layout. Extract packages incrementally; do not reorganize working applications just to match a proposed directory diagram.
 - Link work to a story ID and acceptance criteria. Preserve IDs and explicitly mark superseded/deferred designs. Do not call a planned system implemented.
-- Fix TR-153/TR-154 and the browser persistence/recovery portion of TR-146 before adding collection features. Continuous iPhone browser background GPS is unsupported; do not fabricate missing distance, routes or rewards.
+- Prioritize TR-153/TR-154 and browser recovery regressions. The user explicitly authorized continued dev work while physical validation waits (2026-10-31), including shared dev services and configurable experimental rewards. Keep physical tests pending; continuous iPhone browser background GPS is unsupported and missing distance/routes/rewards must never be fabricated.
 - Preserve passwords, inventories, gold, claims and saved progress. Keep existing 250m tile IDs compatible until a tested geographic migration is approved.
 - Keep gameplay rules in shared modules. Separate spawning, detection, collection, physical boss victory and loot. Record rule changes in DECISIONS.md.
 - Treat local profiles and the public web playtest as the current implementation. Shared accounts/worlds, separate production services and Garmin sync are future work until built and tested.

@@ -1,0 +1,13 @@
+// Shared dev schema. Applied Drizzle migrations are immutable; append new migrations.
+import {sqliteTable,text,integer,primaryKey,check} from 'drizzle-orm/sqlite-core';
+import {sql} from 'drizzle-orm';
+export const members=sqliteTable('trail_members',{id:text('id').primaryKey(),displayName:text('display_name').notNull(),role:text('role').notNull().default('player'),createdAt:integer('created_at').notNull()});
+export const players=sqliteTable('trail_players',{id:text('id').primaryKey().references(()=>members.id),state:text('state').notNull(),revision:integer('revision').notNull().default(0),updatedAt:integer('updated_at').notNull()});
+export const events=sqliteTable('trail_events',{owner:text('owner').notNull().references(()=>members.id),id:text('id').notNull(),kind:text('kind').notNull(),result:text('result').notNull(),requestHash:text('request_hash').notNull().default(''),createdAt:integer('created_at').notNull()},t=>[primaryKey({columns:[t.owner,t.id]})]);
+export const integrity=sqliteTable('trail_integrity',{id:text('id').primaryKey(),valid:integer('valid').notNull()},t=>[check('valid_transaction',sql`${t.valid}=1`)]);
+export const visits=sqliteTable('trail_visits',{tile:text('tile').notNull(),owner:text('owner').notNull().references(()=>members.id),firstAt:integer('first_at').notNull(),lastAt:integer('last_at').notNull()},t=>[primaryKey({columns:[t.tile,t.owner]})]);
+export const claims=sqliteTable('trail_claims',{tile:text('tile').primaryKey(),owner:text('owner').notNull().references(()=>members.id),price:integer('price').notNull(),revision:integer('revision').notNull().default(1),updatedAt:integer('updated_at').notNull()});
+export const configs=sqliteTable('trail_configs',{id:text('id').primaryKey(),revision:integer('revision').notNull(),document:text('document').notNull(),updatedBy:text('updated_by').notNull(),updatedAt:integer('updated_at').notNull()});
+export const audit=sqliteTable('trail_audit',{id:text('id').primaryKey(),actor:text('actor').notNull(),action:text('action').notNull(),target:text('target').notNull(),details:text('details').notNull(),createdAt:integer('created_at').notNull()});
+export const backups=sqliteTable('trail_backups',{id:text('id').primaryKey(),owner:text('owner').notNull().references(()=>members.id),state:text('state').notNull(),revision:integer('revision').notNull(),createdAt:integer('created_at').notNull()});
+export const spawns=sqliteTable('trail_spawns',{id:text('id').primaryKey(),tile:text('tile').notNull(),document:text('document').notNull(),startsAt:integer('starts_at').notNull(),expiresAt:integer('expires_at'),revision:integer('revision').notNull(),removedAt:integer('removed_at')});
