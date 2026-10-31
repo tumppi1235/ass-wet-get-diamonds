@@ -32,6 +32,7 @@ Working title: Trail Relics. Vision: an outdoor RPG where greater effort and exp
 | [DEV-ADVENTURE-IDEAS.md](DEV-ADVENTURE-IDEAS.md) | Attribute-led non-route plans, conditional ordinary XP and explicit access/routing limits |
 | [DEV-ACTIVITY-CATEGORIES.md](DEV-ACTIVITY-CATEGORIES.md) | Provider-specific activity metadata mapping, offline inspection and explicit import/device boundaries |
 | [CONNECTIVITY-FEASIBILITY.md](CONNECTIVITY-FEASIBILITY.md) | Current Garmin/Strava investigation, data-use constraints and reconciliation gates |
+| [DEV-OBSERVABILITY.md](DEV-OBSERVABILITY.md) | Dev service failure references, privacy-safe application logs and remaining monitoring gates |
 | [DEV-CONTINUATION.md](DEV-CONTINUATION.md) | Continuous dev-only backlog execution and outstanding gates |
 | [DEV-FOUNDATIONS.md](DEV-FOUNDATIONS.md) | Development-only spawn, lifetime evidence and XP foundation scope |
 | [FINLAND-PLAYTEST.md](FINLAND-PLAYTEST.md) | National dev catalog, geographic compatibility and field tests |

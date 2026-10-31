@@ -21,6 +21,7 @@ import {simulateCollection} from '../../mobile/src/game/collection-simulation';
 import {spawnAnalytics} from './spawn-analytics';
 import {queryClaims} from './claim-store';
 import {adventureIdeas} from './recommendation-store';
+import {unexpectedApiFailure} from './observability';
 type Bindings={DB?:D1Database;TRAIL_ENV?:string;TRAIL_ADMIN_EMAIL?:string;TRAIL_PUBLIC_ORIGIN?:string};
 type Member={id:string;display_name:string;role:'admin'|'player';created_at:number};
 class ApiError extends Error{constructor(public status:number,message:string){super(message);}}
@@ -191,5 +192,5 @@ export async function trailApi(request:Request,env:Bindings){
       const rows=await db.prepare('SELECT id,actor,action,target,details,created_at FROM trail_audit ORDER BY created_at DESC LIMIT 100').all();return json({audit:rows.results});
     }
     throw new ApiError(404,'Unknown API endpoint.');
-  }catch(error){if(error instanceof ApiError||error instanceof WorldError)return json({error:error.message},error.status);console.error('Trail API request failed');return json({error:'The shared dev service could not complete this request.'},500);}
+  }catch(error){if(error instanceof ApiError||error instanceof WorldError)return json({error:error.message},error.status);return unexpectedApiFailure(request,error);}
 }
