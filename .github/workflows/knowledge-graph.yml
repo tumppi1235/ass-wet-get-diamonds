@@ -1,0 +1,37 @@
+name: Project knowledge graph
+on:
+  pull_request:
+  push:
+    branches: [main, develop]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  graph:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+          cache: pip
+          cache-dependency-path: tools/graphify-requirements.txt
+      - name: Install pinned Graphify source and dependencies
+        run: python -m pip install -r tools/graphify-requirements.txt
+      - name: Build and validate local code graph
+        run: python tools/graphify_project.py
+      - name: Publish graph check summary
+        if: always()
+        run: |
+          if [ -f graphify-out/CHECKS.md ]; then cat graphify-out/CHECKS.md >> "$GITHUB_STEP_SUMMARY"; fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: trail-relics-knowledge-graph
+          path: |
+            graphify-out/graph.json
+            graphify-out/graph.html
+            graphify-out/GRAPH_REPORT.md
+            graphify-out/CHECKS.md
+            graphify-out/release.json
+          if-no-files-found: error
+          retention-days: 30

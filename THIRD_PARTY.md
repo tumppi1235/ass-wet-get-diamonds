@@ -1,5 +1,7 @@
 # Third-party components and data
 
+Graphify developer tooling and the project-local skill originate from [Graphify-Labs/graphify](https://github.com/Graphify-Labs/graphify), revision `a0946f962af31b19bff941b453f6dae9a7077c7a`. Apache-2.0 applies with retained earlier MIT portions; see `docs/licenses/graphify/`. Integration-specific guidance is in `docs/GRAPHIFY.md`. Graphify is not shipped in the game bundle.
+
 `public/streets-osm.json` is a derived street/footpath extract downloaded on 2026-10-30 through the OpenStreetMap 0.6 map API for central Jyväskylä (25.720–25.768 E, 62.229–62.253 N). This repository provides its editable JSON form.
 
 © OpenStreetMap contributors. Street data is available under [ODbL 1.0](https://opendatacommons.org/licenses/odbl/1-0/). See [OpenStreetMap copyright](https://www.openstreetmap.org/copyright). The data licence is distinct from the application source.

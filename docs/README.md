@@ -15,6 +15,7 @@ Working title: Trail Relics. Vision: an outdoor RPG where greater effort and exp
 | [GAME-ROADMAP.md](GAME-ROADMAP.md) | Original idea memo, retained for provenance |
 | [WEB-PLAYTEST.md](WEB-PLAYTEST.md) | Current player instructions |
 | [TEST-PLAN.md](TEST-PLAN.md) | Regression register and phone test cases |
+| [GRAPHIFY.md](GRAPHIFY.md) | Local code graph, queries, CI artifacts and coverage limits |
 | [DEV-FOUNDATIONS.md](DEV-FOUNDATIONS.md) | Development-only spawn, lifetime evidence and XP foundation scope |
 | [FINLAND-PLAYTEST.md](FINLAND-PLAYTEST.md) | National dev catalog, geographic compatibility and field tests |
 | [PRODUCTION-FINLAND-RELEASE.md](PRODUCTION-FINLAND-RELEASE.md) | Authorized public promotion, Rantalantie cluster and save compatibility |

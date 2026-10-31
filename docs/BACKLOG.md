@@ -234,6 +234,12 @@ Automated repair evidence and remaining iPhone field gates: [P0 report](P0-EXPLO
 | TR-142 | P3 | Deferred | Add companion avatars and cosmetic progression | TR-139 | Cosmetics/titles do not make companions a competitive requirement. |
 | TR-143 | P3 | Deferred | Configure Karma rewards and daily limits | TR-141, TR-033 | Karma rates/caps are configurable independently of combat XP. |
 
+## Developer knowledge tooling
+
+| ID | Priority | Status | Story / outcome | Dependencies | Acceptance and implementation notes |
+| --- | --- | --- | --- | --- | --- |
+| TR-166 | P1 | Done | Apply Graphify to development and change-impact analysis | — | Reviewed/pinned upstream, project-local Codex skill, code-only graph, scoped queries, evidence labels and graph integrity checks verified locally. CI workflow publishes downloadable reports on future runs. Docs remain canonical; no semantic indexing, Monkey C parser, cloud graph or gameplay change. See GRAPHIFY.md. |
+
 ## Scope and evidence
 
 Current code already has local registration/login, saved inventories, curated/generated discoveries, retro map, walking/first-visit gold and local tile claims. These are useful prototype capabilities, not completion of shared-world/admin/XP stories. No boss, global visitation, cloud identity, production environment split, live Garmin connectivity, Strava link or Auto-Collect is implemented by creating this backlog.

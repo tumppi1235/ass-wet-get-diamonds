@@ -1,0 +1,26 @@
+# Developer knowledge only: never scan tools, secrets, exports or retained binaries.
+.tools/
+.keys/
+.git/
+.codex/
+graphify-out/
+node_modules/
+dist/
+build/
+test-results/
+mobile/assets/
+public/assets/
+*.lock
+package-lock.json
+*.min.js
+*.map
+*.apk
+*.prg
+*.ipa
+*.pbf
+*.png
+*.jpg
+*.pdf
+.env*
+*.der
+*.keystore
