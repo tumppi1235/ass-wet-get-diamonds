@@ -14,6 +14,7 @@ import {trailApi} from '../../dev-server/trail/api';
 import {SharedWorldClient} from '../src/accounts/shared-world';
 import {summarizeActivity,allowedBossVisit} from '../../dev-server/trail/activity-store';
 import {WORLD_REGIONS} from '../src/game/world-regions';
+import {queryEncounters,inspectEncounter,cancelEncounter} from '../../dev-server/trail/encounter-admin';
 
 async function fixture(now=1000000){
   const{db,sql}=database(),binding=db as never,clock={now};let sequence=0;
@@ -138,4 +139,33 @@ test('TR-071/074/076/077/088 loot modifiers have diminishing returns, separate p
   const boosted=lootChances('Mythical',{...evidence,equivalentKm:500,targetKm:50,qualifiedPlayers:5});assert.ok(boosted.common>=.1-1e-12);assert.ok(boosted.rare+boosted.legendary+boosted.signature<=.9+1e-12);assert.equal(boosted.fellowshipXp,25);assert.ok(boosted.gold>=100);
   const boss={tier:'Greater',artifactType:'Rune',signature:'Warden Rune'}as Boss,signature=rollBossLoot(boss,evidence,LOOT_RULES,()=>0);assert.equal(signature.title,'Warden Rune');assert.equal(signature.rarity,'Legendary');assert.equal(signature.signature,true);
   const common=rollBossLoot(boss,evidence,LOOT_RULES,()=>.999);assert.equal(common.rarity,'Common');assert.ok(common.gold>=50);
+});
+
+test('TR-049 admin encounter cancellation preserves evidence, releases slots and cannot reverse victory or rerun a request',async()=>{
+  const f=await fixture(),active=await f.activate(await f.create()),before=await loadWorld(f.binding,'a',f.clock.now),input={id:active.encounter.id,revision:active.revision,reason:'Local test cleanup',nonce:'admin:cancel:test'};
+  const result=await cancelEncounter(f.binding,'manager',input,f.clock.now);assert.equal(result.encounter.state,'cancelled');assert.equal(result.members[0].active,false);assert.equal((await f.create()).encounter.state,'draft');
+  assert.equal((await cancelEncounter(f.binding,'manager',input,f.clock.now)).replayed,true);await assert.rejects(()=>cancelEncounter(f.binding,'manager',{...input,reason:'A different request'},f.clock.now),/identity was reused/);
+  const audit=f.sql.prepare("SELECT details FROM trail_audit WHERE action='encounter.admin-cancel'").get()!;assert.equal(JSON.parse(String(audit.details)).before.state,'active');assert.equal(JSON.parse(String(audit.details)).reason,input.reason);assert.deepEqual((await loadWorld(f.binding,'a',f.clock.now)).world,before.world,'cancellation changes neither wallet, inventory nor activity evidence');
+  const solo=(await listEncounters(f.binding,'a',f.clock.now)).encounters.find(v=>v.encounter.state==='draft')!,next=await f.activate(solo),activity=await f.walk('a'),won=await f.act('a',{kind:'contribute',encounterId:next.encounter.id,revision:next.revision,activityId:activity});assert.equal(won.view!.encounter.state,'won');
+  await assert.rejects(()=>cancelEncounter(f.binding,'manager',{id:next.encounter.id,revision:won.view!.revision,reason:'Cannot remove victory',nonce:'admin:cancel:won'},f.clock.now),/resolved encounter/);
+});
+
+test('TR-049 live encounter pages use stable keyset bounds and administration never leaks private XP',async()=>{
+  const f=await fixture();for(let i=0;i<5;i++){const draft=await f.create();await cancelEncounter(f.binding,'manager',{id:draft.encounter.id,revision:draft.revision,reason:'Pagination fixture',nonce:'admin:page:'+i},f.clock.now);}
+  const first=await queryEncounters(f.binding,new URLSearchParams({state:'cancelled',limit:'2'}));assert.equal(first.encounters.length,2);assert.ok(first.next);
+  const second=await queryEncounters(f.binding,new URLSearchParams({state:'cancelled',limit:'2',after:first.next}));assert.equal(second.encounters.length,2);assert.equal(new Set([...first.encounters,...second.encounters].map(e=>e.id)).size,4);
+  const third=await queryEncounters(f.binding,new URLSearchParams({state:'cancelled',limit:'2',after:second.next!}));assert.equal(third.encounters.length,1);assert.equal(third.next,null);
+  await assert.rejects(()=>queryEncounters(f.binding,new URLSearchParams({after:'invalid'})),/Invalid encounter page/);
+  const active=await f.activate(await f.create()),activity=await f.walk('a'),won=await f.act('a',{kind:'contribute',encounterId:active.encounter.id,revision:active.revision,activityId:activity});assert.ok(won.view!.encounter.contributions.a.progression);
+  const inspected=await inspectEncounter(f.binding,active.encounter.id,f.clock.now);assert.equal(inspected.encounter.contributions.a.progression,undefined);assert.equal(inspected.encounter.contributions.a.curveCoefficient,undefined);
+  const originalBatch=f.db.batch,draft=await f.create('b');let raced=false;f.db.batch=async statements=>{if(!raced){raced=true;f.sql.prepare('UPDATE trail_encounters SET revision=revision+1 WHERE id=?').run(draft.encounter.id);}return originalBatch(statements);};
+  await assert.rejects(()=>cancelEncounter(f.binding,'manager',{id:draft.encounter.id,revision:draft.revision,reason:'Race cannot partly cancel',nonce:'admin:cancel:race'},f.clock.now),/Encounter changed/);assert.equal((await inspectEncounter(f.binding,draft.encounter.id,f.clock.now)).encounter.state,'draft');assert.equal(f.sql.prepare("SELECT COUNT(*) AS n FROM trail_audit WHERE id LIKE '%admin:cancel:race'").get()!.n,0);
+});
+
+test('TR-032/049 admin encounter APIs reject ordinary players and foreign origins',async()=>{
+  const f=await fixture(Date.now()),env={DB:f.binding,TRAIL_ENV:'development'},draft=await f.create();
+  const call=async(owner:string,path:string,body?:unknown,origin='https://dev.example')=>trailApi(new Request('https://dev.example/api/trail/admin/'+path,{method:body?'POST':'GET',headers:{'oai-authenticated-user-id':owner,origin},...(body?{body:JSON.stringify(body)}:{})}),env);
+  assert.equal((await call('a','encounters')).status,403);assert.equal((await call('a','encounter?id='+draft.encounter.id)).status,403);
+  const input={id:draft.encounter.id,revision:draft.revision,reason:'API cleanup test',nonce:'admin:api:cancel'};assert.equal((await call('a','encounter-cancel',input)).status,403);assert.equal((await call('manager','encounter-cancel',input,'https://evil.example')).status,403);
+  assert.equal((await call('manager','encounters')).status,200);assert.equal((await call('manager','encounter-cancel',input)).status,200);
 });

@@ -4,7 +4,7 @@
 
 User authorized continuous dev-only backlog work, a shared dev backend and experimental configurable rates (D-024), with physical validation later. Production remains a5dc0cd. Shared platform identity/D1 services, recorded/personal spawns, density detection, admin player/recovery tools, Character/Collection and XP curve/simulations are implemented in dev; see DEV-CONTINUATION.md and the linked increment reports. Compass/GPS/Enduro field acceptance remains pending, separately from passing software tests.
 
-Next dependency-ready work: finish configurable event regions/spawn modifiers and admin world/density inspection; add effort/evidence foundations needed by encounters; implement boss definitions, explicit activation, fixed parties, one qualifying activity and loot separation; advance route recommendations/integrations using verified provider capabilities; complete release/recovery tooling within dev authorization. Keep unsupported provider/device work and production promotion as explicit gates.
+Event regions, admin world maps, boss definitions, accepted/locked parties, explicit activation, browser-receipt activity damage and separate individual loot are now implemented in shared dev. Next dependency-ready work: operational backups/recovery, remaining artifact simulation/analytics, Enduro activity foundations and provider feasibility, evidence-based progression/objectives, then recommendations and real-path routing. Keep unsupported provider/device work and production promotion as explicit gates.
 
 ## M0 — Repair the browser adventure loop
 

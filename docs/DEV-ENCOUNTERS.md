@@ -39,3 +39,11 @@ Real SQLite migration tests cover solo/group lifecycle, explicit consent, locked
 Physical iPhone recording/compass, Enduro 3 communication, independently attested activity providers, guild combat, elevation/exploration objectives, push notifications and watch encounter display remain pending. Browser lock-screen recording is still limited. Dev access remains owner-private; creating shared party support does not change who can open this Site.
 
 Validation for this increment: 94 regression cases, mobile/server TypeScript and lint, full Expo/Worker build and local Graphify integrity checks pass (2,787 nodes / 6,217 edges / 201 indexed files). GitHub checks for the preceding boss-definition commit 2a0f602 all succeeded (41224878178 / 41224878012 / 41224878075). Hosted migration/UI verification follows publication; physical tests remain pending.
+
+## Encounter operations follow-up (TR-049)
+
+The protected admin console now lists encounters by state/boss with 25-row keyset pages, inspects consent/reserved slots/contributions/claimed rewards, and settles overdue deadlines on inspection. Private XP snapshots and raw routes are excluded. An explicit reason and confirmation can end a draft/active dev encounter; the original document is retained in audit, slots are released, and player wallets/inventory/earned rewards are unchanged. Revision checks and an actor-scoped nonce make cancellation safe against races and lost responses. Resolved encounters cannot be cancelled or their rewards reversed. Local browser QA cancelled only the isolated Shared QA draft; no hosted encounter or player progress was modified.
+
+The encounter release 6f54cb836dfbce046346994f0c4390c0a437bf98 was published successfully as managed d742b42eb480e88770f76d979599ca8146e317f4 / appgver_23245202cf448191908ad9cfb59e927b. Hosted Tumppi opened Encounters and refreshed empty boss/party/activity queries without errors, verifying the appended migration path. Production remains unchanged.
+
+Operations follow-up validation: 97 regression cases, server/mobile typecheck and lint, Worker build and refreshed Graphify pass. GitHub CI for encounter commit 6f54cb8 succeeded: web 41229065770, shared backend 41229065814, graph 41229065870.

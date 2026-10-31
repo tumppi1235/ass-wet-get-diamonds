@@ -32,6 +32,7 @@ async function expire(db:D1Database,id:string,now:number){
   ]);}catch{/* A concurrent contribution/expiration owns the newer revision. */}
   return raw(db,id);
 }
+export {expire as resolveEncounter};
 export async function viewEncounter(db:D1Database,owner:string,id:string,now=Date.now()):Promise<EncounterView>{
   if(typeof id!=='string'||!await db.prepare('SELECT 1 FROM trail_party_members WHERE encounter=? AND owner=?').bind(id,owner).first())throw new WorldError(404,'Encounter not found');
   const current=await expire(db,id,now),members=await party(db,id),reward=await db.prepare('SELECT document FROM trail_boss_rewards WHERE encounter=? AND owner=?').bind(id,owner).first<{document:string}>();
