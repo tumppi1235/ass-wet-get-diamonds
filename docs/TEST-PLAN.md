@@ -61,3 +61,11 @@ XP laboratory: DEV-PROGRESSION-LAB.md. Verify coefficient history authorization,
 Regions/world map: DEV-WORLD-REGIONS.md. Test UTC context/weights/caps, active region boundaries, blocked placement/collection, concurrent config/capture rollback, index backfill and unique density. Local map loads and audited region save passed; no fake GPS/physical pass.
 
 Boss foundations: DEV-BOSS-FOUNDATIONS.md. Test solo/party targets, monotonic scaling, caps/minimums, tile/window/duplicate rejection, immutable source placement, role/config CAS/audit and no-player-write simulation. Local synthetic combat/definition placement passed; real encounter and phone/watch acceptance pending.
+
+## Shared dev encounter validation (TR-044–048, 060/065/068–077, 088, 124, 129–135, 144/145)
+
+Automated: real migrations and transactional SQLite tests cover consent/activation, fresh own-tile GPS, one immutable accepted activity per member, activity/window/closure clipping, movement damage, individual minimums, shared HP, failed/expired slots, private XP, lost-response journals and conflict rollback. Qualified individual loot/gold/Fellowship is awarded once, with caps, immutable rule snapshots and admin-only simulation/configuration. See mobile/tests/encounters.test.ts and DEV-ENCOUNTERS.md.
+
+Local browser: phone drawer retains map; solo draft shows no timer; Guide selects boss direction; loot simulation reports zero writes. These are local QA, not physical validation.
+
+Pending phone field test: sign into shared dev; admin places a suitable sourced test boss; create/accept party; reach boss tile, activate, start/stop a recorded outing and preview its evidence. Submit qualifying activities before the winning contribution; verify each qualified player claims exactly one reward across reload/retry, while an unqualified member gets none. Recheck stale GPS, screen suspension/recovery and accurate tile entry. Do not expect unrecorded locked-screen mileage. Enduro/watch and external-provider activity tests remain pending.

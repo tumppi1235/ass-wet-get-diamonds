@@ -49,7 +49,7 @@ export async function editPlayer(db:D1Database,actor:string,owner:string,expecte
   }else if(action==='inventory-edit'||action==='inventory-remove'){
     const item=next.game.collection.find(r=>r.id===input.itemId);if(!item)throw new WorldError(404,'Inventory item not found');
     if(action==='inventory-remove')next.game.collection=next.game.collection.filter(r=>r.id!==input.itemId);
-    else{if(typeof input.type!=='string'||!TYPES.includes(input.type)||!['Common','Rare','Legendary'].includes(String(input.rarity)))throw new WorldError(400,'Choose a supported item type and rarity');item.name=input.type;item.rarity=input.rarity as Relic['rarity'];}
+    else{if(typeof input.type!=='string'||!TYPES.includes(input.type)||!['Common','Rare','Legendary'].includes(String(input.rarity)))throw new WorldError(400,'Choose a supported item type and rarity');item.name=input.type;delete item.title;item.rarity=input.rarity as Relic['rarity'];}
   }else throw new WorldError(400,'Unknown player operation');
   const statements=[
     db.prepare('INSERT INTO trail_backups(id,owner,state,revision,created_at) VALUES(?,?,?,?,?)').bind(backupId,owner,JSON.stringify(backup),current.revision,now),

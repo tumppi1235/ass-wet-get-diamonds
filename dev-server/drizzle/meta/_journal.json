@@ -36,6 +36,13 @@
       "when": 1793466813350,
       "tag": "0004_quiet_the_renegades",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "6",
+      "when": 1793468330681,
+      "tag": "0005_tiny_apocalypse",
+      "breakpoints": true
     }
   ]
 }

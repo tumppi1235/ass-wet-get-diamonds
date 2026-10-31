@@ -8,9 +8,13 @@ import G from '../../mobile/src/game/engine';
 import {inspectPlayer,editPlayer} from './player-admin';
 import {DEV_BALANCE,validateBalance} from '../../mobile/src/game/dev-world';
 import {loadRegions,saveRegions,queryDensity} from './region-store';
-import {rulesForPlace} from '../../mobile/src/game/world-regions';
+import {rulesForPlace,blockedAt} from '../../mobile/src/game/world-regions';
 import {loadBossRules,saveBossRules,placeBoss,queryBosses,retireBoss} from './boss-store';
 import {BOSS_DESIGNS,simulateEncounter} from '../../mobile/src/game/bosses';
+import {applyEncounterAction,listEncounters,viewEncounter} from './encounter-store';
+import {listCompletedActivities,summarizeActivity,allowedBossVisit} from './activity-store';
+import {loadLootRules,saveLootRules} from './loot-store';
+import {lootChances,validateLootRules} from '../../mobile/src/game/loot';
 type Bindings={DB?:D1Database;TRAIL_ENV?:string;TRAIL_ADMIN_EMAIL?:string;TRAIL_PUBLIC_ORIGIN?:string};
 type Member={id:string;display_name:string;role:'admin'|'player';created_at:number};
 class ApiError extends Error{constructor(public status:number,message:string){super(message);}}
@@ -44,6 +48,37 @@ export async function trailApi(request:Request,env:Bindings){
       await db.prepare('UPDATE trail_members SET display_name=? WHERE id=?').bind(displayName,id).run();return json({saved:true});
     }
     if(path==='/api/trail/world'&&request.method==='GET')return json(await loadWorld(db,id));
+    if(path==='/api/trail/bosses'&&request.method==='GET'){
+      const result=await queryBosses(db,readBounds(url.searchParams)),regions=await loadRegions(db),now=Date.now();
+      return json({...result,bosses:result.bosses.filter(r=>!blockedAt(r.boss,now,regions))});
+    }
+    if(path==='/api/trail/party-players'&&request.method==='GET'){
+      const q=url.searchParams.get('q')||'';if(q.length<2||q.length>40)return json({players:[]});
+      const rows=await db.prepare('SELECT id,display_name AS name FROM trail_members WHERE id<>? AND instr(lower(display_name),lower(?))>0 ORDER BY display_name,id LIMIT 20').bind(id,q).all();return json({players:rows.results});
+    }
+    if(path==='/api/trail/encounters'&&request.method==='GET')return json(await listEncounters(db,id));
+    if(path==='/api/trail/encounter'&&request.method==='GET')return json(await viewEncounter(db,id,url.searchParams.get('id')||''));
+    if(path==='/api/trail/activities'&&request.method==='GET')return json(await listCompletedActivities(db,id));
+    if(path==='/api/trail/activity-preview'&&request.method==='GET'){
+      const view=await viewEncounter(db,id,url.searchParams.get('encounter')||''),e=view.encounter;
+      if(e.state!=='active'||e.startedAt===null||e.deadline===null)throw new ApiError(400,'Activate this encounter before choosing an activity');
+      const activity=await summarizeActivity(db,id,url.searchParams.get('activity')||'',e.boss.tileId,e.startedAt,e.deadline),regions=await loadRegions(db);
+      return json({activity:{...activity,bossTileVisited:await allowedBossVisit(db,id,activity.id,e.boss,e.startedAt,Math.min(e.deadline,activity.endedAt),regions)!==null}});
+    }
+    if(path==='/api/trail/encounter-actions'&&request.method==='POST'){
+      const input=await body(request);return json(await applyEncounterAction(db,id,input.id,input.action));
+    }
+    if(path==='/api/trail/admin/loot-rules'&&request.method==='GET'){
+      if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');return json({rules:await loadLootRules(db)});
+    }
+    if(path==='/api/trail/admin/loot-rules'&&request.method==='PUT'){
+      if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');const input=await body(request);
+      try{return json(await saveLootRules(db,id,input.rules,input.revision));}catch(e){if(e instanceof WorldError)throw e;throw new ApiError(400,(e as Error).message);}
+    }
+    if(path==='/api/trail/admin/loot-simulation'&&request.method==='POST'){
+      if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');const input=await body(request);
+      try{return json({simulation:true,writes:0,chances:lootChances(input.tier,input.evidence,validateLootRules(input.rules))});}catch(e){throw new ApiError(400,(e as Error).message);}
+    }
     if(path==='/api/trail/admin/spawn-rules'&&request.method==='GET'){
       if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');return json({rules:await loadSpawnRules(db)});
     }

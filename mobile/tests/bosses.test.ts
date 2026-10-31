@@ -3,6 +3,29 @@ import assert from 'node:assert/strict';
 import {database} from './sqlite-world';
 import {BOSS_RULES,BOSS_DESIGNS,BOSS_TIERS,bossRequirements,bossDamage,simulateEncounter,validateBossRules,type BossContribution} from '../src/game/bosses';
 import {trailApi} from '../../dev-server/trail/api';
+import {applyWorldEvent} from '../../dev-server/trail/world-store';
+import {summarizeActivity,listCompletedActivities} from '../../dev-server/trail/activity-store';
+import G from '../src/game/engine';
+
+test('TR-044/131/132 activity evidence is server-derived, idempotent, window-bounded and excludes discovery, gaps and old mileage',async()=>{
+  const{db,sql}=database(),binding=db as never;let now=1000000,revision=0;
+  sql.prepare('INSERT INTO trail_members(id,display_name,role,created_at) VALUES(?,?,?,?)').run('walker','Walker','player',now);
+  const event=async(id:string,input:Parameters<typeof applyWorldEvent>[4])=>{const result=await applyWorldEvent(binding,'walker',id,revision,input,now);revision=result.revision;return result;};
+  const geo=(x:number)=>G.geo(x,125),fix=(x:number,accuracy=5)=>({kind:'gps' as const,fix:{latitude:geo(x).lat,longitude:geo(x).lon,accuracy,timestamp:now+.75,speed:1}});
+  await event('discovery:only:1',fix(0));assert.equal(sql.prepare('SELECT COUNT(*) AS n FROM trail_events WHERE activity_id IS NOT NULL').get()!.n,0);
+  now+=1000;const start=await event('activity:start:1',{kind:'start',movement:'foot'}),activityId=start.receipt.activity!.id;assert.equal(activityId,'activity:activity:start:1');
+  now+=5000;await event('activity:gps:1',fix(0));now+=5000;await event('activity:gps:2',fix(20));const windowStart=now+1;
+  now+=5000;const boundary=await event('activity:gps:3',fix(40));assert.ok(boundary.receipt.activity!.distanceStartedAt<windowStart);
+  now+=5000;const accepted=await event('activity:gps:4',fix(60));assert.ok(accepted.receipt.activity!.meters>19);
+  const duplicate=await applyWorldEvent(binding,'walker','activity:gps:4',revision-1,fix(60),now);assert.equal(duplicate.replayed,true);assert.equal(duplicate.revision,revision);
+  now+=5000;const coarse=await event('activity:coarse:5',fix(500,500));assert.equal(coarse.receipt.activity,undefined);
+  now+=60000;const gap=await event('activity:gap:6',fix(1000));assert.equal(gap.receipt.activity!.meters,0);assert.equal(gap.receipt.activity!.observedSeconds,0);
+  await assert.rejects(()=>summarizeActivity(binding,'walker',activityId,'0,0',windowStart,now+3600000,now),/Complete one recorded/);
+  now+=1000;await event('activity:stop:1',{kind:'stop'});const summary=await summarizeActivity(binding,'walker',activityId,'0,0',windowStart,now+3600000,now);
+  assert.equal(summary.source,'browser-gps');assert.equal(summary.bossTileVisited,true);assert.ok(Math.abs(summary.meters-accepted.receipt.activity!.meters)<.001);assert.equal(summary.eligibleStartedAt,windowStart);assert.equal((await listCompletedActivities(binding,'walker',now)).activities.length,1);
+  assert.equal((await listCompletedActivities(binding,'stranger',now)).activities.length,0);assert.ok(sql.prepare('SELECT result FROM trail_events WHERE activity_id IS NOT NULL').all().every(row=>!String(row.result).includes('latitude')));
+  now+=1000;const second=await event('activity:start:2',{kind:'start',movement:'foot'});assert.notEqual(second.receipt.activity!.id,activityId);
+});
 
 test('TR-043/050/060/061/062/065/066 tier targets retain solo/party endurance and five-player limits',()=>{
   assert.equal(BOSS_DESIGNS.length,4);assert.equal(new Set(BOSS_DESIGNS.map(b=>b.signature)).size,4);assert.equal(bossRequirements('Greater',1).targetKmPerPerson,50);assert.equal(bossRequirements('Mythical',1).targetKmPerPerson,75);assert.equal(bossRequirements('Mythical',5).targetKmPerPerson,50);

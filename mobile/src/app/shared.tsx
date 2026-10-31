@@ -3,6 +3,9 @@ import {Redirect,Link} from 'expo-router';
 import {Platform,Pressable,Text,View,ScrollView} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {SharedWorldClient,type SharedSnapshot} from '../accounts/shared-world';
+import type {EncounterAction} from '../game/encounters';
+import type {Boss} from '../game/bosses';
+import {SharedEncounters} from '../components/shared-encounters';
 import type {User} from '../accounts/local-accounts';
 import {APP_ENV} from '../config/environment';
 import {CityMap} from '../components/city-map';
@@ -14,7 +17,7 @@ import {currentTile,claimPrice,type TileClaims} from '../game/claims';
 import {levelProgress} from '../game/progression';
 import {availableRelics,captureTarget,relicPoint,relicDistance} from '../game/landmarks';
 import G from '../game/engine';
-import {groundBearing} from '../map/geodesy';
+import {groundBearing,groundDistance} from '../map/geodesy';
 import {useCompass} from '../location/use-compass';
 import {relativeBearing} from '../location/compass';
 import {RawLocationSession} from '../location/raw-session';
@@ -23,17 +26,18 @@ export default function SharedWorld(){
   const [client]=useState(()=>new SharedWorldClient(AsyncStorage));
   const [loading,setLoading]=useState(true);
   const [drawer,setDrawer]=useState(false),[selectedRelic,setSelectedRelic]=useState<string>();
-  const [panel,setPanel]=useState<'quest'|'character'|'collection'>('quest');
+  const [panel,setPanel]=useState<'quest'|'character'|'collection'|'encounters'>('quest');
+  const [encounterPending,setEncounterPending]=useState(false),[guidedBoss,setGuidedBoss]=useState<Boss>();
   const compass=useCompass(APP_ENV==='development');
   const [user,setUser]=useState<User|null>(null),[name,setName]=useState(''),[snapshot,setSnapshot]=useState<SharedSnapshot|null>(null),[error,setError]=useState(''),[busy,setBusy]=useState(false),[pending,setPending]=useState(false),[notice,setNotice]=useState(''),[mode,setMode]=useState<Movement>('foot'),[tracking,setTracking]=useState(false),[others,setOthers]=useState<Record<string,number>>({});
   const latest=useRef(snapshot),lock=useRef(false);useEffect(()=>{latest.current=snapshot;},[snapshot]);
   const [claims,setClaims]=useState<TileClaims>({}),[selectedTile,setSelectedTile]=useState<string>();
   const [now,setNow]=useState(()=>Date.now());useEffect(()=>{const timer=setInterval(()=>setNow(Date.now()),1000);return()=>clearInterval(timer);},[]);
   const refreshClaims=useCallback(async()=>{const result=await client.claims();setClaims(Object.fromEntries(result.claims.map(c=>[c.tile,{ownerId:c.owner,ownerName:c.display_name,pricePaid:c.price,claimedAt:c.updated_at}])));},[client]);
-  const refresh=useCallback(async()=>{const who=await client.profile();setUser(who);const state=await client.load();setSnapshot(state);setMode(state.world.movement);setTracking(state.world.game.adventure?.status==='active');setPending(await client.pending());setError('');},[client]);
+  const refresh=useCallback(async()=>{const who=await client.profile();setUser(who);const state=await client.load();latest.current=state;setSnapshot(state);setMode(state.world.movement);setTracking(state.world.game.adventure?.status==='active');setPending(await client.pending());setEncounterPending(await client.pendingEncounter());setError('');},[client]);
   useEffect(()=>{
     if(APP_ENV!=='development')return;let cancelled=false;
-    void client.profile().then(async who=>{const[state,waiting]=await Promise.all([client.load(),client.pending()]);if(cancelled)return;setUser(who);setSnapshot(state);setMode(state.world.movement);setTracking(state.world.game.adventure?.status==='active');setPending(waiting);setError('');}).catch(e=>{if(!cancelled)setError(e.message);}).finally(()=>{if(!cancelled)setLoading(false);});
+    void client.profile().then(async who=>{const[state,waiting,encWaiting]=await Promise.all([client.load(),client.pending(),client.pendingEncounter()]);if(cancelled)return;setUser(who);latest.current=state;setSnapshot(state);setMode(state.world.movement);setTracking(state.world.game.adventure?.status==='active');setPending(waiting);setEncounterPending(encWaiting);if(encWaiting){setPanel('encounters');setDrawer(true);}setError('');}).catch(e=>{if(!cancelled)setError(e.message);}).finally(()=>{if(!cancelled)setLoading(false);});
     return()=>{cancelled=true;};
   },[client]);
   const sharedOwner=user?.id,communityTile=snapshot?currentTile(snapshot.world.game):'';
@@ -46,12 +50,17 @@ export default function SharedWorld(){
     finally{lock.current=false;if(event.kind!=='gps')setBusy(false);}
   },[client,refreshClaims]);
   useEffect(()=>{
-    if(!tracking||pending)return;
+    if(!tracking||pending||encounterPending)return;
     const session=new RawLocationSession(watchPlayerLocation,fix=>{void send({kind:'gps',fix});},setError);
     const stop=observeLocationLifecycle(value=>{if(value)session.resume();else session.suspend();});
     const timer=setInterval(()=>session.tick(),5000);void session.start();
     return()=>{clearInterval(timer);stop();session.stop();};
-  },[tracking,pending,send]);
+  },[tracking,pending,encounterPending,send]);
+  async function performEncounter(action?:EncounterAction){
+    if(lock.current)throw new Error('GPS is syncing; try again in a moment');lock.current=true;setBusy(true);
+    try{const result=action?await client.encounter(action):await client.retryEncounter();if(result.world){latest.current=result.world;setSnapshot(result.world);}setEncounterPending(false);return result;}
+    finally{setEncounterPending(await client.pendingEncounter());lock.current=false;setBusy(false);}
+  }
   async function retry(){setBusy(true);setError('');try{const result=await client.retry();setSnapshot(result);setPending(false);setNotice(result.receipt.reason);if(['adventure started','adventure stopped','already active'].includes(result.receipt.reason))setTracking(result.world.game.adventure?.status==='active');}catch(e){setError((e as Error).message);}finally{setBusy(false);}}
   if(APP_ENV!=='development')return <Redirect href="/"/>;
   if(loading)return <Loading message="Opening shared dev progress…"/>;
@@ -60,27 +69,27 @@ export default function SharedWorld(){
   const eligible=!!position&&snapshot.world.latestGpsValid&&now>=position.timestamp&&now-position.timestamp<15000;
   const point=position||game,ready=eligible?captureTarget(game,point):undefined;
   const available=availableRelics(game,point),next=ready||available.find(r=>r.id===selectedRelic)||available[0];
-  const origin=G.geo(point.x,point.y),target=next?G.geo(relicPoint(next).x,relicPoint(next).y):origin;
+  const origin=G.geo(point.x,point.y),target=guidedBoss?{lat:guidedBoss.latitude,lon:guidedBoss.longitude}:next?G.geo(relicPoint(next).x,relicPoint(next).y):origin;
   const arrow=relativeBearing(groundBearing({latitude:origin.lat,longitude:origin.lon},{latitude:target.lat,longitude:target.lon}),compass.heading);
   return <View style={{flex:1,backgroundColor:colors.paper}}>
     <CityMap fullScreen game={game} communityVisits={others} onDiscover={()=>{}} player={position?{...position,precise:eligible}:null} focusKey={position?'shared-gps':''} demo={false} locating={false} onLocate={()=>setTracking(true)} ownerId={user.id} activeTileId={currentTile(game)} claims={claims} selectedTileId={selectedTile} onSelectTile={tile=>{setSelectedTile(tile);setDrawer(true);}} selectedRelicId={next?.id} capturableId={ready?.id} onSelectRelic={setSelectedRelic}/>
     <Text style={{position:'absolute',top:10,left:'40%',color:colors.gold,backgroundColor:colors.paper,padding:6,fontSize:10}}>SHARED DEV</Text>
-    <Pressable accessibilityRole="button" accessibilityLabel="Open shared quest details" onPress={()=>setDrawer(true)} style={{position:'absolute',top:12,left:10,width:108,minHeight:110,padding:9,backgroundColor:'#152D2AF2',borderColor:colors.gold,borderWidth:2,alignItems:'center'}}><Text style={{color:colors.gold,fontSize:11}}>{compass.heading===null?'NORTH UP':`${Math.round(compass.heading)%360}° ${compass.reference==='magnetic'?'M':'N'}`}</Text><Text style={{fontSize:39,lineHeight:44,color:colors.gold,transform:[{rotate:arrow+'deg'}]}}>{next?'↑':'✥'}</Text><Text numberOfLines={2} style={{fontSize:10,color:colors.ink,textAlign:'center'}}>{next?.landmark||next?.name||'Explore'}</Text><Text style={{color:colors.gold}}>{next?Math.round(relicDistance(next,point))+' m':''}</Text></Pressable>
+    <Pressable accessibilityRole="button" accessibilityLabel="Open shared quest details" onPress={()=>setDrawer(true)} style={{position:'absolute',top:12,left:10,width:108,minHeight:110,padding:9,backgroundColor:'#152D2AF2',borderColor:colors.gold,borderWidth:2,alignItems:'center'}}><Text style={{color:colors.gold,fontSize:11}}>{compass.heading===null?'NORTH UP':`${Math.round(compass.heading)%360}° ${compass.reference==='magnetic'?'M':'N'}`}</Text><Text style={{fontSize:39,lineHeight:44,color:colors.gold,transform:[{rotate:arrow+'deg'}]}}>{next||guidedBoss?'↑':'✥'}</Text><Text numberOfLines={2} style={{fontSize:10,color:colors.ink,textAlign:'center'}}>{guidedBoss?.name||next?.landmark||next?.name||'Explore'}</Text><Text style={{color:colors.gold}}>{guidedBoss?Math.round(groundDistance({latitude:origin.lat,longitude:origin.lon},{latitude:target.lat,longitude:target.lon}))+' m':next?Math.round(relicDistance(next,point))+' m':''}</Text></Pressable>
     {!drawer&&<Pressable accessibilityRole="button" accessibilityLabel="Open shared quest controls" onPress={()=>setDrawer(true)} style={{position:'absolute',bottom:0,left:0,right:0,padding:14,minHeight:50,backgroundColor:'#142A2BF5',borderTopColor:colors.gold,borderTopWidth:2}}><Text style={{color:colors.gold,textAlign:'center'}}>Gold {game.gold} · {ready?'RELIC READY':active?'QUEST ACTIVE':'QUEST STOPPED'} · CONTROLS ▴</Text></Pressable>}
     {drawer&&<ScrollView style={{position:'absolute',bottom:0,left:0,right:0,maxHeight:'58%',backgroundColor:'#142A2BF5',borderTopColor:colors.gold,borderTopWidth:2}} contentContainerStyle={{padding:14,gap:10}}>
       <View style={styles.spread}><Text style={styles.eyebrow}>{user.displayName}</Text><Button title="Hide" quiet onPress={()=>setDrawer(false)}/></View>
-      <View style={styles.row}><Button title="Quest" quiet={panel!=='quest'} onPress={()=>setPanel('quest')}/><Button title="Character" quiet={panel!=='character'} onPress={()=>setPanel('character')}/><Button title="Collection" quiet={panel!=='collection'} onPress={()=>setPanel('collection')}/></View>
-      {panel==='character'?<SharedCharacter world={snapshot.world}/>:panel==='collection'?<SharedCollection world={snapshot.world}/>:<>
+      <View style={styles.row}><Button title="Quest" quiet={panel!=='quest'} onPress={()=>setPanel('quest')}/><Button title="Character" quiet={panel!=='character'} onPress={()=>setPanel('character')}/><Button title="Collection" quiet={panel!=='collection'} onPress={()=>setPanel('collection')}/><Button title="Encounters" quiet={panel!=='encounters'} onPress={()=>setPanel('encounters')}/></View>
+      {panel==='encounters'?<SharedEncounters now={now} client={client} owner={user.id} latitude={origin.lat} longitude={origin.lon} blocked={busy||pending} pending={encounterPending} perform={performEncounter} onRecovered={()=>setEncounterPending(false)} onGuide={boss=>{setGuidedBoss(boss);setDrawer(false);}}/>:panel==='character'?<SharedCharacter world={snapshot.world}/>:panel==='collection'?<SharedCollection world={snapshot.world}/>:<>
       <Text style={styles.heading}>Shared adventure · {mode==='foot'?'Foot':'Bicycle'}</Text><Text style={styles.small}>Experimental balance · revision {snapshot.world.configRevision}. Progress is stored in dev only.</Text>
       {!active&&<View style={styles.row}><Button title="Foot" quiet={mode!=='foot'} onPress={()=>setMode('foot')}/><Button title="Bicycle" quiet={mode!=='bicycle'} onPress={()=>setMode('bicycle')}/></View>}
-      <View style={styles.row}><Button title="Start quest" disabled={active||pending} busy={busy} onPress={()=>{void send({kind:'start',movement:mode}).then(sent=>{if(sent)setTracking(true);});}}/><Button title="Stop quest" quiet disabled={!active||pending} busy={busy} onPress={()=>{void send({kind:'stop'}).then(sent=>{if(sent)setTracking(false);});}}/></View>
-      <Button title="Attempt artefact in this tile" disabled={pending||!eligible} busy={busy} onPress={()=>{void send({kind:'capture'});}}/>
-      <Text style={styles.small}>{compass.message}</Text><Button title={compass.heading===null?'Enable / retry compass':'Turn compass off'} quiet busy={compass.status==='starting'} onPress={()=>{if(compass.heading===null){compass.stop();compass.start();}else compass.stop();}}/>
+      <View style={styles.row}><Button title="Start quest" disabled={active||pending||encounterPending} busy={busy} onPress={()=>{void send({kind:'start',movement:mode}).then(sent=>{if(sent)setTracking(true);});}}/><Button title="Stop quest" quiet disabled={!active||pending||encounterPending} busy={busy} onPress={()=>{void send({kind:'stop'}).then(sent=>{if(sent)setTracking(false);});}}/></View>
+      <Button title="Attempt artefact in this tile" disabled={pending||encounterPending||!eligible} busy={busy} onPress={()=>{void send({kind:'capture'});}}/>
+      <Text style={styles.small}>{compass.message}</Text>{guidedBoss&&<Button title="Return compass to artefacts" quiet onPress={()=>setGuidedBoss(undefined)}/>}<Button title={compass.heading===null?'Enable / retry compass':'Turn compass off'} quiet busy={compass.status==='starting'} onPress={()=>{if(compass.heading===null){compass.stop();compass.start();}else compass.stop();}}/>
       <Text style={styles.body}>Gold {game.gold} · {(game.meters/1000).toFixed(2)} km · {game.collection.length} finds · tile {currentTile(game)}</Text>
-      <Button title={claims[selectedTile||currentTile(game)]?.ownerId===user.id?'Tile is yours':`Claim ${selectedTile||currentTile(game)} · ${claimPrice(claims[selectedTile||currentTile(game)])} gold`} quiet busy={busy} disabled={pending||claims[selectedTile||currentTile(game)]?.ownerId===user.id||!(game.visits[selectedTile||currentTile(game)]>0)||game.gold<claimPrice(claims[selectedTile||currentTile(game)])} onPress={()=>{const tile=selectedTile||currentTile(game);void send({kind:'claim',tile,price:claimPrice(claims[tile])});}}/>
+      <Button title={claims[selectedTile||currentTile(game)]?.ownerId===user.id?'Tile is yours':`Claim ${selectedTile||currentTile(game)} · ${claimPrice(claims[selectedTile||currentTile(game)])} gold`} quiet busy={busy} disabled={pending||encounterPending||claims[selectedTile||currentTile(game)]?.ownerId===user.id||!(game.visits[selectedTile||currentTile(game)]>0)||game.gold<claimPrice(claims[selectedTile||currentTile(game)])} onPress={()=>{const tile=selectedTile||currentTile(game);void send({kind:'claim',tile,price:claimPrice(claims[tile])});}}/>
       <Text style={styles.small}>Exploration level {levelProgress(game.progression?.xp.exploration||0,snapshot.world.curveCoefficient).level} · Endurance level {levelProgress(game.progression?.xp.endurance||0,snapshot.world.curveCoefficient).level} · Agility level {levelProgress(game.progression?.xp.agility||0,snapshot.world.curveCoefficient).level}</Text>
       {notice&&<Text style={styles.body}>{notice}</Text>}{error&&<Text style={styles.error}>{error}</Text>}
-      {pending&&<><Button title="Retry pending action" busy={busy} onPress={()=>{void retry();}}/><Button title="Reload server progress" quiet busy={busy} onPress={()=>{setBusy(true);void client.discardStalePending().then(state=>{setSnapshot(state);setMode(state.world.movement);setTracking(state.world.game.adventure?.status==='active');setPending(false);setError('');void refreshClaims().catch(()=>{});}).catch(e=>setError(e.message)).finally(()=>setBusy(false));}}/></>}
+      {encounterPending&&<Button title="Recover pending encounter action" quiet onPress={()=>setPanel('encounters')}/>} {pending&&<><Button title="Retry pending action" busy={busy} onPress={()=>{void retry();}}/><Button title="Reload server progress" quiet busy={busy} onPress={()=>{setBusy(true);void client.discardStalePending().then(state=>{setSnapshot(state);setMode(state.world.movement);setTracking(state.world.game.adventure?.status==='active');setPending(false);setError('');void refreshClaims().catch(()=>{});}).catch(e=>setError(e.message)).finally(()=>setBusy(false));}}/></>}
       <Text style={styles.small}>GPS gaps add no distance or XP. Browser screen-lock recording is still limited. Shared events use server validation; they do not prove that GPS cannot be spoofed.</Text>{user.role==='admin'&&Platform.OS==='web'&&<a href="/admin-world" style={{color:colors.gold}}>Shared world administration</a>}<Link href="/" style={styles.body}>Return to local game</Link>
       </>}
     </ScrollView>}

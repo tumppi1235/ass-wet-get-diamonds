@@ -24,6 +24,7 @@ Working title: Trail Relics. Vision: an outdoor RPG where greater effort and exp
 | [DEV-PROGRESSION-LAB.md](DEV-PROGRESSION-LAB.md) | Versioned XP curves, balance history, zero-write estimates and activity-history comparisons |
 | [DEV-WORLD-REGIONS.md](DEV-WORLD-REGIONS.md) | Event regions, appearance modifiers, access blocking and bounded world/density map |
 | [DEV-BOSS-FOUNDATIONS.md](DEV-BOSS-FOUNDATIONS.md) | Sourced boss definitions, immutable tier policy, designs and isolated combat simulation |
+| [DEV-ENCOUNTERS.md](DEV-ENCOUNTERS.md) | Accepted parties, server-recorded activity contributions, deadline settlement and individual loot |
 | [DEV-CONTINUATION.md](DEV-CONTINUATION.md) | Continuous dev-only backlog execution and outstanding gates |
 | [DEV-FOUNDATIONS.md](DEV-FOUNDATIONS.md) | Development-only spawn, lifetime evidence and XP foundation scope |
 | [FINLAND-PLAYTEST.md](FINLAND-PLAYTEST.md) | National dev catalog, geographic compatibility and field tests |

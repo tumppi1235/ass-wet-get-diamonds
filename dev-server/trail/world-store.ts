@@ -6,6 +6,7 @@ import {WorldError} from './world-error';
 export {WorldError} from './world-error';
 import {hydrateSpawns,firstVisitStatement} from './spawn-store';
 import {newProgression} from '../../mobile/src/game/progression';
+import {requestHash} from './hash';
 type Row={state:string;revision:number};
 export async function loadWorld(db:D1Database,owner:string,now=Date.now()){
   await db.prepare('INSERT INTO trail_players(id,state,revision,updated_at) VALUES(?,?,0,?) ON CONFLICT(id) DO NOTHING').bind(owner,JSON.stringify(newDevWorld()),Date.now()).run();
@@ -13,8 +14,8 @@ export async function loadWorld(db:D1Database,owner:string,now=Date.now()){
   if(!row)throw new Error('World state unavailable');const world=JSON.parse(row.state)as DevWorld;world.game.progression??=newProgression();world.curveCoefficient=(await loadBalance(db)).balance.curveCoefficient;return{world:await hydrateSpawns(db,owner,world,now),revision:row.revision};
 }
 export async function applyWorldEvent(db:D1Database,owner:string,id:string,expected:number,event:DevEvent,now=Date.now()){
-  if(!/^[a-zA-Z0-9:_-]{8,100}$/.test(id)||!Number.isSafeInteger(expected)||expected<0||!event||!['start','stop','gps','capture','claim'].includes(event.kind))throw new WorldError(400,'Invalid event envelope');
-  const hash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(JSON.stringify(event))))).map(x=>x.toString(16).padStart(2,'0')).join('');
+  if(typeof id!=='string'||!/^[a-zA-Z0-9:_-]{8,100}$/.test(id)||!Number.isSafeInteger(expected)||expected<0||!event||!['start','stop','gps','capture','claim'].includes(event.kind))throw new WorldError(400,'Invalid event envelope');
+  const hash=await requestHash(event);
   const existing=await db.prepare('SELECT request_hash,result FROM trail_events WHERE owner=? AND id=?').bind(owner,id).first<{request_hash:string;result:string}>();
   if(existing){if(existing.request_hash!==hash)throw new WorldError(409,'Event identity was reused with different contents');return{...(await loadWorld(db,owner)),receipt:JSON.parse(existing.result)as DevReceipt,replayed:true};}
   const current=await loadWorld(db,owner,now);if(current.revision!==expected)throw new WorldError(409,'Progress changed on another device. Refresh before continuing.');
@@ -29,11 +30,11 @@ export async function applyWorldEvent(db:D1Database,owner:string,id:string,expec
     if(!Number.isSafeInteger(world.game.gold)||world.game.gold<price)throw new WorldError(400,'Not enough gold');
     world.game.gold-=price;world.game.claimGoldSpent=(world.game.claimGoldSpent||0)+price;
     reduced={world,receipt:{accepted:true,reason:'claimed',tile:event.tile,awards:{},balanceRevision:world.configRevision}};
-  }else{try{reduced=reduceDevEvent(current.world,event,now,(await loadBalance(db)).balance);}catch(error){throw new WorldError(400,(error as Error).message);}}
+  }else{try{reduced=reduceDevEvent(current.world,event,now,(await loadBalance(db)).balance,undefined,'activity:'+id);}catch(error){throw new WorldError(400,(error as Error).message);}}
   const {world,receipt}=reduced;
   const personal=receipt.tile&&event.kind==='gps'?await firstVisitStatement(db,owner,receipt.tile,now):null;
   const statements=[
-    db.prepare('INSERT INTO trail_events(owner,id,kind,result,request_hash,created_at) VALUES(?,?,?,?,?,?)').bind(owner,id,event.kind,JSON.stringify(receipt),hash,now),
+    db.prepare('INSERT INTO trail_events(owner,id,kind,result,request_hash,created_at,activity_id,activity_at) VALUES(?,?,?,?,?,?,?,?)').bind(owner,id,event.kind,JSON.stringify(receipt),hash,now,receipt.activity?.id??null,receipt.activity?.recordedAt??null),
     db.prepare('UPDATE trail_players SET state=?,revision=revision+1,updated_at=? WHERE id=? AND revision=?').bind(JSON.stringify(world),now,owner,expected),
     // CHECK fails the entire D1 batch if optimistic concurrency did not update exactly one row.
     db.prepare("INSERT INTO trail_integrity(id,valid) VALUES('world-cas',CASE WHEN changes()=1 THEN 1 ELSE 0 END) ON CONFLICT(id) DO UPDATE SET valid=excluded.valid"),

@@ -14,10 +14,11 @@ export {DEV_BALANCE,validateBalance,type DevBalance} from './dev-balance';
 export type Movement='foot'|'bicycle';
 export type DevWorld={version:1;game:GameState;movement:Movement;previous:PlayerPosition|null;anchor:PlayerPosition|null;latestGpsValid:boolean;regions:Record<string,true>;xpRemainder:number;configRevision:string;curveCoefficient?:number;spawnContextRevision?:string;rewardedTiles?:Record<string,boolean>};
 export type DevEvent={kind:'start';movement:Movement}|{kind:'stop'}|{kind:'gps';fix:LocationFix}|{kind:'capture'}|{kind:'claim';tile:string;price:number};
-export type DevReceipt={accepted:boolean;reason:string;tile?:string;awards:Partial<Record<Attribute,number>>;collected?:string;balanceRevision:string};
+export type ActivityEvidence={id:string;source:'browser-gps';phase:'start'|'gps'|'stop';movement:Movement;startedAt:number;recordedAt:number;meters:number;distanceStartedAt:number;observedSeconds:number};
+export type DevReceipt={accepted:boolean;reason:string;tile?:string;awards:Partial<Record<Attribute,number>>;collected?:string;balanceRevision:string;activity?:ActivityEvidence};
 export function newDevWorld():DevWorld{const game=G.initial();game.sharedSpawnsOnly=true;game.revealed={};game.progression=newProgression();return{version:1,game,movement:'foot',previous:null,anchor:null,latestGpsValid:false,regions:{},xpRemainder:0,configRevision:DEV_BALANCE.revision};}
 /** Pure authoritative event reducer, also used by isolated balancing simulations. */
-export function reduceDevEvent(original:DevWorld,event:DevEvent,now:number,balance=DEV_BALANCE,random=()=>crypto.getRandomValues(new Uint32Array(1))[0]/2**32){
+export function reduceDevEvent(original:DevWorld,event:DevEvent,now:number,balance=DEV_BALANCE,random=()=>crypto.getRandomValues(new Uint32Array(1))[0]/2**32,activityId?:string){
   balance=validateBalance(balance);const world:DevWorld=JSON.parse(JSON.stringify(original)),s=world.game;
   const receipt:DevReceipt={accepted:false,reason:'unsupported event',awards:{},balanceRevision:balance.revision};
   if(world.version!==1||!event||!Number.isSafeInteger(now))throw new Error('Unsupported world event');
@@ -27,16 +28,17 @@ export function reduceDevEvent(original:DevWorld,event:DevEvent,now:number,balan
   if(event.kind==='start'){
     if(!['foot','bicycle'].includes(event.movement))throw new Error('Choose Foot or Bicycle');
     if(s.adventure?.status==='active'){if(world.movement!==event.movement)throw new Error('Stop the current adventure before changing movement');receipt.reason='already active';}
-    else{requestAdventure(s,now);world.movement=event.movement;world.previous=null;world.anchor=null;receipt.reason='adventure started';}receipt.accepted=true;
-  }else if(event.kind==='stop'){endAdventure(s,now);world.previous=null;world.anchor=null;receipt.accepted=true;receipt.reason='adventure stopped';}
+    else{requestAdventure(s,now);if(activityId)s.adventure!.id=activityId;world.movement=event.movement;world.previous=null;world.anchor=null;receipt.reason='adventure started';receipt.activity={id:s.adventure!.id,source:'browser-gps',phase:'start',movement:world.movement,startedAt:now,recordedAt:now,meters:0,distanceStartedAt:now,observedSeconds:0};}receipt.accepted=true;
+  }else if(event.kind==='stop'){if(s.adventure?.status==='active')receipt.activity={id:s.adventure.id,source:'browser-gps',phase:'stop',movement:world.movement,startedAt:s.adventure.startedAt,recordedAt:now,meters:0,distanceStartedAt:now,observedSeconds:0};endAdventure(s,now);world.previous=null;world.anchor=null;receipt.accepted=true;receipt.reason='adventure stopped';}
   else if(event.kind==='gps'){
-    const f=event.fix;
+    const f=event.fix&&{...event.fix,timestamp:Math.trunc(event.fix.timestamp)};
     world.latestGpsValid=false;
     if(!f||![f.latitude,f.longitude,f.timestamp].every(Number.isFinite)||Math.abs(f.latitude)>90||Math.abs(f.longitude)>180||f.accuracy==null||!Number.isFinite(f.accuracy)||f.accuracy<0||now-f.timestamp>10000||f.timestamp>now+1000||f.timestamp<=(s.lastGpsTimestamp||0)){receipt.reason='invalid, stale or duplicate GPS';return{world,receipt};}
     const point={...G.xy(f.latitude,f.longitude),latitude:f.latitude,longitude:f.longitude};
     const speed=world.movement==='foot'?balance.footMaxSpeed:balance.bicycleMaxSpeed;
     if(!isPlayablePoint(point)||f.accuracy>25||(f.speed!=null&&(!Number.isFinite(f.speed)||f.speed<0||f.speed>speed))){receipt.reason='GPS outside region, inaccurate or too fast';return{world,receipt};}
     const position:PlayerPosition={...point,accuracy:f.accuracy,timestamp:f.timestamp,inside:true,precise:true};
+    const prior=world.previous,priorAnchor=world.anchor;
     let startSegment=!world.previous,distance=0;
     if(world.previous){const seconds=(f.timestamp-world.previous.timestamp)/1000,d=groundDistance(position,world.previous);if(seconds>30){startSegment=true;world.anchor=null;}else if(d>Math.max(35,seconds*speed)){receipt.reason='implausible GPS jump';return{world,receipt};}}
     if(world.anchor){const d=groundDistance(position,world.anchor);if(d>=8){distance=d;world.anchor=position;}}else world.anchor=position;
@@ -49,6 +51,7 @@ export function reduceDevEvent(original:DevWorld,event:DevEvent,now:number,balan
     if(!world.regions[region]){world.regions[region]=true;award('agility',rewardXp(balance,{regions:1}).agility);}
     if(active&&distance){world.xpRemainder+=distance*(world.movement==='foot'?balance.footFactor:balance.bicycleFactor);const xp=rewardXp(balance,{equivalentMeters:world.xpRemainder}).endurance;world.xpRemainder-=xp*balance.enduranceMetersPerXp;award('endurance',xp);}
     receipt.accepted=true;receipt.reason='GPS accepted';receipt.tile=tile;
+    if(active&&s.adventure)receipt.activity={id:s.adventure.id,source:'browser-gps',phase:'gps',movement:world.movement,startedAt:s.adventure.startedAt,recordedAt:f.timestamp,meters:distance,distanceStartedAt:distance&&priorAnchor?priorAnchor.timestamp:f.timestamp,observedSeconds:!startSegment&&prior?Math.max(0,(f.timestamp-prior.timestamp)/1000):0};
   }else if(event.kind==='capture'){
     const fix=world.previous;
     if(!world.latestGpsValid||!fix||now-fix.timestamp<0||now-fix.timestamp>=15000){receipt.reason='fresh accurate GPS required';return{world,receipt};}
