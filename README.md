@@ -9,13 +9,6 @@ The main game is now in [mobile](mobile): React Native + Expo, with local login,
 
 Start **START-WINDOWS.bat**, or run `cd mobile`, `npm ci`, then `npm run web -- --host localhost`. Open http://localhost:8081/.
 
-| Username | Initial password | Access |
-| --- | --- | --- |
-| admin | Admin123! | Local user administration and game |
-| test | Test123! | Normal explorer game |
-| tumppi | Delivered privately in chat | Tumppi's separate explorer profile |
-| tuomas.jokela | Delivered privately in chat | Tuomas Jokela's separate explorer profile |
-
 Manual sign-in is required; admin/test shortcuts have been removed. Profiles and progress stay on this device. Missing provisioned players are added on upgrade without replacing existing passwords or progress. Change passwords in Profile. [Full account and storage details](mobile/README.md).
 
 The game UI uses an original pixel RPG theme while keeping the terrain map readable. The full-screen map has only Me, a small compass, and a collapsible quest drawer. It automatically locates/follows the player without starting a quest. Relic destinations have their own tab. A visible 250 m grid, mouse wheel, double click and pinch support exploration. Green/purple/teal overlays distinguish visits, with simplified groups at city scale. Walking earns 1 gold per 250 m + 1 for each newly explored tile. Tap an explored tile to claim it using gold: the first purchase costs 1 gold, then that tile's previous price + 1. Gold/purple borders show local ownership. Claims, prices and other-player visits are local-device data only; cross-phone sharing is not connected.
