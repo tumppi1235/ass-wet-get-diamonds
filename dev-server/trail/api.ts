@@ -20,6 +20,7 @@ import {exportDevSnapshot} from './snapshot-store';
 import {simulateCollection} from '../../mobile/src/game/collection-simulation';
 import {spawnAnalytics} from './spawn-analytics';
 import {queryClaims} from './claim-store';
+import {adventureIdeas} from './recommendation-store';
 type Bindings={DB?:D1Database;TRAIL_ENV?:string;TRAIL_ADMIN_EMAIL?:string;TRAIL_PUBLIC_ORIGIN?:string};
 type Member={id:string;display_name:string;role:'admin'|'player';created_at:number};
 class ApiError extends Error{constructor(public status:number,message:string){super(message);}}
@@ -53,6 +54,7 @@ export async function trailApi(request:Request,env:Bindings){
       await db.prepare('UPDATE trail_members SET display_name=? WHERE id=?').bind(displayName,id).run();return json({saved:true});
     }
     if(path==='/api/trail/world'&&request.method==='GET')return json(await loadWorld(db,id));
+    if(path==='/api/trail/ideas'&&request.method==='POST')return json(await adventureIdeas(db,id,await body(request)));
     if(path==='/api/trail/admin/snapshot'&&request.method==='POST'){
       if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');return json(await exportDevSnapshot(db));
     }

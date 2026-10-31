@@ -175,16 +175,16 @@ Automated repair evidence and remaining iPhone field gates: [P0 report](P0-EXPLO
 
 | ID | Priority | Status | Story / outcome | Dependencies | Acceptance and implementation notes |
 | --- | --- | --- | --- | --- | --- |
-| TR-092 | P1 | Backlog | Adventure recommendation interface | TR-051 | The player can choose an attribute goal and see route or non-route suggestions. |
-| TR-093 | P1 | Backlog | Personalized recommendations for accumulating specific attributes | TR-092, TR-095 | Suggestions reflect selected goal, location and preferences without bonus quest XP. |
+| TR-092 | P1 | Done | Adventure recommendation interface | TR-051 | Shared dev Ideas tab selects goal, movement, distance and destination preferences and shows non-route guidance with conditional ordinary XP. Unsupported earning evidence is explicit. See DEV-ADVENTURE-IDEAS.md. |
+| TR-093 | P1 | In Progress | Personalized recommendations for accumulating specific attributes | TR-092, TR-095 | Non-route guidance uses personal XP/fractional credit, fresh location, paid tile/region history and preferences with zero rewards. Verified route/access and unsupported earning sources remain. |
 | TR-094 | P1 | Backlog | Route generation using real trail and geographic data | TR-026, TR-101 | Routes follow real usable geographic paths and have valid GPX coordinates. |
-| TR-095 | P1 | In Progress | Estimated attribute XP for recommendations | TR-079, TR-087 | Shared estimate arithmetic matches accepted server rewards for Foot/Bicycle evidence; zero bonus XP. Recommendation UI/real route integration remain separate. |
+| TR-095 | P1 | In Progress | Estimated attribute XP for recommendations | TR-079, TR-087 | Ideas UI projects conditional ordinary XP/current levels with saved fractional credit and explicit one-tile/region/find assumptions. Accepted Foot/Bicycle arithmetic parity tested; real route/elevation integration remains. |
 | TR-096 | P1 | Backlog | Include artifact and boss opportunities in recommendations | TR-094, TR-003, TR-043 | Relevant detected artefacts/bosses can be included without forcing extra collection range. |
 | TR-097 | P2 | Backlog | Evaluate Strava segments as potential training suggestions | TR-164 | Feasibility, permissions and permitted Strava segment use are documented before implementation. |
 | TR-098 | P1 | Backlog | GPX export for Garmin and other navigation devices | TR-094 | A generated GPX route can be exported and validated in a supported navigation workflow. |
 | TR-099 | P2 | Backlog | Compare predicted versus actual adventure rewards | TR-095 | Verified actual rewards can be compared with estimates without double rewards. |
 | TR-100 | P2 | Backlog | Add group adventure and boss-route planning | TR-094, TR-130 | A party route includes encounter timing and each member’s required tile visit. |
-| TR-101 | P1 | Backlog | Match suggestions to sport, distance, difficulty and accessibility | TR-026 | Suggestions respect sport, distance, difficulty and access constraints. |
+| TR-101 | P1 | In Progress | Match suggestions to sport, distance, difficulty and accessibility | TR-026 | Non-route preferences select movement/distance and explicit known terrain. Unknown or conflicting terrain is excluded; required step-free access returns no unverified destinations. Actual route difficulty/permissions/access verification remains. |
 | TR-102 | P1 | Deferred | Implement location-based training quests | — | Deferred formal-quest design; ordinary recommendation XP is handled in TR-092–110, without a completion bonus. |
 | TR-103 | P1 | Deferred | Support repeatable objectives such as hill ascents | — | Deferred formal-quest design; ordinary recommendation XP is handled in TR-092–110, without a completion bonus. |
 | TR-104 | P1 | Deferred | Verify quest completion using GPS and elevation data | — | Deferred formal-quest design; ordinary recommendation XP is handled in TR-092–110, without a completion bonus. |
@@ -192,8 +192,8 @@ Automated repair evidence and remaining iPhone field gates: [P0 report](P0-EXPLO
 | TR-106 | P2 | Deferred | Generate quests from terrain, routes and geographic features | — | Deferred formal-quest design; ordinary recommendation XP is handled in TR-092–110, without a completion bonus. |
 | TR-107 | P1 | Deferred | Allow admins to create and configure custom training quests | — | Deferred formal-quest design; ordinary recommendation XP is handled in TR-092–110, without a completion bonus. |
 | TR-108 | P2 | Deferred | Show live quest progress during Garmin activities | — | Deferred formal-quest design; ordinary recommendation XP is handled in TR-092–110, without a completion bonus. |
-| TR-109 | P1 | Backlog | Generate non-route training suggestions, including hill repeats | TR-092, TR-095 | Non-route guidance such as hill repeats estimates ordinary verified activity XP. |
-| TR-110 | P1 | Backlog | Recommend adventures that introduce new sports, terrain or regions | TR-082, TR-093 | Suggestions can prioritize unfamiliar sports, terrain or regions. |
+| TR-109 | P1 | In Progress | Generate non-route training suggestions, including hill repeats | TR-092, TR-095 | Ordinary distance/new-tile/new-region/collection guidance implemented without plan bonuses. Power/hill-repeat earning awaits supported elevation evidence. |
+| TR-110 | P1 | In Progress | Recommend adventures that introduce new sports, terrain or regions | TR-082, TR-093 | New-region ideas exclude already rewarded personal regional blocks. Sport/terrain diversity requires further evidence and earning rules. |
 | TR-164 | P2 | Backlog | Investigate optional Strava activity/account connectivity | TR-113, TR-160 | Strava is optional; verify permissions, account linking, activity deduplication and data-use constraints. |
 
 ## TR-E07 — Environments, Deployment & Release Management

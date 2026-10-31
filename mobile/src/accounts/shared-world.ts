@@ -3,6 +3,7 @@ import type {DevEvent,DevReceipt,DevWorld} from '../game/dev-world';
 import type {EncounterAction,EncounterReceipt,EncounterView} from '../game/encounters';
 import type {Boss} from '../game/bosses';
 import type {ClaimPage,ClaimRecord,ClaimWindow} from '../map/claim-window';
+import type {AdventureIdeas,RecommendationPreferences} from '../game/recommendations';
 export type SharedSnapshot={world:DevWorld;revision:number};
 export type EncounterResult={view:EncounterView|null;receipt:EncounterReceipt;replayed:boolean;world?:SharedSnapshot};
 export type CompletedActivity={id:string;endedAt:number;startedAt:number;movement:'foot'|'bicycle'};
@@ -21,6 +22,7 @@ export class SharedWorldClient{
   async profile(){const result=await this.api<{user:User}>('me');this.owner=result.user.id;return result.user;}
   async join(displayName:string){const result=await this.api<{user:User}>('me','POST',{displayName});this.owner=result.user.id;return result.user;}
   load(){return this.api<SharedSnapshot>('world');}
+  ideas(preferences:RecommendationPreferences,signal?:AbortSignal){return this.api<AdventureIdeas>('ideas','POST',preferences,signal);}
   visits(){return this.api<{visits:{tile:string;players:number}[]}>('visits');}
   claims(){return this.api<{claims:{tile:string;owner:string;price:number;updated_at:number;display_name:string}[]}>('claims');}
   async claimTile(tile:string,signal?:AbortSignal){const result=await this.api<ClaimPage>('claims?tile='+encodeURIComponent(tile),'GET',undefined,signal);if(result.mode!=='tile'||!Array.isArray(result.claims)||result.claims.length>1||result.claims.some(row=>row.tile!==tile))throw new Error('Tile price service changed; reload the app');return result;}

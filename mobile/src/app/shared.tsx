@@ -6,6 +6,7 @@ import {SharedWorldClient,type SharedSnapshot} from '../accounts/shared-world';
 import type {EncounterAction} from '../game/encounters';
 import type {Boss} from '../game/bosses';
 import {SharedEncounters} from '../components/shared-encounters';
+import {SharedIdeas} from '../components/shared-ideas';
 import type {User} from '../accounts/local-accounts';
 import {APP_ENV} from '../config/environment';
 import {CityMap} from '../components/city-map';
@@ -27,7 +28,7 @@ export default function SharedWorld(){
   const [client]=useState(()=>new SharedWorldClient(AsyncStorage));
   const [loading,setLoading]=useState(true);
   const [drawer,setDrawer]=useState(false),[selectedRelic,setSelectedRelic]=useState<string>();
-  const [panel,setPanel]=useState<'quest'|'character'|'collection'|'encounters'>('quest');
+  const [panel,setPanel]=useState<'quest'|'character'|'collection'|'encounters'|'ideas'>('quest');
   const [encounterPending,setEncounterPending]=useState(false),[guidedBoss,setGuidedBoss]=useState<Boss>();
   const compass=useCompass(APP_ENV==='development');
   const [user,setUser]=useState<User|null>(null),[name,setName]=useState(''),[snapshot,setSnapshot]=useState<SharedSnapshot|null>(null),[error,setError]=useState(''),[busy,setBusy]=useState(false),[pending,setPending]=useState(false),[notice,setNotice]=useState(''),[mode,setMode]=useState<Movement>('foot'),[tracking,setTracking]=useState(false),[others,setOthers]=useState<Record<string,number>>({});
@@ -80,8 +81,8 @@ export default function SharedWorld(){
     {!drawer&&<Pressable accessibilityRole="button" accessibilityLabel="Open shared quest controls" onPress={()=>setDrawer(true)} style={{position:'absolute',bottom:0,left:0,right:0,padding:14,minHeight:50,backgroundColor:'#142A2BF5',borderTopColor:colors.gold,borderTopWidth:2}}><Text style={{color:colors.gold,textAlign:'center'}}>Gold {game.gold} · {ready?'RELIC READY':active?'QUEST ACTIVE':'QUEST STOPPED'} · CONTROLS ▴</Text></Pressable>}
     {drawer&&<ScrollView style={{position:'absolute',bottom:0,left:0,right:0,maxHeight:'58%',backgroundColor:'#142A2BF5',borderTopColor:colors.gold,borderTopWidth:2}} contentContainerStyle={{padding:14,gap:10}}>
       <View style={styles.spread}><Text style={styles.eyebrow}>{user.displayName}</Text><Button title="Hide" quiet onPress={()=>setDrawer(false)}/></View>
-      <View style={styles.row}><Button title="Quest" quiet={panel!=='quest'} onPress={()=>setPanel('quest')}/><Button title="Character" quiet={panel!=='character'} onPress={()=>setPanel('character')}/><Button title="Collection" quiet={panel!=='collection'} onPress={()=>setPanel('collection')}/><Button title="Encounters" quiet={panel!=='encounters'} onPress={()=>setPanel('encounters')}/></View>
-      {panel==='encounters'?<SharedEncounters now={now} client={client} owner={user.id} latitude={origin.lat} longitude={origin.lon} blocked={busy||pending} pending={encounterPending} perform={performEncounter} onRecovered={()=>setEncounterPending(false)} onGuide={boss=>{setGuidedBoss(boss);setDrawer(false);}}/>:panel==='character'?<SharedCharacter world={snapshot.world}/>:panel==='collection'?<SharedCollection world={snapshot.world}/>:<>
+      <View style={styles.row}><Button title="Quest" quiet={panel!=='quest'} onPress={()=>setPanel('quest')}/><Button title="Character" quiet={panel!=='character'} onPress={()=>setPanel('character')}/><Button title="Collection" quiet={panel!=='collection'} onPress={()=>setPanel('collection')}/><Button title="Encounters" quiet={panel!=='encounters'} onPress={()=>setPanel('encounters')}/><Button title="Ideas" quiet={panel!=='ideas'} onPress={()=>setPanel('ideas')}/></View>
+      {panel==='ideas'?<SharedIdeas client={client}/>:panel==='encounters'?<SharedEncounters now={now} client={client} owner={user.id} latitude={origin.lat} longitude={origin.lon} blocked={busy||pending} pending={encounterPending} perform={performEncounter} onRecovered={()=>setEncounterPending(false)} onGuide={boss=>{setGuidedBoss(boss);setDrawer(false);}}/>:panel==='character'?<SharedCharacter world={snapshot.world}/>:panel==='collection'?<SharedCollection world={snapshot.world}/>:<>
       <Text style={styles.heading}>Shared adventure · {mode==='foot'?'Foot':'Bicycle'}</Text><Text style={styles.small}>Experimental balance · revision {snapshot.world.configRevision}. Progress is stored in dev only.</Text>
       {!active&&<View style={styles.row}><Button title="Foot" quiet={mode!=='foot'} onPress={()=>setMode('foot')}/><Button title="Bicycle" quiet={mode!=='bicycle'} onPress={()=>setMode('bicycle')}/></View>}
       <View style={styles.row}><Button title="Start quest" disabled={active||pending||encounterPending} busy={busy} onPress={()=>{void send({kind:'start',movement:mode}).then(sent=>{if(sent)setTracking(true);});}}/><Button title="Stop quest" quiet disabled={!active||pending||encounterPending} busy={busy} onPress={()=>{void send({kind:'stop'}).then(sent=>{if(sent)setTracking(false);});}}/></View>

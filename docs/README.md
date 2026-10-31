@@ -29,6 +29,7 @@ Working title: Trail Relics. Vision: an outdoor RPG where greater effort and exp
 | [DEV-RECOVERY.md](DEV-RECOVERY.md) | Private complete dev snapshots, tested offline recovery and provider-level disaster-recovery gates |
 | [DEV-COLLECTION-LAB.md](DEV-COLLECTION-LAB.md) | Zero-write actual-rule collection simulations and bounded recorded-world/reward analytics |
 | [DEV-CLAIM-QUERIES.md](DEV-CLAIM-QUERIES.md) | Visible-area ownership pages/groups, exact tile prices and compatible index migrations |
+| [DEV-ADVENTURE-IDEAS.md](DEV-ADVENTURE-IDEAS.md) | Attribute-led non-route plans, conditional ordinary XP and explicit access/routing limits |
 | [DEV-CONTINUATION.md](DEV-CONTINUATION.md) | Continuous dev-only backlog execution and outstanding gates |
 | [DEV-FOUNDATIONS.md](DEV-FOUNDATIONS.md) | Development-only spawn, lifetime evidence and XP foundation scope |
 | [FINLAND-PLAYTEST.md](FINLAND-PLAYTEST.md) | National dev catalog, geographic compatibility and field tests |
