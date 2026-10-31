@@ -5,6 +5,7 @@ import {querySpawns,readBounds,placeSpawn,removeSpawn,loadSpawnRules,saveSpawnRu
 import {generateWorldSpawn,validateSpawnRules,type SpawnRules} from '../../mobile/src/game/world-spawns';
 import {LANDMARKS} from '../../mobile/src/game/landmarks';
 import G from '../../mobile/src/game/engine';
+import {inspectPlayer,editPlayer} from './player-admin';
 type Bindings={DB?:D1Database;TRAIL_ENV?:string;TRAIL_ADMIN_EMAIL?:string;TRAIL_PUBLIC_ORIGIN?:string};
 type Member={id:string;display_name:string;role:'admin'|'player';created_at:number};
 class ApiError extends Error{constructor(public status:number,message:string){super(message);}}
@@ -74,7 +75,14 @@ export async function trailApi(request:Request,env:Bindings){
     }
     if(path==='/api/trail/admin/players'&&request.method==='GET'){
       if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');
-      const rows=await db.prepare('SELECT m.id,m.display_name,m.role,m.created_at,p.revision FROM trail_members m LEFT JOIN trail_players p ON p.id=m.id ORDER BY m.created_at DESC LIMIT 100').all();return json({players:rows.results});
+      const q=url.searchParams.get('q')||'';if(q.length>80)throw new ApiError(400,'Search is too long');
+      const rows=await db.prepare('SELECT m.id,m.display_name,m.role,m.created_at,p.revision FROM trail_members m LEFT JOIN trail_players p ON p.id=m.id WHERE m.display_name LIKE ? OR m.id=? ORDER BY m.created_at DESC LIMIT 100').bind('%'+q+'%',q).all();return json({players:rows.results});
+    }
+    if(path==='/api/trail/admin/player'&&request.method==='GET'){
+      if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');return json(await inspectPlayer(db,url.searchParams.get('id')||''));
+    }
+    if(path==='/api/trail/admin/player'&&request.method==='POST'){
+      if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');const input=await body(request);return json(await editPlayer(db,id,input.owner,input.revision,input.action,input));
     }
     if(path==='/api/trail/balance'&&request.method==='GET')return json(await loadBalance(db));
     if(path==='/api/trail/admin/balance'&&request.method==='PUT'){

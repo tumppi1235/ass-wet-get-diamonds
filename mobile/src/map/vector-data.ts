@@ -19,7 +19,7 @@ export function relicData(game: GameState, point: Point, selected?: string, capt
   const found = new Set(game.collection.map(r=>r.id));
   const relics = new Map<string,Relic>((game.sharedSpawnsOnly?[]:LANDMARKS).map(r=>[r.id,r]));
   for (const r of Object.values(game.revealed)) if(r) relics.set(r.id,r);
-  for (const r of game.collection) relics.set(r.id,r);
+  for (const r of game.collection) if(r.source!=='Admin test grant')relics.set(r.id,r);
   return collection([...relics.values()].map(r=>({ ...feature({type:'Point',coordinates:coordinates(relicPoint(r))},{
     relicId:r.id, name:r.name, landmark:r.landmark || r.name, rarity:r.rarity, icon:relicIcon(r.name),
     collected:found.has(r.id), searched:!!game.searched[r.id], selected:r.id===selected, collectable:r.id===capturable,

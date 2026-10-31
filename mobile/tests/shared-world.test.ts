@@ -13,6 +13,8 @@ import {applyWorldEvent} from '../../dev-server/trail/world-store';
 import {spawnVisibleTo} from '../src/game/spawns';
 import {relicData} from '../src/map/vector-data';
 import {RawLocationSession} from '../src/location/raw-session';
+import {editPlayer} from '../../dev-server/trail/player-admin';
+import {emergingArchetype} from '../src/game/archetypes';
 
 test('TR-003/004/008/015/016/018 deterministic world windows, personal rolls and capped density stay independent',()=>{
   const place=LANDMARKS[0],now=Date.now(),a=generateWorldSpawn(place,now),b=generateWorldSpawn(place,now);
@@ -93,6 +95,59 @@ test('TR-146/153 shared raw GPS transport recovers after suspension and stalls w
   now+=5000;session.resume();await Promise.resolve();assert.equal(starts,2);assert.equal(removals,1);
   callbacks[0]({latitude:62.24,longitude:25.74,timestamp:now,accuracy:5});assert.equal(received,1,'late replaced callback is ignored');
   now+=30000;session.tick();await Promise.resolve();assert.equal(starts,3);session.stop();assert.equal(removals,3);
+});
+
+test('TR-034/035/057/118 admin player edits are scoped, validated, backed up and recoverable without changing other accounts',async()=>{
+  const{db,sql}=database(),env={DB:db as never,TRAIL_ENV:'development',TRAIL_ADMIN_EMAIL:'owner@example.invalid'};
+  const call=async(owner:string,path:string,input?:unknown)=>{const r=await trailApi(new Request('https://dev.example/api/trail/'+path,{method:input?'POST':'GET',headers:{'oai-authenticated-user-id':owner,'oai-authenticated-user-email':owner==='admin'?'owner@example.invalid':'player@example.invalid',origin:'https://dev.example'},...(input?{body:JSON.stringify(input)}:{})}),env);return{status:r.status,data:await r.json()};};
+  for(const owner of ['admin','first','second'])await call(owner,'me',{displayName:owner});
+  const second=await call('second','world');const detail=await call('admin','admin/player?id=first');assert.equal(detail.status,200);
+  assert.equal((await call('first','admin/player?id=second')).status,403);
+  const result=await call('admin','admin/players?q=fir');assert.deepEqual(result.data.players.map((p:{id:string})=>p.id),['first']);
+  const edit=(revision:number,action:string,extra={})=>call('admin','admin/player',{owner:'first',revision,action,...extra});
+  assert.equal((await edit(0,'inventory-add',{type:'Unknown',rarity:'Rare'})).status,400);assert.equal(sql.prepare('SELECT COUNT(*) AS n FROM trail_backups').get()!.n,0);
+  const granted=await edit(0,'inventory-add',{type:'Rune',rarity:'Rare'});assert.equal(granted.status,200);assert.equal(granted.data.world.game.collection.length,1);assert.equal(granted.data.world.game.progression.xp.perception,0);
+  const itemId=granted.data.world.game.collection[0].id;
+  const modified=await edit(1,'inventory-edit',{itemId,type:'Crown',rarity:'Legendary'});assert.equal(modified.data.world.game.collection[0].name,'Crown');
+  const removed=await edit(2,'inventory-remove',{itemId});assert.equal(removed.data.world.game.collection.length,0);
+  const restored=await edit(3,'restore',{backupId:removed.data.backupId});assert.equal(restored.data.world.game.collection[0].name,'Crown');
+  assert.equal((await edit(3,'backup')).status,409,'stale admin views cannot overwrite a live player');
+  assert.equal((await edit(4,'attributes',{xp:{exploration:-1}})).status,400);
+  const xp={exploration:100,power:50,agility:10,endurance:25,perception:5,fellowship:0};const attributes=await edit(4,'attributes',{xp});assert.deepEqual(attributes.data.world.game.progression.xp,xp);
+  const other=await call('second','world');assert.deepEqual(other.data,second.data);
+  assert.equal(sql.prepare('SELECT COUNT(*) AS n FROM trail_backups WHERE owner=?').get('second')!.n,0);
+  const rows=sql.prepare('SELECT details FROM trail_audit').all();assert.equal(rows.length,5);assert.ok(rows.every(r=>JSON.parse(String(r.details)).backupId));
+  assert.equal((await call('first','admin/player',{owner:'second',revision:0,action:'reset-exploration'})).status,403);
+});
+
+test('TR-039 exploration resets retain paid rewards and permanent world evidence; unsafe wallet restoration is refused',async()=>{
+  const{db,sql}=database(),binding=db as never,now=Date.now();
+  sql.prepare('INSERT INTO trail_members(id,display_name,role,created_at) VALUES(?,?,?,?)').run('one','One','player',now);
+  const state=newDevWorld();state.game.gold=10;state.game.visits={'0,0':1};state.game.progression!.xp.exploration=5;
+  sql.prepare('INSERT INTO trail_players(id,state,revision,updated_at) VALUES(?,?,0,?)').run('one',JSON.stringify(state),now);
+  sql.prepare('INSERT INTO trail_visits(tile,owner,first_at,last_at) VALUES(?,?,?,?)').run('0,0','one',now,now);
+  sql.prepare('INSERT INTO trail_claims(tile,owner,price,revision,updated_at) VALUES(?,?,?,1,?)').run('0,0','one',3,now);
+  const reset=await editPlayer(binding,'admin','one',0,'reset-exploration',{},now);assert.equal(reset.world.game.gold,10);assert.deepEqual(reset.world.game.visits,{});
+  assert.equal(sql.prepare('SELECT price FROM trail_claims WHERE tile=?').get('0,0')!.price,3,'global price and ownership survive map reset');
+  const geo=G.geo(125,125),visit=await applyWorldEvent(binding,'one','return:after:reset',1,{kind:'gps',fix:{latitude:geo.lat,longitude:geo.lon,accuracy:5,timestamp:now,speed:0}},now);
+  assert.equal(visit.receipt.awards.exploration,undefined);assert.equal(visit.world.game.gold,10);
+  const changed=JSON.parse(sql.prepare('SELECT state FROM trail_players WHERE id=?').get('one')!.state as string);changed.game.gold=9;sql.prepare('UPDATE trail_players SET state=? WHERE id=?').run(JSON.stringify(changed),'one');
+  await assert.rejects(()=>editPlayer(binding,'admin','one',2,'restore',{backupId:reset.backupId},now),/Wallet or world claims changed/);
+  assert.equal(sql.prepare('SELECT revision FROM trail_players WHERE id=?').get('one')!.revision,2,'rejected recovery changes nothing');
+});
+
+test('TR-056 emerging archetypes describe independent attribute levels without changing progression',()=>{
+  const world=newDevWorld(),progression=world.game.progression!;assert.equal(emergingArchetype(progression),'New explorer');
+  progression.xp.exploration=100;const before=JSON.stringify(progression);assert.equal(emergingArchetype(progression),'Pathfinder');assert.equal(JSON.stringify(progression),before);
+  progression.xp.power=100;assert.equal(emergingArchetype(progression),'All-round explorer');progression.xp.endurance=1000;assert.equal(emergingArchetype(progression),'Long-distance explorer');
+});
+
+test('shared saves from the first service release gain empty attributes without replacing their wallet or inventory',async()=>{
+  const{db,sql}=database(),now=Date.now();sql.prepare('INSERT INTO trail_members(id,display_name,role,created_at) VALUES(?,?,?,?)').run('legacy','Legacy','player',now);
+  const world=newDevWorld();delete world.game.progression;world.game.gold=7;world.game.visits={'0,0':1};
+  sql.prepare('INSERT INTO trail_players(id,state,revision,updated_at) VALUES(?,?,3,?)').run('legacy',JSON.stringify(world),now);
+  const response=await trailApi(new Request('https://dev.example/api/trail/world',{headers:{'oai-authenticated-user-id':'legacy'}}),{DB:db as never,TRAIL_ENV:'development'}),data=await response.json();
+  assert.equal(data.world.game.gold,7);assert.deepEqual(data.world.game.visits,{'0,0':1});assert.equal(data.revision,3);assert.equal(Object.values(data.world.game.progression.xp).every(v=>v===0),true);
 });
 
 function database(){

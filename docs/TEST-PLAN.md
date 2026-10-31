@@ -53,3 +53,5 @@ Use an outdoor public path in Jyväskylä with precise location enabled. Record 
 `npm --prefix mobile run quality` writes actual exit codes, logs, JUnit XML and summary to ignored `test-results/`. CI uploads these under Actions for both environments and puts the summary on the run page. Use the issue template for field observations; include the tested commit. Keep automated PASS, manual PENDING, known browser limitation and planned feature separate.
 
 Shared spawn evidence: DEV-SPAWNS.md. SQL covers two-player first visits, capture/replay, retirement, pages and zero-write simulation; physical return visits pending.
+
+Shared admin/player evidence: DEV-PLAYER-TOOLS.md. Test authorization, invalid items/attributes, stale revision, snapshot restore, isolation, reset no-reroll and unsafe wallet recovery rejection. Local grant/restore and Character/Collection tabs checked; physical acceptance pending.

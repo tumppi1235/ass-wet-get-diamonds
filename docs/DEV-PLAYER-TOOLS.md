@@ -1,0 +1,15 @@
+# Shared dev player tools and journal
+
+TR-034/035/039/055/056/057/084/118. Dev only; original profiles and production remain unchanged.
+
+The protected admin page searches display names/IDs, inspects a selected account, grants/edits/removes supported test inventory items and edits/resets six XP totals. Test grants never award physical find evidence or XP and do not place fake collected markers on the map. Every operation checks the expected player revision and atomically records a before-state recovery snapshot plus audit details. An ordinary player cannot inspect/edit another account.
+
+“Reset explored map and route” stops the quest and clears that player's map coverage, route and current outing counters. It preserves gold, inventory, attributes, ownership, unique visitor history and permanent reward eligibility. Returning after a reset cannot farm first-tile XP, gold or another personal drop. Other accounts and production are untouched.
+
+Snapshot recovery can restore mutable player progress, inventory edits and attributes while leaving permanent world receipts/ownership unchanged. It stops tracking and requires fresh GPS. Recovery refuses if the wallet or world claims changed after the snapshot, rather than restoring spent gold or taking ownership from another player. This is a tested per-player dev recovery tool, **not** a full-database disaster-recovery/large-account reconciliation workflow. Backups are retained; retention/export policies and infrastructure-wide restoration remain TR-118.
+
+Shared mode has Character and Collection drawer tabs, keeping the map visible. Character shows six levels, XP/next thresholds, lifetime accepted distance, reached tiles, genuine finds and observed minutes. Descriptive archetypes follow the highest attribute level and impose no activity restrictions. Collection uses the existing original pixel icons, larger/premium borders for rarer items, and pages items in groups of 24. Power/Fellowship earning still awaits supported elevation/cooperative evidence.
+
+Local browser checks against the official loopback test identity: inspect Shared QA, grant a Rare Rune, restore its prior snapshot and verify empty inventory again; no GPS was fabricated. Shared Character/Collection tabs and map visibility reviewed at a requested phone-size viewport. Unit/SQL regressions cover permission, invalid item/XP rejection, account isolation, optimistic conflicts, audits/backups, reset no-reroll, unsafe wallet recovery rejection, archetype non-mutation and old shared-save normalization. Full suite now has 72 cases; use the current quality result rather than assuming a field pass. Actual iPhone GPS/compass and Enduro 3 tests remain pending.
+
+The spawn increment at GitHub 47b5bcb was deployed successfully to the existing private dev Site, managed source 540d2d8fc3366706227894bcaa51152ed4e60b5c, saved version appgver_b61778d2ecc88191b7a90baedc66138c. Hosted zero-write simulation returned 501 positions and native database inspection confirmed the new claim ledger. GitHub runs 41218513018/41218513017/41218513108 all succeeded.

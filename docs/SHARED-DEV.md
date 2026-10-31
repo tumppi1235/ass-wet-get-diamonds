@@ -32,6 +32,8 @@ Both modes get full geographic credit and physical distance/gold; only configure
 
 The separate Vinext admin client at `/admin-world` uses the same protected API. It lists shared players, edits validated balance values and displays audit records. Every configuration edit creates a new immutable revision plus an actor/time/before-after audit, and affects only future events. It does not recalculate previously awarded XP. Legacy `/admin` remains device-local administration.
 
+Player inspection/inventory/attribute tools, snapshot recovery and shared Character/Collection are described in DEV-PLAYER-TOOLS.md. Old shared records missing initial attribute totals are read with zero defaults without rewriting wallets/inventories or advancing their revision.
+
 ## Tests and known limits
 
 `shared-world.test.ts` applies the actual SQL migrations to isolated SQLite databases and tests authorization, own-origin writes, role escalation rejection, development environment guard, receipts/revisions, lost-response replay after reload, account namespace separation, Foot/Bicycle effort, coarse/gap exclusion, shared purchases and audited non-retroactive configuration changes. A browser-only native-fetch binding error found in local UI testing has its own regression.

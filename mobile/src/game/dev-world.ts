@@ -11,7 +11,7 @@ import type {LocationFix,PlayerPosition} from '../location/tracker';
 export type Movement='foot'|'bicycle';
 export type DevBalance={revision:string;tileXp:number;regionXp:number;findXp:number;enduranceMetersPerXp:number;footFactor:number;bicycleFactor:number;footMaxSpeed:number;bicycleMaxSpeed:number};
 export const DEV_BALANCE:DevBalance={revision:'dev-experimental-1',tileXp:5,regionXp:3,findXp:10,enduranceMetersPerXp:250,footFactor:1,bicycleFactor:.4,footMaxSpeed:7,bicycleMaxSpeed:22};
-export type DevWorld={version:1;game:GameState;movement:Movement;previous:PlayerPosition|null;anchor:PlayerPosition|null;latestGpsValid:boolean;regions:Record<string,true>;xpRemainder:number;configRevision:string};
+export type DevWorld={version:1;game:GameState;movement:Movement;previous:PlayerPosition|null;anchor:PlayerPosition|null;latestGpsValid:boolean;regions:Record<string,true>;xpRemainder:number;configRevision:string;rewardedTiles?:Record<string,boolean>};
 export type DevEvent={kind:'start';movement:Movement}|{kind:'stop'}|{kind:'gps';fix:LocationFix}|{kind:'capture'}|{kind:'claim';tile:string;price:number};
 export type DevReceipt={accepted:boolean;reason:string;tile?:string;awards:Partial<Record<Attribute,number>>;collected?:string;balanceRevision:string};
 export function validateBalance(value:DevBalance){
@@ -46,7 +46,8 @@ export function reduceDevEvent(original:DevWorld,event:DevEvent,now:number,balan
     let startSegment=!world.previous,distance=0;
     if(world.previous){const seconds=(f.timestamp-world.previous.timestamp)/1000,d=groundDistance(position,world.previous);if(seconds>30){startSegment=true;world.anchor=null;}else if(d>Math.max(35,seconds*speed)){receipt.reason='implausible GPS jump';return{world,receipt};}}
     if(world.anchor){const d=groundDistance(position,world.anchor);if(d>=8){distance=d;world.anchor=position;}}else world.anchor=position;
-    world.previous=position;world.latestGpsValid=true;const c=G.cell(position.x,position.y),tile=G.key(c.i,c.j),first=!(s.visits[tile]>0),active=s.adventure?.status==='active';
+    world.previous=position;world.latestGpsValid=true;const c=G.cell(position.x,position.y),tile=G.key(c.i,c.j),first=!(world.rewardedTiles?.[tile]||s.visits[tile]>0),active=s.adventure?.status==='active';
+    if(!first&&!(s.visits[tile]>0))s.visits[tile]=1;
     applyExplorationFix(s,{position,distance,startSegment,eligible:true,reason:'accurate'});
     // Discovery and both movement categories receive full geographic credit.
     if(first){if(!active){s.visits[tile]=1;s.lastCell=tile;}award('exploration',balance.tileXp);}
