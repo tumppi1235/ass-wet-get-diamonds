@@ -21,5 +21,6 @@ Source baseline: [shared discussion](https://chatgpt.com/share/6ae5b6f5-4554-83e
 | D-015 | User tests Chrome on iPhone and chooses browser testing for now, without Apple Developer access | Browser persistence/recovery is implementable; uninterrupted locked-screen GPS needs a native/independent recording path |
 | D-016 | Repair TR-153/TR-154 and persist/recover adventures before new gameplay | No changes to gold rates, claim prices or search chance to conceal GPS bugs |
 | D-017 | Add development/production client variants, dual CI reports and exact-artifact promotion; publish test evidence to GitHub | No silent migration of existing player data; full server isolation remains planned; physical tests remain distinct from simulated GPS |
+| D-018 | Continue priority-led work on `develop` and the private dev Site; advance independent P0 data/XP foundations while phone checks are pending | Do not deploy this iteration to production; do not invent XP earning rates or historical effort. Compass orientation is TR-165/P1 backlog. |
 
 Open decisions: final spawn/rarity formulas, national tile projection/migration, shared identity/backend provider, supported Garmin bridge, Strava permissions, exact boss individual minimums and activity-window boundaries, XP earning rates, amulet thresholds, long-term location-data retention, native distribution route.

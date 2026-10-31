@@ -15,6 +15,7 @@ Working title: Trail Relics. Vision: an outdoor RPG where greater effort and exp
 | [GAME-ROADMAP.md](GAME-ROADMAP.md) | Original idea memo, retained for provenance |
 | [WEB-PLAYTEST.md](WEB-PLAYTEST.md) | Current player instructions |
 | [TEST-PLAN.md](TEST-PLAN.md) | Regression register and phone test cases |
+| [DEV-FOUNDATIONS.md](DEV-FOUNDATIONS.md) | Development-only spawn, lifetime evidence and XP foundation scope |
 | [P0-EXPLORATION-REPORT.md](P0-EXPLORATION-REPORT.md) | Root causes, repair evidence and remaining device checks |
 
 The source discussion was reviewed in full (38 user/assistant exchanges). Its final rules take precedence over its earlier proposals. Backlog items and native/integration ambitions are not claims about the current browser playtest.

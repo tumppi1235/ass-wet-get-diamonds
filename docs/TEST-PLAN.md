@@ -24,6 +24,11 @@ Every release records the source SHA, browser/device, date, expected/actual beha
 | FUT-01 | Appearance / effort rewards | Spawn/detection/collection separate; higher effort/diversity improves configured reward opportunities | Backlog TR-002–025/070–091; NOT IMPLEMENTED |
 | FUT-02 | Garmin / Strava | Offline retry, dedup phone/watch/imports, one inventory, normal activity integration | TR-155–164; NOT IMPLEMENTED |
 | FUT-03 | Guilds / raids / bosses / NPC | Physical boss visits, asynchronous 24h window, one activity/player; no fake combat/effort bypass | TR-E04 and original idea memo; NOT IMPLEMENTED |
+| COMPASS-01 | TR-165 actual heading | Rotate phone through north/east/south/west: heading and artefact arrow respond relative to facing; no jump at north wraparound. Denied/unavailable/stale sensor shows an explicit fallback. | Backlog; iPhone Chrome permission/orientation field test PENDING |
+| SPAWN-01 | TR-002 contract | Stable spawn identity separate from tile; valid position, expiry and owner policy; legacy landmarks unchanged | `foundations.test.ts`; server generation NOT IMPLEMENTED |
+| LIFE-01 | TR-078 evidence | Retain accepted GPS distance/time/tile/find history across quests/reloads; no duplicate timestamp/find, gap mileage/time or demo evidence | Foundation and account suites; phone PENDING |
+| XP-01 | TR-051/087 | Six independent saved XP totals, exact quadratic boundaries and environment config isolation; no unapproved XP awards | Foundation/account suites; XP earning NOT IMPLEMENTED |
+| SAVE-01 | Legacy migration | Preserve old gold, visits, inventory and claim receipts; do not infer lifetime mileage from current quest; legacy evidence distinguished | `foundations.test.ts`; dev UI/phone retest PENDING |
 
 ## iPhone Chrome field pass
 

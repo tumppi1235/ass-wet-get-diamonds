@@ -2,6 +2,9 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { randomBytes } from 'node:crypto';
 import { LocalAccounts, DATABASE_KEY, SESSION_KEY, type Storage } from '../src/accounts/local-accounts';
+import G from '../src/game/engine';
+import {ensureLifetime} from '../src/game/achievements';
+import {newProgression} from '../src/game/progression';
 class Memory implements Storage { items = new Map<string, string>(); async getItem(key: string) { return this.items.get(key) ?? null; } async setItem(key: string, value: string) { this.items.set(key, value); } async removeItem(key: string) { this.items.delete(key); } }
 test('upgrading an existing installation adds Tumppi without replacing passwords or saved progress',async()=>{
   const provisioned=await import('../src/accounts/provisioned-players.json');
@@ -34,10 +37,12 @@ test('local accounts keep credentials, roles, sessions and player progress separ
   await assert.rejects(service.progress(player.token, admin.user.id), /different profile/);
   await assert.rejects(service.saveProgress(admin.token, admin.user.id, { meters: 99999 }), /session/);
   assert.equal(await service.progress(player.token, player.user.id), null);
-  const game = { meters: 500, gold: 5, goldMetres: 12, visits: { '2,2': 1 }, collection: [{ id: '-1,0' }] }; const saving = service.saveProgress(player.token, player.user.id, game); game.meters = 999; await saving;
-  assert.deepEqual(await service.progress(player.token, player.user.id), { meters: 500, gold: 5, goldMetres: 12, visits: { '2,2': 1 }, collection: [{ id: '-1,0' }] }, 'save captures gold and an immutable progress snapshot');
+  const additions={lifetime:ensureLifetime(G.initial(),1000),progression:newProgression()};additions.progression.xp.exploration=100;
+  const game = { ...additions, meters: 500, gold: 5, goldMetres: 12, visits: { '2,2': 1 }, collection: [{ id: '-1,0' }] }; const saving = service.saveProgress(player.token, player.user.id, game); game.meters = 999; await saving;
+  assert.deepEqual(await service.progress(player.token, player.user.id), { ...additions, meters: 500, gold: 5, goldMetres: 12, visits: { '2,2': 1 }, collection: [{ id: '-1,0' }] }, 'save captures gold and an immutable progress snapshot');
   assert.deepEqual(await service.communityVisits(player.token), { '1,1': 1, '-1,0': 1 }, 'own visits are excluded from other players');
   const reloaded = new LocalAccounts(store, async n => randomBytes(n), () => clock); assert.equal((await reloaded.current())?.user.username, 'test');
+  assert.deepEqual(await reloaded.progress(player.token,player.user.id),{...game,meters:500},'lifetime records and all six XP totals survive account-service reload');
   assert.equal((await reloaded.current())?.expiresAt, clock + 8 * 60 * 60 * 1000);
   const created = await service.createProfile('Second', 'Second Explorer', 'Second123!'); assert.equal(created.role, 'player');
   await assert.rejects(service.createProfile('SECOND', 'Duplicate', 'Second123!'), /already/);

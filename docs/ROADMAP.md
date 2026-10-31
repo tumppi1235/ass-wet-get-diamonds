@@ -14,6 +14,8 @@ No new collection conveniences while these remain unverified. The user chose bro
 
 ## M1 — Playable exploration foundation
 
+Development-only iteration authorized on 2026-10-31: TR-002 contract, TR-078 local lifetime evidence, TR-087 quadratic projection and TR-051 save foundations on `develop`. See [DEV-FOUNDATIONS.md](DEV-FOUNDATIONS.md). These independent foundations can advance while the M0 physical phone retest remains pending; no Auto-Collect or probability changes bypass that gate. Production promotion is not authorized by this iteration.
+
 After the browser fix is retested: TR-E01 core spawning/collection, TR-E02 Finland-wide migration and essential TR-E05 lifetime achievements/quadratic XP. Establish environment isolation foundations TR-111–113/115/119 before a shared backend stores real player data. Geographic/world and account contracts precede global visit density and server-authoritative inventory. Preserve existing saves and tile IDs with a migration plan.
 
 ## M2 — Garmin and essential administration

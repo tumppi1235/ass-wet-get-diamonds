@@ -1,6 +1,6 @@
 # Trail Relics canonical product backlog
 
-Updated 2026-10-31 from all 38 exchanges in the [shared planning discussion](https://chatgpt.com/share/6ae5b6f5-4554-83ed-a7a0-5727b4a4f412) and the subsequent iPhone Chrome field report. Preserve TR-001–154. TR-155–164 are explicit connectivity additions because the discussion left Garmin/Strava integration tasks unnumbered; they do not replace earlier IDs.
+Updated 2026-10-31 from all 38 exchanges in the [shared planning discussion](https://chatgpt.com/share/6ae5b6f5-4554-83ed-a7a0-5727b4a4f412), the subsequent iPhone Chrome field report and later requests. Preserve TR-001–154. TR-155–164 capture connectivity additions; TR-165 captures the requested live phone compass. No original IDs are replaced.
 
 Statuses: Backlog (not implemented), Ready (actionable next), In Progress (implementation/device validation outstanding), Blocked (external dependency), Done (stated acceptance scope evidenced), Deferred, Superseded. Priorities retain source story urgency; milestone order and dependencies determine execution. Done below is explicitly client/local scope where stated, not a claim of server/world integration.
 
@@ -29,7 +29,7 @@ Automated repair evidence and remaining iPhone field gates: [P0 report](P0-EXPLO
 | ID | Priority | Status | Story / outcome | Dependencies | Acceptance and implementation notes |
 | --- | --- | --- | --- | --- | --- |
 | TR-001 | P0 | Done | Define shared geographic grid and cell IDs | — | The same coordinate maps to the same stable 250m ID across existing clients; existing saves retain their IDs. Existing prototype uses common 250m IDs; national projection/migration remains TR-026/027. |
-| TR-002 | P0 | Backlog | Create artifact spawn data model | TR-001 | Spawns have stable IDs, tile, type, rarity, creation/expiry and claim policy. |
+| TR-002 | P0 | Done | Create artifact spawn data model | TR-001 | Versioned spawn contract, validated identity/tile/coordinates/type/rarity/timestamps/policy, personal owner and legacy adapter in `game/spawns.ts`; tested in `foundations.test.ts`. Model only: no server generator, shared claims or new live appearances. |
 | TR-003 | P0 | Backlog | Implement deterministic server-side spawn generation | TR-001, TR-002, TR-112 | Identical world inputs yield the same recorded spawns on every client. |
 | TR-004 | P0 | Backlog | Implement rarity tiers and weighted selection | TR-002, TR-003 | Configured weighted rarity selection is repeatable under a seeded test and respects all supported tiers. |
 | TR-005 | P0 | Backlog | Add cell visitation statistics | TR-001, TR-112 | Unique/capped player visitation is stored separately from raw GPS sample counts. |
@@ -71,6 +71,8 @@ Automated repair evidence and remaining iPhone field gates: [P0 report](P0-EXPLO
 | TR-161 | P0 | Backlog | Record distance, speed, elevation and activity metadata | TR-156 | Activity evidence retains the fields needed for future configurable effort rules. |
 | TR-162 | P0 | Backlog | Field-test normal Enduro 3 activity to game tile synchronization | TR-156, TR-158, TR-159, TR-160 | An Enduro 3 field test updates game cells/inventory without phone recording. |
 | TR-163 | P2 | Backlog | Investigate completed-activity Garmin reconciliation | TR-157, TR-160, TR-161 | Current Garmin program/API feasibility and required approvals are verified before reconciliation work. |
+
+| TR-165 | P1 | Backlog | Make the phone compass follow the actual device heading | TR-153 | The compass responds while the phone rotates, shows actual heading and points toward the selected artefact relative to the facing direction. Handle north wraparound, screen orientation, sensor permission and unavailable/stale heading explicitly; label any north-up fallback. Verify on iPhone Chrome. |
 
 ## TR-E02 — Finland-wide Game World
 
@@ -139,7 +141,7 @@ Automated repair evidence and remaining iPhone field gates: [P0 report](P0-EXPLO
 
 | ID | Priority | Status | Story / outcome | Dependencies | Acceptance and implementation notes |
 | --- | --- | --- | --- | --- | --- |
-| TR-051 | P0 | Backlog | Implement player XP, level and six core attributes | TR-078, TR-087 | All six attributes and independent XP totals survive profile reload. |
+| TR-051 | P0 | In Progress | Implement player XP, level and six core attributes | TR-078, TR-087 | Dev saves contain six independent XP totals, with attribute levels/next thresholds in Profile and account reload tests. XP earning and the broader player progression design remain pending; no invented rates or gold-to-XP conversion. |
 | TR-052 | P0 | Backlog | Award attribute XP from verified activities and exploration | TR-051, TR-079 | Verified exploration/activity events grant the correct attribute XP once. |
 | TR-053 | P0 | Superseded | Apply player attributes to boss combat | — | Replaced by TR-070/071: attributes affect loot rather than bypassing physical victory. |
 | TR-054 | P1 | Superseded | Add attribute progression and diminishing returns | — | Consolidated into TR-087/088 and TR-076; do not implement a second progression curve. |
@@ -155,7 +157,7 @@ Automated repair evidence and remaining iPhone field gates: [P0 report](P0-EXPLO
 | TR-075 | P0 | Backlog | Add guaranteed base rewards for boss victories | TR-048 | Every qualifying victory receives the configured base reward. |
 | TR-076 | P1 | Backlog | Add diminishing returns and progression balancing | TR-087, TR-088 | Repeated high levels do not create unbounded loot probability. |
 | TR-077 | P1 | Backlog | Create admin loot-probability simulator | TR-033, TR-071 | The admin simulator reports base chance, relative modifiers and final capped probability. |
-| TR-078 | P0 | Backlog | Record lifetime player achievements and activity statistics | TR-013 | Raw lifetime evidence remains available when XP balance formulas change. |
+| TR-078 | P0 | In Progress | Record lifetime player achievements and activity statistics | TR-013 | Dev records local GPS distance, observed duration, unique tiles/finds and per-adventure totals independently of XP. Demo and gaps excluded; legacy history labeled, unknown distance not guessed. Imported activity/elevation/cooperation evidence and physical phone verification remain pending. See DEV-FOUNDATIONS.md. |
 | TR-079 | P0 | Backlog | Convert verified exploration and activities into attribute XP | TR-078, TR-121 | An event ledger derives the correct XP without duplicate activity rewards. |
 | TR-080 | P0 | Superseded | Implement progressive XP-to-level curves | — | Use the explicitly approved quadratic curve in TR-087. |
 | TR-081 | P1 | Backlog | Add activity-specific XP calculations | TR-079, TR-121 | Activity categories use independently configurable XP earning rules. |
@@ -164,7 +166,7 @@ Automated repair evidence and remaining iPhone field gates: [P0 report](P0-EXPLO
 | TR-084 | P1 | Backlog | Display lifetime achievements and attribute progression | TR-051, TR-078 | Players can inspect the achievements underlying their XP. |
 | TR-085 | P1 | Backlog | Add attribute progression simulator to admin console | TR-033, TR-079 | Simulation can replay representative activity histories with versioned rules. |
 | TR-086 | P1 | Backlog | Track geographic adventure diversity | TR-026, TR-078 | Large-cell/region spread is tracked separately from small-tile coverage. |
-| TR-087 | P0 | Backlog | Implement quadratic attribute XP progression | TR-078 | Cumulative XP equals configurable coefficient × (level−1)^2, initially 25. |
+| TR-087 | P0 | Done | Implement quadratic attribute XP progression | TR-078 | `progression.ts`: cumulative XP = coefficient × (level−1)^2, initial 25; levels/remaining XP and independent dev/prod curve configs. Exact threshold, invalid input and large integer tests pass. Earning rules remain TR-079/091. |
 | TR-088 | P1 | Backlog | Apply diminishing returns to attribute-based loot bonuses | TR-087, TR-071 | Attribute loot bonuses approach a configured cap and remain relative modifiers. |
 | TR-089 | P1 | Backlog | Add XP curve configuration and visualization to the admin console | TR-033, TR-087 | Admins can graph/change versioned curves without losing raw achievement data. |
 | TR-090 | P1 | Backlog | Simulate progression for casual, regular and highly active players | TR-087, TR-089 | Progression reports compare realistic casual, regular and highly active histories. |
@@ -203,7 +205,7 @@ Automated repair evidence and remaining iPhone field gates: [P0 report](P0-EXPLO
 | TR-112 | P0 | In Progress | Create separate databases, storage and game-world state | TR-111 | Mutable world/player data and storage are isolated, with an isolation test. |
 | TR-113 | P0 | Backlog | Configure environment-specific APIs, secrets and authentication | TR-111 | Clients cannot mix environment APIs, auth or secret scopes. |
 | TR-114 | P1 | In Progress | Implement automated build, test and deployment pipelines | TR-111 | Versioned builds run required validation before a deployable artifact is produced. |
-| TR-115 | P0 | Backlog | Support independent game-balance configurations for Dev and Prod | TR-111, TR-033 | A development balance edit cannot alter production parameters. |
+| TR-115 | P0 | In Progress | Support independent game-balance configurations for Dev and Prod | TR-111, TR-033 | Progression curves have independent environment/version configuration, tested against mutation leakage. Other balance settings and authenticated admin configuration remain pending. |
 | TR-116 | P1 | In Progress | Create a controlled Dev → Prod release process | TR-114, TR-115 | A specific validated revision is promoted with an auditable rollback path. |
 | TR-117 | P1 | Backlog | Add production monitoring, error logging and alerts | TR-113 | Production failures are observable without leaking precise location histories. |
 | TR-118 | P0 | Backlog | Implement database backups, migrations and rollback procedures | TR-112 | A tested migration/backup/restore path preserves player inventories and progress. |
