@@ -27,7 +27,10 @@ Approved cumulative progression: `XP(level) = coefficient × (level - 1)^2`, ini
 
 Reaching a boss tile records presence and shows the boss; it does not activate a fight. Explicit activation starts a configurable window, initially 24 hours. At most five players participate asynchronously. Each supplies exactly one continuous qualifying activity, including normal pauses. Every participant must personally visit the boss tile during that activity and within the encounter window. Contributions need verified effort and tier-specific minimums; party size scales difficulty. Each qualifying victor gets an individual loot roll/base reward.
 
-Distance/elevation/exploration objectives may be combined later. The current shared encounter policy implements these targets; final balance still needs field validation:
+Dev supports an optional distinct-activity-tile exploration minimum alongside
+distance (DEV-BOSS-OBJECTIVES.md); legacy bosses remain distance-only. Elevation
+objectives remain pending. The current shared encounter policy implements these
+targets; final balance still needs field validation:
 
 | Tier | Solo foot km | 2 players each | 3 players each | 5 players each |
 | --- | ---: | ---: | ---: | ---: |

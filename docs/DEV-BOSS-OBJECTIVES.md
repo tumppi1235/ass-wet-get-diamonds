@@ -21,7 +21,8 @@ objective bosses are used, do not roll the server back to code that ignores them
 use a forward fix. Older clients cannot bypass the new server qualification rule.
 
 Insufficient exploration may still deal physical damage, but earns no personal
-loot/Fellowship. Zero HP without any qualified participant fails. A teammate's
+loot/Fellowship. Zero HP without a qualifying participant cannot settle victory;
+a fully submitted unsuccessful party fails. A teammate's
 qualified victory does not qualify an under-minimum player. Existing damage,
 loot odds, immediate settlement, one-activity and idempotent-claim rules remain.
 
@@ -36,3 +37,25 @@ pure simulation/preview checks: legacy/default validation; distinct/windowed
 counting; qualifying victory and loot replay; sufficient damage with insufficient
 exploration and rejected loot. All 192 application regressions, mobile types/lint
 and server types/lint pass. Physical/cooperative GPS acceptance remains pending.
+
+## Released as private dev 29
+
+[Shared dev](https://trail-relics-dev.tuomasl.chatgpt.site/shared) now runs this
+increment. [Exact release and CI evidence](evidence/dev29-boss-objectives-release.json)
+records successful publication, all four green GitHub workflows, 192 regressions,
+preserved private access/runtime revision 2 and the complete Finland dataset.
+The archive passes both limits at 198,170,304 input / 264,764,928 expanded bytes.
+Retained assets now explicitly include dev 27 and 28; no old player data is copied.
+
+Hosted zero-write combat checks used 20km Foot and an eight-tile objective: six
+synthetic tiles produced 40/40 HP but NOT YET, zero qualified; eight tiles produced
+VICTORY and one qualified. No live activity or player reward was created.
+
+An explicit dev placement added Lesser Kivenkulkija at Harju lookout paths with
+eight distinct activity tiles, the unchanged default 20 equivalent km solo target
+and 24-hour encounter window. It is available until November 8, 21:58 Finnish time
+as displayed. Player details show distance + exploration; the existing Kirkkopuisto
+Metsänvartija still shows distance-only. Tumppi retained 0 gold, 0.00 km, 0 finds,
+tile 0,0, levels 1/1/1 and stopped quest. Only the new definition and placement
+audit were written. No draft/activation, activity, contribution, loot, claim,
+access or recovery operation was performed. Production remains public version 10.

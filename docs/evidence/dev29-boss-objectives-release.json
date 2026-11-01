@@ -1,0 +1,82 @@
+{
+  "releasedAt": "2026-11-01T19:57:28.852653+00:00",
+  "version": 29,
+  "url": "https://trail-relics-dev.tuomasl.chatgpt.site/shared",
+  "appSource": "c5fa9c0e0fa9cd5c893e3a0f4ba2dc33a6904ca4",
+  "mechanicsSource": "ed6f92707ac669e701a589b791fab0fe0cac30d3",
+  "hostingSource": "ee0d60b51a5fc120a9b654eb59e7a6751c22a4ba",
+  "savedVersion": "appgprj_6ae5c02d5c008191b51fda4f4f39c7a5~appgver_a5eb3c1c916881918abab45db84d9bff",
+  "deployment": "appgdep_6ae7998ac33c819182a8b89a6a1aab1a",
+  "status": "succeeded",
+  "runtimeRevision": 2,
+  "audience": "owner-private; unchanged",
+  "archive": {
+    "sha256": "967ef0155886dfbbdafacde0c4bd6d784efce802c223c19ad304cb6fd8e9e755",
+    "compressedBytes": 198170304,
+    "expandedBytes": 264764928,
+    "normalized": {
+      "archive_format": "tar",
+      "sediment_file_id": "file_0000000096fc821080ddfe99a9022195",
+      "content_hash": "sha256:a817bca4d9349a56ca657a20b617fc60409621baf6f352205604250f86e69e2b",
+      "size_bytes": 264775680,
+      "file_count": 13079
+    }
+  },
+  "checks": {
+    "regressions": 192,
+    "mobileTypes": true,
+    "mobileLint": true,
+    "serverTypes": true,
+    "serverLint": true,
+    "workerBuild": true,
+    "graph": {
+      "nodes": 3292,
+      "relationships": 7967,
+      "indexedFiles": 281
+    },
+    "ci": [
+      {
+        "name": "Offline route network",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/tumppi1235/ass-wet-get-diamonds/actions/runs/41343803081"
+      },
+      {
+        "name": "Project knowledge graph",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/tumppi1235/ass-wet-get-diamonds/actions/runs/41343803107"
+      },
+      {
+        "name": "Shared development backend",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/tumppi1235/ass-wet-get-diamonds/actions/runs/41343803189"
+      },
+      {
+        "name": "Web checks and release candidates",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/tumppi1235/ass-wet-get-diamonds/actions/runs/41343803113"
+      }
+    ]
+  },
+  "hostedQA": {
+    "simulation": "20km Foot with minimum 8 distinct tiles: 6 synthetic tiles returned NOT YET, 40/40 HP, 0/1 qualified; 8 tiles returned VICTORY, 40/40 HP, 1/1 qualified. Both reported world writes 0.",
+    "placement": "One explicit dev-only Lesser Kivenkulkija placed at sourced Harju lookout paths with distinct activity tile minimum 8, no weakness bonus, default 20 equivalent km solo target and 24-hour encounter window. Availability until November 8 21:58 as displayed in Europe/Helsinki.",
+    "playerView": "Kivenkulkija displays distance + exploration: 8 distinct GPS tiles in one activity. Existing Metsänvartija remains distance-only. Map shows both bosses.",
+    "profile": "Tumppi unchanged: 0 gold, 0.00 km, 0 finds, tile 0,0, levels 1/1/1; quest stopped.",
+    "writes": "Boss definition and placement audit only. No draft, activation, quest/GPS event, contribution, loot, wallet, claim, access, maintenance or recovery changes."
+  },
+  "compatibility": "No SQL migration. Missing optional objective means distance-only; positive requirements fail closed on missing evidence. Do not roll the server back to code that ignores objectives once used.",
+  "production": {
+    "version": 10,
+    "audience": "public"
+  },
+  "pending": [
+    "Physical/cooperative GPS, contribution and loot acceptance",
+    "Phone-sized/native field validation",
+    "Reliable elevation objectives",
+    "Independent Garmin/Strava evidence"
+  ]
+}

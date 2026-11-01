@@ -2,9 +2,15 @@
 
 ## Current system
 
-`mobile/` is the Expo 58 / React Native app and Expo Router web export. The public playtest is static hosting. `src/accounts/` implements installation-local PBKDF2 profiles, session checks and per-profile saved games. `src/game/` wraps the shared prototype engine in `public/engine.js`; gold, claims, landmarks and persistence live here. `src/location/` validates GPS fixes, while `src/map/` converts the same geographic coordinates/tile IDs into map overlays. Web uses MapLibre with OSM Shortbread vectors and approved Mapzen terrain; native/fallback uses the existing lightweight renderer. `garmin/source/` contains a standalone Connect IQ prototype, not an authenticated link to the phone account.
+`mobile/` is the Expo 58 / React Native app and Expo Router web export. The public playtest uses Sites Worker hosting with static Expo assets. `src/accounts/` implements installation-local PBKDF2 profiles, session checks and per-profile saved games. `src/game/` wraps the shared prototype engine in `public/engine.js`; gold, claims, landmarks and persistence live here. `src/location/` validates GPS fixes, while `src/map/` converts the same geographic coordinates/tile IDs into map overlays. Web uses MapLibre with OSM Shortbread vectors and approved Mapzen terrain; native/fallback uses the existing lightweight renderer. `garmin/source/` contains a standalone Connect IQ prototype, not an authenticated link to the phone account.
 
-There is no production game API or cloud inventory. Local ownership and visit sharing operate only between profiles in one installation. The user-authorized release enables Finland eligibility and a finite 501-destination catalog in both builds, including 28 Rantalantie/Haukivuori additions. Production and development retain separate origins and storage keys. See FINLAND-PLAYTEST.md and PRODUCTION-FINLAND-RELEASE.md for geographic compatibility and remaining national service/device work.
+Production version 10 serves the Expo assets and an opt-in shared game API through
+Sites Worker/D1. Shared profiles, inventory and encounters use platform identity
+and a separate production database; dev has its own database, origin, journals and
+recovery generation. Original phone-local profiles/ownership remain installation
+local and are not automatically migrated. The Finland catalog and existing tile
+IDs remain compatible. See PRODUCTION-WORLD-RELEASE.md for promotion provenance,
+authentication validation limits and separation from dev data.
 
 Offline dev routing foundations: `tools/route_network.py` and `Build-RouteNetwork.py`
 extract conservative mode/direction-aware OSM node topology into checksummed

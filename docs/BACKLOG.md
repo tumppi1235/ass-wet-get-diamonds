@@ -30,6 +30,12 @@ All actions below are unassigned until someone starts them.
 | 2 | TR-041 | Complete a real named-tester invitation/access acceptance run after recipients are supplied and authorized. Existing-profile admin controls are implemented. | Recorded role/access results; preserve audience unless the exact change is authorized. |
 | 3 | TR-118 | Exercise the reviewed provider recovery/drain/retention procedure when supported. Server generation and whole-ledger sealing are implemented. | Actual provider evidence, externally pinned baseline/generation, complete-ledger seal and replay checks; no fabricated hosted restore pass. |
 
+Latest boss increment is privately released as **dev 29**: server-counted distinct
+activity-tile exploration minimums alongside locked distance requirements. All
+**192** regressions and four GitHub workflows pass. Harju Kivenkulkija requires
+eight distinct tiles; existing bosses remain unchanged. Physical/cooperative
+validation and elevation are still open. See [boss objective evidence](DEV-BOSS-OBJECTIVES.md).
+
 Latest software increment covers all four requested actions: external recovery
 generation/complete-ledger seal, incremental route loading, detected rarity clues
 and existing tester controls, released privately as **dev version 27**. **180**
