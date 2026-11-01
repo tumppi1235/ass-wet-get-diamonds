@@ -98,3 +98,63 @@ closure refresh during a real outing, native/fallback full field checks, actual
 Garmin/other navigation import, verified difficulty/access, broader routing load
 and long/dense-area optimisation. TR-094/098/101 remain In Progress at their full
 acceptance scope. This does not solve browser screen-lock GPS or provider sync.
+
+## Publication constraints and current attempt — 2026-11-01
+
+The compiled map paths were synchronized in nine bounded source pushes, retaining
+the regular-game route/gold hotfix and the earlier backup trees. The combined
+hosting source is `2501521de114994c9c81b27c32eb3f7f27e3f5c7`, built from GitHub
+`3bce564` code. All 150 regressions, lint/types and the complete local build pass;
+13,737 prepared artifact files were byte-verified, including the hotfix sources.
+
+There are two different hosting limits: **64 MiB per Git push**, and **256 MiB
+per uploaded deployment archive**. Splitting source pushes resolves only the
+first. The final complete local archive is 315,588,049 bytes; route chunks alone
+are 272,221,317 compressed bytes, so deleting unused application files cannot
+make that representation fit the input limit. The rejected archive call returned
+no saved version or deployment. Do not retry the same oversized upload or remove
+country coverage to make it fit.
+
+The supported source-build fallback was accepted for **dev version 23** from the
+exact pushed hosting source above. Deployment
+`appgdep_6ae6eeb309a08191874127d8dc31d569` is building at this checkpoint; this is
+not yet a publication success. Its saved version is
+`appgprj_6ae5c02d5c008191b51fda4f4f39c7a5~appgver_1fab1d357dc481918a100c62bb1509a9`.
+Continue that deployment, rather than saving another version. Wait for a terminal
+result and then test actual hosted binary loading, a public Rantalantie preview,
+map overlay and GPX control. Dev version 22 remains the last confirmed live
+release; production is version 9. All audience/runtime/database settings must
+remain intact. Update: that source-build deployment reached **failed** with the
+same 256 MiB archive limit. Version 23 never went live; do not redeploy its
+oversized v1 representation unchanged.
+
+## Compact runtime representation
+
+The complete canonical source remains unchanged and audited. Runtime format 2
+stores each edge as `[id, way, forwardModes, backwardModes, pointDeltas]`, with
+signed integer deltas for node ID and E7 coordinates. Decoding restores the exact
+integers; no point or geometry is simplified. The unused cached edge length and
+tags are omitted only from the runtime copy: routing recomputes length from the
+same coordinates and uses the unchanged mode/direction flags derived from the
+full source tags. This does not infer step-free access or relax closure checks.
+
+`Pack-RouteNetwork.py` verifies every source checksum and independently restores
+every packed point before completing a manifest. It produced all **12,825**
+chunks, covering **3,078,228 edge occurrences / 21,647,462 point occurrences**,
+at **176,084,633** compressed bytes instead of 272,221,317. Occurrences include
+cell/edge boundary duplication; this is not a new unique-node count. The runtime
+manifest is pinned to SHA-256
+`74e4c9affb0d880868fb2cfe9f57bf87029c4e1cf7c60ca87ced3201831f9951`
+and references the original source-manifest hash. The original database and
+source manifests are retained for provenance and reproduction.
+
+Staging verifies both complete datasets and removes only known generated files
+under the never-published v1 runtime prefix. It never removes canonical inputs,
+Git history, player data or other map files. Managed-source rebuilds can reuse
+the checked immutable runtime assets already retained under dist/client/routing;
+CI without national inputs continues to report data-unavailable instead of
+shipping a partial fixture. Runtime decoding remains subject to the existing
+compressed/decoded/point/edge/search bounds. Tests compare real packed fixtures
+with canonical geometry and identical Foot/Bicycle results, plus malformed and
+overflow rejection. Larger-area lazy routing and physical navigation remain
+separate acceptance work.

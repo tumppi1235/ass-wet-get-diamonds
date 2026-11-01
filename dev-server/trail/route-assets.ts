@@ -1,12 +1,14 @@
 import {groundDistance,type Geographic} from '../../mobile/src/map/geodesy';
 import type {MappedEdge} from '../../mobile/src/game/mapped-route';
+import {decodeRouteEdge} from '../../mobile/src/game/route-codec';
 export type RouteAssets={fetch(request:Request):Promise<Response>};
-export const ROUTE_MANIFEST_SHA='e16d062504f74c74585ac1538654daedac7cb74add4015f4d217bb6c8104e295';
+export const ROUTE_MANIFEST_SHA='74e4c9affb0d880868fb2cfe9f57bf87029c4e1cf7c60ca87ced3201831f9951';
+export const ROUTE_SOURCE_MANIFEST_SHA='e16d062504f74c74585ac1538654daedac7cb74add4015f4d217bb6c8104e295';
 export const ROUTE_ASSET_PATH='/routing/'+ROUTE_MANIFEST_SHA+'/';
 export const ROUTE_POLICY='finland-paths-dev-1';
 export class RouteAssetError extends Error{constructor(public reason:'data-unavailable'|'graph-limit'|'data-invalid'){super(reason);}}
 type ChunkInfo={sha256:string;bytes:number;decodedBytes:number;edges:number};
-type Manifest={version:number;policy:string;source:{timestamp:string;md5:string};chunks:Record<string,ChunkInfo>};
+type Manifest={version:number;encoding:string;sourceManifestSha256:string;policy:string;source:{timestamp:string;md5:string};chunks:Record<string,ChunkInfo>};
 async function bounded(response:Response,max:number){
   if(!response.ok||!response.body)throw new RouteAssetError('data-unavailable');
   const reader=response.body.getReader(),parts:Uint8Array[]=[];let size=0;
@@ -23,7 +25,7 @@ export async function loadRouteEdges(assets:RouteAssets|undefined,start:Geograph
   const bytes=await bounded(await get('manifest.json'),2*1024*1024);
   if(await hash(bytes)!==ROUTE_MANIFEST_SHA)throw new RouteAssetError('data-invalid');
   const manifest=JSON.parse(new TextDecoder().decode(bytes)) as Manifest;
-  if(manifest.version!==1||manifest.policy!==ROUTE_POLICY||manifest.source.md5!=='5b113c7a2c31d8465eead4a958eab97b')throw new RouteAssetError('data-invalid');
+  if(manifest.version!==2||manifest.encoding!=='delta-e7-v1'||manifest.sourceManifestSha256!==ROUTE_SOURCE_MANIFEST_SHA||manifest.policy!==ROUTE_POLICY||manifest.source.md5!=='5b113c7a2c31d8465eead4a958eab97b')throw new RouteAssetError('data-invalid');
   if(groundDistance(start,end)>50000)throw new RouteAssetError('graph-limit');
   // A local search envelope, not proof that no route exists outside this area.
   const south=Math.min(start.latitude,end.latitude)-.01,north=Math.max(start.latitude,end.latitude)+.01;
@@ -45,8 +47,9 @@ export async function loadRouteEdges(assets:RouteAssets|undefined,start:Geograph
     const decoded=await bounded(new Response(stream),info.decodedBytes);
     if(decoded.byteLength!==info.decodedBytes)throw new RouteAssetError('data-invalid');
     const chunk=JSON.parse(new TextDecoder().decode(decoded));
-    if(chunk.version!==1||chunk.policy!==ROUTE_POLICY||chunk.cell!==key||!Array.isArray(chunk.edges)||chunk.edges.length!==info.edges)throw new RouteAssetError('data-invalid');
-    for(const edge of chunk.edges as MappedEdge[]){
+    if(chunk.version!==2||chunk.encoding!=='delta-e7-v1'||chunk.policy!==ROUTE_POLICY||chunk.cell!==key||!Array.isArray(chunk.edges)||chunk.edges.length!==info.edges)throw new RouteAssetError('data-invalid');
+    for(const packed of chunk.edges){
+      let edge:MappedEdge;try{edge=decodeRouteEdge(packed);}catch{throw new RouteAssetError('data-invalid');}
       if(!Array.isArray(edge.points))throw new RouteAssetError('data-invalid');
       if(!edge.points.some((p,i)=>{const q=edge.points[Math.max(0,i-1)];return Math.min(p[1],q[1])/1e7<=north&&Math.max(p[1],q[1])/1e7>=south&&Math.min(p[2],q[2])/1e7<=east&&Math.max(p[2],q[2])/1e7>=west;}))continue;
       pointCount+=edge.points.length;if(pointCount>100000||edges.length>=30000)throw new RouteAssetError('graph-limit');edges.push(edge);
