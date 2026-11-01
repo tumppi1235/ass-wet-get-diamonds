@@ -1,5 +1,9 @@
 # Development mapped routes and GPX (TR-094/098/101)
 
+Follow-up: [incremental, bounded A* and actual source checks](DEV-BACKLOG-INCREMENT.md#incremental-route-search)
+loads touched cells rather than the whole request rectangle. Original geometry,
+access/direction checks and explicit resource/physical gates remain intact.
+
 Current release: **private dev version 24**, with hosted public-preview checks.
 The failed version 23 and earlier packaging attempts below are historical.
 

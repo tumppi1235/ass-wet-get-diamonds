@@ -11,6 +11,7 @@ import EncounterAdmin from './encounter-admin';
 import RecoveryAdmin from './recovery-admin';
 import MaintenanceAdmin from './maintenance-admin';
 import DiversityAdmin from './diversity-admin';
+import TesterAdmin from './tester-admin';
 import type {MaintenanceState} from '../../trail/maintenance-store';
 import type {DevBalance} from '../../../mobile/src/game/dev-world';
 type Balance=DevBalance;
@@ -29,7 +30,7 @@ export default function WorldAdmin(){
     <MaintenanceAdmin onState={maintenanceChanged}/>
     {maintenance&&!maintenance.paused&&<><section style={{border:'2px solid #E6B653',padding:20,marginTop:20}}><h2>Experimental balance</h2><p>Revision {config?.balance.revision}. Changes affect future accepted events, without retroactive XP.</p>{config&&Object.entries(labels).map(([key,label])=><label key={key} style={{display:'flex',gap:20,justifyContent:'space-between',padding:8}}>{label}<input aria-label={label} type="number" step={key.endsWith('Factor')?'.1':'1'} value={config.balance[key as keyof typeof labels]} onChange={e=>setConfig({...config,balance:{...config.balance,[key]:Number(e.target.value)}})} style={{width:100,color:'#142A2B',background:'#F5E7BB',padding:6}}/></label>)}<button disabled={busy||!config} onClick={()=>{void save();}}>Save new dev revision</button></section>
     {config&&<ProgressionAdmin balance={config.balance} onUseHistory={balance=>{setConfig({...config,balance:{...balance,revision:config.balance.revision}});setMessage('Earlier balance copied into the draft. Review it, then save a new dev revision.');}}/>}
-    <DiversityAdmin/><PlayerAdmin/>
+    <DiversityAdmin/><TesterAdmin/><PlayerAdmin/>
     <SpawnAdmin/>
     <WorldMap/>
     <BossAdmin/><EncounterAdmin/><LootAdmin/>

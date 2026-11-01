@@ -1,10 +1,11 @@
 import type {D1Database} from '@cloudflare/workers-types';
 import {LANDMARKS} from '../../mobile/src/game/landmarks';
 import {newDevWorld,type DevWorld} from '../../mobile/src/game/dev-world';
-import {planMappedRoute,routeClosureCheck} from '../../mobile/src/game/mapped-route';
+import {planLazyMappedRoute,routeClosureCheck} from '../../mobile/src/game/mapped-route';
 import {loadRegions} from './region-store';
 import {WorldError} from './world-error';
-import {loadRouteEdges,RouteAssetError,type RouteAssets,ROUTE_POLICY} from './route-assets';
+import {openLazyRouteNetwork,RouteAssetError,type RouteAssets,ROUTE_POLICY} from './route-assets';
+import {groundDistance} from '../../mobile/src/map/geodesy';
 import type {RoutePlan,RoutePlanInput} from '../../mobile/src/game/route-plan';
 export type RouteInput=RoutePlanInput;
 let planning=false; // one bounded graph allocation at a time per Worker isolate
@@ -25,10 +26,14 @@ export async function adventureRoute(db:D1Database,assets:RouteAssets|undefined,
   planning=true;
   try{
     const start={latitude:origin.latitude,longitude:origin.longitude},end={latitude:destination.latitude,longitude:destination.longitude};
-    const network=await loadRouteEdges(assets,start,end);
+    if(groundDistance(start,end)>50000)throw new RouteAssetError('graph-limit');
+    const network=await openLazyRouteNetwork(assets,start,end);
     const currentRegions=await loadRegions(db),finishedAt=at??Date.now();
     if(!preview&&world.previous&&finishedAt-world.previous.timestamp>=15000)throw new WorldError(409,'Use Me to refresh your location and plan again');
-    const result=planMappedRoute(network.edges,{start,end,movement:input.movement,maxMeters:input.maxMeters,access:input.access,blocked:routeClosureCheck(currentRegions,finishedAt)});
-    return{...base,generatedAt:finishedAt,regionsRevision:currentRegions.revision,sourceDate:network.sourceDate,source:network.source,coverage:network.coverage,result};
+    let result=await planLazyMappedRoute(network,{start,end,movement:input.movement,maxMeters:input.maxMeters,access:input.access,blocked:routeClosureCheck(currentRegions,finishedAt)});
+    const finalRegions=await loadRegions(db),completedAt=at??Date.now(),blocked=routeClosureCheck(finalRegions,completedAt);
+    if(!preview&&world.previous&&completedAt-world.previous.timestamp>=15000)throw new WorldError(409,'Use Me to refresh your location and plan again');
+    if(result.status==='ready'){const points=result.points;if(points.some((point,i)=>i>0&&blocked(points[i-1],point)))result={status:'unavailable',reason:'disconnected'};}
+    return{...base,generatedAt:completedAt,regionsRevision:finalRegions.revision,sourceDate:network.sourceDate,source:network.source,coverage:network.coverage,result};
   }catch(error){if(error instanceof RouteAssetError)return{...base,result:{status:'unavailable',reason:error.reason}};throw error;}finally{planning=false;}
 }

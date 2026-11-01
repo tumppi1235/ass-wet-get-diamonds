@@ -39,25 +39,26 @@ class Queue{
  * current closure intersections. No endpoint connectors, coordinate merging,
  * inaccessible fallback, distance credit, database write or XP exists here.
  */
-export function planMappedRoute(edges:MappedEdge[],options:Options):MappedRoute|RouteUnavailable{
-  if(!validPoint(options.start)||!validPoint(options.end)||!['foot','bicycle'].includes(options.movement)||!Number.isInteger(options.maxMeters)||options.maxMeters<250||options.maxMeters>50000||!['known-paths','step-free'].includes(options.access))throw new Error('Invalid route preferences');
-  if(options.access==='step-free')return fail('access-unverified');
-  if(edges.length>30000)return fail('graph-limit');
-  const nodes=new Map<number,Node>(),seen=new Map<string,string>(),mode=options.movement==='foot'?1:2;
-  let count=0;
-  for(const edge of edges){
+class GraphLimit extends Error{}
+class MappedGraph{
+  nodes=new Map<number,Node>();private seen=new Map<string,string>();private count=0;
+  constructor(private options:Options){}
+  add(edge:MappedEdge){
+    if(this.seen.size>=30000&&!this.seen.has(edge.id))throw new GraphLimit();
+    const nodes=this.nodes,seen=this.seen,options=this.options,mode=options.movement==='foot'?1:2;
+
     if(!edge||typeof edge.id!=='string'||edge.id.length>50||!Number.isSafeInteger(edge.way)||edge.way<=0||!Number.isInteger(edge.f)||!Number.isInteger(edge.b)||edge.f<0||edge.f>3||edge.b<0||edge.b>3||!(edge.f|edge.b)||!Array.isArray(edge.points)||edge.points.length<2||edge.points.length>10000)throw new Error('Invalid mapped edge');
-    if(!((edge.f|edge.b)&mode))continue;
+    if(!((edge.f|edge.b)&mode))return;
     const encoded=JSON.stringify(edge),prior=seen.get(edge.id);
-    if(prior){if(prior!==encoded)throw new Error('Conflicting mapped edge');continue;}
-    seen.set(edge.id,encoded);count+=edge.points.length;if(count>100000)return fail('graph-limit');
+    if(prior){if(prior!==encoded)throw new Error('Conflicting mapped edge');return;}
+    seen.set(edge.id,encoded);this.count+=edge.points.length;if(this.count>100000)throw new GraphLimit();
     const points=edge.points.map(raw=>{
       if(!Array.isArray(raw)||raw.length!==3||!raw.every(Number.isSafeInteger)||raw[0]<=0||Math.abs(raw[1])>900000000||Math.abs(raw[2])>1800000000)throw new Error('Invalid mapped coordinate');
       const point:RoutePoint={nodeId:raw[0],latitude:raw[1]/1e7,longitude:raw[2]/1e7},prior=nodes.get(point.nodeId);
       if(prior&&(prior.point.latitude!==point.latitude||prior.point.longitude!==point.longitude))throw new Error('Conflicting mapped node');
       if(!prior)nodes.set(point.nodeId,{point,links:[]});return point;
     });
-    if(nodes.size>60000)return fail('graph-limit');
+    if(nodes.size>60000)throw new GraphLimit();
     for(let i=1;i<points.length;i++){
       const a=points[i-1],b=points[i],meters=groundDistance(a,b);
       if(a.nodeId===b.nodeId||meters>20000)throw new Error('Invalid mapped segment');
@@ -65,9 +66,16 @@ export function planMappedRoute(edges:MappedEdge[],options:Options):MappedRoute|
       if(edge.f&mode)nodes.get(a.nodeId)!.links.push({to:b.nodeId,way:edge.way,meters});
       if(edge.b&mode)nodes.get(b.nodeId)!.links.push({to:a.nodeId,way:edge.way,meters});
     }
+
   }
-  const snap=(p:Geographic)=>{let nearest:Node|undefined,distance=Infinity;for(const node of nodes.values()){const d=groundDistance(p,node.point);if(d<distance){nearest=node;distance=d;}}return{node:distance<=100?nearest:undefined,distance};};
-  const start=snap(options.start),end=snap(options.end);
+  snap(p:Geographic){let nearest:Node|undefined,distance=Infinity;for(const node of this.nodes.values()){const d=groundDistance(p,node.point);if(d<distance){nearest=node;distance=d;}}return{node:distance<=100?nearest:undefined,distance};}
+}
+function validateRouteOptions(options:Options){
+  if(!validPoint(options.start)||!validPoint(options.end)||!['foot','bicycle'].includes(options.movement)||!Number.isInteger(options.maxMeters)||options.maxMeters<250||options.maxMeters>50000||!['known-paths','step-free'].includes(options.access))throw new Error('Invalid route preferences');
+
+}
+function* searchMappedGraph(graph:MappedGraph,options:Options):Generator<Geographic,MappedRoute|RouteUnavailable,void>{
+  const nodes=graph.nodes,start=graph.snap(options.start),end=graph.snap(options.end);
   if(!start.node)return fail('start-unmapped');if(!end.node)return fail('end-unmapped');
   const from=start.node.point.nodeId,target=end.node.point.nodeId;
   if(from===target)return fail('distance-limit'); // no zero-length "route" or invented connector
@@ -82,6 +90,7 @@ export function planMappedRoute(edges:MappedEdge[],options:Options):MappedRoute|
       while(true){points.push(nodes.get(id)!.point);if(points.length>20000)return fail('graph-limit');if(id===from)break;const parent=parents.get(id)!;ways.add(parent.way);id=parent.id;}
       return{status:'ready',kind:'planned-map-route',points:points.reverse(),meters:current.g,startOffsetMeters:start.distance,endOffsetMeters:end.distance,wayIds:[...ways].sort((a,b)=>a-b)};
     }
+    yield nodes.get(current.id)!.point;
     for(const link of nodes.get(current.id)!.links){
       const g=current.g+link.meters;if(g>options.maxMeters){limited=true;continue;}
       if(g>=(costs.get(link.to)??Infinity))continue;
@@ -89,4 +98,15 @@ export function planMappedRoute(edges:MappedEdge[],options:Options):MappedRoute|
     }
   }
   return fail(limited?'distance-limit':'disconnected');
+}
+export function planMappedRoute(edges:MappedEdge[],options:Options):MappedRoute|RouteUnavailable{
+  validateRouteOptions(options);if(options.access==='step-free')return fail('access-unverified');if(edges.length>30000)return fail('graph-limit');
+  const graph=new MappedGraph(options);try{for(const edge of edges)graph.add(edge);const search=searchMappedGraph(graph,options);let next=search.next();while(!next.done)next=search.next();return next.value;}catch(error){if(error instanceof GraphLimit)return fail('graph-limit');throw error;}
+}
+export type LazyRouteLoader={loadNear(point:Geographic,radiusMeters:number):AsyncIterable<MappedEdge>};
+/** Incremental A*: load every incident cell before expanding a node; never invent an edge across unloaded data. */
+export async function planLazyMappedRoute(loader:LazyRouteLoader,options:Options):Promise<MappedRoute|RouteUnavailable>{
+  validateRouteOptions(options);if(options.access==='step-free')return fail('access-unverified');
+  const graph=new MappedGraph(options);const load=async(point:Geographic,radius:number)=>{for await(const edge of loader.loadNear(point,radius))graph.add(edge);};
+  try{await load(options.start,100);await load(options.end,100);const search=searchMappedGraph(graph,options);let next=search.next();while(!next.done){await load(next.value,0);next=search.next();}return next.value;}catch(error){if(error instanceof GraphLimit)return fail('graph-limit');throw error;}
 }

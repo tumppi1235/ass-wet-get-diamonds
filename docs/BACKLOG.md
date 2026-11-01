@@ -22,17 +22,15 @@ All actions below are unassigned until someone starts them.
 
 | Order | Parent stories | Next action | Completion evidence |
 | --- | --- | --- | --- |
-| 1 | TR-118 | Add a server recovery generation/barrier and reviewed whole-ledger reconciliation before any restored world can reopen. Receipt inspection, durable pending cancellation and observed-revision guards are implemented; provider restore/drain remains separate. | Recovery/maintenance regression evidence; no equal-counter rewind or unknown pending receipt can silently replay after an approved restore. |
-| 2 | TR-094, TR-101 | Extend bounded routing for larger/dense areas with lazy graph loading; compact full-country runtime is released in dev 24. | Repeatable memory/search limits, mapped topology/closure tests, explicit unavailable states and no reward writes. |
-| 3 | TR-022 | Add rarity clues within the player's existing detected-spawn visibility. | Clue/visibility tests; no hidden-spawn disclosure, Auto-Collect or collection-rule change. |
-| 4 | TR-041 | Define and implement test-access administration within existing authorization. | Role/access tests and named-recipient approval before any actual invitation or audience change. |
+| 1 | TR-094, TR-101 | Extend hosted performance evidence for long/dense routes and tune within the retained memory/access limits. Incremental cell loading is implemented. | Bounded Worker measurements and explicit unavailable cases; no inferred access/difficulty or reward writes. |
+| 2 | TR-041 | Complete a real named-tester invitation/access acceptance run after recipients are supplied and authorized. Existing-profile admin controls are implemented. | Recorded role/access results; preserve audience unless the exact change is authorized. |
+| 3 | TR-118 | Exercise the reviewed provider recovery/drain/retention procedure when supported. Server generation and whole-ledger sealing are implemented. | Actual provider evidence, externally pinned baseline/generation, complete-ledger seal and replay checks; no fabricated hosted restore pass. |
 
-Latest completed action: pending receipt reconciliation, observed revision guards
-and durable cancellation released as **dev version 25**, with 166 regressions,
-four passing GitHub workflows and hosted profile/protocol checks. See
-[release evidence](DEV-RECOVERY.md#released-dev-version-25). Full-country routing
-from dev 24 remains included. Parent stories remain In Progress for their listed
-recovery, provider, navigation/device and performance acceptance.
+Latest software increment covers all four requested actions: external recovery
+generation/complete-ledger seal, incremental route loading, detected rarity clues
+and existing tester controls. **180** regressions and ten offline public-route
+checks pass. See [scope and release evidence](DEV-BACKLOG-INCREMENT.md). Parent
+stories retain their provider, physical, invitation and performance gates.
 
 ### Validation queue
 
@@ -134,7 +132,7 @@ Automated repair evidence and remaining iPhone field gates: [P0 report](P0-EXPLO
 | TR-019 | P0 | In Progress | Replace separate collection radius with tile-based collection eligibility. | — | An accurate point anywhere inside the artefact tile is eligible; a closer point in another tile is not. |
 | TR-020 | P1 | In Progress | Reveal distant artifacts on the map | TR-018, TR-019 | Shared map shows detected nearby spawns while collection still needs own-tile GPS. Legacy catalog suppressed only in shared mode; field checks pending. |
 | TR-021 | P1 | Backlog | Add Garmin proximity and direction indicators | TR-018, TR-155 | The watch displays direction/distance to an eligible detected artefact within its UI constraints. |
-| TR-022 | P2 | Backlog | Introduce rarity-based clues and visibility modifiers | TR-004, TR-018 | Rarity changes clue presentation using documented configurable thresholds. |
+| TR-022 | P2 | Done | Introduce rarity-based clues and visibility modifiers | TR-004, TR-018 | Shared-dev detected-only clues use configurable 100/250/500m cosmetic bands, increasing pixel-icon sizes and rarity signals. Hidden/collected/searched items produce no clue; stale GPS gives a last-seen signal. Detection/collection ranges are unchanged. Two visibility/state tests pass; see DEV-BACKLOG-INCREMENT.md. |
 | TR-023 | P0 | In Progress | Implement tile-entry detection with GPS accuracy handling. | TR-153 | Validated boundary crossings update the active tile; coarse/stale fixes cannot silently enable collection. |
 | TR-024 | P0 | In Progress | Enable collection attempts while inside the artifact's tile. | TR-019, TR-023 | Entering the own tile enables one eligible attempt using the latest fix, without a restart. |
 | TR-025 | P0 | In Progress | Support one-button collection on Garmin. | TR-155, TR-154 | Manual-LAP-only intent hook compiles and deduplicates by activity/tile without auto-lap capture. Target build, device interaction proof, linked detected spawns and authoritative collection remain. |
@@ -182,7 +180,7 @@ Automated repair evidence and remaining iPhone field gates: [P0 report](P0-EXPLO
 | TR-038 | P1 | Done | Simulate artifact spawning and collection | TR-033, TR-009 | Protected sourced-path laboratory reuses actual generation/detection/own-tile/search/energy rules in fresh synthetic games. Seeded independent players, accuracy/position/density/closure cases and expected-vs-simulated finds are tested with zero world writes. |
 | TR-039 | P1 | Done | Reset individual players' exploration progress | TR-034 | Recoverable map/route reset stops the target quest, preserving gold/inventory/XP/ownership and permanent reward history. Other players unaffected; no first-visit farming. |
 | TR-040 | P1 | Done | Create admin audit logs for changes | TR-032 | Protected bounded audit API/UI records balance and spawn edits/retirement with actor/time/before-after, without credentials. |
-| TR-041 | P1 | Backlog | Manage test-player invitations and access | TR-032 | Test access and invitations cannot escalate ordinary player permissions. |
+| TR-041 | P1 | In Progress | Manage test-player invitations and access | TR-032 | Existing-player admin pause/enable controls are confirmed, audited, revision-checked and fenced in gameplay transactions. Admin/self access and ordinary-role escalation are blocked; four SQL/client cases pass. Named hosting invitation/access acceptance remains, with no audience change or invitation sent; see DEV-BACKLOG-INCREMENT.md. |
 | TR-042 | P1 | Done | Create a world map showing artifacts and visitation density | TR-005, TR-036 | Separate admin MapLibre world map shows paged rarity-sized artefacts and indexed unique visitor density, with draft region overlays. SQL and local browser loading verified. |
 
 ## TR-E04 — World Bosses & Cooperative Adventures
@@ -262,7 +260,7 @@ Automated repair evidence and remaining iPhone field gates: [P0 report](P0-EXPLO
 | --- | --- | --- | --- | --- | --- |
 | TR-092 | P1 | Done | Adventure recommendation interface | TR-051 | Shared dev Ideas tab selects goal, movement, distance and destination preferences and shows non-route guidance with conditional ordinary XP. Unsupported earning evidence is explicit. See DEV-ADVENTURE-IDEAS.md. |
 | TR-093 | P1 | In Progress | Personalized recommendations for accumulating specific attributes | TR-092, TR-095 | Non-route guidance uses personal XP/fractional credit, fresh location, paid tile/region history and preferences with zero rewards. Verified route/access and unsupported earning sources remain. |
-| TR-094 | P1 | In Progress | Route generation using real trail and geographic data | TR-026, TR-101 | Dev 24 releases the audited full Finland network in a 35% smaller runtime representation, bounded zero-write API and separate planned overlays. Hosted Rantalantie Foot and Helsinki Foot/Bicycle previews pass; physical access, broader performance and larger-area lazy routing remain. See DEV-ROUTE-PLANNER.md. |
+| TR-094 | P1 | In Progress | Route generation using real trail and geographic data | TR-026, TR-101 | Full compact Finland data now feeds request-local incremental A* with touched-cell/decoded-byte/node/search limits, shared eager validation and final closure/GPS checks. Three lazy tests and ten offline public routes include explicit unavailable results. Hosted large/dense performance and physical access remain; see DEV-BACKLOG-INCREMENT.md. |
 | TR-095 | P1 | In Progress | Estimated attribute XP for recommendations | TR-079, TR-087 | Ideas UI projects conditional ordinary XP/current levels with saved fractional credit and explicit one-tile/region/find assumptions. Accepted Foot/Bicycle arithmetic parity tested; real route/elevation integration remains. |
 | TR-096 | P1 | Backlog | Include artifact and boss opportunities in recommendations | TR-094, TR-003, TR-043 | Relevant detected artefacts/bosses can be included without forcing extra collection range. |
 | TR-097 | P2 | Done | Evaluate Strava segments as potential training suggestions | TR-164 | Feasibility decision: no persistent segment recommendation cache under assumed permissions; endpoint, deletion and data-use gates documented. No connected segment feature. See CONNECTIVITY-FEASIBILITY.md. |
@@ -292,7 +290,7 @@ Automated repair evidence and remaining iPhone field gates: [P0 report](P0-EXPLO
 | TR-115 | P0 | In Progress | Support independent game-balance configurations for Dev and Prod | TR-111, TR-033 | Isolated dev XP/movement/curve/spawn/region/boss/loot policies have protected validated versioned controls; mutations preserve production defaults. A production shared config/backend and promotion remain outside this dev-only release. |
 | TR-116 | P1 | In Progress | Create a controlled Dev → Prod release process | TR-114, TR-115 | A specific validated revision is promoted with an auditable rollback path. |
 | TR-117 | P1 | In Progress | Add production monitoring, error logging and alerts | TR-113 | Dev-only safe failure reference/log foundation implemented and canary-tested, without payload/identity/route logging. Production monitoring, alerts and provider retention verification remain outside this dev release. See DEV-OBSERVABILITY.md. |
-| TR-118 | P0 | In Progress | Implement database backups, migrations and rollback procedures | TR-112 | Snapshots/offline recovery, maintenance write fences, zero-write receipt inspection, atomic no-award cancellation and client-observed revision rewind guards are tested. Server recovery generations/whole-ledger reconciliation, hosted consistent restore/retention and provider first-rollout drain remain gates; see DEV-RECOVERY.md and DEV-MAINTENANCE.md. |
+| TR-118 | P0 | In Progress | Implement database backups, migrations and rollback procedures | TR-112 | Snapshots/offline recovery, maintenance/generation write fences, pending receipts/cancellation, external pinned recovery generations and complete-ledger transactional sealing are tested. Actual provider restore/retention/drain remains unverified; no live generation rotation or rewind occurred. See DEV-BACKLOG-INCREMENT.md and DEV-RECOVERY.md. |
 | TR-119 | P0 | In Progress | Separate test players, artifacts, bosses and inventories from production | TR-111, TR-112 | Dev Site/D1, test spawns and inventories stay isolated from production. Shared boss definitions, encounters and loot also remain in dev only. |
 | TR-120 | P1 | In Progress | Document release procedures and environment configuration | TR-116, TR-118 | Dev 24 documents source/input/expanded archive limits, tested output cleanup and supported frontend asset retention, with an archive preflight tool. Full promotion/rollback/recovery acceptance still depends on TR-116/118. |
 

@@ -76,3 +76,21 @@ preserve journals and block retries. This changes no earning, ownership, activit
 or encounter-deadline rules. Client checkpoints are insufficient for arbitrary
 hosted restore; server recovery generations, full-ledger reconciliation and
 provider drain/restore evidence remain gates under TR-118.
+
+D-037: reviewed shared-dev recovery pins a fresh generation and the authoritative
+paused baseline checksum outside D1. Exact whole-ledger equality and transactional
+set checks are required before sealing; no automatic reward/state reconstruction
+or accepted data loss. Operator/provider drain and actual restore evidence remain
+external gates. Routine development does not rotate the hosted generation.
+
+D-038: dev route A* loads touched path cells incrementally inside a conservative
+request envelope, retaining original topology/access/geometry checks and explicit
+resource-limit failures. Plans/GPX remain zero-reward; closure and GPS freshness
+are checked after asynchronous work. No global shortest-route or physical access
+guarantee is introduced.
+
+D-039: rarity clues modify presentation only after personal detection, using
+increasing icon sizes and signal bands. Hidden visibility and own-tile accurate-GPS
+collection rules are unchanged. Tester controls pause/enable ordinary existing
+shared profiles with transactional access fencing; they do not change roles,
+send invitations or broaden the Site audience.

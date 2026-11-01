@@ -1,5 +1,9 @@
 # Dev snapshots and offline recovery drill — TR-118
 
+Newer software: [external generations and complete-ledger seal](DEV-BACKLOG-INCREMENT.md#recovery-checkpoint-and-reconciliation).
+The dev-25 client-only limit below is historical; provider restore/drain and
+operational validation remain unverified. No hosted generation has been rotated.
+
 The protected `/admin-world` console can prepare a private game-data snapshot. This is development only. There is **no hosted restore endpoint**, no overwrite of the shared database and no migration of phone-local profiles or production data.
 
 ## Snapshot scope

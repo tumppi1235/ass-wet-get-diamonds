@@ -16,10 +16,13 @@ Dev version 24 now hosts the full-country compact route planner and planned GPX
 control. Rantalantie and Helsinki Foot/Bicycle previews were checked on the actual
 site without starting a quest or awarding progress; physical/device gates remain.
 
-1. TR-118: add a server recovery generation and whole-ledger reconciliation gate; owner receipt checks, durable pending cancellation and observed revision guards are now tested. Provider-operated restore/drain remains separate.
-2. TR-094/101: extend bounded real-path routing to larger/dense areas with lazy loading; the compact runtime is implemented. Do not infer access or difficulty from missing map data.
-3. TR-022: rarity-clue presentation within existing detected-spawn permissions; keep Auto-Collect behind the manual collection/device gates.
-4. TR-041: test-access management within the preserved private audience; do not invite unnamed people or broaden platform permissions without specific authorization.
+The requested four-action software increment is implemented and tested: external
+recovery checkpoints/whole-ledger sealing, incremental path loading, detected-only
+rarity clues and existing tester controls. See DEV-BACKLOG-INCREMENT.md. Follow-ups:
+
+1. TR-094/101: extend hosted long/dense-route performance evidence within bounded memory and conservative access limits.
+2. TR-041: complete a named-tester hosting invitation/access run after specific recipient authorization; no invitation/audience changes have occurred.
+3. TR-118: exercise provider-operated restore/drain/retention when supported; software reconciliation is not that operational proof.
 
 P0 Garmin linking/shared-watch inventory/cross-provider dedup/physical tests still depend on supported ingress, account/program choices and device evidence. They are unfinished; independent work continues while those gates wait. Further production promotion, native distribution and deferred quests/companions require their own scope decision.
 

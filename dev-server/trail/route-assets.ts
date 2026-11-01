@@ -57,3 +57,39 @@ export async function loadRouteEdges(assets:RouteAssets|undefined,start:Geograph
   }
   return{edges,sourceDate:manifest.source.timestamp,source:manifest.source.md5,coverage:'bounded-envelope' as const};
 }
+
+/** Request-local immutable reader. Decode only cells touched by endpoint snapping or A* expansion. */
+export async function openLazyRouteNetwork(assets:RouteAssets|undefined,start?:Geographic,end?:Geographic){
+  if(!assets)throw new RouteAssetError('data-unavailable');
+  const get=(name:string)=>assets.fetch(new Request('https://route-assets.invalid'+ROUTE_ASSET_PATH+name));
+  const bytes=await bounded(await get('manifest.json'),2*1024*1024);
+  if(await hash(bytes)!==ROUTE_MANIFEST_SHA)throw new RouteAssetError('data-invalid');
+  const manifest=JSON.parse(new TextDecoder().decode(bytes))as Manifest;
+  if(manifest.version!==2||manifest.encoding!=='delta-e7-v1'||manifest.sourceManifestSha256!==ROUTE_SOURCE_MANIFEST_SHA||manifest.policy!==ROUTE_POLICY||manifest.source.md5!=='5b113c7a2c31d8465eead4a958eab97b')throw new RouteAssetError('data-invalid');
+  const loaded=new Set<string>(),deadline=Date.now()+8000;let decodedTotal=0;
+  const envelope=start&&end?{south:Math.min(start.latitude,end.latitude)-.01,north:Math.max(start.latitude,end.latitude)+.01,west:Math.min(start.longitude,end.longitude)-.01/Math.cos(Math.max(Math.abs(start.latitude),Math.abs(end.latitude))*Math.PI/180),east:Math.max(start.longitude,end.longitude)+.01/Math.cos(Math.max(Math.abs(start.latitude),Math.abs(end.latitude))*Math.PI/180)}:null;
+  return{sourceDate:manifest.source.timestamp,source:manifest.source.md5,coverage:'lazy-network' as const,
+    async *loadNear(point:Geographic,radiusMeters:number){
+      if(Date.now()>deadline)throw new RouteAssetError('graph-limit');
+      if(!Number.isFinite(point.latitude)||Math.abs(point.latitude)>90||!Number.isFinite(point.longitude)||Math.abs(point.longitude)>180||!Number.isFinite(radiusMeters)||radiusMeters<0||radiusMeters>100)throw new RouteAssetError('data-invalid');
+      const margin=Math.max(.0000001,radiusMeters/110000),lon=margin/Math.max(.001,Math.cos(point.latitude*Math.PI/180));
+      for(let y=Math.floor((point.latitude-margin)*20);y<=Math.floor((point.latitude+margin)*20);y++)for(let x=Math.floor((point.longitude-lon)*10);x<=Math.floor((point.longitude+lon)*10);x++){
+        const key=y+'_'+x;if(loaded.has(key))continue;if(loaded.size>=80||Date.now()>deadline)throw new RouteAssetError('graph-limit');loaded.add(key);
+        const info=manifest.chunks[key];if(!info)continue;
+        if(!/^[a-f0-9]{64}$/.test(info.sha256)||!Number.isSafeInteger(info.bytes)||info.bytes<0||info.bytes>4*1024*1024||!Number.isSafeInteger(info.decodedBytes)||info.decodedBytes<0||info.decodedBytes>10*1024*1024)throw new RouteAssetError('data-invalid');
+        decodedTotal+=info.decodedBytes;if(decodedTotal>32*1024*1024)throw new RouteAssetError('graph-limit');
+        const compressed=await bounded(await get(key+'.bin'),info.bytes);
+        if(compressed.byteLength!==info.bytes||await hash(compressed)!==info.sha256)throw new RouteAssetError('data-invalid');
+        const stream=new Blob([compressed as Uint8Array<ArrayBuffer>]).stream().pipeThrough(new DecompressionStream('gzip'));
+        const decoded=await bounded(new Response(stream),info.decodedBytes);if(decoded.byteLength!==info.decodedBytes)throw new RouteAssetError('data-invalid');
+        const chunk=JSON.parse(new TextDecoder().decode(decoded));
+        if(chunk.version!==2||chunk.encoding!=='delta-e7-v1'||chunk.policy!==ROUTE_POLICY||chunk.cell!==key||!Array.isArray(chunk.edges)||chunk.edges.length!==info.edges)throw new RouteAssetError('data-invalid');
+        for(const packed of chunk.edges){let edge:MappedEdge;try{edge=decodeRouteEdge(packed);}catch{throw new RouteAssetError('data-invalid');}
+          if(envelope&&!edge.points.some((p,i)=>{const q=edge.points[Math.max(0,i-1)];return Math.min(p[1],q[1])/1e7<=envelope.north&&Math.max(p[1],q[1])/1e7>=envelope.south&&Math.min(p[2],q[2])/1e7<=envelope.east&&Math.max(p[2],q[2])/1e7>=envelope.west;}))continue;
+          yield edge;
+        }
+      }
+    },
+    statistics(){return{cells:loaded.size,decodedBytes:decodedTotal};},
+  };
+}

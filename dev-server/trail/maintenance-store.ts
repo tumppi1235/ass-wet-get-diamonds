@@ -1,6 +1,7 @@
 import type {D1Database,D1PreparedStatement,D1Result} from '@cloudflare/workers-types';
 import {WorldError} from './world-error';
 import {requestHash} from './hash';
+import {INITIAL_GENERATION} from '../../mobile/src/game/recovery';
 export type MaintenanceState={revision:number;paused:boolean;reason:'normal'|'planned-update'|'recovery-check';changedAt:number};
 type MaintenanceAction={id:string;revision:number;paused:boolean;reason:MaintenanceState['reason'];confirmed:boolean};
 const DEFAULT:MaintenanceState={revision:0,paused:false,reason:'normal',changedAt:0};
@@ -33,10 +34,10 @@ function readOnlyStatement(query:string){
 }
 
 /** Every game write, including lazy GET writes, checks the request's epoch in the SAME D1 batch transaction. */
-export function guardedGameDatabase(db:D1Database,epoch:number):D1Database{
+export function guardedGameDatabase(db:D1Database,epoch:number,generation=INITIAL_GENERATION,owner=''):D1Database{
   if(!Number.isSafeInteger(epoch)||epoch<0)throw new MaintenanceError();
   const originals=new WeakMap<D1PreparedStatement,D1PreparedStatement>(),reads=new WeakSet<D1PreparedStatement>();
-  const fence=()=>db.prepare("INSERT INTO trail_integrity(id,valid) VALUES('maintenance-write-fence',CASE WHEN COALESCE((SELECT revision FROM trail_configs WHERE id='maintenance'),0)=? AND COALESCE((SELECT json_extract(document,'$.paused') FROM trail_configs WHERE id='maintenance'),0)=0 THEN 1 ELSE 0 END) ON CONFLICT(id) DO UPDATE SET valid=excluded.valid").bind(epoch);
+  const fence=()=>db.prepare("INSERT INTO trail_integrity(id,valid) VALUES('maintenance-write-fence',CASE WHEN COALESCE((SELECT revision FROM trail_configs WHERE id='maintenance'),0)=? AND COALESCE((SELECT json_extract(document,'$.paused') FROM trail_configs WHERE id='maintenance'),0)=0 AND COALESCE((SELECT json_extract(document,'$.generation') FROM trail_configs WHERE id='recovery-generation'),?)=? AND NOT EXISTS(SELECT 1 FROM trail_configs c,json_each(c.document,'$.players') p WHERE c.id='tester-access' AND json_extract(p.value,'$.id')=? AND json_extract(p.value,'$.allowed')=0) THEN 1 ELSE 0 END) ON CONFLICT(id) DO UPDATE SET valid=excluded.valid").bind(epoch,INITIAL_GENERATION,generation,owner);
   const batch=async<T>(statements:D1PreparedStatement[]):Promise<D1Result<T>[]>=>{
     if(statements.every(statement=>reads.has(statement)))return db.batch<T>(statements.map(statement=>originals.get(statement)!));
     try{return(await db.batch<T>([fence(),...statements.map(statement=>originals.get(statement)||statement)])).slice(1);}catch(error){const current=await loadMaintenance(db);if(current.paused||current.revision!==epoch)throw new MaintenanceError();throw error;}

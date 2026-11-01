@@ -5,11 +5,12 @@ import type {Boss} from '../game/bosses';
 import type {ClaimPage,ClaimRecord,ClaimWindow} from '../map/claim-window';
 import type {AdventureIdeas,RecommendationPreferences} from '../game/recommendations';
 import type {RoutePlan,RoutePlanInput} from '../game/route-plan';
+import {INITIAL_GENERATION} from '../game/recovery';
 export type SharedSnapshot={world:DevWorld;revision:number};
 export type EncounterResult={view:EncounterView|null;receipt:EncounterReceipt;replayed:boolean;world?:SharedSnapshot};
 export type CompletedActivity={id:string;endedAt:number;startedAt:number;movement:'foot'|'bicycle'};
 export type ActivityPreview={id:string;movement:'foot'|'bicycle';meters:number;bossTileVisited:boolean;observedSeconds:number;eligibleStartedAt:number;endedAt:number};
-type Pending={id:string;revision:number;event:DevEvent};
+type Pending={id:string;revision:number;event:DevEvent;generation?:string};
 type PendingStatus={status:'committed'|'unrecorded'|'identity-conflict';revision:number|null};
 function worldEnvelope(raw:string):Pending{
   const value=JSON.parse(raw)as Pending;
@@ -19,15 +20,16 @@ function worldEnvelope(raw:string):Pending{
 class SharedApiError extends Error{constructor(message:string,public status:number){super(message);}}
 /** Shared dev identity is supplied by Sites; never send local profile passwords. */
 export class SharedWorldClient{
-  private owner='';private inFlight=false;
+  private owner='';private inFlight=false;private generation=INITIAL_GENERATION;
   constructor(private storage:Storage,private request:typeof fetch=globalThis.fetch.bind(globalThis)){}
   private async api<T>(path:string,method='GET',input?:unknown,signal?:AbortSignal):Promise<T>{
     const abort=new AbortController(),timer=setTimeout(()=>abort.abort(),12000);
     const cancel=()=>abort.abort();if(signal?.aborted)cancel();else signal?.addEventListener('abort',cancel,{once:true});
     try{const response=await this.request('/api/trail/'+path,{method,credentials:'same-origin',headers:{'Content-Type':'application/json'},...(input?{body:JSON.stringify(input)}:{}),signal:abort.signal});const data=await response.json();if(!response.ok)throw new SharedApiError(data.error||'Shared dev request failed',response.status);return data as T;}finally{clearTimeout(timer);signal?.removeEventListener('abort',cancel);}
   }
-  async profile(){const result=await this.api<{user:User}>('me');this.owner=result.user.id;return result.user;}
-  async join(displayName:string){const result=await this.api<{user:User}>('me','POST',{displayName});this.owner=result.user.id;return result.user;}
+  private async generationStatus(){const status=await this.api<{generation:string}>('recovery-status');if(typeof status.generation!=='string'||!/^[a-zA-Z0-9_-]{8,100}$/.test(status.generation))throw new Error('Recovery checkpoint unavailable; reload the app.');this.generation=status.generation;}
+  async profile(){const result=await this.api<{user:User}>('me');this.owner=result.user.id;await this.generationStatus();return result.user;}
+  async join(displayName:string){const result=await this.api<{user:User}>('me','POST',{displayName});this.owner=result.user.id;await this.generationStatus();return result.user;}
   private async observeRevision(revision:number|null){
     const key='trail-relics.dev.shared.revision.v1:'+this.ownerKey(),raw=await this.storage.getItem(key),before=raw===null?0:Number(raw);
     if(raw!==null&&!/^\d+$/.test(raw)||!Number.isSafeInteger(before)||before<0||revision!==null&&(!Number.isSafeInteger(revision)||revision<0))throw new Error('Saved progress could not be verified. Pending actions are preserved.');
@@ -68,14 +70,14 @@ export class SharedWorldClient{
   async encounter(action:EncounterAction){
     if(this.inFlight)throw new Error('An action is still syncing');this.inFlight=true;
     try{if(await this.pendingEncounter()||await this.pending())throw new Error('Retry your pending action before continuing');
-      const input={id:'enc:'+crypto.randomUUID(),action};await this.storage.setItem(this.encounterKey(),JSON.stringify(input));return await this.submitEncounter(input);
+      const input={id:'enc:'+crypto.randomUUID(),action,generation:this.generation};await this.storage.setItem(this.encounterKey(),JSON.stringify(input));return await this.submitEncounter(input);
     }finally{this.inFlight=false;}
   }
   async retryEncounter(){
     if(this.inFlight)throw new Error('An action is still syncing');this.inFlight=true;
     try{const raw=await this.storage.getItem(this.encounterKey());if(!raw)throw new Error('No pending encounter action');return await this.submitEncounter(JSON.parse(raw));}finally{this.inFlight=false;}
   }
-  private async submitEncounter(input:{id:string;action:EncounterAction}){
+  private async submitEncounter(input:{id:string;action:EncounterAction;generation?:string}){
     await this.inspect('encounter',input);
     const result=await this.api<EncounterResult>('encounter-actions','POST',input);if(result.world)await this.observeRevision(result.world.revision);await this.storage.removeItem(this.encounterKey());return result;
   }
@@ -102,7 +104,7 @@ export class SharedWorldClient{
     this.inFlight=true;
     try{
       if(await this.pending()||await this.pendingEncounter())throw new Error('Retry the pending action before continuing');
-      const pending:Pending={id:'web:'+crypto.randomUUID(),revision,event};
+      const pending:Pending={id:'web:'+crypto.randomUUID(),revision,event,generation:this.generation};
       await this.storage.setItem(this.key(),JSON.stringify(pending));return await this.submit(pending);
     }finally{this.inFlight=false;}
   }

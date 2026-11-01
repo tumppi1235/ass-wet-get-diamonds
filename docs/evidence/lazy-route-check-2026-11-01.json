@@ -1,0 +1,147 @@
+{
+  "scope": "Offline public catalog; no GPS/private-world/provider/reward writes. Timings are local observations, not hosted memory or field-test claims.",
+  "runtimeManifestSha256": "74e4c9affb0d880868fb2cfe9f57bf87029c4e1cf7c60ca87ced3201831f9951",
+  "results": [
+    {
+      "name": "Rantalantie",
+      "movement": "foot",
+      "elapsedMs": 49,
+      "assetReads": 2,
+      "cells": 1,
+      "decodedBytes": 19276,
+      "result": {
+        "status": "ready",
+        "meters": 807.7545974194686,
+        "points": 28,
+        "startOffsetMeters": 0,
+        "endOffsetMeters": 0
+      }
+    },
+    {
+      "name": "Rantalantie",
+      "movement": "bicycle",
+      "elapsedMs": 20,
+      "assetReads": 2,
+      "cells": 1,
+      "decodedBytes": 19276,
+      "result": {
+        "status": "ready",
+        "meters": 807.7545974194686,
+        "points": 28,
+        "startOffsetMeters": 0,
+        "endOffsetMeters": 0
+      }
+    },
+    {
+      "name": "Helsinki",
+      "movement": "foot",
+      "elapsedMs": 144,
+      "assetReads": 2,
+      "cells": 1,
+      "decodedBytes": 3705011,
+      "result": {
+        "status": "ready",
+        "meters": 638.0837859593975,
+        "points": 55,
+        "startOffsetMeters": 0,
+        "endOffsetMeters": 0
+      }
+    },
+    {
+      "name": "Helsinki",
+      "movement": "bicycle",
+      "elapsedMs": 108,
+      "assetReads": 2,
+      "cells": 1,
+      "decodedBytes": 3705011,
+      "result": {
+        "status": "ready",
+        "meters": 1219.8912513099544,
+        "points": 104,
+        "startOffsetMeters": 51.27962361690453,
+        "endOffsetMeters": 0
+      }
+    },
+    {
+      "name": "Rovaniemi",
+      "movement": "foot",
+      "elapsedMs": 30,
+      "assetReads": 2,
+      "cells": 1,
+      "decodedBytes": 393082,
+      "result": {
+        "status": "unavailable",
+        "reason": "disconnected"
+      }
+    },
+    {
+      "name": "Rovaniemi",
+      "movement": "bicycle",
+      "elapsedMs": 24,
+      "assetReads": 2,
+      "cells": 1,
+      "decodedBytes": 393082,
+      "result": {
+        "status": "unavailable",
+        "reason": "start-unmapped"
+      }
+    },
+    {
+      "name": "Kirkkopuisto–Haukkala",
+      "movement": "foot",
+      "elapsedMs": 148,
+      "assetReads": 4,
+      "cells": 3,
+      "decodedBytes": 2916740,
+      "result": {
+        "status": "ready",
+        "meters": 5584.786207491243,
+        "points": 260,
+        "startOffsetMeters": 0.02223901630659389,
+        "endOffsetMeters": 0
+      }
+    },
+    {
+      "name": "Kirkkopuisto–Haukkala",
+      "movement": "bicycle",
+      "elapsedMs": 129,
+      "assetReads": 5,
+      "cells": 4,
+      "decodedBytes": 3437450,
+      "result": {
+        "status": "unavailable",
+        "reason": "disconnected"
+      }
+    },
+    {
+      "name": "Kirkkopuisto–Sippulanniemi",
+      "movement": "foot",
+      "elapsedMs": 68,
+      "assetReads": 2,
+      "cells": 1,
+      "decodedBytes": 1551475,
+      "result": {
+        "status": "ready",
+        "meters": 4088.0195220253795,
+        "points": 222,
+        "startOffsetMeters": 0.02223901630659389,
+        "endOffsetMeters": 0
+      }
+    },
+    {
+      "name": "Kirkkopuisto–Sippulanniemi",
+      "movement": "bicycle",
+      "elapsedMs": 59,
+      "assetReads": 2,
+      "cells": 1,
+      "decodedBytes": 1551475,
+      "result": {
+        "status": "ready",
+        "meters": 4624.9948332998665,
+        "points": 268,
+        "startOffsetMeters": 0.02223901630659389,
+        "endOffsetMeters": 0
+      }
+    }
+  ]
+}

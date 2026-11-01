@@ -317,7 +317,7 @@ test('shared tile purchases spend exactly once, increase the global price and ne
 
 test('shared browser client keeps the native fetch receiver instead of invoking it as an account method',async()=>{
   const previous=globalThis.fetch;
-  globalThis.fetch=(function(this:unknown){assert.equal(this,globalThis);return Promise.resolve(Response.json({user:{id:'native-fetch-owner'}}));})as typeof fetch;
+  globalThis.fetch=(function(this:unknown,input:RequestInfo|URL){assert.equal(this,globalThis);return Promise.resolve(Response.json(String(input).endsWith('recovery-status')?{generation:'dev-initial-1',ready:true}:{user:{id:'native-fetch-owner'}}));})as typeof fetch;
   try{const client=new SharedWorldClient({async getItem(){return null;},async setItem(){},async removeItem(){}});assert.equal((await client.profile()).id,'native-fetch-owner');}
   finally{globalThis.fetch=previous;}
 });
