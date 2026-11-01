@@ -6,6 +6,7 @@ Working title: Trail Relics. Vision: an outdoor RPG where greater effort and exp
 | --- | --- |
 | [Backlog manager](BACKLOG.md#backlog-management-board) | Editable action board, validation queue, external gates, idea inbox and story register |
 | [Current dev increment](DEV-BACKLOG-INCREMENT.md) | Recovery generations, incremental routing, detected rarity clues and existing tester controls |
+| [Boss field increment](DEV-BOSS-FIELD.md) | Boss map markers, accurate own-tile arrival and damage/personal-loot forecasts |
 | [ROADMAP.md](ROADMAP.md) | MVP stages and next five implementation priorities |
 | [ARCHITECTURE.md](ARCHITECTURE.md) | Actual implementation, integration boundaries and incremental target |
 | [GAME_DESIGN.md](GAME_DESIGN.md) | Approved gameplay and explicitly provisional balance values |

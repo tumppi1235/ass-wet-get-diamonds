@@ -2,7 +2,7 @@ import { Map, Popup, setWorkerUrl, setWorkerCount, getVersion, type GeoJSONSourc
 import type { FeatureCollection } from 'geojson';
 import G from '../game/engine';
 import type { CityMapProps } from '../components/city-map.types';
-import { accuracyData, boundaryData, claimsData, collection, coordinates, overlayData, playerData, relicData, selectedTileData, trailData,plannedRouteData } from './vector-data';
+import { accuracyData, boundaryData, claimsData, collection, coordinates, overlayData, playerData, relicData, selectedTileData, trailData,plannedRouteData,bossData } from './vector-data';
 import { revision } from './style-revision.json';
 import {GAME_REGION} from './region';
 import {RELEASE_FEATURES} from '../config/features';
@@ -24,7 +24,7 @@ export function createQuestMap(container: HTMLDivElement, read: () => CityMapPro
   map.getCanvas().setAttribute('aria-label',GAME_REGION+' adventure map. Drag to pan and pinch or scroll to zoom.');
   let ready=false,follow=!!initial.player||initial.demo,focus=initial.focusKey,terrain=true,popup:Popup | null=null,popupId:string | null=null;
   let popupNodes:{title:HTMLElement;detail:HTMLElement;status:HTMLElement} | null=null;
-  const sources = ['visits','grid','trail','planned-route','accuracy','player','relics','boundary','claims','selected-tile','active-tile'];
+  const sources = ['visits','grid','trail','planned-route','accuracy','player','relics','bosses','boundary','claims','selected-tile','active-tile'];
   let planned:CityMapProps['plannedRoute'];
   const updates=new SourceUpdates();
   const data=(id:string,value:FeatureCollection)=>{const source=map.getSource(id) as GeoJSONSource | undefined;if(source)updates.send(id,value,next=>source.setData(next));};
@@ -49,6 +49,7 @@ export function createQuestMap(container: HTMLDivElement, read: () => CityMapPro
     data('claims',claimsData(p.claims || {},p.ownerId,p.selectedTileId,p.claimClusters));data('selected-tile',selectedTileData(p.selectedTileId));data('active-tile',selectedTileData(p.activeTileId));
     data('trail',trailData(p.game));data('relics',relicData(p.game,point,p.selectedRelicId,p.capturableId,false));
     data('planned-route',plannedRouteData(p.plannedRoute));
+    data('bosses',bossData(p.bosses,p.selectedBossId));
     if(p.plannedRoute!==planned){planned=p.plannedRoute;if(planned){follow=false;const points=planned.points;map.fitBounds([[Math.min(...points.map(v=>v.longitude)),Math.min(...points.map(v=>v.latitude))],[Math.max(...points.map(v=>v.longitude)),Math.max(...points.map(v=>v.latitude))]],{padding:{top:135,bottom:170,left:35,right:35},maxZoom:16,duration:0});}}
     data('player',playerData(p.player,p.demo?p.game:null));data('accuracy',accuracyData(p.player));
     if(p.focusKey && p.focusKey!==focus){focus=p.focusKey;follow=true;map.jumpTo({center:coordinates(point),zoom:Math.max(14.4,map.getZoom())});}
@@ -88,6 +89,9 @@ export function createQuestMap(container: HTMLDivElement, read: () => CityMapPro
       'icon-image':['get','icon'],'icon-anchor':'bottom','icon-size':['case',['get','selected'],1.25,['==',['get','rarity'],'Legendary'],1.2,['==',['get','rarity'],'Rare'],1,.8],
       'icon-allow-overlap':true,'icon-padding':3,'symbol-sort-key':['case',['get','selected'],3,['==',['get','rarity'],'Legendary'],2,1],
     },paint:{'icon-opacity':['case',['get','collected'],.45,['get','searched'],.6,1]}});
+    add({id:'boss-markers',type:'circle',source:'bosses',minzoom:9,paint:{'circle-radius':['match',['get','tier'],'Mythical',22,'Greater',19,'Standard',16,14],'circle-color':'#3B1D39','circle-stroke-color':['case',['get','selected'],'#FFF4BB','#E7A0CF'],'circle-stroke-width':3}});
+    add({id:'boss-labels',type:'symbol',source:'bosses',minzoom:9,layout:{'text-field':'BOSS','text-font':['Noto Sans Regular'],'text-size':10,'text-allow-overlap':true},paint:{'text-color':'#FFF4BB'}});
+    add({id:'boss-names',type:'symbol',source:'bosses',minzoom:13,layout:{'text-field':['get','name'],'text-font':['Noto Sans Regular'],'text-size':12,'text-offset':[0,2.4]},paint:{'text-color':'#FFF4BB','text-halo-color':'#3B1D39','text-halo-width':2}});
     add({id:'player-halo',type:'circle',source:'player',paint:{'circle-radius':13,'circle-color':'#FFFFFF','circle-opacity':.5}});
     add({id:'player-dot',type:'circle',source:'player',paint:{'circle-radius':6,'circle-color':['case',['get','precise'],'#267BAD','#BB8939'],'circle-stroke-color':'#FFF6DA','circle-stroke-width':3}});
     ready=true;update();setTerrain(terrain);onReady();reportBounds();
@@ -98,6 +102,7 @@ export function createQuestMap(container: HTMLDivElement, read: () => CityMapPro
   map.on('error',e=>{console.warn('Quest map:',e.error?.message);if(!ready)onError('Map could not load. Check your connection.');});
   map.on('click',async e=>{
     if(!ready)return;
+    const boss=map.queryRenderedFeatures(e.point,{layers:['boss-markers','boss-labels']})[0];if(boss){read().onSelectBoss?.(String(boss.properties.bossId));return;}
     const features=map.queryRenderedFeatures(e.point,{layers:['relic-icons','relic-dots','relic-clusters','claim-clusters']});const f=features[0];if(!f){const point=G.xy(e.lngLat.lat,e.lngLat.lng),c=G.cell(point.x,point.y);read().onSelectTile?.(G.key(c.i,c.j));return;}
     if(f.properties.claimCluster){map.jumpTo({center:(f.geometry as GeoJSON.Point).coordinates as [number,number],zoom:Math.min(19,map.getZoom()+2)});return;}
     if(f.properties.point_count){const zoom=await (map.getSource('relics') as GeoJSONSource).getClusterExpansionZoom(f.properties.cluster_id);if(!map.getSource('relics'))return;map.jumpTo({center:(f.geometry as GeoJSON.Point).coordinates as [number,number],zoom});return;}
@@ -105,7 +110,7 @@ export function createQuestMap(container: HTMLDivElement, read: () => CityMapPro
     popup=new Popup({offset:[0,-45],closeButton:true,closeOnClick:true,maxWidth:'245px',className:'quest-relic-popup'}).setLngLat((f.geometry as GeoJSON.Point).coordinates as [number,number]);
     popupContents(id);popup.addTo(map);popup.on('close',()=>{popupId=null;popupNodes=null;});
   });
-  for(const layer of ['relic-icons','relic-dots','relic-clusters']){map.on('mouseenter',layer,()=>map.getCanvas().style.cursor='pointer');map.on('mouseleave',layer,()=>map.getCanvas().style.cursor='');}
+  for(const layer of ['relic-icons','relic-dots','relic-clusters','boss-markers','boss-labels']){map.on('mouseenter',layer,()=>map.getCanvas().style.cursor='pointer');map.on('mouseleave',layer,()=>map.getCanvas().style.cursor='');}
   function setTerrain(enabled:boolean){terrain=enabled;if(!ready)return;
     // Add elevation only after Terrain is requested; Street never fetches it first.
     if(enabled && !map.getSource('elevation')){map.addSource('elevation',{type:'raster-dem',tiles:['https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png'],tileSize:256,maxzoom:15,encoding:'terrarium',attribution:'<a href="https://github.com/tilezen/joerd/blob/master/docs/attribution.md">Terrain © Mapzen / data sources</a>'});map.addLayer({id:'terrain-shade',type:'hillshade',source:'elevation',paint:{'hillshade-shadow-color':'#887A55','hillshade-highlight-color':'#F3E8BC','hillshade-accent-color':'#376747','hillshade-exaggeration':.35}},'forest-texture');}

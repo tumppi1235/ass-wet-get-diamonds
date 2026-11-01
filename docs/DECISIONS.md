@@ -104,3 +104,10 @@ identities, databases, rewards, configuration or recovery snapshots. Production
 admin bootstrap uses only the verified Site owner's configured email. Experimental
 balance remains labeled; physical GPS/navigation and provider restore gates remain
 pending and must not be represented as completed tests.
+
+D-041 (2026-11-01): prioritize TR-144 boss field usability in dev. Map markers,
+fresh own-tile arrival and submission forecasts are read-only presentation.
+Arrival never activates an encounter; explicit consent/creator activation and
+server validation remain required. Forecasts distinguish physical damage from
+personal loot qualification and never change locked balance or immediate
+settlement. Preserve production v10 and all existing player/encounter records.

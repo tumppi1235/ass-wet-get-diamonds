@@ -11,6 +11,9 @@ import { visitAreas } from './visits';
 import { tilePoint, type TileClaims } from '../game/claims';
 import type {ClaimCluster} from './claim-window';
 import type {MappedRoute} from '../game/mapped-route';
+import type {Boss} from '../game/bosses';
+
+export function bossData(bosses:Boss[]=[],selected?:string){return collection(bosses.map(b=>feature({type:'Point',coordinates:[b.longitude,b.latitude]},{bossId:b.id,name:b.name,tier:b.tier,selected:b.id===selected})));}
 
 export function plannedRouteData(route?:MappedRoute){if(!route)return collection();const points=route.points.map(p=>[p.longitude,p.latitude]);return collection([feature({type:'LineString',coordinates:points},{planned:true}),feature({type:'Point',coordinates:points[0]},{endpoint:'start'}),feature({type:'Point',coordinates:points[points.length-1]},{endpoint:'end'})]);}
 

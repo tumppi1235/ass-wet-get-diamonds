@@ -49,6 +49,7 @@ results in [TEST-PLAN.md](TEST-PLAN.md); a simulated test does not count as a fi
 | TR-153, TR-154, TR-146, TR-023, TR-167 | iPhone Chrome walk across tile edges; collect; interrupt/lock/reopen; verify adventure, route and gold continuity without invented GPS gaps. | Tuomas: next outdoor validation run. |
 | TR-168 | Check explored/personal/other claims and recorded route visibility outdoors at phone zoom levels. | Tuomas: next outdoor validation run. |
 | TR-165 | Enable compass; rotate through north/cardinal directions and portrait/landscape; deny permission and test stale/foreground recovery. | Tuomas: physical iPhone; magnetic guidance is approximate. |
+| TR-144, TR-133, TR-134 | Find/tap a boss marker; cross its tile with fresh GPS; confirm arrival starts no fight; inspect locked party and one-activity damage/loot preview. | Tuomas: dev phone/cooperative run; DEV-BOSS-FIELD.md. |
 | TR-094, TR-098, TR-101 | Physical path/access validation and supported navigation-device GPX import. | Unassigned; follows successful dev publication. |
 
 ### External dependencies and deferred ideas
@@ -222,7 +223,7 @@ Automated repair evidence and remaining iPhone field gates: [P0 report](P0-EXPLO
 | TR-136 | P2 | In Progress | Show encounter countdown and party progress on mobile and Garmin | TR-133, TR-155 | Phone shows persisted encounter countdown, HP and participation with 15-second refresh while visible. Garmin display/sync remains. |
 | TR-137 | P1 | Backlog | Support distance, elevation and exploration boss objectives | TR-043, TR-044 | Boss objectives support separately configured distance/elevation/exploration evidence. |
 | TR-138 | P1 | Backlog | Configure boss-specific objective combinations and movement multipliers | TR-137, TR-123 | Boss definitions combine objective and movement rules without arbitrary client bonuses. |
-| TR-144 | P1 | In Progress | Boss Tile Reached | TR-023, TR-043 | Player can inspect nearby boss details and guide with the compass; accurate own-tile arrival is checked for activation without starting a timer. Automatic arrival presentation/map boss markers remain. |
+| TR-144 | P1 | In Progress | Boss Tile Reached | TR-023, TR-043 | Shared map now shows tier-sized boss badges; tap to inspect/guide. Fresh accepted own-tile GPS prompts arrival without creating/activating a fight; draft activation readiness and read-only damage/personal-loot forecasts are implemented. Four new regressions; 188 total pass. Physical arrival/co-op validation remains. See DEV-BOSS-FIELD.md. |
 | TR-145 | P1 | In Progress | Boss Fight Activated | TR-144, TR-129 | Explicit creator activation after consent locks the encounter, and party members see it on refresh. Push/provider/watch notifications remain. |
 
 ## TR-E05 — Player Attributes, XP & Loot

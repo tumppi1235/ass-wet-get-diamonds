@@ -3,6 +3,7 @@ import type { PlayerPosition } from '../location/tracker';
 import type { TileClaims } from '../game/claims';
 import type {MapBounds,ClaimCluster} from '../map/claim-window';
 import type {MappedRoute} from '../game/mapped-route';
+import type {Boss} from '../game/bosses';
 export type CityMapProps = {
   game: GameState; communityVisits: Record<string, number>;
   onDiscover(ids: [number, number][]): void;
@@ -12,4 +13,5 @@ export type CityMapProps = {
   claims?: TileClaims; ownerId?: string; activeTileId?:string; selectedTileId?: string; onSelectTile?(id:string):void;
   claimClusters?:ClaimCluster[];onViewBounds?(bounds:MapBounds):void;
   plannedRoute?:MappedRoute;
+  bosses?:Boss[];selectedBossId?:string;onSelectBoss?(id:string):void;
 };

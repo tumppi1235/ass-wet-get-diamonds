@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Image, Linking, Platform, Text, View, useWindowDimensions } from 'react-native';
+import { Image, Linking, Platform, Pressable, Text, View, useWindowDimensions } from 'react-native';
 import Svg, { Circle, ClipPath, Defs, G as Group, Path, Rect, Text as SvgText } from 'react-native-svg';
 import G from '../game/engine';
 import { fitJyvaskyla, JYVASKYLA, visibleGameTiles, type Point } from '../map/region';
@@ -24,7 +24,7 @@ const boundaryPath = JYVASKYLA.polygons.map(p => line(p.outer) + 'Z' + p.holes.m
 const identify = 'TrailRelics/0.4 (+https://github.com/tumppi1235/ass-wet-get-diamonds)';
 
 type Props = CityMapProps;
-export function CityMap({ game, communityVisits, onDiscover, player, focusKey, demo, locating, onLocate, claims = {}, claimClusters=[],onViewBounds,ownerId,plannedRoute, fullScreen = false }: Props) {
+export function CityMap({ game, communityVisits, onDiscover, player, focusKey, demo, locating, onLocate, claims = {}, claimClusters=[],onViewBounds,ownerId,plannedRoute,bosses=[],selectedBossId,onSelectBoss, fullScreen = false }: Props) {
   const [width, setWidth] = useState(750), [mapStyle, setMapStyle] = useState<MapStyle>('street'), [failed, setFailed] = useState<Record<string, boolean>>({});
   const { height: screenHeight, width: screenWidth } = useWindowDimensions();
   const height = fullScreen ? screenHeight : screenWidth < 700 ? Math.max(330, Math.min(480, screenHeight * .52)) : 560, area = useMemo(() => fitJyvaskyla(width, height), [width, height]);
@@ -114,6 +114,7 @@ export function CityMap({ game, communityVisits, onDiscover, player, focusKey, d
           <Path d={`M${center.x - halfW + 16 / scale},${-center.y + halfH - 24 / scale}h${scaleMeters}`} stroke="#374D35" strokeWidth={2 / scale} /><SvgText x={center.x - halfW + 16 / scale} y={-center.y + halfH - 32 / scale} fontSize={10 / scale} fill="#374D35">{scaleMeters >= 1000 ? `${scaleMeters / 1000} km` : `${scaleMeters} m`}</SvgText>
         </Svg>
       </MapSurface>
+      {bosses.map(b=>{const p=G.xy(b.latitude,b.longitude),left=(p.x-center.x)*scale+width/2,top=(center.y-p.y)*scale+height/2;if(left<0||left>width||top<0||top>height)return null;return <Pressable key={b.id} accessibilityRole="button" accessibilityLabel={'Inspect boss '+b.name} onPress={()=>onSelectBoss?.(b.id)} style={{position:'absolute',left:left-24,top:top-18,minWidth:48,height:36,padding:5,backgroundColor:'#3B1D39',borderColor:b.id===selectedBossId?'#FFF4BB':'#E7A0CF',borderWidth:3}}><Text style={{color:'#FFF4BB',fontSize:10,textAlign:'center'}}>BOSS</Text></Pressable>;})}
       {fullScreen&&<MapLegend/>}
       {fullScreen ? <View style={{ position: 'absolute', right: 10, top: 12, gap: 6 }}><Button title="Me" quiet busy={locating} onPress={() => { onLocate(); if(target) setCamera({ mode: 'player', center: target, scale: Math.max(.25, scale), focusKey }); }} /></View> : <>      <View style={{ position: 'absolute', right: 12, top: 12, gap: 6 }}><Button title="+" quiet onPress={() => zoom(1.6)} /><Button title="−" quiet onPress={() => zoom(1 / 1.6)} />{target && <Button title="◎ Me" quiet onPress={() => setCamera({ mode: 'player', center: target, scale: Math.max(.25, scale), focusKey })} />}</View>
 </>}
