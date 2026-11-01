@@ -34,3 +34,26 @@ regressions and mobile types/lint pass before publication. Real phone arrival,
 rotation/GPS quality and cooperative recording remain physical validation gates.
 Distance/elevation/exploration objective combinations and Garmin/Strava remain
 separate backlog work. Production version 10 is not modified by this increment.
+
+## Released as private dev 28
+
+[Open shared dev](https://trail-relics-dev.tuomasl.chatgpt.site/shared).
+[Exact source, archive, deployment and CI evidence](evidence/dev28-boss-field-release.json)
+records successful publication, preserved owner-private access/runtime revision 2,
+188 regressions and all four successful GitHub workflows. Both archive limits pass
+at 197,107,431 compressed / 260,913,152 expanded bytes.
+
+An explicit admin placement made a Lesser Metsänvartija available at the sourced
+Kirkkopuisto paths (tile -1,-1) until November 8, 20:26 as displayed. It is an
+intentional dev field-test boss, not an automatic seed or a production change.
+Hosted browser QA verified the badge, tap-to-Encounters, selected compass at 99m,
+and party form showing solo target 20 equivalent km / personal minimum 5 km.
+The form was closed without creating a draft. With no fresh GPS, no arrival prompt
+appeared. Tumppi retained 0 gold, 0.00 km, 0 finds, tile 0,0, levels 1/1/1 and
+stopped quest. No activity, activation, contribution, reward, claim, access change
+or recovery operation was performed.
+
+Desktop map/panel QA passed at the actual 1280×720 viewport. The attempted 390×844
+override did not change the rendered viewport; it was reset and is not recorded
+as a phone-layout pass. Physical and phone-size validation remain pending. Native
+Site inspection confirmed production still public version 10; main was not pushed.

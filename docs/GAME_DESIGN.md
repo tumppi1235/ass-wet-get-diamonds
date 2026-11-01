@@ -27,7 +27,7 @@ Approved cumulative progression: `XP(level) = coefficient × (level - 1)^2`, ini
 
 Reaching a boss tile records presence and shows the boss; it does not activate a fight. Explicit activation starts a configurable window, initially 24 hours. At most five players participate asynchronously. Each supplies exactly one continuous qualifying activity, including normal pauses. Every participant must personally visit the boss tile during that activity and within the encounter window. Contributions need verified effort and tier-specific minimums; party size scales difficulty. Each qualifying victor gets an individual loot roll/base reward.
 
-Distance/elevation/exploration objectives may be combined later. Current balancing targets, not implemented values:
+Distance/elevation/exploration objectives may be combined later. The current shared encounter policy implements these targets; final balance still needs field validation:
 
 | Tier | Solo foot km | 2 players each | 3 players each | 5 players each |
 | --- | ---: | ---: | ---: | ---: |
@@ -36,7 +36,7 @@ Distance/elevation/exploration objectives may be combined later. Current balanci
 | Greater | 50 | 35 | 28 | 22 |
 | Mythical | 75 | 65 | 58 | 50 |
 
-The initial broad solo-50km guarantee was refined to Greater or lower; Mythical remains exceptional. Exact minimums, activity-already-underway eligibility and modifier caps remain to be finalized. Four concepts: Metsänvartija, Hallahukka, Syvänne, Kivenkulkija. No boss system is live.
+The initial broad solo-50km guarantee was refined to Greater or lower; Mythical remains exceptional. The implemented experimental policy snapshots tier/party minimums, movement factors and modifier caps; an activity already underway can count only complete accepted segments after activation. Four designs are implemented: Metsänvartija, Hallahukka, Syvänne, Kivenkulkija. Shared encounter mechanics are released; provider/physical validation and final balancing remain pending. See DEV-ENCOUNTERS.md and DEV-BOSS-FIELD.md. Phone-local mode has no shared boss ledger.
 
 ## Movement, recommendations and later conveniences
 

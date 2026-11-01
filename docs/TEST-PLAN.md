@@ -182,3 +182,19 @@ Bicycle 1.22km, explicit unverified step-free access and a functioning GPX
 control with no UI error. Profile gold/distance/finds/levels and stopped quest
 were unchanged. Phone-sized map/endpoint proof was captured at 390×844. These
 are hosted/public-preview checks, not physical GPS or navigation-device tests.
+
+## TR-144/133/134 — boss field usability
+
+`boss-field.test.ts` adds four read-only model/map regressions; all 188 application
+tests pass. Arrival must preserve state and use fresh accepted own-tile GPS,
+not a radius or an old saved tile. Forecasts use the placed rules and server
+activity summary, preserve individual effort floors and never write HP or rewards.
+
+| Test item | Expected result | Status |
+| --- | --- | --- |
+| Open shared dev with the drawer hidden | Available placed bosses have distinct tier-sized map badges; map and Me remain usable. | Hosted browser check recorded in DEV-BOSS-FIELD.md. |
+| Tap a boss | Encounters opens with selected boss first; compass guides to it; no draft or timer starts. | Hosted browser check recorded in DEV-BOSS-FIELD.md. |
+| Walk across a boss tile edge | Fresh own-tile GPS shows arrival; adjacent, inaccurate, stale or future fixes do not. | Automated boundary tests pass; physical phone pending. |
+| Create a party before arrival | Activation stays disabled until consent and fresh boss-tile GPS; server rechecks closures/revision. | Existing server/model tests pass; physical/co-op pending. |
+| Review a completed activity | Correct movement damage, projected HP, personal minimum/shortfall and immediate settlement warning. Missing visit or repeat submission cannot qualify. | Automated forecasts pass; completed physical activity UI pending. |
+| Win with an under-minimum party member | Party may win through another qualifying member; unqualified player receives no personal loot. Zero HP without any qualifying member is not victory. | Model/server tests pass; physical co-op pending. |

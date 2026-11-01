@@ -1,0 +1,80 @@
+{
+  "releasedAt": "2026-11-01T18:34:06.719326+00:00",
+  "version": 28,
+  "url": "https://trail-relics-dev.tuomasl.chatgpt.site/shared",
+  "appSource": "e98b89b9f71800ce6fc597aac8fa626160b40088",
+  "hostingSource": "b770b14c4aba066f3df8c4c2c4efcd3db28d5573",
+  "savedVersion": "appgprj_6ae5c02d5c008191b51fda4f4f39c7a5~appgver_6f1526eceba08191bc8dca75e4373384",
+  "deployment": "appgdep_6ae785fe3728819196c918201693995b",
+  "status": "succeeded",
+  "runtimeRevision": 2,
+  "audience": "owner-private; unchanged",
+  "archive": {
+    "sha256": "724f8b72baba795ba08ef1ca68eb2e3db6d7bf4a56ffbf7517ab12ec0c07a530",
+    "compressedBytes": 197107431,
+    "expandedBytes": 260913152,
+    "normalized": {
+      "archive_format": "tar",
+      "sediment_file_id": "file_0000000060cc8210ab518c9d9d92b964",
+      "content_hash": "sha256:20aa3a447cda87070e0c6d504a96b5889ef4d3337abd0e9d5d8f22d15076e9a0",
+      "size_bytes": 260925440,
+      "file_count": 13075
+    }
+  },
+  "checks": {
+    "regressions": 188,
+    "mobileTypes": true,
+    "mobileLint": true,
+    "workerBuild": true,
+    "graph": {
+      "nodes": 3287,
+      "relationships": 7916,
+      "indexedFiles": 279
+    },
+    "ci": [
+      {
+        "name": "Offline route network",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/tumppi1235/ass-wet-get-diamonds/actions/runs/41336501421"
+      },
+      {
+        "name": "Project knowledge graph",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/tumppi1235/ass-wet-get-diamonds/actions/runs/41336501401"
+      },
+      {
+        "name": "Web checks and release candidates",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/tumppi1235/ass-wet-get-diamonds/actions/runs/41336501535"
+      },
+      {
+        "name": "Shared development backend",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/tumppi1235/ass-wet-get-diamonds/actions/runs/41336501428"
+      }
+    ]
+  },
+  "hostedQA": {
+    "marker": "Kirkkopuisto Metsänvartija BOSS badge renders. Tap opens selected Encounters and compass bearing at 99m from saved location.",
+    "partyForm": "Solo target 20 equivalent km and personal minimum 5 km; opening and closing form starts no draft or timer.",
+    "gpsGate": "No fresh GPS available: arrival banner absent and boss detail requires fresh accurate tile presence.",
+    "profile": "Tumppi unchanged: 0 gold, 0.00 km, 0 finds, tile 0,0, levels 1/1/1, quest stopped.",
+    "viewport": "Actual rendered 1280x720. Requested 390x844 override was ineffective (DOM and screenshot remained 1280x720); override reset. No phone-sized browser pass claimed.",
+    "writes": "One explicit dev-only sourced Lesser Metsänvartija definition placed through admin at Kirkkopuisto paths, tile -1,-1, available until 2026-11-08 20:26 as displayed. Placement audit created. No drafts, activations, quest/GPS events, rewards, claims, role/access edits or recovery operations performed."
+  },
+  "production": {
+    "version": 10,
+    "audience": "public",
+    "url": "https://trail-relics-jyvaskyla.tuomasl.chatgpt.site"
+  },
+  "pending": [
+    "Physical iPhone tile arrival and GPS freshness",
+    "Physical/cooperative activity submission and loot acceptance",
+    "Phone-sized layout and native/fallback device validation",
+    "Distance/elevation/exploration objective combinations and Garmin/Strava integrations"
+  ]
+}
