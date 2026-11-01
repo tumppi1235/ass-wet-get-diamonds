@@ -1,5 +1,8 @@
 # Development mapped routes and GPX (TR-094/098/101)
 
+Current release: **private dev version 24**, with hosted public-preview checks.
+The failed version 23 and earlier packaging attempts below are historical.
+
 Implementation adds owner-authenticated, same-origin `POST /api/trail/route`,
 binary asset loading and a Mapped route section in shared dev Ideas. The current
 build uses the complete audited Finland network in DEV-ROUTING.md, not the small
@@ -187,3 +190,33 @@ packaging and before saving a version. It checks both compressed bytes and the
 complete decompressed tar stream, including headers/padding, and fails early on
 either limit. Tests cover current/historical/lazy assets, missing script and path
 rejection, and confinement of generated-output cleanup.
+
+## Released dev version 24
+
+- Deployment `appgdep_6ae70141d80c8191bdeb672e0162a7ae` succeeded
+  2026-11-01T09:08:49Z at https://trail-relics-dev.tuomasl.chatgpt.site.
+  Existing private audience, D1 binding and runtime environment revision **2**
+  remain intact. Production stays version 9.
+- GitHub code: `d3b84f23b9998aa33b034e93c201a827d5833635`;
+  exact pushed hosting source: `1e80e671c19e585b7321370f1948ee5f918030cd`.
+  Saved version: `appgprj_6ae5c02d5c008191b51fda4f4f39c7a5~appgver_73d83e992f90819180b9e3cf1baab43a`.
+- All **156 app regressions**, lint/types, two packer tests, the complete Worker
+  build and refreshed structural graph pass. The corrected synthetic asset
+  fixture was rerun separately. All **13,048** final artifact files were
+  byte-verified before official packaging.
+- Both archive limits were checked before saving: **192,311,088 input bytes /
+  243,302,400 expanded tar bytes**, below 268,435,456 each. The native saved tar
+  records 243,312,640 bytes after normalization, 13,048 files and content hash
+  `sha256:6b0b8aca86775bebf34be1492208888be0e2373b80471c97a7ed9ab688f21504`.
+- Actual hosted checks: Rantalantie Compass 01 → Rune 02, Foot **0.81 km** with
+  zero endpoint offsets; Helsinki Birger Brunilan puistokuja → Yrjö-Koskisen katu,
+  Foot **0.64 km**, Bicycle **1.22 km** with a **52m** start offset excluded from
+  the line/distance. Required step-free access explicitly returned unverified.
+- The hosted GPX control triggered without an application error. The actual
+  serializer/schema evidence is documented above; this is not device-import
+  evidence. A 390×844 hosted screenshot verifies route/end-marker visibility.
+- The existing shared profile stayed at gold 0, 0.00km, 0 finds, tile 0,0,
+  Foot, levels 1 and quest stopped before/after previews. No Me/GPS/Start action,
+  grant, account migration or real outing was performed. Regular-game GPS/trail/
+  gold fixes remain included. Phone navigation, device import and larger-area
+  performance are still pending acceptance.

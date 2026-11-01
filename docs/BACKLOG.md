@@ -22,11 +22,15 @@ All actions below are unassigned until someone starts them.
 
 | Order | Parent stories | Next action | Completion evidence |
 | --- | --- | --- | --- |
-| 1 | TR-094, TR-098 | Finish the dev route-planner publication using bounded compiled-map uploads; retain the exact tested tree and existing private audience. | Successful private deployment, hosted route/GPX smoke checks, source/version recorded in DEV-ROUTE-PLANNER.md. A failed upload is not a release. |
-| 2 | TR-118 | Review and complete recovery revision reconciliation and first-rollout write draining; keep provider restore work separate. | Recovery/maintenance regression evidence, explicit unresolved provider gates in DEV-RECOVERY.md. |
-| 3 | TR-094, TR-101 | Extend bounded routing for larger/dense areas with compact or lazy graph loading. | Repeatable memory/search limits, mapped topology/closure tests, explicit unavailable states and no reward writes. |
-| 4 | TR-022 | Add rarity clues within the player's existing detected-spawn visibility. | Clue/visibility tests; no hidden-spawn disclosure, Auto-Collect or collection-rule change. |
-| 5 | TR-041 | Define and implement test-access administration within existing authorization. | Role/access tests and named-recipient approval before any actual invitation or audience change. |
+| 1 | TR-118 | Review and complete recovery revision reconciliation and first-rollout write draining; keep provider restore work separate. | Recovery/maintenance regression evidence, explicit unresolved provider gates in DEV-RECOVERY.md. |
+| 2 | TR-094, TR-101 | Extend bounded routing for larger/dense areas with lazy graph loading; compact full-country runtime is released in dev 24. | Repeatable memory/search limits, mapped topology/closure tests, explicit unavailable states and no reward writes. |
+| 3 | TR-022 | Add rarity clues within the player's existing detected-spawn visibility. | Clue/visibility tests; no hidden-spawn disclosure, Auto-Collect or collection-rule change. |
+| 4 | TR-041 | Define and implement test-access administration within existing authorization. | Role/access tests and named-recipient approval before any actual invitation or audience change. |
+
+Latest completed action: route-planner publication and hosted smoke checks in
+**dev version 24**, including full-country compact data and GPX control. See
+[release evidence](DEV-ROUTE-PLANNER.md#released-dev-version-24). Parent stories
+remain In Progress for their remaining navigation/device/performance acceptance.
 
 ### Validation queue
 
@@ -256,11 +260,11 @@ Automated repair evidence and remaining iPhone field gates: [P0 report](P0-EXPLO
 | --- | --- | --- | --- | --- | --- |
 | TR-092 | P1 | Done | Adventure recommendation interface | TR-051 | Shared dev Ideas tab selects goal, movement, distance and destination preferences and shows non-route guidance with conditional ordinary XP. Unsupported earning evidence is explicit. See DEV-ADVENTURE-IDEAS.md. |
 | TR-093 | P1 | In Progress | Personalized recommendations for accumulating specific attributes | TR-092, TR-095 | Non-route guidance uses personal XP/fractional credit, fresh location, paid tile/region history and preferences with zero rewards. Verified route/access and unsupported earning sources remain. |
-| TR-094 | P1 | In Progress | Route generation using real trail and geographic data | TR-026, TR-101 | Audited full Finland network, bounded authenticated zero-write API, fresh own-GPS/public previews, re-read closure checks and distinct mapped overlays implemented and locally browser-tested. Hosted verification, physical access and larger/dense lazy-routing optimisation remain; see DEV-ROUTE-PLANNER.md. |
+| TR-094 | P1 | In Progress | Route generation using real trail and geographic data | TR-026, TR-101 | Dev 24 releases the audited full Finland network in a 35% smaller runtime representation, bounded zero-write API and separate planned overlays. Hosted Rantalantie Foot and Helsinki Foot/Bicycle previews pass; physical access, broader performance and larger-area lazy routing remain. See DEV-ROUTE-PLANNER.md. |
 | TR-095 | P1 | In Progress | Estimated attribute XP for recommendations | TR-079, TR-087 | Ideas UI projects conditional ordinary XP/current levels with saved fractional credit and explicit one-tile/region/find assumptions. Accepted Foot/Bicycle arithmetic parity tested; real route/elevation integration remains. |
 | TR-096 | P1 | Backlog | Include artifact and boss opportunities in recommendations | TR-094, TR-003, TR-043 | Relevant detected artefacts/bosses can be included without forcing extra collection range. |
 | TR-097 | P2 | Done | Evaluate Strava segments as potential training suggestions | TR-164 | Feasibility decision: no persistent segment recommendation cache under assumed permissions; endpoint, deletion and data-use gates documented. No connected segment feature. See CONNECTIVITY-FEASIBILITY.md. |
-| TR-098 | P1 | In Progress | GPX export for Garmin and other navigation devices | TR-094 | Planned GPX 1.1 export preserves mapped geometry/attribution, independently parses and passes official XSD for the actual Rantalantie route. Browser download control implemented. Hosted download and actual supported navigation-device import remain; no recorded activity/effort is claimed. |
+| TR-098 | P1 | In Progress | GPX export for Garmin and other navigation devices | TR-094 | Dev 24: planned GPX 1.1 preserves mapped geometry/attribution; independent XML and actual Rantalantie XSD checks pass. Hosted export control triggered without UI error. Actual supported navigation-device import remains; no recorded activity/effort is claimed. See DEV-ROUTE-PLANNER.md. |
 | TR-099 | P2 | Backlog | Compare predicted versus actual adventure rewards | TR-095 | Verified actual rewards can be compared with estimates without double rewards. |
 | TR-100 | P2 | Backlog | Add group adventure and boss-route planning | TR-094, TR-130 | A party route includes encounter timing and each member’s required tile visit. |
 | TR-101 | P1 | In Progress | Match suggestions to sport, distance, difficulty and accessibility | TR-026 | Non-route preferences select movement/distance and explicit known terrain. Unknown or conflicting terrain is excluded; required step-free access returns no unverified destinations. Actual route difficulty/permissions/access verification remains. |
@@ -288,7 +292,7 @@ Automated repair evidence and remaining iPhone field gates: [P0 report](P0-EXPLO
 | TR-117 | P1 | In Progress | Add production monitoring, error logging and alerts | TR-113 | Dev-only safe failure reference/log foundation implemented and canary-tested, without payload/identity/route logging. Production monitoring, alerts and provider retention verification remain outside this dev release. See DEV-OBSERVABILITY.md. |
 | TR-118 | P0 | In Progress | Implement database backups, migrations and rollback procedures | TR-112 | Append-only migrations, private complete snapshots/offline recovery, audited maintenance transitions and same-transaction game-write fences are tested. Pending web actions survive pause/retry. Hosted consistent restore/retention, first-rollout drain and revision reconciliation remain gates; see DEV-RECOVERY.md and DEV-MAINTENANCE.md. |
 | TR-119 | P0 | In Progress | Separate test players, artifacts, bosses and inventories from production | TR-111, TR-112 | Dev Site/D1, test spawns and inventories stay isolated from production. Shared boss definitions, encounters and loot also remain in dev only. |
-| TR-120 | P1 | In Progress | Document release procedures and environment configuration | TR-116, TR-118 | A new maintainer can follow promotion, rollback and recovery instructions. |
+| TR-120 | P1 | In Progress | Document release procedures and environment configuration | TR-116, TR-118 | Dev 24 documents source/input/expanded archive limits, tested output cleanup and supported frontend asset retention, with an archive preflight tool. Full promotion/rollback/recovery acceptance still depends on TR-116/118. |
 
 ## TR-E08 — Movement & Effort Balancing
 

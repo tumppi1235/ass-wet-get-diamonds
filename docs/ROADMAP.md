@@ -12,11 +12,14 @@ Current follow-up evidence: private snapshots/offline recovery, collection simul
 
 Next independent priorities:
 
-1. TR-094/098: finish dev publication and hosted verification of the implemented route/GPX planner; bounded source uploads must preserve the exact tested tree. It is not hosted yet.
-2. TR-118: complete recovery reconciliation and first-rollout write draining, preserving pending client journals; provider-operated hosted recovery remains a separate gate.
-3. TR-094/101: extend implemented bounded real-path routing to larger/dense areas with compact/lazy loading; do not infer access or difficulty from missing map data.
-4. TR-022: rarity-clue presentation within existing detected-spawn permissions; keep Auto-Collect behind the manual collection/device gates.
-5. TR-041: test-access management within the preserved private audience; do not invite unnamed people or broaden platform permissions without specific authorization.
+Dev version 24 now hosts the full-country compact route planner and planned GPX
+control. Rantalantie and Helsinki Foot/Bicycle previews were checked on the actual
+site without starting a quest or awarding progress; physical/device gates remain.
+
+1. TR-118: complete recovery reconciliation and first-rollout write draining, preserving pending client journals; provider-operated hosted recovery remains a separate gate.
+2. TR-094/101: extend bounded real-path routing to larger/dense areas with lazy loading; the compact runtime is implemented. Do not infer access or difficulty from missing map data.
+3. TR-022: rarity-clue presentation within existing detected-spawn permissions; keep Auto-Collect behind the manual collection/device gates.
+4. TR-041: test-access management within the preserved private audience; do not invite unnamed people or broaden platform permissions without specific authorization.
 
 P0 Garmin linking/shared-watch inventory/cross-provider dedup/physical tests still depend on supported ingress, account/program choices and device evidence. They are unfinished; independent work continues while those gates wait. Further production promotion, native distribution and deferred quests/companions require their own scope decision.
 

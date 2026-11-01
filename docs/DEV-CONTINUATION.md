@@ -127,3 +127,17 @@ the route/gold fixes. Preserve that backup and integrate the hotfix into a newly
 built, tested, byte-verified routing release based on the new remote head before
 continuing bounded compiled-map uploads. Existing schema, audience, runtime
 settings and player data must stay intact.
+
+Route publication update — dev version 24 is now live. See DEV-ROUTE-PLANNER.md
+for exact source, archive and hosted checks. Nine original map uploads resolved
+the Git limit but the v1 archive exceeded both input and expanded limits; the
+source-build fallback version 23 also failed and was never deployed. Compact
+runtime format 2 retains every node/coordinate and mode/direction flag, reducing
+map bytes by 35%. Bounded compact uploads, fresh Worker output and tested
+supported frontend retention produced an acceptable archive. Current hosting
+main/live source is **1e80e671c19e585b7321370f1948ee5f918030cd**. Old snapshots
+and oversized candidates remain historical; do not restore them over this
+release. Hosted Rantalantie and Helsinki Foot/Bicycle plans and the GPX control
+were smoke-tested with no player progress changes. Physical navigation/device
+checks remain pending. The next implementation action is TR-118 recovery revision
+reconciliation/write draining; larger-area lazy routing remains a later action.

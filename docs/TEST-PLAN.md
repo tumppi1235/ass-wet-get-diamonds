@@ -131,3 +131,24 @@ earns no invented distance. All 150 develop tests pass; the focused live-base
 release passes 135 tests per environment plus lint/types/build. Local 390×844
 demo and Start/Stop/map rendering are software smoke evidence only. iPhone
 outdoor acceptance remains pending; no continuous locked-screen GPS is claimed.
+
+## Dev 24 route and release-budget evidence
+
+The compact loader's real fixtures preserve every canonical point, ID and
+direction/mode flag and return identical Foot/Bicycle routes. Malformed records,
+unsafe integers, coordinate overflow and size bounds are rejected. Two Python
+packer tests verify source immutability, existing-output/alias refusal and
+incomplete-output rejection. The full-country pack separately verified all
+12,825 chunks / 21,647,462 point occurrences without geometry simplification.
+
+Three asset-retention cases check current/cached/historical lazy dependencies,
+hash-derived references, missing scripts, unsafe paths and generated-output
+confinement. All 156 app cases, lint/types, packer tests, build and graph pass.
+The archive preflight rejects the real oversized candidate and accepts the
+released package under both compressed and expanded limits.
+
+Actual private dev 24 returned Rantalantie Foot 0.81km, Helsinki Foot 0.64km /
+Bicycle 1.22km, explicit unverified step-free access and a functioning GPX
+control with no UI error. Profile gold/distance/finds/levels and stopped quest
+were unchanged. Phone-sized map/endpoint proof was captured at 390×844. These
+are hosted/public-preview checks, not physical GPS or navigation-device tests.
