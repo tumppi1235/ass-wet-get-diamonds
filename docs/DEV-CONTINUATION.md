@@ -97,3 +97,23 @@ input/size/search limits, the corrected .bin transport, reproduction and remaini
 hosted/large-area/device gates. Publication is the next step; preserve prod,
 audience, all ledgers and phone tests. Follow with larger-area compact/lazy
 routing, relevant detected relic/boss opportunities and other independent stories.
+
+2026-11-01 release handoff: the user requested a relevant production package.
+Only the opt-in compass was promoted as public version 9; see
+PRODUCTION-COMPASS-RELEASE.md. The production branch was merged back into develop;
+all 146 regressions, lint/types and the refreshed structural graph passed.
+
+The dev route planner is still **not published**. Nine bounded source pushes uploaded
+the raw national map source, leaving remote hosting main at
+9197fa8379b81b8532758c7628491e67c6c75042. The fully restored, tested managed tree
+is committed locally as 37437d6103c155784af40eed07a41e18fa25618b (tree
+c5a685951c2be32bc7c36f1ee0e5ec25b2f6fc4a), retained alongside the earlier full
+backup. All 13,688 prepared artifact files were byte-verified after correcting
+checkout CRLF formatting; the managed checkout is clean. The final push nevertheless
+resent 278,659,036 bytes and exceeded the host's 64 MiB per-push limit. No archive
+or saved version was produced for that failed attempt, and no intermediate data
+commit was deployed. Do not retry that same oversized push. The next release step
+is to upload the compiled routing .bin paths in bounded commits too, then restore
+and verify the exact full tree before packaging/private publication. Preserve all
+existing backups, branch history, dev audience and database settings. Physical
+navigation and compass validation remain pending.

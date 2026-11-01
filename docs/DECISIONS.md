@@ -68,4 +68,3 @@ physical navigation, large-area performance or watch-import gates.
 ## D-035 — selective production promotion (2026-11-01)
 
 The user explicitly requested a relevant production package during backlog work. Promote only the opt-in TR-165 browser compass onto the current production code. Shared accounts/backend, experimental progression and route planning remain dev-only. Preserve the public audience and local profile/session keys; physical iPhone heading and GPS validation remain pending. Version 9 and exact provenance are recorded in PRODUCTION-COMPASS-RELEASE.md.
-
