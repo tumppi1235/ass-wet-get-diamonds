@@ -22,7 +22,6 @@ All actions below are unassigned until someone starts them.
 
 | Order | Parent stories | Next action | Completion evidence |
 | --- | --- | --- | --- |
-| 0 | TR-169, TR-170, TR-171 | Publish and field-check the regular-game route/history and walking-gold corrections. | Regression/type/lint evidence, focused dev release, then the physical checks in TRAIL-GOLD-FIXES.md. |
 | 1 | TR-094, TR-098 | Finish the dev route-planner publication using bounded compiled-map uploads; retain the exact tested tree and existing private audience. | Successful private deployment, hosted route/GPX smoke checks, source/version recorded in DEV-ROUTE-PLANNER.md. A failed upload is not a release. |
 | 2 | TR-118 | Review and complete recovery revision reconciliation and first-rollout write draining; keep provider restore work separate. | Recovery/maintenance regression evidence, explicit unresolved provider gates in DEV-RECOVERY.md. |
 | 3 | TR-094, TR-101 | Extend bounded routing for larger/dense areas with compact or lazy graph loading. | Repeatable memory/search limits, mapped topology/closure tests, explicit unavailable states and no reward writes. |
@@ -36,6 +35,7 @@ results in [TEST-PLAN.md](TEST-PLAN.md); a simulated test does not count as a fi
 
 | Parent stories | Next validation | Owner / required input |
 | --- | --- | --- |
+| TR-169, TR-170, TR-171 | Validate dev version 22: new quest has no old fragments; trail retains its beginning and follows accepted GPS through brief recovery; gold matches validated mileage plus new tiles and survives reload. | Tuomas: regular-game outdoor run; see TRAIL-GOLD-FIXES.md. |
 | TR-153, TR-154, TR-146, TR-023, TR-167 | iPhone Chrome walk across tile edges; collect; interrupt/lock/reopen; verify adventure, route and gold continuity without invented GPS gaps. | Tuomas: next outdoor validation run. |
 | TR-168 | Check explored/personal/other claims and recorded route visibility outdoors at phone zoom levels. | Tuomas: next outdoor validation run. |
 | TR-165 | Enable compass; rotate through north/cardinal directions and portrait/landscape; deny permission and test stale/foreground recovery. | Tuomas: physical iPhone; magnetic guidance is approximate. |
@@ -319,9 +319,9 @@ Automated repair evidence and remaining iPhone field gates: [P0 report](P0-EXPLO
 | --- | --- | --- | --- | --- | --- |
 | TR-167 | P0 | In Progress | Stabilize GPS map/text and preserve route through short accuracy dips | TR-153 | Local fixes and simulated regressions implemented; no coarse rewards or long-gap route bridges. Physical iPhone retest pending. See GPS-MAP-STABILITY.md. |
 | TR-168 | P1 | In Progress | Make explored and claimed tiles clearly distinguishable | TR-030 | Teal dashed exploration, dark-cased gold personal claims, violet other claims, ownership labels, legend and wider route implemented. Browser/mobile visual review and field retest tracked in GPS-MAP-STABILITY.md. |
-| TR-169 | P0 | In Progress | Keep previous quests out of the current map route | TR-146 | New GPS/demo quests clear displayed paths while preserving gold, visits, claims and collections. Active quest continuation retains its route. Regression implemented; focused dev release and field acceptance tracked in TRAIL-GOLD-FIXES.md. |
-| TR-170 | P0 | In Progress | Retain the full current adventure trail | TR-153 | Replace oldest-point deletion with redundant-point compaction; draw accepted sub-threshold endpoints; retain short-recovery continuity and genuine GPS breaks. Regression implemented; physical validation pending. See TRAIL-GOLD-FIXES.md. |
-| TR-171 | P0 | In Progress | Preserve walking-gold distance through short GPS recovery | TR-153 | Automatic watcher replacements retain the validated distance anchor; fractional gold carries between outings/reloads. Exact validated-distance plus new-tile awards tested; no pre-start, duplicate or long-gap mileage. Physical validation pending. See TRAIL-GOLD-FIXES.md. |
+| TR-169 | P0 | In Progress | Keep previous quests out of the current map route | TR-146 | Dev version 22: new GPS/demo quests clear displayed paths while preserving gold, visits, claims and collections. Active quest continuation retains its route. Regressions pass; physical acceptance pending. See TRAIL-GOLD-FIXES.md. |
+| TR-170 | P0 | In Progress | Retain the full current adventure trail | TR-153 | Dev version 22: redundant-point compaction replaces oldest-point deletion; accepted sub-threshold endpoints and short-recovery continuity render while genuine GPS gaps stay separate. Regressions pass; physical validation pending. See TRAIL-GOLD-FIXES.md. |
+| TR-171 | P0 | In Progress | Preserve walking-gold distance through short GPS recovery | TR-153 | Dev version 22: automatic recovery retains the validated distance anchor; fractional gold carries between outings/reloads. Exact validated-distance plus new-tile awards tested; no pre-start, duplicate or long-gap mileage. Physical validation pending. See TRAIL-GOLD-FIXES.md. |
 
 ## Developer knowledge tooling
 

@@ -117,3 +117,13 @@ is to upload the compiled routing .bin paths in bounded commits too, then restor
 and verify the exact full tree before packaging/private publication. Preserve all
 existing backups, branch history, dev audience and database settings. Physical
 navigation and compass validation remain pending.
+
+Regular-game hotfix update (2026-11-01): private dev version 22 is now live from
+hosting source e5ab15b5b5b782642c79691b17a32fb88d7e33b9, a focused live-version-21
+base plus TR-169–171 fixes. Production stays version 9. See TRAIL-GOLD-FIXES.md.
+The route upload attempt above remains unpublished, but remote hosting main is
+now **e5ab15b**, not 9197fa8. Do not restore/deploy the older c5a6859 full tree over
+the route/gold fixes. Preserve that backup and integrate the hotfix into a newly
+built, tested, byte-verified routing release based on the new remote head before
+continuing bounded compiled-map uploads. Existing schema, audience, runtime
+settings and player data must stay intact.

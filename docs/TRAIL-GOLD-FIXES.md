@@ -54,3 +54,24 @@ save, anti-duplication and shared-world tests remain required.
 The focused hosted dev release is based on the existing version 21 source, with
 only these fixes overlaid. This avoids pulling the unpublished national routing
 assets into the hotfix; route-planner upload recovery remains separate.
+
+## Published dev evidence
+
+- Private dev **version 22**, deployment `appgdep_6ae6e53382fc81919da5dd1cbfdcd2db`,
+  succeeded 2026-11-01T07:07:53Z. Existing access, D1 binding and environment
+  revision 2 are preserved. Production remains version 9.
+- GitHub implementation: `d0a5b83196ab4fb30d59be0aea7db7cd70023df7`.
+  Hosting source: `e5ab15b5b5b782642c79691b17a32fb88d7e33b9`, based on live
+  source e3b983d plus the five fix/test files. `/release.json` distinguishes the
+  live base and patch source; it does not claim to include the entire develop branch.
+- All 150 develop regression tests passed; lint and corrected type checks passed.
+  The focused live-base release passed all 135 tests in both environment variants,
+  lint/types and the complete Worker/Expo build. Five source files and 156 artifact
+  files were byte-verified before packaging. The structural graph was refreshed.
+- Archive SHA-256: `b0ecf61ec6ad10a8dc39fdc85e281afcb37ac5c082baf93f4dbcf5fe8c5137e0`.
+- Local browser smoke test used the isolated Test Explorer at 390×844: regular
+  login/map, demo trail, increasing test gold, and Stop quest worked. This was
+  simulated movement; no real player reward or physical GPS pass is claimed.
+- The route planner is still unpublished. The retained older full routing tree
+  must not overwrite this hotfix; rebuild/verify a new combined tree before the
+  next routing release.

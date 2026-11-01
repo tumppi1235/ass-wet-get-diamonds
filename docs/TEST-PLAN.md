@@ -119,3 +119,15 @@ automatic .gz decoding; opaque binary paths and an asset-binding restart fixed
 the observed failure. Recheck actual deployed .bin byte counts and dense-city
 routes at publication. Physical GPS navigation, locked-screen limitations,
 native/fallback field checks and navigation-device GPX import remain pending.
+
+## TR-169–171 — regular quest route and walking gold
+
+See TRAIL-GOLD-FIXES.md for dev version 22 provenance and the physical checklist.
+`trail-gold-regression.test.ts` verifies old/new quest separation, already-active
+continuation, 120 short reconnects with 360m of motion, gold against actual
+validated mileage plus tile awards, retained long-route starts/turns/breaks,
+sub-threshold display points and fractional gold carry. A subsequent 31s gap
+earns no invented distance. All 150 develop tests pass; the focused live-base
+release passes 135 tests per environment plus lint/types/build. Local 390×844
+demo and Start/Stop/map rendering are software smoke evidence only. iPhone
+outdoor acceptance remains pending; no continuous locked-screen GPS is claimed.
