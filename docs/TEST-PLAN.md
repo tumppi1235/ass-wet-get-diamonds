@@ -12,6 +12,13 @@ validation test now resolves its journal through explicit durable cancellation.
 See DEV-RECOVERY.md for scope and the server-generation/provider drain gates.
 No hosted restore, real GPS run or physical device pass is claimed.
 
+Published as private dev version **25**. All four GitHub workflows succeeded for
+source `bd2fdd473902270d64f34b2273d106b2ef13d917`. Actual hosted Quest/profile and
+health protocol reads passed, retaining Tumppi's stopped quest and zero progress.
+No live pending journal was manufactured, cancelled or reset. Exact saved-version,
+archive and remaining recovery gates are recorded in
+[DEV-RECOVERY.md](DEV-RECOVERY.md#released-dev-version-25).
+
 | Test | Story / notion | Expected result | Evidence / status |
 | --- | --- | --- | --- |
 | GPS-01 | TR-153 active tile freezes | Walk across two tile boundaries; white current-tile outline and collection eligibility follow fresh GPS | `exploration.test.ts`; phone PENDING |

@@ -27,10 +27,12 @@ All actions below are unassigned until someone starts them.
 | 3 | TR-022 | Add rarity clues within the player's existing detected-spawn visibility. | Clue/visibility tests; no hidden-spawn disclosure, Auto-Collect or collection-rule change. |
 | 4 | TR-041 | Define and implement test-access administration within existing authorization. | Role/access tests and named-recipient approval before any actual invitation or audience change. |
 
-Latest completed action: route-planner publication and hosted smoke checks in
-**dev version 24**, including full-country compact data and GPX control. See
-[release evidence](DEV-ROUTE-PLANNER.md#released-dev-version-24). Parent stories
-remain In Progress for their remaining navigation/device/performance acceptance.
+Latest completed action: pending receipt reconciliation, observed revision guards
+and durable cancellation released as **dev version 25**, with 166 regressions,
+four passing GitHub workflows and hosted profile/protocol checks. See
+[release evidence](DEV-RECOVERY.md#released-dev-version-25). Full-country routing
+from dev 24 remains included. Parent stories remain In Progress for their listed
+recovery, provider, navigation/device and performance acceptance.
 
 ### Validation queue
 

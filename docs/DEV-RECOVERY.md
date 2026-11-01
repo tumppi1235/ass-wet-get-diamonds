@@ -62,8 +62,10 @@ An explicit **Cancel unsynced action** control is available when open. Its
 same-origin `POST /api/trail/cancel-pending` requires confirmation, records a
 terminal no-award receipt under the **original** owner/action identity and exact
 payload hash, and audits the cancellation in one guarded transaction. A delayed
-original transaction either wins first (its outcome is preserved) or loses to
-the cancellation's unique receipt (all original gameplay writes roll back).
+original action transaction either wins first (its outcome is preserved) or
+loses to the cancellation's unique receipt (its wallet/inventory, activity/claim
+and receipt writes roll back). Ordinary lazy appearance/expiry reads are not a
+database restore and are not reversed by cancellation.
 This releases stale/invalid GPS or party requests without an endless retry loop.
 Cancellation does not stop an adventure, leave a party, reverse a purchase or
 remove any already recorded reward. No new schema or balance rule is introduced.
@@ -108,5 +110,38 @@ Production and phone-local profiles are unaffected. Old open tabs may still use
 the earlier recovery UI; refresh for this protocol. Supported prior frontend
 assets remain available, but preserving them does not make old client code
 recovery-aware or prove old server requests drained.
+
+### Released dev version 25
+
+The existing private dev Site successfully deployed saved version
+`appgprj_6ae5c02d5c008191b51fda4f4f39c7a5~appgver_ef32ae1618248191bdd1fab9ef548ba1`
+from hosting source `b7aa38f5db19e3cff90b035768c386b77209b524`.
+Deployment `appgdep_6ae7361ae0048191b286e11b5392d87c` returned **succeeded**;
+environment revision **2**, existing audience and database bindings were retained.
+GitHub application source is `bd2fdd473902270d64f34b2273d106b2ef13d917`.
+
+All **166** application regressions, mobile/server types and lint, the Worker
+build and refreshed structural graph pass. All four GitHub workflows succeeded:
+[web checks and both test-result artifacts](https://github.com/tumppi1235/ass-wet-get-diamonds/actions/runs/41299034222),
+[shared backend](https://github.com/tumppi1235/ass-wet-get-diamonds/actions/runs/41299034213),
+[route network](https://github.com/tumppi1235/ass-wet-get-diamonds/actions/runs/41299034214),
+[structural graph](https://github.com/tumppi1235/ass-wet-get-diamonds/actions/runs/41299034205).
+
+The archive passed input/expanded preflight at **192,623,118 / 244,477,952 bytes**.
+The saved native tar contains **13,050 files / 244,490,240 bytes**, SHA-256
+`9c9f6b82f65a3da6b8bcf9191da1c876f2d8833cc6fde932ae4b141265805196`.
+It retains the full compact Finland route network and supported earlier assets.
+
+Actual hosted browser verification reloaded `/shared`, opened Quest controls,
+and confirmed Tumppi remains at gold **0**, **0.00 km**, **0 finds**, tile **0,0**,
+levels **1/1/1**, with quest stopped. Health reports development, configured route
+assets, `maintenanceProtocol:1` and `pendingRecoveryProtocol:1`. No GPS, quest,
+reward, cancellation, pause or restore was triggered for the real profile.
+Pending recovery/cancellation behavior is evidenced by isolated automated SQL/client
+tests, not a manipulated live journal or physical field run. The old local preview
+did not answer its health request; hosted default-profile UI checks passed instead.
+Production remains version **9**. The next TR-118 action is the server recovery
+generation and complete-ledger reconciliation gate, with provider drain/restore
+verification still separate.
 
 References checked 2026-10-31: [D1 transactional batch](https://developers.cloudflare.com/d1/worker-api/d1-database/), [Time Travel and backups](https://developers.cloudflare.com/d1/reference/time-travel/), [D1 limits](https://developers.cloudflare.com/d1/platform/limits/).

@@ -150,3 +150,13 @@ All 166 regressions and mobile/server types/lint pass. No schema, earning rule,
 production profile or real-player reward changed. See DEV-RECOVERY.md for exact
 limits. This is not complete hosted restoration: server recovery generations,
 whole-ledger reconciliation and provider drain/retention evidence remain next.
+
+Published as private **dev version 25**: hosting main/live source is now
+`b7aa38f5db19e3cff90b035768c386b77209b524`, saved version
+`appgprj_6ae5c02d5c008191b51fda4f4f39c7a5~appgver_ef32ae1618248191bdd1fab9ef548ba1`.
+See DEV-RECOVERY.md for archive/native deployment/CI provenance. Hosted profile
+and health checks passed without changing Tumppi's progress or starting GPS.
+The full dev-24 route dataset and regular-game GPS/trail/gold fixes are retained;
+production remains version 9. Do not restore the older 1e80e67/failed candidates
+over this release. Continue TR-118's server recovery-generation/barrier work;
+do not confuse these client checkpoints with complete hosted restore safety.
