@@ -26,6 +26,7 @@ import {loadMaintenance,saveMaintenance,guardedGameDatabase,MaintenanceError} fr
 import {loadDiversityRules,saveDiversityRules} from './diversity-store';
 import {adventureRoute} from './route-store';
 import type {RouteAssets} from './route-assets';
+import {inspectPending,cancelPending} from './pending-store';
 type Bindings={DB?:D1Database;ASSETS?:RouteAssets;TRAIL_ENV?:string;TRAIL_ADMIN_EMAIL?:string;TRAIL_PUBLIC_ORIGIN?:string};
 type Member={id:string;display_name:string;role:'admin'|'player';created_at:number};
 class ApiError extends Error{constructor(public status:number,message:string){super(message);}}
@@ -43,13 +44,14 @@ export async function trailApi(request:Request,env:Bindings){
   try{
     if(env.TRAIL_ENV!=='development'||!env.DB)throw new ApiError(503,'Shared development services are not configured.');
     const url=new URL(request.url),path=url.pathname.replace(/\/$/,'');
-    if(path==='/api/trail/health'&&request.method==='GET')return json({environment:'development',service:'trail-shared',schema:1,routeAssetsConfigured:!!env.ASSETS});
+    if(path==='/api/trail/health'&&request.method==='GET')return json({environment:'development',service:'trail-shared',schema:1,routeAssetsConfigured:!!env.ASSETS,maintenanceProtocol:1,pendingRecoveryProtocol:1});
     const id=identity(request),rawDb=env.DB;
     if(!['GET','HEAD'].includes(request.method)&&request.headers.get('origin')!==new URL(env.TRAIL_PUBLIC_ORIGIN||url.origin).origin)throw new ApiError(403,'Use the app on its own origin.');
     const maintenance=await loadMaintenance(rawDb),db=guardedGameDatabase(rawDb,maintenance.revision);requestEpoch=maintenance.revision;
     let member=await db.prepare('SELECT * FROM trail_members WHERE id=?').bind(id).first<Member>();
     const maintenanceRoute=path==='/api/trail/admin/maintenance',snapshotRoute=path==='/api/trail/admin/snapshot',identityRead=path==='/api/trail/me'&&request.method==='GET',statusRead=path==='/api/trail/maintenance'&&request.method==='GET';
-    if(maintenance.paused&&!maintenanceRoute&&!snapshotRoute&&!identityRead&&!statusRead)throw new MaintenanceError();
+    const pendingRead=path==='/api/trail/pending-status'&&request.method==='POST';
+    if(maintenance.paused&&!maintenanceRoute&&!snapshotRoute&&!identityRead&&!statusRead&&!pendingRead)throw new MaintenanceError();
     if(path==='/api/trail/me'&&request.method==='POST'){
       const input=await body(request),displayName=name(input.displayName??'Explorer');
       const isOwner=!!env.TRAIL_ADMIN_EMAIL&&request.headers.get('oai-authenticated-user-email')?.toLowerCase()===env.TRAIL_ADMIN_EMAIL.toLowerCase();
@@ -58,6 +60,8 @@ export async function trailApi(request:Request,env:Bindings){
     }
     if(!member)throw new ApiError(404,'Create your shared dev profile first. Your local profiles remain saved.');
     if(statusRead)return json({maintenance});
+    if(pendingRead)return json(await inspectPending(db,id,await body(request)));
+    if(path==='/api/trail/cancel-pending'&&request.method==='POST')return json(await cancelPending(db,id,await body(request)));
     if(maintenanceRoute){
       if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');
       if(request.method==='GET')return json({maintenance});
@@ -216,7 +220,7 @@ export async function trailApi(request:Request,env:Bindings){
     }
     throw new ApiError(404,'Unknown API endpoint.');
   }catch(error){
-    const errorPath=new URL(request.url).pathname,controlRead=['/api/trail/admin/maintenance','/api/trail/admin/snapshot','/api/trail/maintenance'].includes(errorPath)||(errorPath==='/api/trail/me'&&request.method==='GET');
+    const errorPath=new URL(request.url).pathname,controlRead=['/api/trail/admin/maintenance','/api/trail/admin/snapshot','/api/trail/maintenance','/api/trail/pending-status'].includes(errorPath)||(errorPath==='/api/trail/me'&&request.method==='GET');
     if(requestEpoch!==undefined&&env.DB&&!controlRead)try{const current=await loadMaintenance(env.DB);if(current.paused||current.revision!==requestEpoch)error=new MaintenanceError();}catch{/* Keep the original safe failure if status is unavailable. */}
     if(error instanceof MaintenanceError)return new Response(JSON.stringify({error:error.message,code:'dev-maintenance'}),{status:503,headers:{'Content-Type':'application/json','Cache-Control':'no-store','Retry-After':'30'}});
     if(error instanceof ApiError||error instanceof WorldError)return json({error:error.message},error.status);return unexpectedApiFailure(request,error);

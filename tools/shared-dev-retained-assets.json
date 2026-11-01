@@ -1,7 +1,7 @@
 {
   "projectId": "appgprj_6ae5c02d5c008191b51fda4f4f39c7a5",
-  "baselineVersion": 22,
-  "retainedReleaseCount": 16,
+  "baselineVersion": 24,
+  "retainedReleaseCount": 17,
   "files": [
     "_expo/static/js/web/__common-1d318459cecb90754c4acf275a58c542.js",
     "_expo/static/js/web/__common-1f8d020b22d5e66a16b08a660a3aa0c9.js",
@@ -58,10 +58,10 @@
     "_expo/static/js/web/shared-879dc6049edf8f8d4b9d5a65538dc132.js",
     "_expo/static/js/web/shared-95a057febc99b69fccb96f05edeb0905.js",
     "_expo/static/js/web/shared-f26a94e74adb772359ed9cc5e485c9bc.js",
-    "_expo/static/js/web/vector-runtime-ce043cde148ba113a194e6f03d09d49c.js",
+    "_expo/static/js/web/vector-runtime-2882ae5e60c070b78b049880273f252c.js",
     "_expo/static/js/web/vector-runtime-a5aff21ebc4fb417b3d862de59dac07d.js",
-    "_expo/static/js/web/vector-runtime-b904a49af1e7612eb0ffada6f0fa7ee3.js",
     "_expo/static/js/web/vector-runtime-b260a08ad863c8723d7d10f27adb0a88.js",
-    "_expo/static/js/web/vector-runtime-2882ae5e60c070b78b049880273f252c.js"
+    "_expo/static/js/web/vector-runtime-b904a49af1e7612eb0ffada6f0fa7ee3.js",
+    "_expo/static/js/web/vector-runtime-ce043cde148ba113a194e6f03d09d49c.js"
   ]
 }

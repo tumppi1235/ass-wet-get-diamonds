@@ -116,7 +116,8 @@ test('TR-119 encounter journal replays lost responses after reload and isolates 
   const b=new SharedWorldClient(storage,request('b'));await b.profile();assert.equal(await b.pendingEncounter(),false);
   const reloaded=new SharedWorldClient(storage,request('a'));await reloaded.profile();const result=await reloaded.retryEncounter();assert.equal(result.replayed,true);assert.equal(await reloaded.pendingEncounter(),false);assert.equal(f.sql.prepare('SELECT COUNT(*) AS n FROM trail_encounters').get()!.n,1);
   assert.equal((await b.encounters()).encounters.length,0);assert.deepEqual((await b.partyPlayers('a')).players,[],'short searches cannot enumerate the directory');
-  await assert.rejects(()=>reloaded.encounter({kind:'activate',encounterId:result.view!.encounter.id,revision:result.view!.revision}),/fresh accurate GPS/);assert.equal(await reloaded.pendingEncounter(),false,'definite validation failures do not trap the player in a retry loop');
+  await assert.rejects(()=>reloaded.encounter({kind:'activate',encounterId:result.view!.encounter.id,revision:result.view!.revision}),/fresh accurate GPS/);assert.equal(await reloaded.pendingEncounter(),true,'preserve the envelope until the player explicitly resolves it');
+  await reloaded.cancelPending('encounter');assert.equal(await reloaded.pendingEncounter(),false,'durable cancellation releases a rejected action without a retry loop');
 });
 
 test('TR-033/071 API requires identity, membership, own-origin writes and admin loot permissions',async()=>{

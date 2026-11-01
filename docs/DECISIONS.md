@@ -68,3 +68,11 @@ physical navigation, large-area performance or watch-import gates.
 ## D-035 — selective production promotion (2026-11-01)
 
 The user explicitly requested a relevant production package during backlog work. Promote only the opt-in TR-165 browser compass onto the current production code. Shared accounts/backend, experimental progression and route planning remain dev-only. Preserve the public audience and local profile/session keys; physical iPhone heading and GPS validation remain pending. Version 9 and exact provenance are recorded in PRODUCTION-COMPASS-RELEASE.md.
+
+D-036: shared dev pending recovery checks the exact owner's receipt before clearing
+an uncertain action. Explicit cancellation reserves its original identity with a
+no-award receipt, fencing late originals atomically. Observed world revision rewinds
+preserve journals and block retries. This changes no earning, ownership, activity
+or encounter-deadline rules. Client checkpoints are insufficient for arbitrary
+hosted restore; server recovery generations, full-ledger reconciliation and
+provider drain/restore evidence remain gates under TR-118.

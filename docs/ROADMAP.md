@@ -16,7 +16,7 @@ Dev version 24 now hosts the full-country compact route planner and planned GPX
 control. Rantalantie and Helsinki Foot/Bicycle previews were checked on the actual
 site without starting a quest or awarding progress; physical/device gates remain.
 
-1. TR-118: complete recovery reconciliation and first-rollout write draining, preserving pending client journals; provider-operated hosted recovery remains a separate gate.
+1. TR-118: add a server recovery generation and whole-ledger reconciliation gate; owner receipt checks, durable pending cancellation and observed revision guards are now tested. Provider-operated restore/drain remains separate.
 2. TR-094/101: extend bounded real-path routing to larger/dense areas with lazy loading; the compact runtime is implemented. Do not infer access or difficulty from missing map data.
 3. TR-022: rarity-clue presentation within existing detected-spawn permissions; keep Auto-Collect behind the manual collection/device gates.
 4. TR-041: test-access management within the preserved private audience; do not invite unnamed people or broaden platform permissions without specific authorization.

@@ -141,3 +141,12 @@ release. Hosted Rantalantie and Helsinki Foot/Bicycle plans and the GPX control
 were smoke-tested with no player progress changes. Physical navigation/device
 checks remain pending. The next implementation action is TR-118 recovery revision
 reconciliation/write draining; larger-area lazy routing remains a later action.
+
+TR-118 pending-recovery increment: owner-scoped zero-write receipt inspection
+works during maintenance; phone checkpoints block observed revision rewinds;
+explicit cancellation reserves the original event/action identity with an atomic
+no-award receipt and audit. Late originals cannot commit gameplay after it wins.
+All 166 regressions and mobile/server types/lint pass. No schema, earning rule,
+production profile or real-player reward changed. See DEV-RECOVERY.md for exact
+limits. This is not complete hosted restoration: server recovery generations,
+whole-ledger reconciliation and provider drain/retention evidence remain next.

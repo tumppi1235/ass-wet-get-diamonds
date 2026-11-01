@@ -2,6 +2,16 @@
 
 Every release records the source SHA, browser/device, date, expected/actual behavior and evidence. Automated GPS is simulated; it does not prove physical phone recording. Attach no passwords, raw private tracks or precise home coordinates to public GitHub results.
 
+TR-118 pending recovery candidate (2026-11-01): all **166** regression cases,
+mobile typecheck/lint and server typecheck/lint pass. Ten new isolated SQL/client
+cases cover zero-write owner-scoped paused receipt inspection, retained unknown
+envelopes, stale world CAS, observed revision rewind, explicit atomic cancellation,
+both original/cancellation transaction orders, a pause racing cancellation,
+late original replay and a lost cancellation response. The previous encounter
+validation test now resolves its journal through explicit durable cancellation.
+See DEV-RECOVERY.md for scope and the server-generation/provider drain gates.
+No hosted restore, real GPS run or physical device pass is claimed.
+
 | Test | Story / notion | Expected result | Evidence / status |
 | --- | --- | --- | --- |
 | GPS-01 | TR-153 active tile freezes | Walk across two tile boundaries; white current-tile outline and collection eligibility follow fresh GPS | `exploration.test.ts`; phone PENDING |

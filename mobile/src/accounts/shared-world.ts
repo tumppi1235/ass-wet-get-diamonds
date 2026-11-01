@@ -10,6 +10,12 @@ export type EncounterResult={view:EncounterView|null;receipt:EncounterReceipt;re
 export type CompletedActivity={id:string;endedAt:number;startedAt:number;movement:'foot'|'bicycle'};
 export type ActivityPreview={id:string;movement:'foot'|'bicycle';meters:number;bossTileVisited:boolean;observedSeconds:number;eligibleStartedAt:number;endedAt:number};
 type Pending={id:string;revision:number;event:DevEvent};
+type PendingStatus={status:'committed'|'unrecorded'|'identity-conflict';revision:number|null};
+function worldEnvelope(raw:string):Pending{
+  const value=JSON.parse(raw)as Pending;
+  if(!value||!Number.isSafeInteger(value.revision)||value.revision<0)throw new Error('The saved action is invalid. It is preserved for administrator review.');
+  return value;
+}
 class SharedApiError extends Error{constructor(message:string,public status:number){super(message);}}
 /** Shared dev identity is supplied by Sites; never send local profile passwords. */
 export class SharedWorldClient{
@@ -22,7 +28,20 @@ export class SharedWorldClient{
   }
   async profile(){const result=await this.api<{user:User}>('me');this.owner=result.user.id;return result.user;}
   async join(displayName:string){const result=await this.api<{user:User}>('me','POST',{displayName});this.owner=result.user.id;return result.user;}
-  load(){return this.api<SharedSnapshot>('world');}
+  private async observeRevision(revision:number|null){
+    const key='trail-relics.dev.shared.revision.v1:'+this.ownerKey(),raw=await this.storage.getItem(key),before=raw===null?0:Number(raw);
+    if(raw!==null&&!/^\d+$/.test(raw)||!Number.isSafeInteger(before)||before<0||revision!==null&&(!Number.isSafeInteger(revision)||revision<0))throw new Error('Saved progress could not be verified. Pending actions are preserved.');
+    if((revision??0)<before)throw new Error('Server progress is older than progress seen on this phone. Pending actions are preserved; ask the administrator to reconcile recovery.');
+    if(revision!==null&&revision>before)await this.storage.setItem(key,String(revision));
+  }
+  async load(){const result=await this.api<SharedSnapshot>('world');await this.observeRevision(result.revision);return result;}
+  private async inspect(kind:'world'|'encounter',input:{id:string;event?:DevEvent;action?:EncounterAction}){
+    const result=await this.api<PendingStatus>('pending-status','POST',{kind,id:input.id,payload:kind==='world'?input.event:input.action});
+    if(!['committed','unrecorded','identity-conflict'].includes(result.status))throw new Error('Pending action could not be verified; reload the app.');
+    await this.observeRevision(result.revision);
+    if(result.status==='identity-conflict')throw new Error('The pending action identity differs from the server receipt. It is preserved for administrator review.');
+    return result;
+  }
   ideas(preferences:RecommendationPreferences,signal?:AbortSignal){return this.api<AdventureIdeas>('ideas','POST',preferences,signal);}
   route(input:RoutePlanInput,signal?:AbortSignal){return this.api<RoutePlan>('route','POST',input,signal);}
   visits(){return this.api<{visits:{tile:string;players:number}[]}>('visits');}
@@ -57,13 +76,25 @@ export class SharedWorldClient{
     try{const raw=await this.storage.getItem(this.encounterKey());if(!raw)throw new Error('No pending encounter action');return await this.submitEncounter(JSON.parse(raw));}finally{this.inFlight=false;}
   }
   private async submitEncounter(input:{id:string;action:EncounterAction}){
-    try{const result=await this.api<EncounterResult>('encounter-actions','POST',input);await this.storage.removeItem(this.encounterKey());return result;}
-    catch(e){
-      // A definite validation/conflict response did not commit this action. Unknown outcomes stay journalled.
-      if(e instanceof SharedApiError&&[400,403,404,409,413].includes(e.status))await this.storage.removeItem(this.encounterKey());throw e;
-    }
+    await this.inspect('encounter',input);
+    const result=await this.api<EncounterResult>('encounter-actions','POST',input);if(result.world)await this.observeRevision(result.world.revision);await this.storage.removeItem(this.encounterKey());return result;
   }
-  async discardEncounterPending(){const result=await this.encounters();await this.storage.removeItem(this.encounterKey());return result;}
+  async discardEncounterPending(){
+    if(this.inFlight)throw new Error('An action is still syncing');this.inFlight=true;
+    try{const raw=await this.storage.getItem(this.encounterKey());if(!raw)throw new Error('No pending encounter action');
+      if((await this.inspect('encounter',JSON.parse(raw))).status!=='committed')throw new Error('The server has not confirmed this encounter action. It remains saved; retry it after maintenance.');
+      const result=await this.encounters();await this.storage.removeItem(this.encounterKey());return result;
+    }finally{this.inFlight=false;}
+  }
+  async cancelPending(kind:'world'|'encounter'){
+    if(this.inFlight)throw new Error('An action is still syncing');this.inFlight=true;
+    try{const key=kind==='world'?this.key():this.encounterKey(),raw=await this.storage.getItem(key);if(!raw)throw new Error('No pending action');
+      const input=kind==='world'?worldEnvelope(raw):JSON.parse(raw);await this.inspect(kind,input);
+      await this.api('cancel-pending','POST',{kind,id:input.id,payload:kind==='world'?input.event:input.action,confirmed:true});
+      // Keep the envelope if the following refresh fails; its durable receipt makes retry safe.
+      const state=await this.load();await this.storage.removeItem(key);return state;
+    }finally{this.inFlight=false;}
+  }
   private key(){if(!this.owner)throw new Error('Open your shared profile first');return'trail-relics.dev.shared.pending.v1:'+this.owner;}
   async pending(){return!!(await this.storage.getItem(this.key()));}
   async dispatch(event:DevEvent,revision:number){
@@ -78,11 +109,16 @@ export class SharedWorldClient{
   async retry(){
     if(this.inFlight)throw new Error('An action is still syncing');
     this.inFlight=true;
-    try{const raw=await this.storage.getItem(this.key());if(!raw)throw new Error('No pending action');return await this.submit(JSON.parse(raw)as Pending);}finally{this.inFlight=false;}
+    try{const raw=await this.storage.getItem(this.key());if(!raw)throw new Error('No pending action');return await this.submit(worldEnvelope(raw));}finally{this.inFlight=false;}
   }
-  private async submit(pending:Pending){const result=await this.api<SharedSnapshot&{receipt:DevReceipt;replayed:boolean}>('events','POST',pending);await this.storage.removeItem(this.key());return result;}
+  private async submit(pending:Pending){await this.inspect('world',pending);const result=await this.api<SharedSnapshot&{receipt:DevReceipt;replayed:boolean}>('events','POST',pending);await this.observeRevision(result.revision);await this.storage.removeItem(this.key());return result;}
   async discardStalePending(){
-    // Explicit recovery: re-read authoritative progress first, then remove this device's unsynced envelope.
-    const result=await this.load();await this.storage.removeItem(this.key());return result;
+    if(this.inFlight)throw new Error('An action is still syncing');this.inFlight=true;
+    try{const raw=await this.storage.getItem(this.key());if(!raw)throw new Error('No pending action');const pending=worldEnvelope(raw),status=await this.inspect('world',pending);
+      // A later monotonic player revision makes an unrecorded world's old CAS impossible.
+      // A missing/equal revision is still an unknown outcome, never permission to forget it.
+      if(status.status!=='committed'&&(status.revision===null||status.revision<=pending.revision))throw new Error('The server has not confirmed this action. It remains saved; retry it after maintenance.');
+      const result=await this.load();await this.storage.removeItem(this.key());return result;
+    }finally{this.inFlight=false;}
   }
 }
