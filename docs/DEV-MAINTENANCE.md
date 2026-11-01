@@ -1,5 +1,13 @@
 # Shared dev maintenance/write coordination — TR-118
 
+Follow-up: the game fence now also checks recovery generation and per-player test
+access. Reopening is refused while an externally armed recovery checkpoint is
+unreconciled. See DEV-BACKLOG-INCREMENT.md for complete-ledger sealing, operator
+requirements and pending provider evidence. Never roll back to generation/access-
+unaware server code after using these controls; retained old frontend assets do
+not make old server workers compatible. Routine releases do not rotate generations
+or suspend real players.
+
 The protected admin console now has explicit **Pause shared dev** and **Reopen shared dev** controls. This is an operational pause of the development service, not the user's adventure Stop button. Production, phone-local profiles, active-adventure records and encounter rules/deadlines are unchanged.
 
 ## Scope and atomic boundary

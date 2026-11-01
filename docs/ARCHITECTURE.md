@@ -20,6 +20,13 @@ and physical gates. No full-country graph is imported into a client/Worker bundl
 
 Development-only shared service increment (D-024): `dev-server/` hosts an isolated Sites Worker/D1 API and a separate Vinext admin client; Expo `/shared` is the opt-in game client. Platform identity replaces local passwords in shared mode. Versioned, idempotent server events calculate dev state/XP/claims. Original phone-local mode and production remain separate. See SHARED-DEV.md for implemented scope, experimental balance and pending hosted/device gates.
 
+The four-action dev follow-up adds outside-D1 recovery generations and strict
+complete-ledger sealing, generation/access checks inside game transactions,
+incremental A* cell loading with unchanged mapped geometry, detected-only rarity
+clues and existing tester pause/enable administration. See DEV-BACKLOG-INCREMENT.md
+for budgets, proofs and operational limits. There is no hosted restore endpoint,
+automatic provider-drain proof or hosting-invitation sender in this application.
+
 Location adapter → recoverable location session → validated position → current tile → discovery eligibility → collection attempt → persisted inventory. Save adventure identity independently from whether a GPS listener is delivering fixes. Store active adventure metadata with game progress; backgrounding, navigation and network loss must not mean an explicit end. Reconnect on foreground and stale-watcher recovery without creating duplicate listeners or rewards. A long GPS gap begins a new route segment with no invented straight-line mileage.
 
 The user's current device is Chrome on iPhone. Browser suspension cannot be treated as uninterrupted tracking. Browser persistence/recovery and continuous background recording are separate acceptance gates. Native iPhone tracking or independently recorded Garmin activities remain future integration work; the user chose browser testing for now and has no Apple Developer account.
