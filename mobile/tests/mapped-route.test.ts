@@ -1,7 +1,8 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {planMappedRoute,type MappedEdge,type MappedNode} from '../src/game/mapped-route';
+import {planMappedRoute,routeClosureCheck,type MappedEdge,type MappedNode} from '../src/game/mapped-route';
 import {groundDistance} from '../src/map/geodesy';
+import {WORLD_REGIONS,type WorldRegions} from '../src/game/world-regions';
 
 const a:MappedNode=[1,620000000,250000000],b:MappedNode=[2,620001000,250002000],c:MappedNode=[3,620002000,250000000],d:MappedNode=[4,620004000,250000000];
 const geo=(p:MappedNode)=>({latitude:p[1]/1e7,longitude:p[2]/1e7});
@@ -52,4 +53,18 @@ test('TR-094 malformed or conflicting graph data fails closed',()=>{
   assert.throws(()=>planMappedRoute([edge(1,[a,[2,NaN,250000000]])],options),/Invalid mapped coordinate/);
   assert.throws(()=>planMappedRoute([edge(1,[a,a])],options),/Invalid mapped segment/);
   assert.throws(()=>planMappedRoute([one],{...options,maxMeters:Infinity}),/Invalid route preferences/);
+});
+
+test('TR-094 live region closure checks catch interior crossings and honour exact active windows',()=>{
+  const now=1000,regions:WorldRegions={...WORLD_REGIONS,regions:[{id:'closure',name:'Synthetic closure',south:62.00005,north:62.00015,west:24.99999,east:25.00001,blocked:true,terrain:'urban',weather:'clear',startsAt:now,endsAt:now+1,rarityFactor:1}]};
+  const edges=[edge(1,[a,c,d])];
+  assert.equal(routeClosureCheck(regions,now)(geo(a),geo(c)),true,'both endpoints are outside');
+  assert.equal(routeClosureCheck(regions,now-1)(geo(a),geo(c)),false);
+  assert.equal(routeClosureCheck(regions,now+1)(geo(a),geo(c)),false);
+  assert.equal(planMappedRoute(edges,{...options,blocked:routeClosureCheck(regions,now)}).status,'unavailable');
+  const touching=routeClosureCheck(regions,now);assert.equal(touching({latitude:62.00005,longitude:24.99999},{latitude:62.00005,longitude:24.99999}),true);
+  assert.equal(touching({latitude:62.1,longitude:25},{latitude:62.2,longitude:25}),false);
+  regions.regions[0].blocked=false;assert.equal(touching(geo(a),geo(c)),true,'request snapshot cannot change under search');
+  assert.equal(routeClosureCheck(regions,now)(geo(a),geo(c)),false);
+  assert.throws(()=>routeClosureCheck({...regions,regions:[{...regions.regions[0],north:61}]},now));
 });

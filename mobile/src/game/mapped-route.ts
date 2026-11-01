@@ -1,4 +1,5 @@
 import {groundDistance,type Geographic} from '../map/geodesy';
+import {validateRegions,type WorldRegions} from './world-regions';
 
 /** Offline graph contract. Never treat a planned route as recorded activity evidence. */
 export type MappedNode=[number,number,number]; // OSM ID, latitude E7, longitude E7
@@ -12,6 +13,20 @@ type Node={point:RoutePoint;links:Link[]};
 type Entry={id:number;g:number;f:number};
 const fail=(reason:RouteUnavailable['reason']):RouteUnavailable=>({status:'unavailable',reason});
 function validPoint(p:Geographic){return !!p&&Number.isFinite(p.latitude)&&Number.isFinite(p.longitude)&&Math.abs(p.latitude)<=90&&Math.abs(p.longitude)<=180;}
+
+/** Conservatively avoid any active blocked rectangle touching a mapped segment's
+ * bounding box, including closures between its endpoints. Over-exclusion is
+ * intentional; no path through a closure may be inferred from endpoint tests.
+ * Call with a fresh server configuration, not a client-supplied list of regions.
+ */
+export function routeClosureCheck(regions:WorldRegions,now:number){
+  validateRegions(regions);if(!Number.isSafeInteger(now)||now<0)throw new Error('Invalid closure time');
+  const blocked=regions.regions.filter(r=>r.blocked&&now>=r.startsAt&&now<r.endsAt).map(r=>({...r}));
+  return(a:Geographic,b:Geographic)=>{
+    if(!validPoint(a)||!validPoint(b))throw new Error('Invalid closure coordinate');
+    return blocked.some(r=>r.south<=Math.max(a.latitude,b.latitude)&&r.north>=Math.min(a.latitude,b.latitude)&&r.west<=Math.max(a.longitude,b.longitude)&&r.east>=Math.min(a.longitude,b.longitude));
+  };
+}
 
 class Queue{
   private values:Entry[]=[];

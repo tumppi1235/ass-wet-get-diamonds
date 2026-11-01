@@ -5,20 +5,23 @@ import hashlib
 import json
 import re
 import sqlite3
+import sys
 from functools import lru_cache
 from pathlib import Path
 
 
-def inspect(network, database=None):
+def inspect(network, database=None, progress=None):
     db = sqlite3.connect(database.resolve().as_uri() + "?mode=ro", uri=True) if database else None
     try:
-        return _inspect(network, db)
+        if db:
+            db.execute("PRAGMA cache_size=-65536")  # bounded 64 MiB offline read cache
+        return _inspect(network, db, progress)
     finally:
         if db:
             db.close()
 
 
-def _inspect(network, db):
+def _inspect(network, db, progress):
     manifest = json.loads((network / "manifest.json").read_text(encoding="utf-8"))
     if manifest["version"] != 1 or manifest["policy"] != "finland-paths-dev-1":
         raise ValueError("Unsupported network policy/version")
@@ -31,7 +34,7 @@ def _inspect(network, db):
         return json.loads(row[0])
 
     seen, total_bytes, max_decoded = set(), 0, 0
-    for key, info in manifest["chunks"].items():
+    for chunk_number, (key, info) in enumerate(manifest["chunks"].items(), 1):
         if not re.fullmatch(r"-?\d+_-?\d+", key):
             raise ValueError("Invalid chunk path")
         path = network / (key + ".json.gz")
@@ -58,10 +61,14 @@ def _inspect(network, db):
             seen.add(edge["id"])
         total_bytes += len(raw)
         max_decoded = max(max_decoded, len(decoded))
+        if progress and chunk_number % 500 == 0:
+            progress(f"Verified {chunk_number}/{len(manifest['chunks'])} chunks")
     if len(seen) != manifest["counts"]["edges"]:
         raise ValueError("Incomplete exported edge coverage")
     ways_checked = 0
     if db:
+        if progress:
+            progress("Checking source SQLite integrity and reconstructing accepted ways")
         if db.execute("PRAGMA integrity_check").fetchone()[0] != "ok":
             raise ValueError("Source database integrity failure")
         if db.execute("SELECT count(*) FROM edges").fetchone()[0] != len(seen):
@@ -83,6 +90,8 @@ def _inspect(network, db):
             if reconstructed != json.loads(points):
                 raise ValueError("Mapped geometry changed during compression")
             ways_checked += 1
+            if progress and ways_checked % 100000 == 0:
+                progress(f"Reconstructed {ways_checked} original ways")
     return {"policy": manifest["policy"], "source": manifest["source"],
             "chunks": len(manifest["chunks"]), "edges": len(seen), "originalWaysChecked": ways_checked,
             "compressedBytes": total_bytes, "maxDecodedChunkBytes": max_decoded}
@@ -93,4 +102,4 @@ if __name__ == "__main__":
     parser.add_argument("network", type=Path)
     parser.add_argument("--database", type=Path)
     args = parser.parse_args()
-    print(json.dumps(inspect(args.network, args.database), indent=2))
+    print(json.dumps(inspect(args.network, args.database, lambda message: print(message, file=sys.stderr, flush=True)), indent=2))

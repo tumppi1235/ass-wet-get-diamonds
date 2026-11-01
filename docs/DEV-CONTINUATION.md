@@ -59,3 +59,27 @@ Diversity TR-082/052/091/110: permanent first terrain/Foot/Bicycle experiences, 
 Published diversity: GitHub db619f706e5a9ceb9b33bdf9ee4b2d65fb728c3b; managed e3b983de49582ad63987fc17ddf698e69d0ac6f2; saved dev appgver_96adcef9612081919bd0ee279444b527. Hosted admin saved the authorized 3/5 XP experiment as diversity-dev-1, with 250/1000 m thresholds; no automatic region classifications were added. Hosted Character confirms Tumppi still has no qualified experience/XP, no GPS was started, and the service remains open/private. Enduro target was reattempted on 2026-11-01 and still fails Invalid device id enduro3; official profile directory is absent. Existing 774,297,008-byte Finland PBF and geometry/node-ID city/Haukivuori extracts are available for offline route investigation; validate source/header/checksum before generating route artifacts. Production remains a5dc0cd.
 
 Route input inspection: the retained PBF's MD5 matches its downloaded checksum exactly (5b113c7a2c31d8465eead4a958eab97b); pyosmium reads generator osmium/1.16.0 and replication timestamp 2026-10-30T21:24:51Z / sequence 4956. Existing city extract has 35 city groups, 112,444 ways and 671,596 vertices with OSM node IDs/tags; Haukivuori has a separate broader road/path extract. This proves a reusable offline input, not route connectivity, public-access truth or a generated GPX. Native osmium extensions target Python 3.12: use the bundled codex-primary-runtime/dependencies/python/python.exe with .tools/osm-python on sys.path. Graphify's Python 3.13 cannot load those cp312 extensions; no reinstall is needed. Next route work should inspect exact graph/access/coverage contracts, add local Jyväskylä/road connectivity from the full PBF where needed, and avoid straight-line gap connections.
+
+Routing foundation TR-094/101: GitHub 5266738d78ce813ed07c6192db303eacb4dccd61
+adds an offline national extractor, conservative mode/direction/node/relation
+policy, geometry-preserving chunks/auditor and bounded pure A*. Ten reader/graph
+tests plus all 137 app regressions pass; mobile/server types/lint and graph refresh
+pass. The full Finland build retained 1,565,822 ways / 19,157,565 geometry-point
+occurrences into 2,958,005 edges / 12,825 chunks / 272,221,317 compressed bytes
+(largest decoded chunk 9,213,340 bytes). See DEV-ROUTING.md for exact manifest
+identity and public preview observations, including Rantalantie. Full audit
+passes every chunk/source edge and reconstructs all 1,565,822 accepted ways;
+actual output is in docs/evidence/finland-route-audit-2026-11-01.json.
+No route UI/API/GPX or website deployment is claimed. Next:
+resolve bounded/reproducible hosting of these ignored derived assets, connect
+owner-authenticated zero-write route plans with live blocked-region intersections,
+add preview/offsets and valid planned GPX, then retain actual import/field gates.
+Do not upload the full country graph into a phone/Worker request or fabricate
+connectors on disconnection. Production/shared player data remain unchanged.
+
+Routing follow-up also adds the fixed-public-catalog smoke tool, actual national
+footprint observations and conservative active-region segment checks (including
+interior crossings/boundary contact and exact time windows). Code release
+5266738 passed all four GitHub jobs: route 41253997056, graph 41253997053,
+web 41253997104 and backend 41253997218. Follow-up source and audit evidence have
+their own commit; this is not a hosted route release or physical test.

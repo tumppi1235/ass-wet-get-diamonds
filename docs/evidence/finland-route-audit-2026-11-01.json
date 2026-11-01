@@ -1,0 +1,17 @@
+{
+  "policy": "finland-paths-dev-1",
+  "source": {
+    "url": "https://download.geofabrik.de/europe/finland.html",
+    "md5": "5b113c7a2c31d8465eead4a958eab97b",
+    "bytes": 774297008,
+    "timestamp": "2026-10-30T21:24:51Z",
+    "sequence": "4956",
+    "generator": "osmium/1.16.0",
+    "extractor": "pyosmium-4.3.2"
+  },
+  "chunks": 12825,
+  "edges": 2958005,
+  "originalWaysChecked": 1565822,
+  "compressedBytes": 272221317,
+  "maxDecodedChunkBytes": 9213340
+}

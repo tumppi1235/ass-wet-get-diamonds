@@ -91,12 +91,15 @@ TR-118 maintenance: maintenance.test.ts covers guarded configuration/audit trans
 TR-082/052/091/110 diversity: diversity.test.ts covers one-time terrain and completed movement qualifications, exact locked rates, zero-rate/legacy compatibility, duplicate stops/outings, partial-outing limits, conservative unknown/conflicting/blocked/disjoint segment treatment, no GPS-gap credit, recovery anti-farming, transaction races/replay, role/origin/config validation and conditional zero-write planning. Local UI saved the experiment without player XP and Character showed empty genuine evidence. Pending phone test: start a new outing under enabled dev rules, record ≥250 classified metres within a reviewed region, stop after ≥1 km, verify one terrain/movement reward and no repeat award after reload/retry. Confirm accurate boundary/gap behaviour and unchanged production. No physical terrain, sport, ascent or provider test is claimed.
 
 TR-094/101 routing foundations: tools/test_route_network.py runs ten offline
-access/topology/reader/integrity cases; mapped-route.test.ts runs five bounded
+access/topology/reader/integrity cases; mapped-route.test.ts runs six bounded
 route-search cases. Compare actual ordered mapped bends, independent crossing
 IDs, mode/oneway restrictions, barriers/closures, missing coordinates, chunk
 deduplication, nearest mapped offsets, explicit unavailable/limit states and
 shortest-path alternatives. Full-country extraction and source-geometry audit
-are separate from synthetic cases. Pending integration/field checks: authenticated
+are separate from synthetic cases. The completed full audit reconstructs all
+1,565,822 accepted original ways and verifies 12,825 chunks / 2,958,005 edges;
+actual stdout and eight fixed-public-catalog preview observations are retained
+under docs/evidence/. Pending integration/field checks: authenticated
 bounded loading, closure changes, map overlays retaining the real recorded track,
 GPX 1.1 parsing/import, on-foot access/turn correctness, unmapped starts and no
 rewards from preview/export. No physical or navigation-device pass is claimed.
