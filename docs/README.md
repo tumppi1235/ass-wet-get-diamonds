@@ -17,6 +17,7 @@ Working title: Trail Relics. Vision: an outdoor RPG where greater effort and exp
 | [TEST-PLAN.md](TEST-PLAN.md) | Regression register and phone test cases |
 | [GRAPHIFY.md](GRAPHIFY.md) | Local code graph, queries, CI artifacts and coverage limits |
 | [GPS-MAP-STABILITY.md](GPS-MAP-STABILITY.md) | GPS flicker, route continuity and tile visibility follow-up |
+| [TRAIL-GOLD-FIXES.md](TRAIL-GOLD-FIXES.md) | Regular-game quest route separation, full-trail retention and walking-gold recovery |
 | [DEV-COMPASS.md](DEV-COMPASS.md) | Dev-only opt-in heading, fallback states and physical sensor test gate |
 | [SHARED-DEV.md](SHARED-DEV.md) | Shared dev services, platform identity, event ledger, experimental balance and admin client |
 | [DEV-SPAWNS.md](DEV-SPAWNS.md) | Recorded dev spawns, personal discovery, density, regeneration and admin simulation |

@@ -26,4 +26,4 @@ export function captureAt(s: GameState, p: { x: number; y: number }, eligible: b
   const previous = s.lastCell; s.lastCell = target.id;
   try { return rules.search(s, rng); } finally { s.lastCell = previous; }
 }
-export function beginQuest(s: GameState) { if (s.questStartedAt) s.outing++; s.questStartedAt = Date.now(); s.meters = 0; s.energy = 0; s.elapsed = 0; s.searched = {}; }
+export function beginQuest(s: GameState) { if (s.questStartedAt) s.outing++; s.questStartedAt = Date.now(); s.meters = 0; s.energy = 0; s.elapsed = 0; s.searched = {}; s.path = []; }

@@ -22,6 +22,7 @@ All actions below are unassigned until someone starts them.
 
 | Order | Parent stories | Next action | Completion evidence |
 | --- | --- | --- | --- |
+| 0 | TR-169, TR-170, TR-171 | Publish and field-check the regular-game route/history and walking-gold corrections. | Regression/type/lint evidence, focused dev release, then the physical checks in TRAIL-GOLD-FIXES.md. |
 | 1 | TR-094, TR-098 | Finish the dev route-planner publication using bounded compiled-map uploads; retain the exact tested tree and existing private audience. | Successful private deployment, hosted route/GPX smoke checks, source/version recorded in DEV-ROUTE-PLANNER.md. A failed upload is not a release. |
 | 2 | TR-118 | Review and complete recovery revision reconciliation and first-rollout write draining; keep provider restore work separate. | Recovery/maintenance regression evidence, explicit unresolved provider gates in DEV-RECOVERY.md. |
 | 3 | TR-094, TR-101 | Extend bounded routing for larger/dense areas with compact or lazy graph loading. | Repeatable memory/search limits, mapped topology/closure tests, explicit unavailable states and no reward writes. |
@@ -65,7 +66,7 @@ wording and date. Do not silently replace existing gameplay decisions.
 ### How to update the backlog
 
 1. **Capture:** add the idea or bug to the inbox. Search the register before creating a duplicate.
-2. **Triage:** attach it to an existing story, or allocate the next unused TR number (currently TR-169). Add priority, dependencies and observable acceptance criteria to the relevant epic table. Preserve all existing IDs.
+2. **Triage:** attach it to an existing story, or allocate the next unused TR number (currently TR-172). Add priority, dependencies and observable acceptance criteria to the relevant epic table. Preserve all existing IDs.
 3. **Prioritize:** P0 = core play/data/release reliability; P1 = important next capability; P2 = enhancement; P3 = later idea. Dependencies and explicit user direction decide execution order. Move a small, concrete action onto the board.
 4. **Start:** record the assignee and date on the action; mark its parent In Progress. Ready means the required inputs are available. An external gate needs a named dependency and a resume condition, not just “blocked.”
 5. **Verify:** link tests/results, commit and relevant implementation report in the story notes. Record remaining device checks separately. Do not erase completed evidence when adding follow-up work.
@@ -318,6 +319,9 @@ Automated repair evidence and remaining iPhone field gates: [P0 report](P0-EXPLO
 | --- | --- | --- | --- | --- | --- |
 | TR-167 | P0 | In Progress | Stabilize GPS map/text and preserve route through short accuracy dips | TR-153 | Local fixes and simulated regressions implemented; no coarse rewards or long-gap route bridges. Physical iPhone retest pending. See GPS-MAP-STABILITY.md. |
 | TR-168 | P1 | In Progress | Make explored and claimed tiles clearly distinguishable | TR-030 | Teal dashed exploration, dark-cased gold personal claims, violet other claims, ownership labels, legend and wider route implemented. Browser/mobile visual review and field retest tracked in GPS-MAP-STABILITY.md. |
+| TR-169 | P0 | In Progress | Keep previous quests out of the current map route | TR-146 | New GPS/demo quests clear displayed paths while preserving gold, visits, claims and collections. Active quest continuation retains its route. Regression implemented; focused dev release and field acceptance tracked in TRAIL-GOLD-FIXES.md. |
+| TR-170 | P0 | In Progress | Retain the full current adventure trail | TR-153 | Replace oldest-point deletion with redundant-point compaction; draw accepted sub-threshold endpoints; retain short-recovery continuity and genuine GPS breaks. Regression implemented; physical validation pending. See TRAIL-GOLD-FIXES.md. |
+| TR-171 | P0 | In Progress | Preserve walking-gold distance through short GPS recovery | TR-153 | Automatic watcher replacements retain the validated distance anchor; fractional gold carries between outings/reloads. Exact validated-distance plus new-tile awards tested; no pre-start, duplicate or long-gap mileage. Physical validation pending. See TRAIL-GOLD-FIXES.md. |
 
 ## Developer knowledge tooling
 

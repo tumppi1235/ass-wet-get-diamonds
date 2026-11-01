@@ -12,14 +12,16 @@ export class LocationSession {
   private lastValidAt=0;
   private lastAttemptAt=-Infinity;
   private latest:TrackedFix|null=null;
+  private tracker=new PositionTracker();
   private value:LocationSnapshot={...initialLocation};
   constructor(private watch:LocationWatch,private changed:(snapshot:LocationSnapshot)=>void,private onFix:(fix:TrackedFix)=>void,private clock=()=>Date.now()){}
   snapshot(){return {...this.value};}
   setOnFix(callback:(fix:TrackedFix)=>void){this.onFix=callback;}
   private publish(patch:Partial<LocationSnapshot>){this.value={...this.value,...patch};this.changed(this.snapshot());}
-  async start(){this.wanted=true;await this.replace(false,true);}
+  async start(){this.tracker=new PositionTracker();this.wanted=true;await this.replace(false,true);}
   stop(notify=true){
     this.wanted=false;this.generation++;this.subscription?.remove();this.subscription=null;this.latest=null;
+    this.tracker=new PositionTracker();
     const patch={tracking:false,locating:false,fresh:0,status:'idle' as const,message:'Location paused. Tap Me to locate yourself again.'};
     if(notify)this.publish(patch);else this.value={...this.value,...patch};
   }
@@ -35,7 +37,9 @@ export class LocationSession {
   }
   private async replace(recovery:boolean,focus:boolean){
     this.generation++;const request=this.generation;this.subscription?.remove();this.subscription=null;
-    const tracker=new PositionTracker();let focusNext=focus;
+    // Replacing the browser watcher must not discard the last accepted distance
+    // anchor. The tracker itself enforces the 30s gap and jump/speed gates.
+    const tracker=this.tracker;let focusNext=focus;
     this.lastAttemptAt=this.clock();if(!this.lastValidAt)this.lastValidAt=this.lastAttemptAt;
     this.latest=null;
     this.publish({tracking:true,locating:true,fresh:0,status:recovery?'recovering':'locating',recoveries:this.value.recoveries+(recovery?1:0),message:recovery?'Reconnecting GPS. Your adventure and progress are preserved.':'Allow location in the browser prompt. Finding your position…'});
