@@ -4,6 +4,84 @@ Updated 2026-11-01 from all 38 exchanges in the [shared planning discussion](htt
 
 Statuses: Backlog (not implemented), Ready (actionable next), In Progress (implementation/device validation outstanding), Blocked (external dependency), Done (stated acceptance scope evidenced), Deferred, Superseded. Priorities retain source story urgency; milestone order and dependencies determine execution. Done below is explicitly client/local scope where stated, not a claim of server/world integration.
 
+## Backlog management board
+
+Last reviewed: **2026-11-01**. Edit this file to manage work; no separate service is required.
+The epic tables below are the authoritative story register. This board breaks large
+stories into manageable next actions; completing one action does not complete its parent story.
+
+**Release scope:** develop in dev by default. Production version **9** includes the
+explicitly promoted opt-in compass; shared services and route planning remain dev-only.
+See [release evidence](PRODUCTION-COMPASS-RELEASE.md) and [release/recovery handoff](DEV-CONTINUATION.md).
+
+### Next implementation actions
+
+Take the first dependency-ready action. Work on one implementation action at a time;
+move completed software work to validation when a phone/provider check is still needed.
+All actions below are unassigned until someone starts them.
+
+| Order | Parent stories | Next action | Completion evidence |
+| --- | --- | --- | --- |
+| 1 | TR-094, TR-098 | Finish the dev route-planner publication using bounded compiled-map uploads; retain the exact tested tree and existing private audience. | Successful private deployment, hosted route/GPX smoke checks, source/version recorded in DEV-ROUTE-PLANNER.md. A failed upload is not a release. |
+| 2 | TR-118 | Review and complete recovery revision reconciliation and first-rollout write draining; keep provider restore work separate. | Recovery/maintenance regression evidence, explicit unresolved provider gates in DEV-RECOVERY.md. |
+| 3 | TR-094, TR-101 | Extend bounded routing for larger/dense areas with compact or lazy graph loading. | Repeatable memory/search limits, mapped topology/closure tests, explicit unavailable states and no reward writes. |
+| 4 | TR-022 | Add rarity clues within the player's existing detected-spawn visibility. | Clue/visibility tests; no hidden-spawn disclosure, Auto-Collect or collection-rule change. |
+| 5 | TR-041 | Define and implement test-access administration within existing authorization. | Role/access tests and named-recipient approval before any actual invitation or audience change. |
+
+### Validation queue
+
+These stories remain **In Progress**, even where software has shipped. Record actual
+results in [TEST-PLAN.md](TEST-PLAN.md); a simulated test does not count as a field pass.
+
+| Parent stories | Next validation | Owner / required input |
+| --- | --- | --- |
+| TR-153, TR-154, TR-146, TR-023, TR-167 | iPhone Chrome walk across tile edges; collect; interrupt/lock/reopen; verify adventure, route and gold continuity without invented GPS gaps. | Tuomas: next outdoor validation run. |
+| TR-168 | Check explored/personal/other claims and recorded route visibility outdoors at phone zoom levels. | Tuomas: next outdoor validation run. |
+| TR-165 | Enable compass; rotate through north/cardinal directions and portrait/landscape; deny permission and test stale/foreground recovery. | Tuomas: physical iPhone; magnetic guidance is approximate. |
+| TR-094, TR-098, TR-101 | Physical path/access validation and supported navigation-device GPX import. | Unassigned; follows successful dev publication. |
+
+### External dependencies and deferred ideas
+
+| Stories / scope | Dependency or decision | Resume when |
+| --- | --- | --- |
+| TR-155–162 | Enduro 3 device profile, device execution, authenticated watch/account transport and reconciliation. | Device/profile and supported account-link path are available; see DEV-GARMIN-FIELD.md. |
+| TR-118 | Provider-operated hosted restore and retention verification. | A supported recovery procedure can be exercised with recorded evidence. |
+| TR-164 / live Strava imports | Investigation is complete; live imports still require provider access, terms/data-use clarification and deduplication. | Provider gates are resolved; see CONNECTIVITY-FEASIBILITY.md. |
+| Native iPhone background tracking | Browser testing remains the chosen scope; no Apple Developer account is available. | Native distribution is explicitly resumed. |
+| Companions, mixed-mode adventures, formal quests and future NPC combat | Deferred designs remain in the story register and GAME-ROADMAP.md. | Explicit reprioritization and agreed acceptance criteria. |
+
+### New idea inbox
+
+No untriaged ideas at this review. Add new ideas here first; keep the original
+wording and date. Do not silently replace existing gameplay decisions.
+
+```text
+- YYYY-MM-DD — Idea or observed problem:
+  Player benefit / example:
+  Related story IDs, if known:
+  Open questions:
+```
+
+### How to update the backlog
+
+1. **Capture:** add the idea or bug to the inbox. Search the register before creating a duplicate.
+2. **Triage:** attach it to an existing story, or allocate the next unused TR number (currently TR-169). Add priority, dependencies and observable acceptance criteria to the relevant epic table. Preserve all existing IDs.
+3. **Prioritize:** P0 = core play/data/release reliability; P1 = important next capability; P2 = enhancement; P3 = later idea. Dependencies and explicit user direction decide execution order. Move a small, concrete action onto the board.
+4. **Start:** record the assignee and date on the action; mark its parent In Progress. Ready means the required inputs are available. An external gate needs a named dependency and a resume condition, not just “blocked.”
+5. **Verify:** link tests/results, commit and relevant implementation report in the story notes. Record remaining device checks separately. Do not erase completed evidence when adding follow-up work.
+6. **Finish:** mark Done only when the stated acceptance scope is evidenced. Remove finished actions from this board, retaining their evidence in the register/report. Keep unfinished acceptance in the validation queue.
+7. **Release:** record environment, source SHA, saved version and outcome. Implemented, tested and deployed are separate facts. Update ROADMAP.md when the execution order changes; deployment requires its existing authorization.
+
+For a full story, use the existing six-column format:
+
+```text
+| TR-NNN | P1 | Backlog | Player-visible outcome | TR-dependency or — | Acceptance criteria; evidence/report link; remaining gates. |
+```
+
+Useful requests: “Add this idea to the backlog,” “Show the next ready action,”
+“Prioritize TR-…,” or “Record this test result for TR-…”. Each should update this
+same register and board, rather than creating another competing backlog.
+
 ## Current release blockers
 
 TR-153: live GPS/tile freeze; TR-154: discovery claiming; TR-146: adventure persistence and browser recovery, with continuous locked-screen recording separately blocked by iPhone browser capabilities. The user chose to keep browser testing without Apple Developer access. See [ROADMAP.md](ROADMAP.md) for the next five priorities and [DECISIONS.md](DECISIONS.md) for superseded designs.

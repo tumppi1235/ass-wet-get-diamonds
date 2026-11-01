@@ -2,7 +2,9 @@
 
 ## Current development iteration — 2026-11-01
 
-User authorized continuous dev-only backlog work, a shared dev backend and experimental configurable rates (D-024), with physical validation later. Production remains a5dc0cd. Shared platform identity/D1 services, recorded/personal spawns, density detection, admin player/recovery tools, Character/Collection and XP curve/simulations are implemented in dev; see DEV-CONTINUATION.md and the linked increment reports. Compass/GPS/Enduro field acceptance remains pending, separately from passing software tests.
+The current actionable work and validation queues are maintained in the [backlog management board](BACKLOG.md#backlog-management-board). This roadmap describes milestone scope; it is not a second task tracker.
+
+User authorized continuous dev backlog work, a shared dev backend and experimental configurable rates (D-024), with physical validation later. A later explicit request promoted only the opt-in compass onto production as version 9 (D-035); shared services and routes remain dev-only. Shared platform identity/D1 services, recorded/personal spawns, density detection, admin player/recovery tools, Character/Collection and XP curve/simulations are implemented in dev; see DEV-CONTINUATION.md and the linked increment reports. Compass/GPS/Enduro field acceptance remains pending, separately from passing software tests.
 
 Event regions, admin world maps, boss definitions, accepted/locked parties, explicit activation, browser-receipt activity damage and separate individual loot are now implemented in shared dev. Next dependency-ready work: operational backups/recovery, remaining artifact simulation/analytics, Enduro activity foundations and provider feasibility, evidence-based progression/objectives, then recommendations and real-path routing. Keep unsupported provider/device work and production promotion as explicit gates.
 
@@ -10,13 +12,13 @@ Current follow-up evidence: private snapshots/offline recovery, collection simul
 
 Next independent priorities:
 
-1. TR-118: reviewed dev maintenance/write coordination and recovery reconciliation, preserving pending client journals; provider-operated hosted recovery remains a separate gate.
-2. TR-082/052/091: evidence-backed sport/terrain diversity with configurable experimental rates, permanent novelty history and no invented elevation or historical effort.
-3. TR-094/101/098: real-path/access feasibility and a route/GPX contract before drawing or exporting usable routes. Current Ideas are non-route destinations only.
+1. TR-094/098: finish dev publication and hosted verification of the implemented route/GPX planner; bounded source uploads must preserve the exact tested tree. It is not hosted yet.
+2. TR-118: complete recovery reconciliation and first-rollout write draining, preserving pending client journals; provider-operated hosted recovery remains a separate gate.
+3. TR-094/101: extend implemented bounded real-path routing to larger/dense areas with compact/lazy loading; do not infer access or difficulty from missing map data.
 4. TR-022: rarity-clue presentation within existing detected-spawn permissions; keep Auto-Collect behind the manual collection/device gates.
 5. TR-041: test-access management within the preserved private audience; do not invite unnamed people or broaden platform permissions without specific authorization.
 
-P0 Garmin linking/shared-watch inventory/cross-provider dedup/physical tests still depend on supported ingress, account/program choices and device evidence. They are unfinished; independent work continues while those gates wait. Production promotion, native distribution and deferred quests/companions remain outside this dev-only run.
+P0 Garmin linking/shared-watch inventory/cross-provider dedup/physical tests still depend on supported ingress, account/program choices and device evidence. They are unfinished; independent work continues while those gates wait. Further production promotion, native distribution and deferred quests/companions require their own scope decision.
 
 ## M0 — Repair the browser adventure loop
 

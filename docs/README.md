@@ -4,7 +4,7 @@ Working title: Trail Relics. Vision: an outdoor RPG where greater effort and exp
 
 | Document | Purpose |
 | --- | --- |
-| [BACKLOG.md](BACKLOG.md) | Canonical epics, story IDs, statuses, dependencies and acceptance |
+| [Backlog manager](BACKLOG.md#backlog-management-board) | Editable action board, validation queue, external gates, idea inbox and story register |
 | [ROADMAP.md](ROADMAP.md) | MVP stages and next five implementation priorities |
 | [ARCHITECTURE.md](ARCHITECTURE.md) | Actual implementation, integration boundaries and incremental target |
 | [GAME_DESIGN.md](GAME_DESIGN.md) | Approved gameplay and explicitly provisional balance values |
