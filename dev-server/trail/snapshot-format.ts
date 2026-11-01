@@ -1,4 +1,5 @@
 import {requestHash} from './hash';
+import {DEV_SCOPE,type WorldScope} from './service-scope';
 export const SNAPSHOT_PROJECT='appgprj_6ae5c02d5c008191b51fda4f4f39c7a5';
 export const SNAPSHOT_SCHEMA=7,MAX_SNAPSHOT_BYTES=524288,MAX_SNAPSHOT_ROWS=5000;
 // Explicit order restores parents before dependent rows. Update schema/version and recovery tests together.
@@ -29,12 +30,12 @@ export function columnsForSnapshot(schema:number):Record<SnapshotTable,readonly 
   throw new Error('Unsupported snapshot schema');
 }
 export type SnapshotRow=Record<string,string|number|null>;
-export type DevSnapshot={format:'trail-relics-shared-dev';version:1;schema:number;projectId:string;environment:'development';capturedAt:number;tables:Record<SnapshotTable,SnapshotRow[]>;digest:string};
+export type DevSnapshot={format:'trail-relics-shared-dev'|'trail-relics-shared-world';version:1;schema:number;projectId:string;environment:'development'|'production';capturedAt:number;tables:Record<SnapshotTable,SnapshotRow[]>;digest:string};
 export function snapshotBytes(value:unknown){return new TextEncoder().encode(JSON.stringify(value)).byteLength;}
-export async function validateSnapshot(value:unknown):Promise<DevSnapshot>{
+export async function validateSnapshot(value:unknown,scope:WorldScope=DEV_SCOPE):Promise<DevSnapshot>{
   if(!value||typeof value!=='object'||snapshotBytes(value)>MAX_SNAPSHOT_BYTES)throw new Error('Invalid or oversized dev snapshot');
   const s=value as DevSnapshot;
-  if(s.format!=='trail-relics-shared-dev'||s.version!==1||![5,6,7].includes(s.schema)||s.projectId!==SNAPSHOT_PROJECT||s.environment!=='development'||!Number.isSafeInteger(s.capturedAt)||s.capturedAt<0||typeof s.digest!=='string'||!/^[a-f0-9]{64}$/.test(s.digest))throw new Error('Snapshot environment, project, schema or checksum is invalid');
+  if(s.format!==(scope.environment==='development'?'trail-relics-shared-dev':'trail-relics-shared-world')||s.version!==1||![5,6,7].includes(s.schema)||s.projectId!==scope.projectId||s.environment!==scope.environment||!Number.isSafeInteger(s.capturedAt)||s.capturedAt<0||typeof s.digest!=='string'||!/^[a-f0-9]{64}$/.test(s.digest))throw new Error('Snapshot environment, project, schema or checksum is invalid');
   if(!s.tables||Object.keys(s.tables).length!==SNAPSHOT_TABLES.length||Object.keys(s.tables).some(t=>!Object.hasOwn(SNAPSHOT_COLUMNS,t)))throw new Error('Snapshot tables do not match this schema');
   const layout=columnsForSnapshot(s.schema);
   for(const table of SNAPSHOT_TABLES){const rows=s.tables[table],columns=layout[table];if(!Array.isArray(rows)||rows.length>MAX_SNAPSHOT_ROWS)throw new Error('Snapshot row limit exceeded');for(const row of rows){if(!row||typeof row!=='object'||Array.isArray(row)||Object.keys(row).length!==columns.length||columns.some(c=>!Object.hasOwn(row,c))||Object.entries(row).some(([c,v])=>!columns.includes(c)||!(v===null||typeof v==='string'||typeof v==='number'&&Number.isFinite(v))))throw new Error('Snapshot columns or values are invalid');}}

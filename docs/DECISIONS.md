@@ -94,3 +94,13 @@ increasing icon sizes and signal bands. Hidden visibility and own-tile accurate-
 collection rules are unchanged. Tester controls pause/enable ordinary existing
 shared profiles with transactional access fencing; they do not change roles,
 send invitations or broaden the Site audience.
+
+D-040 (2026-11-01): the user explicitly requested promoting the developed web
+features to production, superseding D-035's limited package scope. Keep the
+existing public Site and phone-local profile/session namespaces. Shared play is
+an opt-in separate production world with its own Site-provisioned D1, production
+runtime scope, pending journals and recovery generation. Do not copy dev accounts,
+identities, databases, rewards, configuration or recovery snapshots. Production
+admin bootstrap uses only the verified Site owner's configured email. Experimental
+balance remains labeled; physical GPS/navigation and provider restore gates remain
+pending and must not be represented as completed tests.

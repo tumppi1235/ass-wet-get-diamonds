@@ -5,7 +5,8 @@ import type {Boss} from '../game/bosses';
 import type {ClaimPage,ClaimRecord,ClaimWindow} from '../map/claim-window';
 import type {AdventureIdeas,RecommendationPreferences} from '../game/recommendations';
 import type {RoutePlan,RoutePlanInput} from '../game/route-plan';
-import {INITIAL_GENERATION} from '../game/recovery';
+import {initialGeneration} from '../game/recovery';
+import {APP_ENV,type AppEnvironment} from '../config/environment';
 export type SharedSnapshot={world:DevWorld;revision:number};
 export type EncounterResult={view:EncounterView|null;receipt:EncounterReceipt;replayed:boolean;world?:SharedSnapshot};
 export type CompletedActivity={id:string;endedAt:number;startedAt:number;movement:'foot'|'bicycle'};
@@ -20,18 +21,19 @@ function worldEnvelope(raw:string):Pending{
 class SharedApiError extends Error{constructor(message:string,public status:number){super(message);}}
 /** Shared dev identity is supplied by Sites; never send local profile passwords. */
 export class SharedWorldClient{
-  private owner='';private inFlight=false;private generation=INITIAL_GENERATION;
-  constructor(private storage:Storage,private request:typeof fetch=globalThis.fetch.bind(globalThis)){}
+  private owner='';private inFlight=false;private generation:string;
+  constructor(private storage:Storage,private request:typeof fetch=globalThis.fetch.bind(globalThis),private environment:AppEnvironment=APP_ENV){this.generation=initialGeneration(environment);}
+  private prefix(){return this.environment==='development'?'trail-relics.dev.shared':'trail-relics.shared';}
   private async api<T>(path:string,method='GET',input?:unknown,signal?:AbortSignal):Promise<T>{
     const abort=new AbortController(),timer=setTimeout(()=>abort.abort(),12000);
     const cancel=()=>abort.abort();if(signal?.aborted)cancel();else signal?.addEventListener('abort',cancel,{once:true});
     try{const response=await this.request('/api/trail/'+path,{method,credentials:'same-origin',headers:{'Content-Type':'application/json'},...(input?{body:JSON.stringify(input)}:{}),signal:abort.signal});const data=await response.json();if(!response.ok)throw new SharedApiError(data.error||'Shared dev request failed',response.status);return data as T;}finally{clearTimeout(timer);signal?.removeEventListener('abort',cancel);}
   }
   private async generationStatus(){const status=await this.api<{generation:string}>('recovery-status');if(typeof status.generation!=='string'||!/^[a-zA-Z0-9_-]{8,100}$/.test(status.generation))throw new Error('Recovery checkpoint unavailable; reload the app.');this.generation=status.generation;}
-  async profile(){const result=await this.api<{user:User}>('me');this.owner=result.user.id;await this.generationStatus();return result.user;}
-  async join(displayName:string){const result=await this.api<{user:User}>('me','POST',{displayName});this.owner=result.user.id;await this.generationStatus();return result.user;}
+  async profile(){const result=await this.api<{user:User;environment:AppEnvironment}>('me');if(result.environment!==this.environment)throw new Error('Shared environment mismatch; saved progress is preserved.');this.owner=result.user.id;await this.generationStatus();return result.user;}
+  async join(displayName:string){const result=await this.api<{user:User;environment:AppEnvironment}>('me','POST',{displayName});if(result.environment!==this.environment)throw new Error('Shared environment mismatch; saved progress is preserved.');this.owner=result.user.id;await this.generationStatus();return result.user;}
   private async observeRevision(revision:number|null){
-    const key='trail-relics.dev.shared.revision.v1:'+this.ownerKey(),raw=await this.storage.getItem(key),before=raw===null?0:Number(raw);
+    const key=this.prefix()+'.revision.v1:'+this.ownerKey(),raw=await this.storage.getItem(key),before=raw===null?0:Number(raw);
     if(raw!==null&&!/^\d+$/.test(raw)||!Number.isSafeInteger(before)||before<0||revision!==null&&(!Number.isSafeInteger(revision)||revision<0))throw new Error('Saved progress could not be verified. Pending actions are preserved.');
     if((revision??0)<before)throw new Error('Server progress is older than progress seen on this phone. Pending actions are preserved; ask the administrator to reconcile recovery.');
     if(revision!==null&&revision>before)await this.storage.setItem(key,String(revision));
@@ -64,7 +66,7 @@ export class SharedWorldClient{
   activities(){return this.api<{activities:CompletedActivity[]}>('activities');}
   partyPlayers(q:string){return this.api<{players:{id:string;name:string}[]}>('party-players?q='+encodeURIComponent(q));}
   activityPreview(encounter:string,activity:string){return this.api<{activity:ActivityPreview}>('activity-preview?'+new URLSearchParams({encounter,activity}));}
-  private encounterKey(){return'trail-relics.dev.shared.encounters.pending.v1:'+this.ownerKey();}
+  private encounterKey(){return this.prefix()+'.encounters.pending.v1:'+this.ownerKey();}
   private ownerKey(){if(!this.owner)throw new Error('Open your shared profile first');return this.owner;}
   async pendingEncounter(){return!!(await this.storage.getItem(this.encounterKey()));}
   async encounter(action:EncounterAction){
@@ -97,7 +99,7 @@ export class SharedWorldClient{
       const state=await this.load();await this.storage.removeItem(key);return state;
     }finally{this.inFlight=false;}
   }
-  private key(){if(!this.owner)throw new Error('Open your shared profile first');return'trail-relics.dev.shared.pending.v1:'+this.owner;}
+  private key(){if(!this.owner)throw new Error('Open your shared profile first');return this.prefix()+'.pending.v1:'+this.owner;}
   async pending(){return!!(await this.storage.getItem(this.key()));}
   async dispatch(event:DevEvent,revision:number){
     if(this.inFlight)throw new Error('An action is still syncing');

@@ -4,6 +4,7 @@ declare namespace Cloudflare {
     BUCKET?: R2Bucket;
     ASSETS: Fetcher;
     TRAIL_ENV?: string;
+    TRAIL_PROJECT_ID?: string;
     TRAIL_ADMIN_EMAIL?: string;
     TRAIL_PUBLIC_ORIGIN?: string;
   }

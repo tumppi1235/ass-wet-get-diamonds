@@ -2,7 +2,7 @@
 const fs=require('node:fs'),path=require('node:path');
 function resetOutput(root,target){
   const base=fs.realpathSync(root),resolved=path.resolve(target);
-  if(![path.join(base,'dist'),path.join(base,'.tools/shared-dev-build')].includes(resolved))throw Error('Refusing to reset a non-output path');
+  if(![path.join(base,'dist'),path.join(base,'.tools/shared-dev-build'),path.join(base,'.tools/shared-prod-build')].includes(resolved))throw Error('Refusing to reset a non-output path');
   if(fs.existsSync(resolved)){
     if(!fs.lstatSync(resolved).isDirectory()||fs.lstatSync(resolved).isSymbolicLink()||fs.realpathSync(resolved)!==resolved)throw Error('Unsafe output directory');
     fs.rmSync(resolved,{recursive:true});
@@ -41,4 +41,11 @@ function retainReleased(root,client,cache,required=false){
   const result=retainScripts(client,available?cache:null,available?config.files:[]);
   console.log('Frontend asset retention: '+JSON.stringify(result));return result;
 }
-module.exports={resetOutput,retainScripts,retainReleased};
+function retainProduction(client,cache){
+  const retained=[];if(cache&&fs.existsSync(cache)){
+    for(const name of ['maps','assets']){const from=path.join(cache,name);if(fs.existsSync(from))fs.cpSync(from,path.join(client,name),{recursive:true,force:false});}
+    walk(path.join(cache,'_expo'),file=>{const relative=path.relative(cache,file).split(path.sep).join('/');if(file.endsWith('.js'))retained.push(relative);else{const target=path.join(client,relative);if(!fs.existsSync(target)){fs.mkdirSync(path.dirname(target),{recursive:true});fs.copyFileSync(file,target);}}});
+  }
+  const result=retainScripts(client,cache,retained);console.log('Production asset retention: '+JSON.stringify(result));return result;
+}
+module.exports={resetOutput,retainScripts,retainReleased,retainProduction};

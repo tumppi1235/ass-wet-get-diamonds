@@ -64,7 +64,7 @@ test('TR-118 sealed generation fences old requests even after maintenance revisi
     assert.equal((await f.call('events',{...pending,generation:f.env.TRAIL_RECOVERY_GENERATION},'one')).status,200);
     assert.equal((await f.call('encounter-actions',{id:'enc:old-pending',action:{kind:'create',bossId:'none',members:[]}},'one')).status,503);
     const values=new Map<string,string>([['trail-relics.dev.shared.pending.v1:one',JSON.stringify({...pending,id:'world:unresolved-old',revision:2})]]),storage={async getItem(k:string){return values.get(k)??null;},async setItem(k:string,v:string){values.set(k,v);},async removeItem(k:string){values.delete(k);}};
-    const client=new SharedWorldClient(storage,(async(path,init)=>f.call(String(path).replace('/api/trail/',''),init?.body?JSON.parse(String(init.body)):undefined,'one'))as typeof fetch);await client.profile();await assert.rejects(client.retry(),/recovery needs/);assert.equal(await client.pending(),true);
+    const client=new SharedWorldClient(storage,(async(path,init)=>f.call(String(path).replace('/api/trail/',''),init?.body?JSON.parse(String(init.body)):undefined,'one'))as typeof fetch,'development');await client.profile();await assert.rejects(client.retry(),/recovery needs/);assert.equal(await client.pending(),true);
     await client.cancelPending('world');assert.equal(await client.pending(),false);assert.equal(f.sql.prepare("SELECT revision FROM trail_players WHERE id='one'").get()!.revision,2);
   }finally{f.sql.close();}
 });

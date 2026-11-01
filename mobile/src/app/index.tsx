@@ -9,6 +9,8 @@ import G from '../game/engine';
 import { creditWalkingGold } from '../game/resources';
 import { claimPrice, currentTile, tilePoint } from '../game/claims';
 import { PixelIcon } from '../components/pixel-icon';
+import {RelicClue} from '../components/relic-clue';
+import {detectedRarityClue} from '../game/rarity-clues';
 import { CityMap } from '../components/city-map';
 import { Button, colors, Loading, pixelFont, styles } from '../components/ui';
 import { availableRelics, beginQuest, captureAt, captureTarget, relicPoint } from '../game/landmarks';
@@ -75,7 +77,7 @@ export default function Explore() {
           <Text style={styles.small}>{source==='demo'?'Demo uses north-up guidance. Enable compass during a real walk.':compass.message}</Text>
           <Button title={['off','denied','unavailable'].includes(compass.status)?'Enable compass':['stale','waiting'].includes(compass.status)?'Retry compass':'Turn compass off'} quiet busy={compass.status==='starting'} disabled={source==='demo'} onPress={()=>{if(['off','denied','unavailable','stale','waiting'].includes(compass.status)){compass.stop();compass.start();}else compass.stop();}}/>
         </View>}
-        {APP_ENV==='development'&&<Link href="/shared" style={[styles.body,{color:colors.gold}]}>Open shared dev world →</Link>}
+        {RELEASE_FEATURES.sharedWorld&&<Link href="/shared" style={[styles.body,{color:colors.gold}]}>{APP_ENV==='development'?'Open shared dev world →':'Open shared world →'}</Link>}
         <Text style={{color:colors.gold,fontSize:12,fontVariant:['tabular-nums']}}>{eligible?'Active tile':'Last validated tile'} {currentTile(game)} · {source==='demo'?'Demo':position?`GPS ±${Math.round(position.accuracy)} m`:'Waiting for GPS'}{selectedTile?` · selected purchase tile ${selectedTile}`:''}</Text>
         {source==='gps'&&<Text style={styles.small}>{active?'Adventure saved and active.':'Discovery mode · collection is available without recording an adventure.'}</Text>}
         <Text style={[styles.body,{minHeight:54}]}>{source === 'gps' && (tracking || locating || !position) ? locationMessage : 'GPS is off. Tap Me to refresh your position, or start a quest.'}</Text><Text accessibilityLiveRegion="polite" style={{ color: colors.gold, fontSize: 12 }}>{message}</Text>
@@ -89,6 +91,7 @@ export default function Explore() {
           <Text style={styles.small}>Claims are shared between profiles on this phone. Gold is spent, not paid to the previous owner.</Text>
         </View>
         {next && <Text style={styles.body}>{next.landmark || next.name}: {Math.round(distance)} m · {next.rarity}. Enter its tile to attempt collection. Use mapped paths; {liveHeading===null?'the compass shows a north-up bearing.':compass.reference==='magnetic'?'the arrow follows your phone with approximate magnetic guidance.':'the arrow points relative to your phone.'}</Text>}
+        <RelicClue clue={detectedRarityClue(game,navigationPoint,next?.id,eligible)} ready={!!capturable&&capturable.id===next?.id}/>
         <View style={styles.row}>{[{ href: '/relics' as const, title: 'Relics' }, { href: '/collection' as const, title: 'Collection' }, { href: '/profile' as const, title: 'Profile' }].map(tab => <Link key={tab.href} href={tab.href} onPress={() => {void flush().catch(()=>{});}} style={{ fontFamily: pixelFont, color: colors.gold, fontSize: 22, padding: 8 }}>{tab.title}</Link>)}</View>
         <Text style={styles.small}>1 gold per 250 m + 1 per newly explored tile during adventures. Progress stays on this phone. The adventure survives screen lock; iPhone browser GPS can pause. Return to the app to reconnect. Missing GPS distance is not invented.</Text>
         <Button title="Try city demo" quiet onPress={() => { demo(); setDrawer(false); }} />

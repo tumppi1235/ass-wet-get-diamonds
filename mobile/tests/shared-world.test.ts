@@ -291,10 +291,10 @@ test('TR-083/119 a lost response retries the same persisted event after reload, 
     const response=await trailApi(new Request('https://dev.example'+String(input),{...init,headers:{...init?.headers,'oai-authenticated-user-id':owner,origin:'https://dev.example'}}),env);
     if(loseResponse&&String(input).endsWith('/events')){loseResponse=false;throw new Error('Connection lost after commit');}return response;
   })as typeof fetch;
-  const a=new SharedWorldClient(storage,request('a'));await a.join('Explorer A');
+  const a=new SharedWorldClient(storage,request('a'),'development');await a.join('Explorer A');
   loseResponse=true;await assert.rejects(a.dispatch({kind:'start',movement:'foot'},0));assert.equal(await a.pending(),true);
-  const b=new SharedWorldClient(storage,request('b'));await b.join('Explorer B');assert.equal(await b.pending(),false);
-  const reloaded=new SharedWorldClient(storage,request('a'));await reloaded.profile();const replay=await reloaded.retry();
+  const b=new SharedWorldClient(storage,request('b'),'development');await b.join('Explorer B');assert.equal(await b.pending(),false);
+  const reloaded=new SharedWorldClient(storage,request('a'),'development');await reloaded.profile();const replay=await reloaded.retry();
   assert.equal(replay.replayed,true);assert.equal(replay.revision,1);assert.equal(await reloaded.pending(),false);
   assert.equal(sql.prepare("SELECT COUNT(*) AS n FROM trail_events WHERE owner='a'").get()!.n,1);
   assert.equal((await b.load()).revision,0);
@@ -317,8 +317,8 @@ test('shared tile purchases spend exactly once, increase the global price and ne
 
 test('shared browser client keeps the native fetch receiver instead of invoking it as an account method',async()=>{
   const previous=globalThis.fetch;
-  globalThis.fetch=(function(this:unknown,input:RequestInfo|URL){assert.equal(this,globalThis);return Promise.resolve(Response.json(String(input).endsWith('recovery-status')?{generation:'dev-initial-1',ready:true}:{user:{id:'native-fetch-owner'}}));})as typeof fetch;
-  try{const client=new SharedWorldClient({async getItem(){return null;},async setItem(){},async removeItem(){}});assert.equal((await client.profile()).id,'native-fetch-owner');}
+  globalThis.fetch=(function(this:unknown,input:RequestInfo|URL){assert.equal(this,globalThis);return Promise.resolve(Response.json(String(input).endsWith('recovery-status')?{generation:'dev-initial-1',ready:true}:{user:{id:'native-fetch-owner'},environment:'development'}));})as typeof fetch;
+  try{const client=new SharedWorldClient({async getItem(){return null;},async setItem(){},async removeItem(){}},undefined,'development');assert.equal((await client.profile()).id,'native-fetch-owner');}
   finally{globalThis.fetch=previous;}
 });
 

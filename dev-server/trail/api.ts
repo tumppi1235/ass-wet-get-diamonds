@@ -29,6 +29,8 @@ import type {RouteAssets} from './route-assets';
 import {inspectPending,cancelPending} from './pending-store';
 import {recoveryStatus,sealRecovery,RecoveryError,INITIAL_GENERATION,type RecoveryBindings} from './recovery-store';
 import {loadTesterAccess,testerAllowed,saveTesterAccess} from './tester-access';
+import {serviceScope} from './service-scope';
+import {initialGeneration} from '../../mobile/src/game/recovery';
 type Bindings=RecoveryBindings&{DB?:D1Database;ASSETS?:RouteAssets;TRAIL_ENV?:string;TRAIL_ADMIN_EMAIL?:string;TRAIL_PUBLIC_ORIGIN?:string};
 type Member={id:string;display_name:string;role:'admin'|'player';created_at:number};
 class ApiError extends Error{constructor(public status:number,message:string){super(message);}}
@@ -40,16 +42,17 @@ async function body(request:Request,maxBytes=131072){
   const bytes=new Uint8Array(size);let offset=0;for(const part of parts){bytes.set(part,offset);offset+=part.byteLength;}
   try{const value=JSON.parse(new TextDecoder().decode(bytes));if(!value||typeof value!=='object'||Array.isArray(value))throw new Error();return value;}catch{throw new ApiError(400,'Invalid JSON object.');}
 }
-function identity(request:Request){const id=request.headers.get('oai-authenticated-user-id');if(!id||id.length>250)throw new ApiError(401,'Sign in with ChatGPT to use the shared dev world.');return id;}
+function identity(request:Request){const id=request.headers.get('oai-authenticated-user-id');if(!id||id.length>250)throw new ApiError(401,'Sign in with ChatGPT to use the shared world.');return id;}
 export async function trailApi(request:Request,env:Bindings){
   let requestEpoch:number|undefined,requestGeneration:string|undefined,requestOwner:string|undefined;
   try{
-    if(env.TRAIL_ENV!=='development'||!env.DB)throw new ApiError(503,'Shared development services are not configured.');
+    if(!env.DB)throw new ApiError(503,'Shared services are not configured.');
+    let scope;try{scope=serviceScope(env);}catch{throw new ApiError(503,'Shared environment/project is not configured.');}
     const url=new URL(request.url),path=url.pathname.replace(/\/$/,'');
-    if(path==='/api/trail/health'&&request.method==='GET')return json({environment:'development',service:'trail-shared',schema:1,routeAssetsConfigured:!!env.ASSETS,maintenanceProtocol:1,pendingRecoveryProtocol:1,recoveryGenerationProtocol:1});
+    if(path==='/api/trail/health'&&request.method==='GET')return json({environment:scope.environment,projectId:scope.projectId,service:'trail-shared',schema:1,routeAssetsConfigured:!!env.ASSETS,maintenanceProtocol:1,pendingRecoveryProtocol:1,recoveryGenerationProtocol:1});
     const id=identity(request),rawDb=env.DB;requestOwner=id;
     if(!['GET','HEAD'].includes(request.method)&&request.headers.get('origin')!==new URL(env.TRAIL_PUBLIC_ORIGIN||url.origin).origin)throw new ApiError(403,'Use the app on its own origin.');
-    const maintenance=await loadMaintenance(rawDb),recovery=await recoveryStatus(rawDb,env),db=guardedGameDatabase(rawDb,maintenance.revision,recovery.generation,id);requestEpoch=maintenance.revision;requestGeneration=recovery.generation;
+    const maintenance=await loadMaintenance(rawDb),recovery=await recoveryStatus(rawDb,env),db=guardedGameDatabase(rawDb,maintenance.revision,recovery.generation,id,initialGeneration(scope.environment));requestEpoch=maintenance.revision;requestGeneration=recovery.generation;
     let member=await db.prepare('SELECT * FROM trail_members WHERE id=?').bind(id).first<Member>();
     const maintenanceRoute=path==='/api/trail/admin/maintenance',snapshotRoute=path==='/api/trail/admin/snapshot',identityRead=path==='/api/trail/me'&&request.method==='GET',statusRead=path==='/api/trail/maintenance'&&request.method==='GET';
     const pendingRead=path==='/api/trail/pending-status'&&request.method==='POST';
@@ -63,7 +66,7 @@ export async function trailApi(request:Request,env:Bindings){
       await db.prepare('INSERT INTO trail_members(id,display_name,role,created_at) VALUES(?,?,?,?) ON CONFLICT(id) DO NOTHING').bind(id,displayName,isOwner?'admin':'player',Date.now()).run();
       member=await db.prepare('SELECT * FROM trail_members WHERE id=?').bind(id).first<Member>();
     }
-    if(!member)throw new ApiError(404,'Create your shared dev profile first. Your local profiles remain saved.');
+    if(!member)throw new ApiError(404,'Create your shared profile first. Your local profiles remain saved.');
     if(statusRead)return json({maintenance});
     if(recoveryRead)return json(recovery);
     if(path==='/api/trail/admin/tester-access'){
@@ -83,7 +86,7 @@ export async function trailApi(request:Request,env:Bindings){
       if(request.method==='PUT'){const input=await body(request);if(input.paused===false&&!recovery.ready)throw new RecoveryError();return json(await saveMaintenance(rawDb,id,input));}
       throw new ApiError(405,'Use GET or PUT for maintenance');
     }
-    if(path==='/api/trail/me'&&['GET','POST'].includes(request.method))return json({user:{id:member.id,displayName:member.display_name,username:'shared',role:member.role,createdAt:member.created_at},environment:'development'});
+    if(path==='/api/trail/me'&&['GET','POST'].includes(request.method))return json({user:{id:member.id,displayName:member.display_name,username:'shared',role:member.role,createdAt:member.created_at},environment:scope.environment});
     if(path==='/api/trail/me'&&request.method==='PATCH'){
       const input=await body(request),displayName=name(input.displayName);
       await db.prepare('UPDATE trail_members SET display_name=? WHERE id=?').bind(displayName,id).run();return json({saved:true});
@@ -99,7 +102,7 @@ export async function trailApi(request:Request,env:Bindings){
       return json(await adventureRoute(db,assets,id,await body(request)));
     }
     if(path==='/api/trail/admin/snapshot'&&request.method==='POST'){
-      if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');return json(await exportDevSnapshot(rawDb));
+      if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');return json(await exportDevSnapshot(rawDb,Date.now(),scope));
     }
     if(path==='/api/trail/admin/collection-simulation'&&request.method==='POST'){
       if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');const input=await body(request),place=LANDMARKS.find(p=>p.landmarkId===input.placeId);
@@ -132,7 +135,7 @@ export async function trailApi(request:Request,env:Bindings){
       return json({activity:{...activity,bossTileVisited:await allowedBossVisit(db,id,activity.id,e.boss,e.startedAt,Math.min(e.deadline,activity.endedAt),regions)!==null}});
     }
     if(path==='/api/trail/encounter-actions'&&request.method==='POST'){
-      const input=await body(request);if((input.generation??INITIAL_GENERATION)!==recovery.generation)throw new RecoveryError();return json(await applyEncounterAction(db,id,input.id,input.action));
+      const input=await body(request);if((input.generation??(scope.environment==='development'?INITIAL_GENERATION:undefined))!==recovery.generation)throw new RecoveryError();return json(await applyEncounterAction(db,id,input.id,input.action));
     }
     if(path==='/api/trail/admin/loot-rules'&&request.method==='GET'){
       if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');return json({rules:await loadLootRules(db)});
@@ -201,7 +204,7 @@ export async function trailApi(request:Request,env:Bindings){
       if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');return json(await querySpawns(db,id,readBounds(url.searchParams),Date.now(),url.searchParams.get('after')||'',Number(url.searchParams.get('limit')||100),true));
     }
     if(path==='/api/trail/events'&&request.method==='POST'){
-      const input=await body(request);if((input.generation??INITIAL_GENERATION)!==recovery.generation)throw new RecoveryError();return json(await applyWorldEvent(db,id,input.id,input.revision,input.event));
+      const input=await body(request);if((input.generation??(scope.environment==='development'?INITIAL_GENERATION:undefined))!==recovery.generation)throw new RecoveryError();return json(await applyWorldEvent(db,id,input.id,input.revision,input.event));
     }
     if(path==='/api/trail/visits'&&request.method==='GET'){
       const state=(await loadWorld(db,id)).world,p=state.previous||(()=>{const point=G.geo(state.game.x,state.game.y);return{latitude:point.lat,longitude:point.lon};})(),rows=await queryDensity(db,nearbyBounds(p.latitude,p.longitude),id);return json({visits:rows.density.map(row=>({tile:row.tile,players:row.players})),truncated:rows.truncated});

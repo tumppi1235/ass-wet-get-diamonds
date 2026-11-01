@@ -25,7 +25,7 @@ function fixture(){
     if(route==='cancel-pending'&&failCancel){failCancel=false;throw new Error('Lost cancellation response');}
     return response;
   })as typeof fetch;
-  const client=new SharedWorldClient(storage,fetcher);
+  const client=new SharedWorldClient(storage,fetcher,'development');
   return{...f,call,client,values,lose(){fail=true;},loseCancel(){failCancel=true;},writes:()=>writes};
 }
 const envelope={id:'web:pending-recovery',revision:0,event:{kind:'start',movement:'foot'}};
