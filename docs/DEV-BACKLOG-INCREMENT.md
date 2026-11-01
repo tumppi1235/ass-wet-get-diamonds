@@ -168,3 +168,7 @@ recovery/suspension races are software evidence, not physical/device validation.
 
 Production remains **version 9**. Hosted long/dense performance, actual provider
 restore/drain/retention, named invitations and physical navigation remain pending.
+
+Subsequent user-authorized promotion: production **version 10** now includes the
+completed web package with its own production service/database. Dev 27 remains
+unchanged. See [production release and remaining validation](PRODUCTION-WORLD-RELEASE.md).

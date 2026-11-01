@@ -10,9 +10,13 @@ Last reviewed: **2026-11-01**. Edit this file to manage work; no separate servic
 The epic tables below are the authoritative story register. This board breaks large
 stories into manageable next actions; completing one action does not complete its parent story.
 
-**Release scope:** develop in dev by default. Production version **9** includes the
-explicitly promoted opt-in compass; shared services and route planning remain dev-only.
-See [release evidence](PRODUCTION-COMPASS-RELEASE.md) and [release/recovery handoff](DEV-CONTINUATION.md).
+**Release scope:** develop in dev by default. The user explicitly authorized the
+completed web package for production on 2026-11-01. Production **version 10** now
+includes the shared-world service and route planning, with a separate production
+database and preserved phone-local saves. No dev game data was copied. Shared
+production sign-in needs a manual check after an external authentication-provider
+error/security challenge blocked browser QA. Physical/provider gates remain open.
+See [release evidence](PRODUCTION-WORLD-RELEASE.md) and [release/recovery handoff](DEV-CONTINUATION.md).
 
 ### Next implementation actions
 

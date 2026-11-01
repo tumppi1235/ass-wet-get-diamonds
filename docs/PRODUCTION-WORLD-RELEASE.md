@@ -35,3 +35,28 @@ this package. Runtime scope and administrator configuration stay in native Sites
 settings, never in source or the archive. Roll back with care after shared-world
 writes: preserve the database and journals; prefer a forward fix over an older
 server that lacks the current generation protocol.
+
+## Published version 10
+
+Published successfully at the [existing public URL](https://trail-relics-jyvaskyla.tuomasl.chatgpt.site).
+[Exact release, archive and GitHub CI evidence](evidence/production-v10-release.json)
+records the application and hosting source commits, saved version and deployment.
+Runtime revision 1 pins the production environment and Site. All six branch
+workflow runs passed for the application and release-preparation commits; 184
+regressions passed. The archive passed at 193,492,923 compressed / 248,212,480
+expanded bytes, under both 268,435,456-byte limits.
+
+Hosted release manifest and health returned 200 with production identity and
+configured route assets; anonymous profile access returned 401. Native database
+inspection confirmed a separate DB with all 17 tables and initially empty players,
+events and configuration. The public audience was preserved. An existing local
+Test Explorer journal survived reload unchanged: 0 gold, 0.00 km, 0 finds, tile
+0,0, quest stopped. The map, Me, compass, shared-world entry and rarity clue render.
+
+The shared profile entry and external sign-in redirect work. External account
+selection returned a provider 400 error; retry reached a security challenge, so
+authenticated production shared play still needs manual sign-in validation. This
+is not recorded as a passing end-to-end authentication test. No shared profiles,
+game rewards, claims, events, access edits or recovery operations were created
+during hosted QA. Local play remains available; GPS/heading field tests remain
+pending. The live dev version and its player data were not changed.

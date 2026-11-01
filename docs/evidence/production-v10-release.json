@@ -1,0 +1,142 @@
+{
+  "releasedAt": "2026-11-01T15:03:59.483049+00:00",
+  "site": "https://trail-relics-jyvaskyla.tuomasl.chatgpt.site",
+  "version": 10,
+  "appSource": "185ce3b3e1a8de4d71766ef9cd71c4dfc4020906",
+  "releasePreparationSource": "3501791d3325a084d385bd5bf6952abe58ed9681",
+  "hostingSource": "cee2fde4e447cf6dca038a3e75279459233c86c1",
+  "savedVersion": "appgprj_6ae4783f8fcc8191a8e97464e8375938~appgver_f451283731048191ab8aedd562bb6d7d",
+  "deployment": "appgdep_6ae75425a6d8819192d72a62a3e63d5f",
+  "deploymentStatus": "succeeded",
+  "runtimeRevision": 1,
+  "audience": "public",
+  "archive": {
+    "sha256": "a43310e6352773a289ecd453ac37680944b9bef71f71057154f18baafef7ac1d",
+    "compressedBytes": 193492923,
+    "expandedBytes": 248212480,
+    "normalized": {
+      "archive_format": "tar",
+      "sediment_file_id": "file_00000000a95c821081fc0369d435f2e6",
+      "content_hash": "sha256:4cab79abefe6d4c245f1d46f4a277bb530ea78f6f0f54a78f81ad654e9be0776",
+      "size_bytes": 248227840,
+      "file_count": 13081
+    }
+  },
+  "tests": {
+    "regressions": 184,
+    "mobileTypes": true,
+    "mobileLint": true,
+    "serverTypes": true,
+    "serverLint": true,
+    "workerBuild": true,
+    "graph": true,
+    "ci": [
+      {
+        "name": "Project knowledge graph",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/tumppi1235/ass-wet-get-diamonds/actions/runs/41317313796"
+      },
+      {
+        "name": "Web checks and release candidates",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/tumppi1235/ass-wet-get-diamonds/actions/runs/41317313831"
+      },
+      {
+        "name": "Offline route network",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/tumppi1235/ass-wet-get-diamonds/actions/runs/41317309889"
+      },
+      {
+        "name": "Project knowledge graph",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/tumppi1235/ass-wet-get-diamonds/actions/runs/41317309850"
+      },
+      {
+        "name": "Web checks and release candidates",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/tumppi1235/ass-wet-get-diamonds/actions/runs/41317309809"
+      },
+      {
+        "name": "Shared development backend",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/tumppi1235/ass-wet-get-diamonds/actions/runs/41317309959"
+      }
+    ],
+    "releasePreparationCI": [
+      {
+        "name": "Offline route network",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/tumppi1235/ass-wet-get-diamonds/actions/runs/41318615284"
+      },
+      {
+        "name": "Project knowledge graph",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/tumppi1235/ass-wet-get-diamonds/actions/runs/41318615693"
+      },
+      {
+        "name": "Project knowledge graph",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/tumppi1235/ass-wet-get-diamonds/actions/runs/41318615272"
+      },
+      {
+        "name": "Web checks and release candidates",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/tumppi1235/ass-wet-get-diamonds/actions/runs/41318615255"
+      },
+      {
+        "name": "Web checks and release candidates",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/tumppi1235/ass-wet-get-diamonds/actions/runs/41318615669"
+      },
+      {
+        "name": "Shared development backend",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/tumppi1235/ass-wet-get-diamonds/actions/runs/41318615251"
+      }
+    ]
+  },
+  "hostedChecks": {
+    "releaseManifest": "production; application source matches; original phone-local namespace",
+    "health": "200; production project ID; route assets configured; maintenance/pending/recovery protocol 1",
+    "anonymousProfile": "401",
+    "productionDB": [
+      {
+        "table": "trail_players",
+        "rows": 0,
+        "hasMore": false
+      },
+      {
+        "table": "trail_events",
+        "rows": 0,
+        "hasMore": false
+      },
+      {
+        "table": "trail_configs",
+        "rows": 0,
+        "hasMore": false
+      }
+    ],
+    "localJournal": "Existing Test Explorer sign-in and progress preserved across upgrade: 0 gold, 0.00 km, 0 finds, tile 0,0; quest stopped. Map, Me, compass, claim controls and revealed rarity clue render.",
+    "sharedEntry": "Production shared-profile screen and external sign-in redirect verified. External account selection returned provider 400; retry reached security challenge. Authenticated production shared-player flow remains manually unvalidated.",
+    "writes": "No shared profiles, rewards, claims, events, access changes, maintenance pauses, recovery rotations or snapshots created during hosted QA."
+  },
+  "pending": [
+    "Physical iPhone GPS/route/gold/heading validation",
+    "Authenticated shared production sign-in (external provider blocked automated browser check)",
+    "Hosted long/dense performance and actual provider restore/drain/retention",
+    "Garmin/Strava and watch/device validation"
+  ],
+  "dataPolicy": "No dev game rows, accounts, test rewards, configurations, snapshots or journals copied. Existing local phone saves retain their original namespace."
+}
