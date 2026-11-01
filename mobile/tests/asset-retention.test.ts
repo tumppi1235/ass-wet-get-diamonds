@@ -14,7 +14,7 @@ test('release assets retain current, cached and historical lazy dependencies whi
     f.write('client',prefix+'lazy-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.js','export default 1');
     const orphan=f.write('client',prefix+'unused.js','unused');
     f.write('cache','index.html',`<script src="/${prefix}old.js"></script>`);
-    f.write('cache',prefix+'old.js','import("./old-lazy.js")');f.write('cache',prefix+'old-lazy.js','old');
+    f.write('cache',prefix+'old.js','const lazyUrl="./old-lazy.js"');f.write('cache',prefix+'old-lazy.js','old');
     f.write('cache',prefix+'historical.js','older supported release');
     const result=retainScripts(root,cache,[prefix+'historical.js']);
     assert.equal(result.kept,5);assert.equal(result.removed,1);assert.equal(existsSync(orphan),false);
