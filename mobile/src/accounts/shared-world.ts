@@ -10,7 +10,7 @@ import {APP_ENV,type AppEnvironment} from '../config/environment';
 export type SharedSnapshot={world:DevWorld;revision:number};
 export type EncounterResult={view:EncounterView|null;receipt:EncounterReceipt;replayed:boolean;world?:SharedSnapshot};
 export type CompletedActivity={id:string;endedAt:number;startedAt:number;movement:'foot'|'bicycle'};
-export type ActivityPreview={id:string;movement:'foot'|'bicycle';meters:number;bossTileVisited:boolean;observedSeconds:number;eligibleStartedAt:number;endedAt:number};
+export type ActivityPreview={uniqueTiles?:number;id:string;movement:'foot'|'bicycle';meters:number;bossTileVisited:boolean;observedSeconds:number;eligibleStartedAt:number;endedAt:number};
 type Pending={id:string;revision:number;event:DevEvent;generation?:string};
 type PendingStatus={status:'committed'|'unrecorded'|'identity-conflict';revision:number|null};
 function worldEnvelope(raw:string):Pending{

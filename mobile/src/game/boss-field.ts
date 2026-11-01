@@ -1,4 +1,5 @@
 import G from './engine';
+import {explorationObjective} from './boss-objectives';
 import {bossDamage,bossRequirements,type Boss} from './bosses';
 import type {Encounter} from './encounters';
 import type {ActivityPreview} from '../accounts/shared-world';
@@ -22,8 +23,9 @@ export function contributionForecast(encounter:Encounter,owner:string,activity:A
   const damage=bossDamage(activity.meters,activity.movement,encounter.boss,encounter.boss.rules);
   const inWindow=encounter.startedAt!==null&&encounter.deadline!==null&&activity.eligibleStartedAt>=encounter.startedAt&&activity.endedAt>=activity.eligibleStartedAt&&activity.endedAt<=encounter.deadline;
   const canSubmit=encounter.state==='active'&&encounter.roster.some(m=>m.id===owner)&&!encounter.contributions[owner]&&activity.bossTileVisited&&inWindow;
-  const qualified=canSubmit&&damage.equivalentKm>=requirements.minimumKmPerPerson;
+  const exploration=explorationObjective(encounter.boss,activity.uniqueTiles);
+  const qualified=canSubmit&&damage.equivalentKm>=requirements.minimumKmPerPerson&&exploration.met;
   const remainingHp=Math.max(0,encounter.remainingHp-damage.hp);
   const wouldWin=canSubmit&&remainingHp===0&&(qualified||Object.values(encounter.contributions).some(c=>c.qualified));
-  return{canSubmit,qualified,remainingHp,wouldWin,damage,minimumKm:requirements.minimumKmPerPerson,shortfallKm:Math.max(0,requirements.minimumKmPerPerson-damage.equivalentKm)};
+  return{exploration,canSubmit,qualified,remainingHp,wouldWin,damage,minimumKm:requirements.minimumKmPerPerson,shortfallKm:Math.max(0,requirements.minimumKmPerPerson-damage.equivalentKm)};
 }

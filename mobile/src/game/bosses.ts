@@ -1,3 +1,4 @@
+import {explorationObjective} from './boss-objectives';
 import type {Movement} from './dev-world';
 export const BOSS_TIERS=['Lesser','Standard','Greater','Mythical']as const;
 export type BossTier=typeof BOSS_TIERS[number];
@@ -17,7 +18,7 @@ export const BOSS_DESIGNS=[
   {id:'syvanne',name:'Syvänne',theme:'A lake spirit encountered on an accessible shoreline path.',signature:'Depth Shard',type:'Shard',weakness:'bicycle' as Movement},
   {id:'kivenkulkija',name:'Kivenkulkija',theme:'A wandering stone sentinel of hill paths and old tracks.',signature:'Wayfarer Compass',type:'Compass',weakness:'foot' as Movement},
 ]as const;
-export type Boss={version:1;id:string;designId:string;name:string;tier:BossTier;tileId:string;latitude:number;longitude:number;source:string;startsAt:number;endsAt:number;signature:string;artifactType:string;weakness:Movement;weaknessBonus:number;rules:BossRules};
+export type Boss={version:1;objectives?:{uniqueTiles:number};id:string;designId:string;name:string;tier:BossTier;tileId:string;latitude:number;longitude:number;source:string;startsAt:number;endsAt:number;signature:string;artifactType:string;weakness:Movement;weaknessBonus:number;rules:BossRules};
 export function validateBossRules(r:BossRules){
   if(!r||typeof r.revision!=='string'||!/^[a-z0-9-]{3,60}$/.test(r.revision)||!Number.isInteger(r.windowHours)||r.windowHours<1||r.windowHours>168)throw new Error('Invalid boss encounter window');
   if(![r.footHpPerKm,r.bicycleHpPerKm].every(v=>Number.isFinite(v)&&v>0&&v<=20)||!Number.isFinite(r.modifierCap)||r.modifierCap<0||r.modifierCap>.25)throw new Error('Invalid boss damage or modifier cap');
@@ -39,10 +40,11 @@ export function bossDamage(meters:number,movement:Movement,boss:Pick<Boss,'weakn
   const baseHp=meters/1000*(movement==='foot'?rules.footHpPerKm:rules.bicycleHpPerKm),bonus=movement===boss.weakness?Math.min(boss.weaknessBonus,rules.modifierCap):0;
   return{baseHp,hp:baseHp*(1+bonus),equivalentKm:baseHp/rules.footHpPerKm,bonus};
 }
-export type BossContribution={owner:string;activityId:string;meters:number;movement:Movement;bossTileVisited:boolean;activityStartedAt:number;activityEndedAt:number};
-export function simulateEncounter(tier:BossTier,partySize:number,contributions:BossContribution[],boss:Pick<Boss,'weakness'|'weaknessBonus'>,rules=BOSS_RULES){
+export type BossContribution={uniqueTiles?:number;owner:string;activityId:string;meters:number;movement:Movement;bossTileVisited:boolean;activityStartedAt:number;activityEndedAt:number};
+export function simulateEncounter(tier:BossTier,partySize:number,contributions:BossContribution[],boss:Pick<Boss,'weakness'|'weaknessBonus'|'objectives'>,rules=BOSS_RULES){
+  explorationObjective(boss);
   const requirement=bossRequirements(tier,partySize,rules),owners=new Set<string>();let hp=0;
   if(contributions.length>partySize)throw new Error('Too many contributors');
-  const players=contributions.map(c=>{if(!c.owner||!c.activityId||owners.has(c.owner)||!c.bossTileVisited||!Number.isSafeInteger(c.activityStartedAt)||!Number.isSafeInteger(c.activityEndedAt)||c.activityEndedAt<c.activityStartedAt||c.activityEndedAt-c.activityStartedAt>rules.windowHours*3600000)throw new Error('One qualifying activity and boss-tile visit within the encounter window are required per player');owners.add(c.owner);const damage=bossDamage(c.meters,c.movement,boss,rules),qualified=damage.equivalentKm>=requirement.minimumKmPerPerson;hp+=damage.hp;return{owner:c.owner,...damage,qualified};});
+  const players=contributions.map(c=>{if(!c.owner||!c.activityId||owners.has(c.owner)||!c.bossTileVisited||!Number.isSafeInteger(c.activityStartedAt)||!Number.isSafeInteger(c.activityEndedAt)||c.activityEndedAt<c.activityStartedAt||c.activityEndedAt-c.activityStartedAt>rules.windowHours*3600000)throw new Error('One qualifying activity and boss-tile visit within the encounter window are required per player');owners.add(c.owner);const damage=bossDamage(c.meters,c.movement,boss,rules),qualified=damage.equivalentKm>=requirement.minimumKmPerPerson&&explorationObjective(boss,c.uniqueTiles).met;hp+=damage.hp;return{owner:c.owner,...damage,qualified};});
   return{requirement,players,hp:Math.min(hp,requirement.hp),remainingHp:Math.max(0,requirement.hp-hp),victory:hp>=requirement.hp&&players.some(p=>p.qualified),rulesRevision:rules.revision,worldWrites:0};
 }

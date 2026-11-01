@@ -198,3 +198,13 @@ activity summary, preserve individual effort floors and never write HP or reward
 | Create a party before arrival | Activation stays disabled until consent and fresh boss-tile GPS; server rechecks closures/revision. | Existing server/model tests pass; physical/co-op pending. |
 | Review a completed activity | Correct movement damage, projected HP, personal minimum/shortfall and immediate settlement warning. Missing visit or repeat submission cannot qualify. | Automated forecasts pass; completed physical activity UI pending. |
 | Win with an under-minimum party member | Party may win through another qualifying member; unqualified player receives no personal loot. Zero HP without any qualifying member is not victory. | Model/server tests pass; physical co-op pending. |
+
+## TR-137/138 — distance + exploration bosses
+
+192 automated cases pass. Manual dev checklist (pending): place a sourced boss
+with a positive distinct-tile minimum; verify legacy bosses remain distance-only;
+record one real activity with repeats, GPS interruption and boss-tile arrival;
+check observed distinct tiles against the preview; submit within the window and
+verify distance alone cannot qualify loot. Check qualified/under-minimum co-op
+members separately and retry the same contribution/loot claim after reconnect.
+Synthetic admin simulations are zero-write and do not prove physical acceptance.

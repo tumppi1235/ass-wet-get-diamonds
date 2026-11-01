@@ -111,3 +111,11 @@ Arrival never activates an encounter; explicit consent/creator activation and
 server validation remain required. Forecasts distinguish physical damage from
 personal loot qualification and never change locked balance or immediate
 settlement. Preserve production v10 and all existing player/encounter records.
+
+D-042 (2026-11-01): TR-137/138 dev boss objectives always retain physical distance.
+An optional per-person minimum of 0–200 distinct accepted activity tiles can be
+added at placement and is snapshotted with the boss. Default/legacy is zero.
+Counting uses only observed accepted GPS receipts in that one activity/window;
+there is no inferred traversal, extra XP, elevation claim or retroactive reward.
+Failure to meet either personal minimum denies personal loot/group credit even
+if damage reaches zero HP. Keep physical/provider validation and elevation open.

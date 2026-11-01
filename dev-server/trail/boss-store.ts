@@ -1,3 +1,4 @@
+import {validateBossObjectives} from '../../mobile/src/game/boss-objectives';
 import type {D1Database} from '@cloudflare/workers-types';
 import {BOSS_DESIGNS,BOSS_RULES,BOSS_TIERS,validateBossRules,type Boss,type BossRules} from '../../mobile/src/game/bosses';
 import {LANDMARKS} from '../../mobile/src/game/landmarks';
@@ -16,12 +17,13 @@ export async function saveBossRules(db:D1Database,actor:string,input:BossRules,e
     db.prepare('INSERT INTO trail_audit(id,actor,action,target,details,created_at) VALUES(?,?,?,?,?,?)').bind(crypto.randomUUID(),actor,'boss.configure','boss-rules',JSON.stringify({before,after}),now),
   ]);}catch{throw new WorldError(409,'Boss rules changed during save; reload first');}return{rules:after};
 }
-export async function placeBoss(db:D1Database,actor:string,input:{designId:string;tier:Boss['tier'];placeId:string;startsAt:number;endsAt:number;weaknessBonus:number},now=Date.now()){
+export async function placeBoss(db:D1Database,actor:string,input:{designId:string;tier:Boss['tier'];placeId:string;startsAt:number;endsAt:number;weaknessBonus:number;objectives?:{uniqueTiles:number}},now=Date.now()){
   const design=BOSS_DESIGNS.find(b=>b.id===input.designId),place=LANDMARKS.find(p=>p.landmarkId===input.placeId);
   if(!design||!BOSS_TIERS.includes(input.tier)||!place||place.latitude==null||place.longitude==null||!place.source)throw new WorldError(400,'Choose a boss design, tier and sourced outdoor path');
   if(!Number.isSafeInteger(input.startsAt)||!Number.isSafeInteger(input.endsAt)||input.startsAt<0||input.endsAt<=input.startsAt||input.endsAt-input.startsAt>90*86400000||!Number.isFinite(input.weaknessBonus)||input.weaknessBonus<0||input.weaknessBonus>.25)throw new WorldError(400,'Use an active window up to 90 days and a weakness bonus up to 25%');
   if(blockedAt({latitude:place.latitude,longitude:place.longitude},now,await loadRegions(db)))throw new WorldError(400,'This path is blocked for encounters');
-  const boss:Boss={version:1,id:'boss:'+crypto.randomUUID(),designId:design.id,name:design.name,tier:input.tier,tileId:place.id,latitude:place.latitude,longitude:place.longitude,source:place.source,startsAt:input.startsAt,endsAt:input.endsAt,signature:design.signature,artifactType:design.type,weakness:design.weakness,weaknessBonus:input.weaknessBonus,rules:await loadBossRules(db)};
+  let objectives;try{objectives=validateBossObjectives(input.objectives);}catch(e){throw new WorldError(400,(e as Error).message);}
+  const boss:Boss={version:1,...(objectives?{objectives}:{}),id:'boss:'+crypto.randomUUID(),designId:design.id,name:design.name,tier:input.tier,tileId:place.id,latitude:place.latitude,longitude:place.longitude,source:place.source,startsAt:input.startsAt,endsAt:input.endsAt,signature:design.signature,artifactType:design.type,weakness:design.weakness,weaknessBonus:input.weaknessBonus,rules:await loadBossRules(db)};
   await db.batch([
     db.prepare('INSERT INTO trail_bosses(id,tile,document,latitude,longitude,starts_at,ends_at,revision) VALUES(?,?,?,?,?,?,?,1)').bind(boss.id,boss.tileId,JSON.stringify(boss),boss.latitude,boss.longitude,boss.startsAt,boss.endsAt),
     db.prepare('INSERT INTO trail_audit(id,actor,action,target,details,created_at) VALUES(?,?,?,?,?,?)').bind(crypto.randomUUID(),actor,'boss.place',boss.id,JSON.stringify({after:boss}),now),
