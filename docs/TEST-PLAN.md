@@ -91,7 +91,7 @@ TR-118 maintenance: maintenance.test.ts covers guarded configuration/audit trans
 TR-082/052/091/110 diversity: diversity.test.ts covers one-time terrain and completed movement qualifications, exact locked rates, zero-rate/legacy compatibility, duplicate stops/outings, partial-outing limits, conservative unknown/conflicting/blocked/disjoint segment treatment, no GPS-gap credit, recovery anti-farming, transaction races/replay, role/origin/config validation and conditional zero-write planning. Local UI saved the experiment without player XP and Character showed empty genuine evidence. Pending phone test: start a new outing under enabled dev rules, record ≥250 classified metres within a reviewed region, stop after ≥1 km, verify one terrain/movement reward and no repeat award after reload/retry. Confirm accurate boundary/gap behaviour and unchanged production. No physical terrain, sport, ascent or provider test is claimed.
 
 TR-094/101 routing foundations: tools/test_route_network.py runs ten offline
-access/topology/reader/integrity cases; mapped-route.test.ts runs six bounded
+access/topology/reader/integrity cases; mapped-route.test.ts runs seven bounded
 route-search cases. Compare actual ordered mapped bends, independent crossing
 IDs, mode/oneway restrictions, barriers/closures, missing coordinates, chunk
 deduplication, nearest mapped offsets, explicit unavailable/limit states and
@@ -103,3 +103,19 @@ under docs/evidence/. Pending integration/field checks: authenticated
 bounded loading, closure changes, map overlays retaining the real recorded track,
 GPX 1.1 parsing/import, on-foot access/turn correctness, unmapped starts and no
 rewards from preview/export. No physical or navigation-device pass is claimed.
+
+TR-094/098/101 integration increment: route-api.test.ts adds six catalog/loader/
+API cases with the exact canonical manifest and two real public Rantalantie
+chunks. It verifies binary hashes/byte bounds, same-origin membership, own-only
+fresh GPS, explicit public previews, zero-write snapshots, closures edited during
+load and bounded concurrent/error recovery. route-gpx.test.ts independently
+parses namespaced XML and tests unavailable/invalid/bounded exports; the actual
+28-point Rantalantie file also passed the official XSD via .NET. The complete
+national graph is separately staged, never replaced with that fixture. All 146
+app regressions, mobile/server types/lint and a full dev build pass locally.
+Local browser returned the 0.81 km public preview with gold 0/quest stopped;
+responsive inspection used 390×844. The first transport check caught Vite's
+automatic .gz decoding; opaque binary paths and an asset-binding restart fixed
+the observed failure. Recheck actual deployed .bin byte counts and dense-city
+routes at publication. Physical GPS navigation, locked-screen limitations,
+native/fallback field checks and navigation-device GPX import remain pending.

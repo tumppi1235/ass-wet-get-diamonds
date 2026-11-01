@@ -1,0 +1,15 @@
+{
+  "validatedAt": "2026-11-01T00:48:45.0039340Z",
+  "kind": "planned-map-route",
+  "gpx": "rantalantie-planned-2026-11-01.gpx",
+  "gpxSha256": "7848167049e5f961db45d777b0c587b5c7fb88f0c14b337d3abbc17c514bd221",
+  "schemaUrl": "https://www.topografix.com/GPX/1/1/gpx.xsd",
+  "schemaSha256": "9e4d1988b862edbe556305b130f8f6f1b29864fefd0dc02d5dab04ccdd1f34d6",
+  "validator": "System.Xml.Schema.XmlSchemaSet, external resolution disabled",
+  "schemaValidation": "PASS",
+  "mappedPoints": 28,
+  "mappedMeters": 807.7545974194686,
+  "sourceTimestamp": "2026-10-30T21:24:51Z",
+  "awardsWritten": 0,
+  "physicalNavigationImport": "PENDING"
+}

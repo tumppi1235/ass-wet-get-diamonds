@@ -10,9 +10,11 @@ Offline dev routing foundations: `tools/route_network.py` and `Build-RouteNetwor
 extract conservative mode/direction-aware OSM node topology into checksummed
 geographic chunks; `Inspect-RouteNetwork.py` audits complete geometry preservation.
 `mobile/src/game/mapped-route.ts` is bounded pure A* with explicit unavailable
-states and no activity/reward writes. These tools/core are not yet connected to a
-hosted route API/map or GPX export. See DEV-ROUTING.md; no full-country graph is
-imported into a client/Worker bundle.
+states and no activity/reward writes. Dev route-assets/route-store connect
+checksummed binary static assets, owner-scoped GPS/public preview inputs and
+current region masks to a zero-write API. Shared Ideas shows a separate planned
+map overlay and GPX navigation export; see DEV-ROUTE-PLANNER.md for publication
+and physical gates. No full-country graph is imported into a client/Worker bundle.
 
 ## P0 browser exploration pipeline
 

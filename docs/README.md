@@ -36,6 +36,7 @@ Working title: Trail Relics. Vision: an outdoor RPG where greater effort and exp
 | [DEV-MAINTENANCE.md](DEV-MAINTENANCE.md) | Dev pause/resume controls, transactional write coordination and pending-action/recovery limits |
 | [DEV-DIVERSITY.md](DEV-DIVERSITY.md) | First terrain/movement experience, locked experimental Agility rules and permanent anti-farming evidence |
 | [DEV-ROUTING.md](DEV-ROUTING.md) | Offline Finland path network, conservative access/topology, integrity audit and remaining route/GPX scope |
+| [DEV-ROUTE-PLANNER.md](DEV-ROUTE-PLANNER.md) | Owner-scoped dev previews, binary asset integrity, separate map plans, GPX export and navigation gates |
 | [DEV-CONTINUATION.md](DEV-CONTINUATION.md) | Continuous dev-only backlog execution and outstanding gates |
 | [DEV-FOUNDATIONS.md](DEV-FOUNDATIONS.md) | Development-only spawn, lifetime evidence and XP foundation scope |
 | [FINLAND-PLAYTEST.md](FINLAND-PLAYTEST.md) | National dev catalog, geographic compatibility and field tests |

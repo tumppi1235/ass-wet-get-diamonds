@@ -1,8 +1,9 @@
 # Offline route network (TR-094/101)
 
-Development only. This is a routing-data foundation, not a released route planner,
-validated Garmin course or continuous browser activity recorder. Production and
-all player/world records remain untouched.
+Development only. This document covers the routing-data foundation. The new
+owner-scoped planner/API/map/GPX implementation is in DEV-ROUTE-PLANNER.md; its
+publication/field gates remain distinct. This is not a validated Garmin course or
+continuous browser activity recorder. Production/player records are unchanged.
 
 ## Input and reproduction
 
@@ -149,9 +150,9 @@ or field validation. They do not start or reward an adventure.
 The actual eight observations are retained as
 [public preview output](evidence/finland-route-previews-2026-11-01.jsonl).
 
-Bounded asset loading, authenticated dev API, active blocked-region
-intersection checks, phone route preview, labelled start/end offsets, GPX export
-and actual device import are still pending. GPX must use WGS84 and the official
-[GPX 1.1 schema](https://www.topografix.com/GPX/1/1/), preserve mapped geometry and
-identify itself as a **planned route**, never a completed/reward-eligible activity.
-No straight-line fallback is acceptable when the path graph is disconnected.
+Follow-up source now includes bounded binary asset loading, an authenticated
+zero-write dev API, refreshed region checks, phone route previews, separate
+offsets and planned GPX export. See DEV-ROUTE-PLANNER.md for implemented limits,
+actual local browser/XSD evidence and remaining hosted/device/field acceptance.
+No straight-line fallback is acceptable when the graph is disconnected, and a
+planned navigation track is never completed/reward-eligible activity evidence.

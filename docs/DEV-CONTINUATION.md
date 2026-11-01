@@ -83,3 +83,17 @@ interior crossings/boundary contact and exact time windows). Code release
 5266738 passed all four GitHub jobs: route 41253997056, graph 41253997053,
 web 41253997104 and backend 41253997218. Follow-up source and audit evidence have
 their own commit; this is not a hosted route release or physical test.
+
+Route planner increment TR-094/098/101: complete immutable country data is staged
+through existing Site ASSETS as binary files; owner-authenticated zero-write
+plans accept fresh GPS or explicit catalog origins, re-read closures, serialize
+graph allocations and report bounded failures. Shared Ideas provides searchable
+Foot/Bicycle previews, offset labels, separate gold-dashed map geometry and
+planned GPX download. Public Rantalantie succeeds locally without moving Shared
+QA, starting a quest or granting gold/XP; viewport testing is not physical GPS.
+146 app regressions and server checks/build/graph pass; the real 28-point GPX
+passed official XSD validation (evidence retained). See DEV-ROUTE-PLANNER.md for
+input/size/search limits, the corrected .bin transport, reproduction and remaining
+hosted/large-area/device gates. Publication is the next step; preserve prod,
+audience, all ledgers and phone tests. Follow with larger-area compact/lazy
+routing, relevant detected relic/boss opportunities and other independent stories.

@@ -2,7 +2,7 @@ import { Map, Popup, setWorkerUrl, setWorkerCount, getVersion, type GeoJSONSourc
 import type { FeatureCollection } from 'geojson';
 import G from '../game/engine';
 import type { CityMapProps } from '../components/city-map.types';
-import { accuracyData, boundaryData, claimsData, collection, coordinates, overlayData, playerData, relicData, selectedTileData, trailData } from './vector-data';
+import { accuracyData, boundaryData, claimsData, collection, coordinates, overlayData, playerData, relicData, selectedTileData, trailData,plannedRouteData } from './vector-data';
 import { revision } from './style-revision.json';
 import {GAME_REGION} from './region';
 import {RELEASE_FEATURES} from '../config/features';
@@ -24,7 +24,8 @@ export function createQuestMap(container: HTMLDivElement, read: () => CityMapPro
   map.getCanvas().setAttribute('aria-label',GAME_REGION+' adventure map. Drag to pan and pinch or scroll to zoom.');
   let ready=false,follow=!!initial.player||initial.demo,focus=initial.focusKey,terrain=true,popup:Popup | null=null,popupId:string | null=null;
   let popupNodes:{title:HTMLElement;detail:HTMLElement;status:HTMLElement} | null=null;
-  const sources = ['visits','grid','trail','accuracy','player','relics','boundary','claims','selected-tile','active-tile'];
+  const sources = ['visits','grid','trail','planned-route','accuracy','player','relics','boundary','claims','selected-tile','active-tile'];
+  let planned:CityMapProps['plannedRoute'];
   const updates=new SourceUpdates();
   const data=(id:string,value:FeatureCollection)=>{const source=map.getSource(id) as GeoJSONSource | undefined;if(source)updates.send(id,value,next=>source.setData(next));};
   const viewport=()=>{
@@ -47,6 +48,8 @@ export function createQuestMap(container: HTMLDivElement, read: () => CityMapPro
   function update(){if(!ready)return;const p=read(),point=p.player || p.game;
     data('claims',claimsData(p.claims || {},p.ownerId,p.selectedTileId,p.claimClusters));data('selected-tile',selectedTileData(p.selectedTileId));data('active-tile',selectedTileData(p.activeTileId));
     data('trail',trailData(p.game));data('relics',relicData(p.game,point,p.selectedRelicId,p.capturableId,false));
+    data('planned-route',plannedRouteData(p.plannedRoute));
+    if(p.plannedRoute!==planned){planned=p.plannedRoute;if(planned){follow=false;const points=planned.points;map.fitBounds([[Math.min(...points.map(v=>v.longitude)),Math.min(...points.map(v=>v.latitude))],[Math.max(...points.map(v=>v.longitude)),Math.max(...points.map(v=>v.latitude))]],{padding:{top:135,bottom:170,left:35,right:35},maxZoom:16,duration:0});}}
     data('player',playerData(p.player,p.demo?p.game:null));data('accuracy',accuracyData(p.player));
     if(p.focusKey && p.focusKey!==focus){focus=p.focusKey;follow=true;map.jumpTo({center:coordinates(point),zoom:Math.max(14.4,map.getZoom())});}
     else if(follow && (p.player || p.demo)){const center=map.getCenter(),next=coordinates(point),a=map.project(center),b=map.project(next);if(Math.hypot(a.x-b.x,a.y-b.y)>8)map.jumpTo({center:next});}
@@ -69,6 +72,9 @@ export function createQuestMap(container: HTMLDivElement, read: () => CityMapPro
     add({id:'claim-clusters',type:'circle',source:'claims',filter:['==',['get','claimCluster'],true],paint:{'circle-radius':['interpolate',['linear'],['get','count'],1,13,10,19,100,25],'circle-color':['case',['get','mine'],TILE_STYLE.claimed,TILE_STYLE.claimOther],'circle-stroke-color':['case',['get','mixed'],TILE_STYLE.claimOther,TILE_STYLE.claimedEdge],'circle-stroke-width':3}});
     add({id:'claim-cluster-count',type:'symbol',source:'claims',filter:['==',['get','claimCluster'],true],layout:{'text-field':['concat',['to-string',['get','count']],' claims'],'text-font':['Noto Sans Regular'],'text-size':10,'text-max-width':8},paint:{'text-color':'#FFF4BB','text-halo-color':TILE_STYLE.claimedEdge,'text-halo-width':1.5}});
     add({id:'municipal-boundary',type:'line',source:'boundary',maxzoom:13,paint:{'line-color':'#376747','line-width':1.5,'line-dasharray':[4,3]}});
+    add({id:'planned-route-halo',type:'line',source:'planned-route',paint:{'line-color':'#102726','line-width':8}});
+    add({id:'planned-route-line',type:'line',source:'planned-route',paint:{'line-color':'#FFE18A','line-width':4,'line-dasharray':[3,2]}});
+    add({id:'planned-route-endpoints',type:'circle',source:'planned-route',filter:['==',['geometry-type'],'Point'],paint:{'circle-radius':7,'circle-color':['match',['get','endpoint'],'start','#8DC8A0','#FFE18A'],'circle-stroke-color':'#102726','circle-stroke-width':3}});
     add({id:'route-casing',type:'line',source:'trail',layout:{'line-cap':'round','line-join':'round'},paint:{'line-color':TILE_STYLE.routeHalo,'line-width':8}});
     add({id:'route-line',type:'line',source:'trail',layout:{'line-cap':'round','line-join':'round'},paint:{'line-color':TILE_STYLE.route,'line-width':4}});
     add({id:'accuracy-fill',type:'fill',source:'accuracy',paint:{'fill-color':'#55A4B6','fill-opacity':.12}});

@@ -24,7 +24,9 @@ import {adventureIdeas} from './recommendation-store';
 import {unexpectedApiFailure} from './observability';
 import {loadMaintenance,saveMaintenance,guardedGameDatabase,MaintenanceError} from './maintenance-store';
 import {loadDiversityRules,saveDiversityRules} from './diversity-store';
-type Bindings={DB?:D1Database;TRAIL_ENV?:string;TRAIL_ADMIN_EMAIL?:string;TRAIL_PUBLIC_ORIGIN?:string};
+import {adventureRoute} from './route-store';
+import type {RouteAssets} from './route-assets';
+type Bindings={DB?:D1Database;ASSETS?:RouteAssets;TRAIL_ENV?:string;TRAIL_ADMIN_EMAIL?:string;TRAIL_PUBLIC_ORIGIN?:string};
 type Member={id:string;display_name:string;role:'admin'|'player';created_at:number};
 class ApiError extends Error{constructor(public status:number,message:string){super(message);}}
 const json=(data:unknown,status=200)=>new Response(JSON.stringify(data),{status,headers:{'Content-Type':'application/json','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}});
@@ -41,7 +43,7 @@ export async function trailApi(request:Request,env:Bindings){
   try{
     if(env.TRAIL_ENV!=='development'||!env.DB)throw new ApiError(503,'Shared development services are not configured.');
     const url=new URL(request.url),path=url.pathname.replace(/\/$/,'');
-    if(path==='/api/trail/health'&&request.method==='GET')return json({environment:'development',service:'trail-shared',schema:1});
+    if(path==='/api/trail/health'&&request.method==='GET')return json({environment:'development',service:'trail-shared',schema:1,routeAssetsConfigured:!!env.ASSETS});
     const id=identity(request),rawDb=env.DB;
     if(!['GET','HEAD'].includes(request.method)&&request.headers.get('origin')!==new URL(env.TRAIL_PUBLIC_ORIGIN||url.origin).origin)throw new ApiError(403,'Use the app on its own origin.');
     const maintenance=await loadMaintenance(rawDb),db=guardedGameDatabase(rawDb,maintenance.revision);requestEpoch=maintenance.revision;
@@ -73,6 +75,10 @@ export async function trailApi(request:Request,env:Bindings){
       if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');const input=await body(request);return json(await saveDiversityRules(db,id,input.rules,input.revision));
     }
     if(path==='/api/trail/ideas'&&request.method==='POST')return json(await adventureIdeas(db,id,await body(request)));
+    if(path==='/api/trail/route'&&request.method==='POST'){
+      const assets=env.ASSETS?{fetch:(asset:Request)=>env.ASSETS!.fetch(new Request(new URL(new URL(asset.url).pathname,url.origin)))}:undefined;
+      return json(await adventureRoute(db,assets,id,await body(request)));
+    }
     if(path==='/api/trail/admin/snapshot'&&request.method==='POST'){
       if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');return json(await exportDevSnapshot(rawDb));
     }

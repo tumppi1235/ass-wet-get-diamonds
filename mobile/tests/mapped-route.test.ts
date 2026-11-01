@@ -3,6 +3,8 @@ import assert from 'node:assert/strict';
 import {planMappedRoute,routeClosureCheck,type MappedEdge,type MappedNode} from '../src/game/mapped-route';
 import {groundDistance} from '../src/map/geodesy';
 import {WORLD_REGIONS,type WorldRegions} from '../src/game/world-regions';
+import {plannedRouteData,trailData} from '../src/map/vector-data';
+import G from '../src/game/engine';
 
 const a:MappedNode=[1,620000000,250000000],b:MappedNode=[2,620001000,250002000],c:MappedNode=[3,620002000,250000000],d:MappedNode=[4,620004000,250000000];
 const geo=(p:MappedNode)=>({latitude:p[1]/1e7,longitude:p[2]/1e7});
@@ -67,4 +69,11 @@ test('TR-094 live region closure checks catch interior crossings and honour exac
   regions.regions[0].blocked=false;assert.equal(touching(geo(a),geo(c)),true,'request snapshot cannot change under search');
   assert.equal(routeClosureCheck(regions,now)(geo(a),geo(c)),false);
   assert.throws(()=>routeClosureCheck({...regions,regions:[{...regions.regions[0],north:61}]},now));
+});
+
+test('TR-094 map preview keeps mapped endpoints separate from the real recorded trail and offset legs',()=>{
+  const route=planMappedRoute([edge(1,[a,b,c,d])],{...options,start:{...geo(a),longitude:25.00001}});assert.equal(route.status,'ready');if(route.status!=='ready')return;
+  const game=G.initial();game.path=[{x:0,y:0},{x:10,y:20,breakBefore:true}];const before=JSON.stringify(game),recorded=trailData(game),preview=plannedRouteData(route);
+  assert.equal(preview.features.length,3);const geometry=preview.features[0].geometry;assert.ok(geometry&&geometry.type==='LineString');assert.deepEqual(geometry.coordinates,route.points.map(p=>[p.longitude,p.latitude]));
+  assert.deepEqual(preview.features.slice(1).map(f=>f.properties?.endpoint),['start','end']);assert.equal(JSON.stringify(game),before);assert.deepEqual(trailData(game),recorded);assert.equal(plannedRouteData().features.length,0);assert.ok(route.startOffsetMeters>0);
 });

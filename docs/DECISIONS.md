@@ -55,3 +55,12 @@ returns unavailable on disconnection/access/resource limits; start/end offsets
 are not route connectors. No route plan is activity evidence or a reward. Asset
 hosting, live-region checks, UI, GPX/device access remain explicit implementation
 and validation gates; see DEV-ROUTING.md.
+
+D-034: dev navigation plans use only fresh owner GPS or an explicitly chosen
+public catalog preview. Existing Site ASSETS serves the complete immutable
+checksummed graph as opaque binary files; no extra provider/account is added.
+Plans and GPX remain separate from recorded paths, source effort, reward ledgers
+and encounter evidence. Closure context is re-read before search; bounded area,
+memory and search limits yield explicit unavailable/busy states. Unknown access
+and difficulty are not invented. Software/local tests do not replace hosted,
+physical navigation, large-area performance or watch-import gates.

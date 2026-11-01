@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="Trail Relics development route planner" xmlns="http://www.topografix.com/GPX/1/1">
+<metadata><name>Planned route: Haukivuori · Rantalantie · Rune 02</name><desc>Planned navigation only; not a recorded activity. Mapped access and conditions need checking. OSM source 2026-10-30T21:24:51Z; policy finland-paths-dev-1; region revision offline-no-closures. Start/end offsets are excluded; no connector legs, activity distance, effort, XP or collection claims.</desc><copyright author="OpenStreetMap contributors"><license>https://opendatacommons.org/licenses/odbl/1-0/</license></copyright><link href="https://www.openstreetmap.org/copyright"><text>© OpenStreetMap contributors</text></link></metadata>
+<trk><name>Planned route: Haukivuori · Rantalantie · Rune 02</name><desc>Planned navigation only; not a recorded activity. Mapped access and conditions need checking. OSM source 2026-10-30T21:24:51Z; policy finland-paths-dev-1; region revision offline-no-closures. Start/end offsets are excluded; no connector legs, activity distance, effort, XP or collection claims.</desc><type>planned-route</type><trkseg>
+<trkpt lat="62.1214686" lon="27.0840884"/>
+<trkpt lat="62.1214419" lon="27.0837963"/>
+<trkpt lat="62.1214313" lon="27.0836806"/>
+<trkpt lat="62.1212558" lon="27.0828330"/>
+<trkpt lat="62.1211654" lon="27.0827579"/>
+<trkpt lat="62.1209355" lon="27.0827646"/>
+<trkpt lat="62.1207942" lon="27.0827687"/>
+<trkpt lat="62.1205137" lon="27.0827387"/>
+<trkpt lat="62.1203928" lon="27.0827258"/>
+<trkpt lat="62.1197758" lon="27.0826936"/>
+<trkpt lat="62.1195399" lon="27.0826614"/>
+<trkpt lat="62.1190382" lon="27.0821142"/>
+<trkpt lat="62.1188676" lon="27.0820391"/>
+<trkpt lat="62.1186017" lon="27.0820284"/>
+<trkpt lat="62.1182957" lon="27.0819425"/>
+<trkpt lat="62.1178792" lon="27.0818245"/>
+<trkpt lat="62.1174126" lon="27.0816958"/>
+<trkpt lat="62.1171467" lon="27.0816529"/>
+<trkpt lat="62.1168858" lon="27.0815778"/>
+<trkpt lat="62.1167453" lon="27.0814705"/>
+<trkpt lat="62.1166550" lon="27.0812774"/>
+<trkpt lat="62.1164944" lon="27.0804620"/>
+<trkpt lat="62.1164041" lon="27.0800650"/>
+<trkpt lat="62.1163288" lon="27.0794535"/>
+<trkpt lat="62.1162586" lon="27.0793462"/>
+<trkpt lat="62.1161181" lon="27.0793462"/>
+<trkpt lat="62.1158973" lon="27.0795071"/>
+<trkpt lat="62.1154206" lon="27.0799899"/>
+</trkseg></trk></gpx>

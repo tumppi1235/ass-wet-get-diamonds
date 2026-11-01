@@ -12,8 +12,10 @@ const html=fs.readFileSync(path.join(mobile,'dist/index.html'),'utf8'),common=ht
 const bundle=fs.readFileSync(path.join(mobile,'dist',common),'utf8');
 if(!bundle.includes('t("development")'))throw new Error('Refusing to bundle a non-development game export');
 fs.cpSync(path.join(mobile,'dist'),path.join(server,'game-export'),{recursive:true});
+require('./Stage-RouteAssets.cjs').stage(root,path.join(server,'game-export'));
 run(path.join(server,'scripts/run-framework.mjs'),['build'],server);
 const out=path.join(root,'.tools/shared-dev-build');fs.mkdirSync(out,{recursive:true});fs.cpSync(path.join(server,'dist'),out,{recursive:true});
+require('./Stage-RouteAssets.cjs').stage(root,path.join(out,'client'));
 const sha=spawnSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).stdout.trim();
 fs.writeFileSync(path.join(out,'client/release.json'),JSON.stringify({sourceCommit:sha,environment:'development',release:'shared-dev-world',features:{sharedWorld:true,liveCompass:true},deviceTests:'Physical validation pending',saveNamespace:'trail-relics.dev.profiles.v1'},null,2));
 console.log('Shared development artifact: '+out);

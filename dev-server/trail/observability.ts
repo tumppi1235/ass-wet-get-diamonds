@@ -2,7 +2,7 @@ const methods=new Set(['GET','POST','PUT','PATCH','DELETE','HEAD','OPTIONS']);
 /** Deliberately coarse and allowlisted. Never emit URLs, query values, identities, headers, bodies, stacks or exception messages. */
 export function diagnosticOperation(request:Request){
   const path=new URL(request.url).pathname,root=path.slice('/api/trail/'.length).split('/')[0];
-  return path.startsWith('/api/trail/')&&['world','claims','spawns','visits','encounters','encounter','encounter-actions','activities','activity-preview','ideas','me','balance','admin'].includes(root)?root:'other';
+  return path.startsWith('/api/trail/')&&['world','claims','spawns','visits','encounters','encounter','encounter-actions','activities','activity-preview','ideas','route','me','balance','admin'].includes(root)?root:'other';
 }
 export function unexpectedApiFailure(request:Request,error:unknown,logger:(message:string)=>void=message=>console.error(message)){
   const reference=crypto.randomUUID(),operation=diagnosticOperation(request),errorKind=error instanceof TypeError?'type':error instanceof SyntaxError?'syntax':error instanceof RangeError?'range':'unexpected';

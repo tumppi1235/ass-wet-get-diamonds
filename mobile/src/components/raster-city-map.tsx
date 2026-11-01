@@ -24,11 +24,16 @@ const boundaryPath = JYVASKYLA.polygons.map(p => line(p.outer) + 'Z' + p.holes.m
 const identify = 'TrailRelics/0.4 (+https://github.com/tumppi1235/ass-wet-get-diamonds)';
 
 type Props = CityMapProps;
-export function CityMap({ game, communityVisits, onDiscover, player, focusKey, demo, locating, onLocate, claims = {}, claimClusters=[],onViewBounds,ownerId, fullScreen = false }: Props) {
+export function CityMap({ game, communityVisits, onDiscover, player, focusKey, demo, locating, onLocate, claims = {}, claimClusters=[],onViewBounds,ownerId,plannedRoute, fullScreen = false }: Props) {
   const [width, setWidth] = useState(750), [mapStyle, setMapStyle] = useState<MapStyle>('street'), [failed, setFailed] = useState<Record<string, boolean>>({});
   const { height: screenHeight, width: screenWidth } = useWindowDimensions();
   const height = fullScreen ? screenHeight : screenWidth < 700 ? Math.max(330, Math.min(480, screenHeight * .52)) : 560, area = useMemo(() => fitJyvaskyla(width, height), [width, height]);
   const [camera, setCamera] = useState({ mode: 'pan' as 'area' | 'player' | 'pan', center: { x: game.x, y: game.y }, scale: .31, focusKey });
+  const [previousPlan,setPreviousPlan]=useState<{route?:Props['plannedRoute'];width:number;height:number}>({width,height});
+  if(previousPlan.route!==plannedRoute||plannedRoute&&(previousPlan.width!==width||previousPlan.height!==height)){
+    setPreviousPlan({route:plannedRoute,width,height});
+    if(plannedRoute){const points=plannedRoute.points.map(p=>G.xy(p.latitude,p.longitude)),xs=points.map(p=>p.x),ys=points.map(p=>p.y),west=Math.min(...xs),east=Math.max(...xs),south=Math.min(...ys),north=Math.max(...ys);setCamera({mode:'pan',center:{x:(west+east)/2,y:(south+north)/2},scale:Math.min(width/(east-west+400),height/(north-south+400)),focusKey});}
+  }
   const target = player || (demo && game.lastCell ? { x: game.x, y: game.y } : null);
   const requested = !!target && !!focusKey && focusKey !== camera.focusKey;
   const mode = requested ? 'player' : camera.mode;
@@ -63,6 +68,7 @@ export function CityMap({ game, communityVisits, onDiscover, player, focusKey, d
   const found = new Set(game.collection.map(r => r.id)), current = G.cell(game.x, game.y);
   const box = `${center.x - halfW} ${-center.y - halfH} ${width / scale} ${height / scale}`;
   const trail = game.path.map((p, i) => `${!i || p.breakBefore ? 'M' : 'L'}${p.x},${-p.y}`).join('');
+  const plannedPath=useMemo(()=>plannedRoute?line(plannedRoute.points.map(p=>{const v=G.xy(p.latitude,p.longitude);return[v.x,v.y];})): '',[plannedRoute]);
   const scaleMeters = scale < .025 ? 10000 : scale < .1 ? 1000 : 250;
   const provider = online && MAP_PROVIDERS[online];
   const hint = online === 'outdoor' ? 'Outdoor terrain · contours and trails' : online === 'street' && mapStyle === 'outdoor' ? 'Outdoor service unavailable · street fallback' : online === 'street' ? 'Street map' : 'Offline centre detail · internet needed for wider map';
@@ -89,6 +95,7 @@ export function CityMap({ game, communityVisits, onDiscover, player, focusKey, d
           <Path d={boundaryPath} fill="#2D624A0A" stroke="#4E7354" strokeWidth={1.5 / scale} strokeDasharray={`${7 / scale},${5 / scale}`} fillRule="evenodd" />
           {Object.entries(claims).map(([id,c])=>{const [i,j]=id.split(',').map(Number),fill=c.ownerId===ownerId?TILE_STYLE.claimed:TILE_STYLE.claimOther;return <Group key={id}><Rect x={i*250} y={-(j+1)*250} width={250} height={250} fill={fill} fillOpacity={.38} stroke={TILE_STYLE.claimedEdge} strokeWidth={7/scale}/><Rect x={i*250} y={-(j+1)*250} width={250} height={250} fill="none" stroke={fill} strokeWidth={4/scale}/></Group>;})}
           {claimClusters.map(c=><Group key={`claim:${c.i},${c.j}:${c.step}`}><Circle cx={(c.i+c.step/2)*250} cy={-(c.j+c.step/2)*250} r={18/scale} fill={c.mine?TILE_STYLE.claimed:TILE_STYLE.claimOther} stroke={c.mine&&c.others?TILE_STYLE.claimOther:TILE_STYLE.claimedEdge} strokeWidth={3/scale}/><SvgText x={(c.i+c.step/2)*250} y={-(c.j+c.step/2)*250+4/scale} textAnchor="middle" fontSize={10/scale} fill="#FFF4BB">{c.count} claims</SvgText></Group>)}
+          {!!plannedPath&&<><Path d={plannedPath} stroke="#102726" strokeWidth={8/scale} fill="none"/><Path d={plannedPath} stroke="#FFE18A" strokeWidth={4/scale} strokeDasharray={`${12/scale} ${8/scale}`} fill="none"/></>}
           {trail && <><Path d={trail} stroke={TILE_STYLE.routeHalo} strokeWidth={8 / scale} fill="none" /><Path d={trail} stroke={TILE_STYLE.route} strokeWidth={4 / scale} fill="none" /></>}
           {game.lastCell && gameTiles.map(([i, j]) => {
             const id = G.key(i, j), relic = game.revealed[id]?.landmarkId ? null : game.revealed[id], here = i === current.i && j === current.j, x = (i + .5) * 250, y = -(j + .5) * 250;

@@ -4,8 +4,10 @@ import {Button,styles,colors} from './ui';
 import type {SharedWorldClient} from '../accounts/shared-world';
 import {ATTRIBUTES,ATTRIBUTE_LABELS} from '../game/progression';
 import type {AdventureIdeas,RecommendationPreferences} from '../game/recommendations';
+import type {RoutePlan} from '../game/route-plan';
+import {SharedRoutes} from './shared-routes';
 const initial:RecommendationPreferences={goal:'endurance',movement:'foot',meters:3000,terrain:'any',access:'known-paths'};
-export function SharedIdeas({client}:{client:SharedWorldClient}){
+export function SharedIdeas({client,plan,onPlan,onShowRoute}:{client:SharedWorldClient;plan?:RoutePlan;onPlan(plan?:RoutePlan):void;onShowRoute():void}){
   const[preferences,setPreferences]=useState(initial),[result,setResult]=useState<AdventureIdeas>(),[busy,setBusy]=useState(false),[error,setError]=useState(''),request=useRef<AbortController|null>(null),sequence=useRef(0);
   useEffect(()=>()=>{sequence.current++;request.current?.abort();},[]);
   const change=(patch:Partial<RecommendationPreferences>)=>{sequence.current++;request.current?.abort();setBusy(false);setPreferences(p=>({...p,...patch}));setResult(undefined);setError('');};
@@ -23,5 +25,6 @@ export function SharedIdeas({client}:{client:SharedWorldClient}){
       {!!result.places.length&&<Text style={styles.eyebrow}>Nearby catalog ideas · not routes</Text>}{result.places.map(place=><View key={place.id} style={{padding:12,gap:6,borderWidth:1,borderColor:colors.line}}><Text style={styles.body}>{place.name}</Text><Text style={styles.small}>{(place.minimumReturnMeters/1000).toFixed(2)} km straight-line minimum return · terrain {place.terrain}</Text><Text style={styles.small}>{place.newTile?'New tile':'Previously reached tile'} · {place.newRegion?'New regional block':'Known regional block'}</Text><Text style={styles.small}>{place.latitude.toFixed(5)}, {place.longitude.toFixed(5)} · {place.source}</Text></View>)}
       {result.limits.map(text=><Text key={text} style={styles.small}>{text}</Text>)}<Text style={styles.small}>Estimates are conditional, not promised totals. Extra new tiles, regions or finds can change actual XP; GPS gaps, failed searches and changing balance rules can reduce it. Use Quest to select movement and start recording.</Text>
     </>}
+    <View style={styles.divider}/><SharedRoutes client={client} plan={plan} onPlan={onPlan} onShow={onShowRoute}/>
   </View>;
 }

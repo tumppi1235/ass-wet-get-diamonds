@@ -10,6 +10,9 @@ import { JYVASKYLA, visibleGameTiles, type Point } from './region';
 import { visitAreas } from './visits';
 import { tilePoint, type TileClaims } from '../game/claims';
 import type {ClaimCluster} from './claim-window';
+import type {MappedRoute} from '../game/mapped-route';
+
+export function plannedRouteData(route?:MappedRoute){if(!route)return collection();const points=route.points.map(p=>[p.longitude,p.latitude]);return collection([feature({type:'LineString',coordinates:points},{planned:true}),feature({type:'Point',coordinates:points[0]},{endpoint:'start'}),feature({type:'Point',coordinates:points[points.length-1]},{endpoint:'end'})]);}
 
 export const collection = (features: Feature[] = []): FeatureCollection => ({ type: 'FeatureCollection', features });
 export const coordinates = (p: Point): [number, number] => { const g = G.geo(p.x, p.y); return [g.lon, g.lat]; };
