@@ -160,3 +160,20 @@ The full dev-24 route dataset and regular-game GPS/trail/gold fixes are retained
 production remains version 9. Do not restore the older 1e80e67/failed candidates
 over this release. Continue TR-118's server recovery-generation/barrier work;
 do not confuse these client checkpoints with complete hosted restore safety.
+
+Latest release: private dev version 27 completes the requested four software
+increments: externally pinned recovery generations/whole-ledger sealing,
+incremental bounded route loading, detected-only rarity clues, and existing
+shared tester controls. See DEV-BACKLOG-INCREMENT.md and docs/evidence/dev27-release.json.
+Application source is 72d20967c5de20c36ea2d72733ea411ae9f73bae; current hosting
+main/live source is d00db4d7fb8ad44f98b7ee89ee21413c82490b9e. Saved version is
+appgprj_6ae5c02d5c008191b51fda4f4f39c7a5~appgver_8b4c95495a108191b6cee15e802a9cf7.
+All 180 regressions, types/lint, builds, graph and four GitHub workflows pass.
+Hosted Haukkala route/admin reads and final source/profile checks passed without
+changing real player progress, roles/access, external generation or maintenance.
+Production stays version 9. The country runtime remains checksum 74e4c9af...;
+all exact hashes/limits are in the release report. Do not restore old candidates
+over this code, especially after using generation/access controls. Next follow-ups
+are hosted long/dense route performance, named authorized invitations and actual
+provider restore/drain/retention and physical validation. Those operational gates
+are not completed by the software proof; no hosted rewind was performed.

@@ -130,4 +130,41 @@ All **180** application regressions and mobile typecheck/lint pass. Server typec
 lint, Worker build and refreshed structural graph accompany the release. Keep
 physical iPhone exploration/heading, navigation-device GPX import and provider
 restore/drain checks pending. The release section will record exact GitHub/Sites
-source, saved-version and hosted read-only checks after publication succeeds.
+source, saved-version and hosted read-only checks in the release record below.
+
+## Released dev version 27
+
+The completed software increment is live at
+[Shared dev](https://trail-relics-dev.tuomasl.chatgpt.site/shared).
+[Exact release and CI evidence](evidence/dev27-release.json) records application
+source `72d20967c5de20c36ea2d72733ea411ae9f73bae`, hosting source
+`d00db4d7fb8ad44f98b7ee89ee21413c82490b9e`, saved version, deployment, archive
+hash/size, and all four successful GitHub workflows. Runtime revision **2**,
+private audience and existing database bindings were preserved. All **180**
+regressions pass, with mobile/server quality, builds and structural graph checks.
+
+Dev 26 first delivered the four features. Actual hosted reads verified the
+**5.58 km** Kirkkopuisto → Haukkala Foot preview, separate gold-dashed mapped line
+and endpoints (displayed offsets 1m/0m, excluded from route distance). Test-player
+access showed Tumppi as admin/enabled; maintenance stayed OPEN/revision 0 and
+recovery stayed `dev-initial-1 · ready`. No access action or recovery operation
+was performed.
+
+Dev 27 adds the final UI correction: hide the artefact clue while the compass
+guides to a boss. Mobile types/lint, focused clue tests and all four GitHub
+workflows passed again. Its native deployment returned **succeeded**. Archive
+preflight passed at **195,398,963 input / 254,627,328 expanded bytes**, below both
+268,435,456-byte limits. The normalized saved tar has **13,066 files / 254,638,080
+bytes**. Current assets and 19 supported earlier shared frontend generations are
+retained, along with the unchanged compact Finland dataset.
+
+The final hosted `/release.json` matches the application source and development
+save namespace. Reloaded Quest shows Tumppi at **0 gold, 0.00 km, 0 finds, tile
+0,0, levels 1/1/1**, Foot, quest stopped. Health reports configured route assets
+and maintenance/pending/recovery-generation protocol **1**. No GPS, quest start,
+capture/claim/grant, suspension, invitation, baseline upload, generation rotation,
+maintenance pause or hosted restore was used for this verification. Rarity and
+recovery/suspension races are software evidence, not physical/device validation.
+
+Production remains **version 9**. Hosted long/dense performance, actual provider
+restore/drain/retention, named invitations and physical navigation remain pending.

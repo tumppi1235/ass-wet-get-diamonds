@@ -2,12 +2,18 @@
 
 Every release records the source SHA, browser/device, date, expected/actual behavior and evidence. Automated GPS is simulated; it does not prove physical phone recording. Attach no passwords, raw private tracks or precise home coordinates to public GitHub results.
 
-Current four-story dev candidate: **180** regressions pass, adding five complete
+Released four-story **dev version 27**: **180** regressions pass, adding five complete
 recovery-generation/reconciliation tests, three incremental-route cases, two
 detected-rarity clue cases and four tester-access/transaction race cases. Ten
 offline public-catalog route checks are retained with explicit unavailable cases.
 See [DEV-BACKLOG-INCREMENT.md](DEV-BACKLOG-INCREMENT.md). No live restore, player
 suspension, invitation or fabricated GPS run is used as evidence.
+
+All four workflows pass for source `72d20967c5de20c36ea2d72733ea411ae9f73bae`.
+Actual hosted reads cover the 5.58km Haukkala preview/map, tester/recovery admin,
+protocol markers and final release/source/profile after reload. Exact provenance,
+archive checks and remaining gates are recorded in DEV-BACKLOG-INCREMENT.md and
+docs/evidence/dev27-release.json. Production remains version 9.
 
 TR-118 pending recovery candidate (2026-11-01): all **166** regression cases,
 mobile typecheck/lint and server typecheck/lint pass. Ten new isolated SQL/client

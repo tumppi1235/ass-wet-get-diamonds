@@ -28,8 +28,10 @@ All actions below are unassigned until someone starts them.
 
 Latest software increment covers all four requested actions: external recovery
 generation/complete-ledger seal, incremental route loading, detected rarity clues
-and existing tester controls. **180** regressions and ten offline public-route
-checks pass. See [scope and release evidence](DEV-BACKLOG-INCREMENT.md). Parent
+and existing tester controls, released privately as **dev version 27**. **180**
+regressions, four GitHub workflows and ten offline public-route checks pass.
+Hosted Haukkala route, admin/checkpoint and final profile/source reads pass. See
+[scope and release evidence](DEV-BACKLOG-INCREMENT.md). Parent
 stories retain their provider, physical, invitation and performance gates.
 
 ### Validation queue

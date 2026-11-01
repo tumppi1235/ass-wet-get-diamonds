@@ -1,0 +1,70 @@
+{
+  "date": "2026-11-01",
+  "environment": "development",
+  "applicationCommit": "72d20967c5de20c36ea2d72733ea411ae9f73bae",
+  "hostingCommit": "d00db4d7fb8ad44f98b7ee89ee21413c82490b9e",
+  "version": 27,
+  "projectId": "appgprj_6ae5c02d5c008191b51fda4f4f39c7a5",
+  "savedVersionId": "appgprj_6ae5c02d5c008191b51fda4f4f39c7a5~appgver_8b4c95495a108191b6cee15e802a9cf7",
+  "deploymentId": "appgdep_6ae746ba30b48191b26d4ebd93356243",
+  "status": "succeeded",
+  "url": "https://trail-relics-dev.tuomasl.chatgpt.site",
+  "envRevision": 2,
+  "archive": {
+    "format": "tar",
+    "bytes": 254638080,
+    "files": 13066,
+    "hash": "sha256:8f1b4f6677c670eb4fee577fd30f5b9e7812b3df53792ed95a7704070a6594f2"
+  },
+  "preflight": {
+    "inputBytes": 195398963,
+    "expandedBytes": 254627328,
+    "limitBytes": 268435456
+  },
+  "automatedTests": 180,
+  "checks": [
+    {
+      "name": "Offline route network",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/tumppi1235/ass-wet-get-diamonds/actions/runs/41313348893",
+      "id": 41313348893
+    },
+    {
+      "name": "Project knowledge graph",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/tumppi1235/ass-wet-get-diamonds/actions/runs/41313348902",
+      "id": 41313348902
+    },
+    {
+      "name": "Web checks and release candidates",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/tumppi1235/ass-wet-get-diamonds/actions/runs/41313348916",
+      "id": 41313348916
+    },
+    {
+      "name": "Shared development backend",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/tumppi1235/ass-wet-get-diamonds/actions/runs/41313348920",
+      "id": 41313348920
+    }
+  ],
+  "hostedReads": [
+    "Haukkala walking preview: 5.58 km, separate mapped line/endpoints",
+    "Tester admin: Tumppi admin/enabled; maintenance OPEN revision 0",
+    "Recovery checkpoint: dev-initial-1 ready; no rotation",
+    "Final release.json application commit and development namespace match",
+    "Final Quest: gold 0, 0 km, 0 finds, tile 0,0, levels 1, stopped"
+  ],
+  "pending": [
+    "Physical iPhone/GPX navigation validation",
+    "Actual provider restore, retention and drain proof",
+    "Named authorized hosting invitations",
+    "Further hosted long/dense memory/performance evidence"
+  ],
+  "productionVersion": 9,
+  "realPlayerWritesPerformed": false
+}
