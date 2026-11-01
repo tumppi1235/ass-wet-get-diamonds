@@ -9,6 +9,6 @@ for(const name of spawnSync('git',['ls-files','-z'],{cwd:root,encoding:'utf8'}).
 for(const name of ['.openai/hosting.json','dev-server/.openai/hosting.json']){const target=path.join(host,name);fs.mkdirSync(path.dirname(target),{recursive:true});fs.writeFileSync(target,JSON.stringify(manifest,null,2));}
 fs.writeFileSync(path.join(host,'package.json'),JSON.stringify({name:'trail-relics-production-world',private:true,scripts:{build:'node tools/Build-HostedProduction.cjs'}},null,2));
 fs.writeFileSync(path.join(host,'.gitignore'),'node_modules/\n**/node_modules/\n.tools/\n**/.env*\n**/.dev.vars*\n**/.wrangler/\n**/.next/\n**/game-export/\n**/test-results/\n');
-const cache=fs.existsSync(path.join(host,'dist/client'))?path.join(host,'dist/client'):path.join(host,'dist');require('./SharedDev-Assets.cjs').retainProduction(path.join(artifact,'client'),cache);
+const cache=fs.existsSync(path.join(host,'dist/client/index.html'))?path.join(host,'dist/client'):path.join(host,'dist');require('./SharedDev-Assets.cjs').retainProduction(path.join(artifact,'client'),cache);
 require('./Stage-ProductionRoutes.cjs').stage(root,path.join(artifact,'client'));
 require('./SharedDev-Assets.cjs').resetOutput(host,path.join(host,'dist'));fs.cpSync(artifact,path.join(host,'dist'),{recursive:true});console.log('Prepared existing public production Site. Dev DB/data and phone-local saves were not copied.');
