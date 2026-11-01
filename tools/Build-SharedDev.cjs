@@ -14,7 +14,8 @@ if(!bundle.includes('t("development")'))throw new Error('Refusing to bundle a no
 fs.cpSync(path.join(mobile,'dist'),path.join(server,'game-export'),{recursive:true});
 require('./Stage-RouteAssets.cjs').stage(root,path.join(server,'game-export'));
 run(path.join(server,'scripts/run-framework.mjs'),['build'],server);
-const out=path.join(root,'.tools/shared-dev-build');fs.mkdirSync(out,{recursive:true});fs.cpSync(path.join(server,'dist'),out,{recursive:true});
+const out=path.join(root,'.tools/shared-dev-build'),assets=require('./SharedDev-Assets.cjs');assets.resetOutput(root,out);fs.cpSync(path.join(server,'dist'),out,{recursive:true});
+const cache=[path.join(root,'.tools/trail-relics-dev-host/dist/client'),path.join(root,'dist/client')].find(dir=>fs.existsSync(dir));assets.retainReleased(root,path.join(out,'client'),cache);
 require('./Stage-RouteAssets.cjs').stage(root,path.join(out,'client'));
 const sha=spawnSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).stdout.trim();
 fs.writeFileSync(path.join(out,'client/release.json'),JSON.stringify({sourceCommit:sha,environment:'development',release:'shared-dev-world',features:{sharedWorld:true,liveCompass:true},deviceTests:'Physical validation pending',saveNamespace:'trail-relics.dev.profiles.v1'},null,2));

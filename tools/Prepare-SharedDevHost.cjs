@@ -9,10 +9,10 @@ fs.mkdirSync(path.join(host,'dev-server/.openai'),{recursive:true});fs.copyFileS
 fs.copyFileSync(path.join(root,'dev-server/.openai/hosting.json'),path.join(host,'.openai/hosting.json'));
 fs.writeFileSync(path.join(host,'package.json'),JSON.stringify({name:'trail-relics-shared-dev-host',private:true,scripts:{build:'node tools/Build-HostedSharedDev.cjs'}},null,2));
 // Worker builds put public assets under dist/client; retain previous lazy bundles for tabs already open.
-for(const layout of ['client',''])for(const name of ['_expo','maps','assets']){const old=path.join(host,'dist',layout,name);if(fs.existsSync(old))fs.cpSync(old,path.join(artifact,'client',name),{recursive:true,force:false});}
+require('./SharedDev-Assets.cjs').retainReleased(root,path.join(artifact,'client'),path.join(host,'dist/client'),true);
 // Retain the exact derived input in the managed source repository so provider
 // rebuilds reproduce the complete graph, rather than a city/test-only fixture.
 const network=require('./Stage-RouteAssets.cjs').stage(root,path.join(artifact,'client'));
-if(network){fs.cpSync(network.source,path.join(host,'route-network'),{recursive:true});require('./Stage-RouteAssets.cjs').stage(root,path.join(host,'dist/client'));}
-fs.cpSync(artifact,path.join(host,'dist'),{recursive:true});
+if(network)fs.cpSync(network.source,path.join(host,'route-network'),{recursive:true});
+require('./SharedDev-Assets.cjs').resetOutput(host,path.join(host,'dist'));fs.cpSync(artifact,path.join(host,'dist'),{recursive:true});
 console.log('Prepared existing development Site source and Worker artifact. Production untouched.');

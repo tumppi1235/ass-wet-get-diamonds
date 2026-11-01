@@ -158,3 +158,32 @@ compressed/decoded/point/edge/search bounds. Tests compare real packed fixtures
 with canonical geometry and identical Foot/Bicycle results, plus malformed and
 overflow rejection. Larger-area lazy routing and physical navigation remain
 separate acceptance work.
+
+## Asset budget and supported frontend retention (TR-120)
+
+The compact archive passed the compressed input limit at 219,294,826 bytes but
+was rejected by a separate **256 MiB expanded-tar limit**. No version was saved
+by that rejected call. The archive contained 335,860,569 file-content bytes,
+including duplicate legacy static folders and accumulated frontend bundles.
+
+Builds now start from the fresh Worker output rather than merging it into an
+ever-growing artifact. Only declared generated output directories may be reset;
+canonical route inputs, Git history and player data are outside those targets.
+`SharedDev-Assets.cjs` retains scripts referenced by the current build, cached
+frontend HTML and the supported-release asset list, following both literal and
+hash-based lazy imports. It rejects missing HTML scripts and unsafe paths before
+pruning unreferenced generated JavaScript. Maps, fonts and other non-JS assets
+remain available. This is packaging cleanup, not route-geometry simplification.
+
+`shared-dev-retained-assets.json` records the native Site's versions **7–22**
+(16 shared-dev generations) plus the current prepared frontend. Refresh that list
+from native version metadata when advancing the release window; do not infer
+published source SHAs from Git ancestry. Very old pre-shared prototypes may need
+a page refresh; profiles/progress retain their existing keys. Rollback sources
+remain in Git and saved Site versions.
+
+Run `python tools/Check-SiteArchive.py ABSOLUTE-ARCHIVE.tar.gz` after official
+packaging and before saving a version. It checks both compressed bytes and the
+complete decompressed tar stream, including headers/padding, and fails early on
+either limit. Tests cover current/historical/lazy assets, missing script and path
+rejection, and confinement of generated-output cleanup.
