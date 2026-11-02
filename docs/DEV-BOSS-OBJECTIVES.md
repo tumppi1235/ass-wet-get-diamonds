@@ -59,3 +59,24 @@ Metsänvartija still shows distance-only. Tumppi retained 0 gold, 0.00 km, 0 fin
 tile 0,0, levels 1/1/1 and stopped quest. Only the new definition and placement
 audit were written. No draft/activation, activity, contribution, loot, claim,
 access or recovery operation was performed. Production remains public version 10.
+
+## Sippulanniemi test placements — 2026-11-02
+
+At the user's request, three additional Lesser definitions were placed through
+the existing dev admin console, available immediately for seven days (until
+November 9). This is data-only configuration on dev version 32; no app release,
+global balance change or production edit was needed.
+
+| Boss | Sourced catalog location | Tile | Distinct activity tiles |
+| --- | --- | --- | --- |
+| Metsänvartija | Sippulanniemi trail entrance (`sippula-trail`) | 0,-13 | 0 — distance only |
+| Kivenkulkija | Sippulanniemi forest trail (`sippula-forest`) | -2,-14 | 4 |
+| Syvänne | Sippulanniemi Shard trail find (`sippula-shard`) | -2,-18 | 8 |
+
+All use the existing boss-experiment-1 rules, zero weakness bonus, 20 equivalent
+km solo target and existing party scaling/physical arrival requirements. The
+player Encounters view confirmed all three names, signatures and objectives.
+Existing Kirkkopuisto/Harju bosses were preserved. No encounter or activity was
+created or activated, and no reward/claim was granted. The displayed profile
+remained 0 gold / 0.00 km / 0 finds, tile 0,0, levels 1/1/1 and stopped quest.
+Physical field acceptance remains pending; this is placement/UI verification.
