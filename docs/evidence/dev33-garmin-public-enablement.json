@@ -1,0 +1,66 @@
+{
+  "recordedAt": "2026-11-02T18:45:29.065Z",
+  "userAuthorization": "Allow public dev and Garmin access",
+  "scope": "development only",
+  "version": 33,
+  "audience": {
+    "access": "public",
+    "revision": 2
+  },
+  "runtime": {
+    "revision": 3,
+    "flag": {
+      "key": "TRAIL_GARMIN_HTTP_ENABLED",
+      "value": "1",
+      "is_secret": false,
+      "type": "envvar"
+    }
+  },
+  "deployment": {
+    "id": "appgdep_6ae8d9bbae148191a63c98a971072fc3",
+    "project_id": "appgprj_6ae5c02d5c008191b51fda4f4f39c7a5",
+    "title": "Trail Relics · Development",
+    "version_id": "appgprj_6ae5c02d5c008191b51fda4f4f39c7a5~appgver_78b6cb4844208191a30c10f886d3eda3",
+    "type": "publish",
+    "status": "succeeded",
+    "url": "https://trail-relics-dev.tuomasl.chatgpt.site",
+    "has_mcp": false,
+    "screenshot_asset_pointer": null,
+    "provider_deployment_id": "site---6ae5c02d5c008191b51fda4f4f39c7a5",
+    "failure_message": null,
+    "env_set_revision": 3,
+    "updated_at": "2026-11-02T18:43:35.851338+00:00"
+  },
+  "anonymousChecks": [
+    {
+      "path": "/api/trail/garmin/sync",
+      "method": "POST",
+      "status": 401,
+      "type": "application/json",
+      "error": "Garmin credential is invalid, expired or revoked"
+    },
+    {
+      "path": "/api/trail/garmin/status",
+      "method": "GET",
+      "status": 401,
+      "type": "application/json",
+      "error": "Sign in with ChatGPT to use the shared world."
+    },
+    {
+      "path": "/api/trail/admin/garmin-links",
+      "method": "GET",
+      "status": 401,
+      "type": "application/json",
+      "error": "Sign in with ChatGPT to use the shared world."
+    }
+  ],
+  "signedInUI": "HTTP service enabled; consent unchecked; no keys created",
+  "realWatchKeysCreated": 0,
+  "realWatchObservationsSent": 0,
+  "production": "Public v10 unchanged; no runtime/data/deploy mutation",
+  "remaining": [
+    "Enduro 3 profile and target installation",
+    "Real Garmin Connect/device sync test",
+    "Accepted effort, collection, fightable notification and rewards validation"
+  ]
+}

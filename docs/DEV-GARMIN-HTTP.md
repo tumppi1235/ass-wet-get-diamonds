@@ -104,6 +104,18 @@ would change its audience and requires the user's explicit approval; a separate
 supported ingress could preserve private browser access. Do not enable the flag
 or export platform credentials to bypass this gate. Hardware tests remain pending.
 
+## Public dev access enabled
+
+Later on 2026-11-02 the user explicitly approved public dev and Garmin access.
+Dev 33 was redeployed with runtime revision 3 and `TRAIL_GARMIN_HTTP_ENABLED=1`;
+the audience is now public. Production remains public v10 and was not redeployed.
+Anonymous POST to the watch endpoint reaches the application and returns JSON
+401 for missing credentials. Anonymous status/admin endpoints return sign-in
+required JSON 401. The signed-in setup shows HTTP service enabled. No real watch
+key or observation was created during these checks. This removes the platform
+access gate; real Garmin Connect/Enduro 3 transport and reward validation remain
+pending. See [enablement evidence](evidence/dev33-garmin-public-enablement.json).
+
 Official reference: [Garmin Communications.makeWebRequest](https://developer.garmin.com/connect-iq/api-docs/Toybox/Communications.html)
 supports mobile Bluetooth/supported Wi-Fi requests, JSON headers/parameters and
 asynchronous callbacks, avoiding a custom iPhone companion's Mac/Xcode requirement.

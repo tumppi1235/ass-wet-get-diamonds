@@ -26,15 +26,16 @@ All actions below are unassigned until someone starts them.
 
 | Order | Parent stories | Next action | Completion evidence |
 | --- | --- | --- | --- |
-| 1 | TR-021, TR-136, TR-157, TR-158 | User-selected live Garmin integration: Resolve approved watch-reachable HTTPS ingress while preserving private dev browser access, then enable/test Garmin Connect transport and Enduro 3 target. Scoped key management, durable unverified receipts and automatic training quest shells are implemented but disabled. | Real account/device-bound delivery, exact durable receipts and short-lived boss alerts; no browser credential export, invented reward/arrival or generic-build installation. |
+| 1 | TR-021, TR-136, TR-157, TR-158 | User-selected live Garmin integration: Public dev ingress and scoped HTTP service are now enabled by explicit approval. Obtain the Enduro 3 profile and validate target installation plus real Garmin Connect transport. Scoped key management, durable unverified receipts and automatic training quest shells are implemented. | Real account/device-bound delivery, exact durable receipts and short-lived boss alerts; no browser credential export, invented reward/arrival or generic-build installation. |
 | 2 | TR-094, TR-101 | Profile the graph guard constraining Helsinki–Espoo and improve bounded long-route planning; audit the long public trail disconnect and obtain provider CPU/heap evidence. Haukkala's retained access gap is audited and an explicit Foot draft choice is shipped in dev 32. | Guard/source causes, bounded measurements and explicit unavailable cases; preserve permissions, retained assets and zero reward writes. |
 | 3 | TR-041 | Complete a real named-tester invitation/access acceptance run after recipients are supplied and authorized. Existing-profile admin controls are implemented. | Recorded role/access results; preserve audience unless the exact change is authorized. |
 | 4 | TR-118 | Exercise the reviewed provider recovery/drain/retention procedure when supported. Server generation and whole-ledger sealing are implemented. | Actual provider evidence, externally pinned baseline/generation, complete-ledger seal and replay checks; no fabricated hosted restore pass. |
 
 Current source increment adds **Garmin Connect HTTPS and automatic training quests**,
 for iPhone/Windows. Scoped key/receipt storage, lifecycle projection and setup UI
-are implemented in private dev 33 with disabled ingress; 215 regressions passed.
-No real watch traffic, reward acceptance or public access change occurs. See
+are implemented in dev 33; 215 regressions passed. The user subsequently approved
+public dev access, and the scoped HTTP service is now enabled at runtime revision 3.
+No real watch traffic or reward acceptance has been validated. See
 [HTTPS implementation](DEV-GARMIN-HTTP.md).
 
 The preceding source increment prioritized **live Garmin collection and boss alerts**,
