@@ -34,6 +34,7 @@ Working title: Trail Relics. Vision: an outdoor RPG where greater effort and exp
 | [DEV-ENCOUNTERS.md](DEV-ENCOUNTERS.md) | Accepted parties, server-recorded activity contributions, deadline settlement and individual loot |
 | [DEV-GARMIN-FIELD.md](DEV-GARMIN-FIELD.md) | Normal Garmin activity-field source, local event queue, build evidence and linkage/device gates |
 | [DEV-GARMIN-LIVE.md](DEV-GARMIN-LIVE.md) | Live BLE messaging/receipt and boss-alert source, native adapter seam and pending authenticated/device connection |
+| [DEV-GARMIN-HTTP.md](DEV-GARMIN-HTTP.md) | Garmin Connect HTTPS relay, scoped dev watch keys, unverified receipts and automatic training quest lifecycle |
 | [DEV-RECOVERY.md](DEV-RECOVERY.md) | Private complete dev snapshots, tested offline recovery and provider-level disaster-recovery gates |
 | [DEV-COLLECTION-LAB.md](DEV-COLLECTION-LAB.md) | Zero-write actual-rule collection simulations and bounded recorded-world/reward analytics |
 | [DEV-CLAIM-QUERIES.md](DEV-CLAIM-QUERIES.md) | Visible-area ownership pages/groups, exact tile prices and compatible index migrations |

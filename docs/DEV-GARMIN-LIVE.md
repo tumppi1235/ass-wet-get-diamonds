@@ -3,7 +3,9 @@
 2026-11-02 — TR-021/025/136/155/157/158. The user selected **live collection and
 notifications**, including boss tile visited / boss fightable, rather than saved
 activity imports. This is development source, not a working paired watch release.
-The hosted dev game remains v32; production remains v10. No account, game data,
+This records the first messaging foundation. The later [HTTPS path](DEV-GARMIN-HTTP.md)
+implements iPhone/Windows transport and automatic training quests.
+The hosted dev game at this milestone remained v32; production remained v10. No account, game data,
 audience, provider registration, public ingress or native phone installation changed.
 
 ## Implemented

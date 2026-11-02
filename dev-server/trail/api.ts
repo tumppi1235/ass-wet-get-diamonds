@@ -26,13 +26,14 @@ import {loadMaintenance,saveMaintenance,guardedGameDatabase,MaintenanceError} fr
 import {loadDiversityRules,saveDiversityRules} from './diversity-store';
 import {adventureRoute} from './route-store';
 import {checkPublicRoute} from './route-check';
+import {authenticateWatch,issueWatchLink,listWatchLinks,revokeWatchLink,storeWatchSync,watchQuestStatus} from './garmin-store';
 import type {RouteAssets} from './route-assets';
 import {inspectPending,cancelPending} from './pending-store';
 import {recoveryStatus,sealRecovery,RecoveryError,INITIAL_GENERATION,type RecoveryBindings} from './recovery-store';
 import {loadTesterAccess,testerAllowed,saveTesterAccess} from './tester-access';
 import {serviceScope} from './service-scope';
 import {initialGeneration} from '../../mobile/src/game/recovery';
-type Bindings=RecoveryBindings&{DB?:D1Database;ASSETS?:RouteAssets;TRAIL_ENV?:string;TRAIL_ADMIN_EMAIL?:string;TRAIL_PUBLIC_ORIGIN?:string};
+type Bindings=RecoveryBindings&{DB?:D1Database;ASSETS?:RouteAssets;TRAIL_ENV?:string;TRAIL_ADMIN_EMAIL?:string;TRAIL_PUBLIC_ORIGIN?:string;TRAIL_GARMIN_HTTP_ENABLED?:string};
 type Member={id:string;display_name:string;role:'admin'|'player';created_at:number};
 class ApiError extends Error{constructor(public status:number,message:string){super(message);}}
 const json=(data:unknown,status=200)=>new Response(JSON.stringify(data),{status,headers:{'Content-Type':'application/json','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}});
@@ -51,6 +52,17 @@ export async function trailApi(request:Request,env:Bindings){
     let scope;try{scope=serviceScope(env);}catch{throw new ApiError(503,'Shared environment/project is not configured.');}
     const url=new URL(request.url),path=url.pathname.replace(/\/$/,'');
     if(path==='/api/trail/health'&&request.method==='GET')return json({environment:scope.environment,projectId:scope.projectId,service:'trail-shared',schema:1,routeAssetsConfigured:!!env.ASSETS,maintenanceProtocol:1,pendingRecoveryProtocol:1,recoveryGenerationProtocol:1});
+    if(path==='/api/trail/garmin/sync'){
+      if(scope.environment!=='development')throw new ApiError(404,'Not found');
+      if(env.TRAIL_GARMIN_HTTP_ENABLED!=='1')throw new ApiError(503,'Garmin HTTP is not enabled; observations must remain queued');
+      if(request.method!=='POST')throw new ApiError(405,'Use POST for Garmin sync');
+      const link=await authenticateWatch(env.DB,request.headers.get('authorization')),owner=link.value.owner;requestOwner=owner;
+      const maintenance=await loadMaintenance(env.DB),recovery=await recoveryStatus(env.DB,env);
+      if(link.value.generation!==recovery.generation)throw new ApiError(401,'Watch key needs re-pairing after recovery');
+      if(!testerAllowed(await loadTesterAccess(env.DB),owner))throw new ApiError(403,'Watch account access is paused');if(!recovery.ready)throw new RecoveryError();if(maintenance.paused)throw new MaintenanceError();
+      const db=guardedGameDatabase(env.DB,maintenance.revision,recovery.generation,owner,initialGeneration(scope.environment));requestEpoch=maintenance.revision;requestGeneration=recovery.generation;
+      return json(await storeWatchSync(db,link,await body(request,4096)));
+    }
     const id=identity(request),rawDb=env.DB;requestOwner=id;
     if(!['GET','HEAD'].includes(request.method)&&request.headers.get('origin')!==new URL(env.TRAIL_PUBLIC_ORIGIN||url.origin).origin)throw new ApiError(403,'Use the app on its own origin.');
     const maintenance=await loadMaintenance(rawDb),recovery=await recoveryStatus(rawDb,env),db=guardedGameDatabase(rawDb,maintenance.revision,recovery.generation,id,initialGeneration(scope.environment));requestEpoch=maintenance.revision;requestGeneration=recovery.generation;
@@ -77,6 +89,17 @@ export async function trailApi(request:Request,env:Bindings){
       const q=url.searchParams.get('q')||'';if(q.length>80)throw new ApiError(400,'Search is too long');
       const access=await loadTesterAccess(db),rows=await db.prepare('SELECT id,display_name AS name,role FROM trail_members WHERE display_name LIKE ? ORDER BY display_name,id LIMIT 100').bind('%'+q+'%').all<{id:string;name:string;role:string}>();
       return json({revision:access.revision,players:rows.results.map(p=>({...p,allowed:testerAllowed(access,p.id)})),hostingAudienceUnchanged:true});
+    }
+    if(path==='/api/trail/admin/garmin-links'){
+      if(scope.environment!=='development')throw new ApiError(404,'Not found');if(member.role!=='admin')throw new ApiError(403,'Administrator access required');
+      if(request.method==='GET')return json({...await listWatchLinks(db,id),httpEnabled:env.TRAIL_GARMIN_HTTP_ENABLED==='1'});
+      if(request.method==='DELETE')return json(await revokeWatchLink(db,id,await body(request,2048)));
+      if(request.method!=='POST')throw new ApiError(405,'Use GET, POST or DELETE');
+      if(env.TRAIL_GARMIN_HTTP_ENABLED!=='1')throw new ApiError(503,'Garmin HTTP setup is not enabled');
+      return json(await issueWatchLink(db,id,await body(request,2048),Date.now(),recovery.generation));
+    }
+    if(path==='/api/trail/garmin/status'&&request.method==='GET'){
+      if(scope.environment!=='development')throw new ApiError(404,'Not found');return json({...await watchQuestStatus(db,id),httpEnabled:env.TRAIL_GARMIN_HTTP_ENABLED==='1'});
     }
     if(recoveryAdmin){if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');if(request.method==='GET')return json(recovery);if(request.method==='POST')return json(await sealRecovery(rawDb,env,id,await body(request,528384)));throw new ApiError(405,'Use GET or POST for recovery');}
     if(pendingRead)return json(await inspectPending(db,id,await body(request)));

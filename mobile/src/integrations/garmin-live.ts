@@ -2,7 +2,8 @@
  * Validation/storage receipts are never evidence of collection, boss readiness or rewards.
  * No browser Bluetooth, account pairing, HTTP ingress or credential is implemented here.
  */
-export type WatchEvent={sequence:number;kind:'start'|'pause'|'tile'|'collect-intent'|'boss-tile-intent'|'ended-unverified';observedAt:number;activity:string;payload:Record<string,unknown>|null};
+export type WatchEvent={sequence:number;kind:'start'|'resume'|'pause'|'tile'|'collect-intent'|'boss-tile-intent'|'ended-unverified';observedAt:number;activity:string;payload:Record<string,unknown>|null};
+export type GarminTrainingQuest={id:string;activityId:string;status:'active'|'paused'|'ended-unverified';startedAt:number;updatedAt:number;source:'garmin';rewardStatus:'pending-validation'};
 export type WatchBatch={protocol:1;environment:'development';kind:'observations';linkId:string;batchId:string;events:WatchEvent[]};
 export type WatchReceipt={protocol:1;environment:'development';kind:'receipt';linkId:string;batchId:string;status:'stored-unverified';receiptId:string;sequences:number[]};
 export type WatchBoss={id:string;name:string;tile:string;state:'nearby'|'fightable';receiptId?:string};
@@ -20,13 +21,14 @@ function envelope(value:unknown,kind:string,linkId:string){
 function observation(value:unknown):WatchEvent{
   const e=object(value);if(!integer(e.sequence,1)||!integer(e.observedAt)||!text(e.activity,1,100))return invalid();
   keys(e,['sequence','kind','observedAt','activity','payload']);
-  if(!['start','pause','tile','collect-intent','boss-tile-intent','ended-unverified'].includes(String(e.kind)))return invalid();
-  if(e.kind==='pause'||e.kind==='ended-unverified'){if(e.payload!==null)return invalid();}
+  if(!['start','resume','pause','tile','collect-intent','boss-tile-intent','ended-unverified'].includes(String(e.kind)))return invalid();
+  if(e.kind==='pause'||e.kind==='resume'||e.kind==='ended-unverified'){if(e.payload!==null)return invalid();}
   else{
     const p=object(e.payload);
-    keys(p,e.kind==='start'?['source','profile','sport','subSport']:e.kind==='tile'?['tile','latitude','longitude','quality']:e.kind==='boss-tile-intent'?['bossId','tile']:['tile']);
+    keys(p,e.kind==='start'?['source','profile','sport','subSport','startedAt']:e.kind==='tile'?['tile','latitude','longitude','quality']:e.kind==='boss-tile-intent'?['bossId','tile']:['tile']);
     if(e.kind==='start'){
       if(p.source!=='garmin-connect-iq'||!text(p.profile,1,64)||![p.sport,p.subSport].every(n=>n===null||integer(n)))return invalid();
+      if(p.startedAt!==undefined&&(!integer(p.startedAt)||p.startedAt>e.observedAt+60||e.observedAt-p.startedAt>30*86400))return invalid();
     }else{
       if(!tile(p.tile))return invalid();
       if(e.kind==='tile'&&(p.quality!=='good'||!Number.isFinite(p.latitude)||Math.abs(Number(p.latitude))>90||typeof p.latitude!=='number'||!Number.isFinite(p.longitude)||Math.abs(Number(p.longitude))>180||typeof p.longitude!=='number'))return invalid();

@@ -26,12 +26,18 @@ All actions below are unassigned until someone starts them.
 
 | Order | Parent stories | Next action | Completion evidence |
 | --- | --- | --- | --- |
-| 1 | TR-021, TR-136, TR-157, TR-158 | User-selected live Garmin integration: connect authenticated pairing/revocation and durable unverified observation storage to the compiled field/companion seams. Resolve native/HTTP installation path and Enduro 3 profile before real transport. | Real account/device-bound delivery, exact durable receipts and short-lived boss alerts; no browser credential export, invented reward/arrival or generic-build installation. |
+| 1 | TR-021, TR-136, TR-157, TR-158 | User-selected live Garmin integration: Resolve approved watch-reachable HTTPS ingress while preserving private dev browser access, then enable/test Garmin Connect transport and Enduro 3 target. Scoped key management, durable unverified receipts and automatic training quest shells are implemented but disabled. | Real account/device-bound delivery, exact durable receipts and short-lived boss alerts; no browser credential export, invented reward/arrival or generic-build installation. |
 | 2 | TR-094, TR-101 | Profile the graph guard constraining Helsinki–Espoo and improve bounded long-route planning; audit the long public trail disconnect and obtain provider CPU/heap evidence. Haukkala's retained access gap is audited and an explicit Foot draft choice is shipped in dev 32. | Guard/source causes, bounded measurements and explicit unavailable cases; preserve permissions, retained assets and zero reward writes. |
 | 3 | TR-041 | Complete a real named-tester invitation/access acceptance run after recipients are supplied and authorized. Existing-profile admin controls are implemented. | Recorded role/access results; preserve audience unless the exact change is authorized. |
 | 4 | TR-118 | Exercise the reviewed provider recovery/drain/retention procedure when supported. Server generation and whole-ledger sealing are implemented. | Actual provider evidence, externally pinned baseline/generation, complete-ledger seal and replay checks; no fabricated hosted restore pass. |
 
-Current source increment prioritizes **live Garmin collection and boss alerts**,
+Current source increment adds **Garmin Connect HTTPS and automatic training quests**,
+for iPhone/Windows. Scoped key/receipt storage, lifecycle projection and setup UI
+are implemented with disabled-by-default ingress; 215 regressions target this scope.
+No real watch traffic, reward acceptance or public access change occurs. See
+[HTTPS implementation](DEV-GARMIN-HTTP.md).
+
+The preceding source increment prioritized **live Garmin collection and boss alerts**,
 as requested. Messaging/receipt/notification source and a native adapter seam are
 implemented with 207 application regressions; generic Monkey C builds pass.
 Actual pairing/transport and Enduro 3 execution are still pending; no hosted
@@ -187,9 +193,9 @@ Automated repair evidence and remaining iPhone field gates: [P0 report](P0-EXPLO
 | TR-153 | P0 | In Progress | Recover live GPS and active-tile updates during exploration | — | An active browser adventure survives interruption, reacquires fresh GPS and updates tiles without duplicate watchers. |
 | TR-154 | P0 | In Progress | Repair discovery claiming without restarting exploration | TR-153, TR-019 | An eligible own-tile attempt updates inventory/discovery state and failures explain why, without restarting. |
 | TR-155 | P0 | In Progress | Prototype Enduro 3 Connect IQ activity data field | — | Separate normal-activity data-field source and Monkey C tests compile generically with SDK 9.3.0. Actual Enduro 3 profile is missing; target build/simulator/physical GPS proof remain pending. See DEV-GARMIN-FIELD.md. |
-| TR-156 | P0 | In Progress | Detect normal Garmin activity lifecycle and exploration events | TR-155 | Data-field source keeps stable SDK start/profile identity across pauses/reloads and records reset as ended-unverified. Save/discard distinction, executed simulator and real normal-activity tests remain. |
-| TR-157 | P0 | In Progress | Link Garmin device/activity to the player account | TR-113, TR-155 | Dev device/app/link validation and in-flight revoke seam tested; actual pairing/authenticated native or HTTP transport remains unconnected. No watch authorization caller yet. See DEV-GARMIN-LIVE.md. |
-| TR-158 | P0 | In Progress | Buffer and retry offline watch exploration events | TR-155, TR-157 | Bounded 64-event queue plus four-event persistent batches, exact stored-unverified receipts and capped retries compile; six contract/adapter tests pass. Real durable sink, authenticated link and device execution remain. |
+| TR-156 | P0 | In Progress | Detect normal Garmin activity lifecycle and exploration events | TR-155 | SDK start/profile identity survives pauses/reloads; explicit start/pause/resume sync automatically creates/preserves a watch quest shell. Reset ends it unverified. Save/discard distinction, executed simulator and real normal-activity tests remain. |
+| TR-157 | P0 | In Progress | Link Garmin device/activity to the player account | TR-113, TR-155 | Own-admin scoped key issue/revoke, hash-only storage and token-only dev HTTPS route tested; issuance/ingress stay disabled pending hosting access and Enduro 3 execution. See DEV-GARMIN-HTTP.md. |
+| TR-158 | P0 | In Progress | Buffer and retry offline watch exploration events | TR-155, TR-157 | Bounded 64-event queue plus four-event persistent batches, exact stored-unverified receipts and capped retries compile; six contract/adapter tests pass. Durable quarantined HTTPS sink and scoped key auth now tested. Enabled ingress and physical device execution remain. |
 | TR-159 | P0 | Backlog | Synchronize Adventure and Discovery into one inventory | TR-112, TR-113, TR-157 | Garmin Adventure and phone Discovery use one authenticated inventory. |
 | TR-160 | P0 | Backlog | Deduplicate phone, Garmin and imported activity rewards | TR-159 | One outing recorded/imported from multiple sources produces one reward set. |
 | TR-161 | P0 | In Progress | Record distance, speed, elevation and activity metadata | TR-156 | Data-field prototype observes SDK distance/timer/ascent and tile-entry locations separately from game-validated evidence. Quality is not metre accuracy; provider completion/metadata validation remain. |

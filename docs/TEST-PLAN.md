@@ -271,3 +271,16 @@ old revision/activity and expired alerts are rejected; pause/GPS loss clears rea
 text; small field and optional vibration work; foreground/hidden delivery is tested;
 saved versus discarded completion and phone/watch duplicate activity reconciliation
 pass before any progress, collection or boss acceptance. See [live foundation](DEV-GARMIN-LIVE.md).
+
+## Garmin HTTPS and automatic training quests
+
+Eight additional real-SQLite/API tests cover own-admin/same-origin key creation,
+disabled defaults, hash-only secrets, auth/revoke/expiry/scope, canonical exact
+retry, altered/skipped batches, storage failure, cap, automatic start/pause/resume/
+end identity, recovery-generation re-pairing and racing maintenance rollback.
+They check accepted game/reward tables stay unchanged. Total 215 regressions.
+Five Monkey C functions compile (including no queue binding on HTTP probes), but
+remain unexecuted. Verify hosted setup shows disabled, no real keys/observations
+are created, and ordinary quest controls/progress remain. Real auto-start UI
+acceptance awaits enabled authenticated ingress and the Enduro 3 profile/device.
+See [HTTPS implementation](DEV-GARMIN-HTTP.md).

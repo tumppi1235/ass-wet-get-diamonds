@@ -53,3 +53,13 @@ function testFieldDeliveryIsNotReceipt(logger){
     bridge.attempt=2;bridge.finished(1,false,999);Test.assertEqual(bridge.nextAt,401);
     s.readFailed=true;Test.assertEqual(s.batch("synthetic-dev-link-0001"),null);Test.assertEqual(s.data["events"].size(),1);return true;
 }
+
+(:test)
+function testHttpProbeDoesNotBindQueue(logger){
+    var s=new FieldSession(false);s.begin(100,"p",100,1,3);
+    var key="11111111111111111111111111111111"+"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",http=new FieldHttpLink(s,key);
+    Test.assertEqual(s.data["queueLink"],null);Test.assertEqual(s.data["pendingBatch"],null);
+    http.attempt=1;http.onHttp(401,null,1);Test.assertEqual(http.denied,true);Test.assertEqual(s.data["queueLink"],null);Test.assertEqual(s.data["events"].size(),1);
+    http.configure(key);http.attempt=2;http.probing=true;http.onHttp(200,{"protocol"=>1,"environment"=>"development","kind"=>"sync-response","linkId"=>key.substring(0,32),"receipt"=>null,"bossFeed"=>null},2);
+    Test.assertEqual(http.status,"HTTP KEY VERIFIED");Test.assertEqual(s.data["queueLink"],null);Test.assertEqual(s.data["events"].size(),1);return true;
+}

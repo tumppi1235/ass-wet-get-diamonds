@@ -8,8 +8,9 @@ import Toybox.Attention;
 
 class TrailFieldApp extends Application.AppBase {
     var state;var link;
-    function initialize(){AppBase.initialize();state=new FieldSession(true);link=new FieldLink(state);}
+    function initialize(){AppBase.initialize();state=new FieldSession(true);var token=null;try{token=Application.Properties.getValue("GarminToken");}catch(e){}link=new FieldHttpLink(state,token);}
     function onStart(info){link.start();}
+    function onSettingsChanged(){var token=null;try{token=Application.Properties.getValue("GarminToken");}catch(e){}link.configure(token);}
     function getInitialView(){return [new TrailFieldView(state,link)];}
     // Unloading a field is not the end of the recorded activity.
     function onStop(info){link.stop();state.save();}

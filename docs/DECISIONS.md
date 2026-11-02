@@ -146,3 +146,11 @@ durable-prefix receipts and short-lived account/activity-bound alerts. Local til
 observations and stored-unverified receipts never establish boss readiness,
 collection, distance or rewards. Real authenticated transport, native/HTTP ingress,
 Enduro 3 target execution and cross-source reconciliation remain separate gates.
+
+D-047 (2026-11-02): User has iPhone/Windows and requests automatic training-to-
+quest start. Implement Garmin Connect HTTPS without a custom iPhone companion;
+keep sync/key issuance disabled until supported ingress access is reviewed while
+preserving the private dev audience. Start/pause/resume map to one watch quest
+shell; end remains unverified. Bounded unverified observations/exact receipts stay
+separate from accepted phone effort; they cannot grant captures, fightability or
+duplicate rewards.
