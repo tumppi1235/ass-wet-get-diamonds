@@ -1,0 +1,243 @@
+{
+  "recordedAt": "2026-11-02T06:30:14.241Z",
+  "stories": [
+    "TR-094",
+    "TR-101"
+  ],
+  "scope": "development only",
+  "version": 32,
+  "appSourceCommit": "0fac9a11e2a95327b80847b3d3d3bc98063ab214",
+  "hostingSourceCommit": "cc558520dcb2f793849db223bea2aa1b8372e56a",
+  "siteId": "appgprj_6ae5c02d5c008191b51fda4f4f39c7a5",
+  "deployment": {
+    "id": "appgdep_6ae82cbb0a9481918b82542ca9ec052c",
+    "project_id": "appgprj_6ae5c02d5c008191b51fda4f4f39c7a5",
+    "title": "Trail Relics · Development",
+    "version_id": "appgprj_6ae5c02d5c008191b51fda4f4f39c7a5~appgver_9b61ae72924c819186c099ca61c52f32",
+    "type": "publish",
+    "status": "succeeded",
+    "url": "https://trail-relics-dev.tuomasl.chatgpt.site",
+    "has_mcp": false,
+    "screenshot_asset_pointer": null,
+    "provider_deployment_id": "site---6ae5c02d5c008191b51fda4f4f39c7a5",
+    "failure_message": null,
+    "env_set_revision": 2,
+    "updated_at": "2026-11-02T06:25:26.087600+00:00"
+  },
+  "archive": {
+    "sha256": "3c67cc6ded80c67645b815658509e05aa56d85c817f549e62d2d9eb6b027efc3",
+    "compressedBytes": 198802322,
+    "expandedBytes": 267146240,
+    "limitBytes": 268435456,
+    "retainedFrontendFiles": 95,
+    "retainedFrontendBytes": 72287950,
+    "immutableRoutingChunks": 12825
+  },
+  "githubWorkflows": [
+    {
+      "name": "Offline route network",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/tumppi1235/ass-wet-get-diamonds/actions/runs/41399017701"
+    },
+    {
+      "name": "Project knowledge graph",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/tumppi1235/ass-wet-get-diamonds/actions/runs/41399017703"
+    },
+    {
+      "name": "Shared development backend",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/tumppi1235/ass-wet-get-diamonds/actions/runs/41399017734"
+    },
+    {
+      "name": "Web checks and release candidates",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/tumppi1235/ass-wet-get-diamonds/actions/runs/41399017704"
+    }
+  ],
+  "automated": {
+    "regressionsPassed": 201,
+    "mobileTypecheck": true,
+    "mobileLint": true,
+    "serverTypecheck": true,
+    "serverLint": true,
+    "workerBuild": true,
+    "localQualitySourceCommit": "67803ec2b55b2d978cf21f77f1cdc8dca2c11d95",
+    "followup": "Final source differs only by an admin diagnostic label; final source passed all GitHub checks and its compiled label was verified.",
+    "graph": {
+      "nodes": 3322,
+      "relationships": 8115,
+      "indexedFiles": 288
+    }
+  },
+  "hosted": {
+    "walkingChoice": {
+      "publicFrom": "church-park",
+      "publicTo": "haukkala-gate",
+      "initialMovement": "bicycle",
+      "initialResult": "disconnected",
+      "explicitChoiceClearedOldPlan": true,
+      "separatePlanRequestRequired": true,
+      "walkingResult": "ready",
+      "displayedWalkingKm": 5.58,
+      "displayedEndpointOffsetsCeilMeters": [
+        1,
+        0
+      ]
+    },
+    "longCases": 4,
+    "ready": 0,
+    "unavailable": 4,
+    "roundTripRangeMs": [
+      562,
+      4152
+    ],
+    "maxDisplayedSourceBudgetMiB": 12.95,
+    "maxTouchedCells": 7,
+    "maintenance": "OPEN revision 0",
+    "recovery": "dev-initial-1 ready",
+    "privateOwnerOnly": true,
+    "displayedProfileBeforeAndAfter": {
+      "gold": 0,
+      "kilometers": 0,
+      "finds": 0,
+      "tile": "0,0",
+      "levels": [
+        1,
+        1,
+        1
+      ],
+      "quest": "stopped",
+      "questMovement": "foot"
+    },
+    "snapshotScope": "Hosted verification checked displayed profile only; no private snapshot downloaded.",
+    "observedUiRows": [
+      "Helsinki to Espoo · bicycle · Unavailable: graph-limit · 4152 ms round trip · 6 cells · 12.95 MiB source budget · 7 asset reads · awards 0Policy finland-paths-dev-1 · map 2026-10-30T21:24:51Z · closures regions-experiment-1",
+      "Helsinki to Espoo · foot · Unavailable: graph-limit · 1455 ms round trip · 2 cells · 4.76 MiB source budget · 3 asset reads · awards 0Policy finland-paths-dev-1 · map 2026-10-30T21:24:51Z · closures regions-experiment-1",
+      "Kirkkopuisto to long public path · bicycle · Unavailable: end-unmapped · 562 ms round trip · 2 cells · 1.56 MiB source budget · 3 asset reads · awards 0Policy finland-paths-dev-1 · map 2026-10-30T21:24:51Z · closures regions-experiment-1",
+      "Kirkkopuisto to long public path · foot · Unavailable: disconnected · 2224 ms round trip · 7 cells · 3.51 MiB source budget · 8 asset reads · awards 0Policy finland-paths-dev-1 · map 2026-10-30T21:24:51Z · closures regions-experiment-1"
+    ]
+  },
+  "production": {
+    "version": 10,
+    "access": "public",
+    "unchanged": true
+  },
+  "limitations": [
+    "Retained conservative graph access flags are not real-world legal access certification.",
+    "Long public trail remains disconnected on foot and end-unmapped for Bicycle; metro case reaches graph-limit for both modes.",
+    "Round-trip times are single browser samples, not Worker CPU measurements. Source-budget counters are not peak heap.",
+    "Physical GPS, phone navigation, cooperative boss and provider recovery validation remain pending."
+  ],
+  "offlineLongCases": [
+    {
+      "name": "Long public path",
+      "movement": "foot",
+      "elapsedMs": 256,
+      "assetReads": 8,
+      "cells": 7,
+      "decodedBytes": 3680517,
+      "result": {
+        "status": "unavailable",
+        "reason": "disconnected"
+      }
+    },
+    {
+      "name": "Long public path",
+      "movement": "bicycle",
+      "elapsedMs": 62,
+      "assetReads": 3,
+      "cells": 2,
+      "decodedBytes": 1630881,
+      "result": {
+        "status": "unavailable",
+        "reason": "end-unmapped"
+      }
+    },
+    {
+      "name": "Long metro path",
+      "movement": "foot",
+      "elapsedMs": 200,
+      "assetReads": 3,
+      "cells": 2,
+      "decodedBytes": 4987932,
+      "result": {
+        "status": "unavailable",
+        "reason": "graph-limit"
+      }
+    },
+    {
+      "name": "Long metro path",
+      "movement": "bicycle",
+      "elapsedMs": 385,
+      "assetReads": 7,
+      "cells": 6,
+      "decodedBytes": 13576714,
+      "result": {
+        "status": "unavailable",
+        "reason": "graph-limit"
+      }
+    }
+  ],
+  "canonicalAccessAudit": {
+    "sourceManifestSha256": "e16d062504f74c74585ac1538654daedac7cb74add4015f4d217bb6c8104e295",
+    "chunk": "1245_256",
+    "chunkSha256": "94374aceb6521ef56a32dc5fa561ebbbf5cf2fa96268f9c741380007c0d80d71",
+    "policy": "finland-paths-dev-1",
+    "nearestBicycleNode": 2372433774,
+    "offsetMeters": 5.968,
+    "reachableBicycleNodes": [
+      263915535,
+      263915537,
+      2372433774,
+      2399736849,
+      12473898052
+    ],
+    "incidentWays": [
+      {
+        "id": "1433877370:0",
+        "way": 1433877370,
+        "forward": 1,
+        "backward": 1,
+        "tags": {
+          "highway": "path"
+        }
+      },
+      {
+        "id": "228572859:1",
+        "way": 228572859,
+        "forward": 1,
+        "backward": 1,
+        "tags": {
+          "highway": "footway",
+          "surface": "asphalt"
+        }
+      },
+      {
+        "id": "24331253:0",
+        "way": 24331253,
+        "forward": 3,
+        "backward": 3,
+        "tags": {
+          "highway": "residential",
+          "name": "Varpushaukka"
+        }
+      },
+      {
+        "id": "24331253:1",
+        "way": 24331253,
+        "forward": 3,
+        "backward": 3,
+        "tags": {
+          "highway": "residential",
+          "name": "Varpushaukka"
+        }
+      }
+    ],
+    "interpretation": "Foot-only connector in the retained conservative graph; no real-world legal access claim."
+  }
+}

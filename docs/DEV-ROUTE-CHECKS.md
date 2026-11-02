@@ -62,3 +62,8 @@ This is an increment of TR-094/TR-101, not completion of phone navigation,
 10–30 km coverage, source-access investigation or provider CPU/heap profiling.
 Physical tests remain pending. Next: investigate the two Haukkala Bicycle
 disconnects with the original topology/access rules, then extend longer samples.
+
+Follow-up **dev 32** completed the Haukkala source audit and explicit walking
+draft choice, and measured four new longer cases. See [access follow-up](DEV-ROUTE-ACCESS.md)
+for the verified source gap and still-open long-route limits; the historical
+dev 31 observations above are unchanged.

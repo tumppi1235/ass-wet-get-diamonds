@@ -246,3 +246,11 @@ request a public Bicycle plan to Haukkala, choose Foot, verify the old result is
 cleared and no request occurs until Plan mapped route is pressed; then inspect
 the Foot plan. Quest mode and progress must remain unchanged. Run the new long
 trail and Helsinki–Espoo fixed public diagnostics, retaining unavailable results.
+
+Hosted dev 32 acceptance passed for the explicit draft/clearing/separate-plan
+flow: Bicycle disconnected, new Foot request ready at 5.58 km, progress and quest
+mode unchanged after reload. Four longer diagnostics completed with explicit
+unavailable states (trail disconnected/end-unmapped; metro graph-limit twice).
+These are coverage limitations, not completed long-route navigation. All 201
+regressions and four GitHub workflows pass; physical/provider acceptance remains
+pending. See [release evidence](evidence/dev32-route-access-release.json).

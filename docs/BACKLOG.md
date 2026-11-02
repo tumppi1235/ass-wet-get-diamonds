@@ -26,11 +26,19 @@ All actions below are unassigned until someone starts them.
 
 | Order | Parent stories | Next action | Completion evidence |
 | --- | --- | --- | --- |
-| 1 | TR-094, TR-101 | Investigate Haukkala Bicycle disconnects against source topology/access and the bounded envelope; extend 10–30 km samples and provider CPU/heap evidence within retained limits. Dev 31 adds hosted diagnostics and ten measured cases. | Verified causes, bounded measurements and explicit unavailable cases; no inferred access/difficulty or reward writes. |
+| 1 | TR-094, TR-101 | Profile the graph guard constraining Helsinki–Espoo and improve bounded long-route planning; audit the long public trail disconnect and obtain provider CPU/heap evidence. Haukkala's retained access gap is audited and an explicit Foot draft choice is shipped in dev 32. | Guard/source causes, bounded measurements and explicit unavailable cases; preserve permissions, retained assets and zero reward writes. |
 | 2 | TR-041 | Complete a real named-tester invitation/access acceptance run after recipients are supplied and authorized. Existing-profile admin controls are implemented. | Recorded role/access results; preserve audience unless the exact change is authorized. |
 | 3 | TR-118 | Exercise the reviewed provider recovery/drain/retention procedure when supported. Server generation and whole-ledger sealing are implemented. | Actual provider evidence, externally pinned baseline/generation, complete-ledger seal and replay checks; no fabricated hosted restore pass. |
 
-Latest increment is **dev 31**: a dev-only admin diagnostic for five fixed public
+Latest increment is **dev 32**: audited Haukkala's five-node Bicycle component
+and Foot-only connections in the retained source; added an explicit walking
+route draft with a separate planning request. All **201** regressions and four
+GitHub workflows pass. Hosted UI produced the expected 5.58 km Foot plan with
+unchanged progress. Four new long-case checks retained explicit unavailable
+results, including Helsinki–Espoo graph limits; wider coverage is still open.
+See [access follow-up and evidence](DEV-ROUTE-ACCESS.md). Production remains v10.
+
+Earlier increment was **dev 31**: a dev-only admin diagnostic for five fixed public
 route pairs and Foot/Bicycle. All **199** regressions and four GitHub workflows
 pass. Ten hosted checks produced eight plans (up to 8.37 km) and two explicit
 Bicycle disconnects, with 457–1,911 ms browser round trips and unchanged displayed

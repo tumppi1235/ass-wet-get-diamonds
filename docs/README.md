@@ -10,6 +10,7 @@ Working title: Trail Relics. Vision: an outdoor RPG where greater effort and exp
 | [Boss objectives](DEV-BOSS-OBJECTIVES.md) | Optional server-counted activity-tile exploration minimum alongside distance |
 | [Opportunity ideas](DEV-OPPORTUNITY-IDEAS.md) | Bosses/discovered artefacts, explicit public previews and public-path route selection |
 | [Route checks](DEV-ROUTE-CHECKS.md) | Dev admin diagnostics, ten hosted measurements and remaining routing investigations |
+| [Route access follow-up](DEV-ROUTE-ACCESS.md) | Haukkala source audit, explicit walking draft choice and hosted long-route limits |
 | [ROADMAP.md](ROADMAP.md) | MVP stages and next five implementation priorities |
 | [ARCHITECTURE.md](ARCHITECTURE.md) | Actual implementation, integration boundaries and incremental target |
 | [GAME_DESIGN.md](GAME_DESIGN.md) | Approved gameplay and explicitly provisional balance values |
