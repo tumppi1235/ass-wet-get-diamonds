@@ -154,3 +154,9 @@ preserving the private dev audience. Start/pause/resume map to one watch quest
 shell; end remains unverified. Bounded unverified observations/exact receipts stay
 separate from accepted phone effort; they cannot grant captures, fightability or
 duplicate rewards.
+
+D-048 (2026-11-02): User requests five bots to collect exploration and boss data.
+Use labelled persistent isolated dev test profiles, not invented human activities
+or real shared-world rewards. Explicit bounded admin batches run the ordinary
+mapped planner and reducers; boss arenas/consent are hypothetical benchmarks.
+Preserve real accounts/worlds, production v10, and pending physical validation.

@@ -37,6 +37,7 @@ Working title: Trail Relics. Vision: an outdoor RPG where greater effort and exp
 | [DEV-GARMIN-HTTP.md](DEV-GARMIN-HTTP.md) | Garmin Connect HTTPS relay, scoped dev watch keys, unverified receipts and automatic training quest lifecycle |
 | [DEV-RECOVERY.md](DEV-RECOVERY.md) | Private complete dev snapshots, tested offline recovery and provider-level disaster-recovery gates |
 | [DEV-COLLECTION-LAB.md](DEV-COLLECTION-LAB.md) | Zero-write actual-rule collection simulations and bounded recorded-world/reward analytics |
+| [DEV-BOTS.md](DEV-BOTS.md) | Five persistent isolated dev bots, mapped exploration reports and hypothetical boss benchmarks |
 | [DEV-CLAIM-QUERIES.md](DEV-CLAIM-QUERIES.md) | Visible-area ownership pages/groups, exact tile prices and compatible index migrations |
 | [DEV-ADVENTURE-IDEAS.md](DEV-ADVENTURE-IDEAS.md) | Attribute-led non-route plans, conditional ordinary XP and explicit access/routing limits |
 | [DEV-ACTIVITY-CATEGORIES.md](DEV-ACTIVITY-CATEGORIES.md) | Provider-specific activity metadata mapping, offline inspection and explicit import/device boundaries |

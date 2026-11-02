@@ -14,6 +14,7 @@ import DiversityAdmin from './diversity-admin';
 import TesterAdmin from './tester-admin';
 import RouteAdmin from './route-admin';
 import GarminAdmin from './garmin-admin';
+import BotAdmin from './bot-admin';
 import type {MaintenanceState} from '../../trail/maintenance-store';
 import type {DevBalance} from '../../../mobile/src/game/dev-world';
 type Balance=DevBalance;
@@ -37,6 +38,7 @@ export default function WorldAdmin({environment='development'}:{environment?:'de
     <WorldMap/>
     {environment==='development'&&<RouteAdmin/>}
     {environment==='development'&&<GarminAdmin/>}
+    {environment==='development'&&<BotAdmin/>}
     <BossAdmin/><EncounterAdmin/><LootAdmin/>
     </>}<RecoveryAdmin environment={environment}/>
     <section style={{padding:20}}><h2>Recent audit</h2><button onClick={()=>{void reload().catch(e=>setMessage(e.message));}}>Refresh audit</button><ul>{audit.map(a=><li key={a.id}>{new Date(a.created_at).toLocaleString()} · {a.action} · {a.target}</li>)}</ul></section></main>;

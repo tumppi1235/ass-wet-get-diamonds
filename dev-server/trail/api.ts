@@ -26,6 +26,7 @@ import {loadMaintenance,saveMaintenance,guardedGameDatabase,MaintenanceError} fr
 import {loadDiversityRules,saveDiversityRules} from './diversity-store';
 import {adventureRoute} from './route-store';
 import {checkPublicRoute} from './route-check';
+import {readBots,stepBot} from './bot-lab';
 import {authenticateWatch,issueWatchLink,listWatchLinks,revokeWatchLink,storeWatchSync,watchQuestStatus} from './garmin-store';
 import type {RouteAssets} from './route-assets';
 import {inspectPending,cancelPending} from './pending-store';
@@ -119,6 +120,14 @@ export async function trailApi(request:Request,env:Bindings){
     if(path==='/api/trail/diversity-rules'&&request.method==='GET')return json(await loadDiversityRules(db));
     if(path==='/api/trail/admin/diversity-rules'&&request.method==='PUT'){
       if(member.role!=='admin')throw new ApiError(403,'Administrator access required.');const input=await body(request);return json(await saveDiversityRules(db,id,input.rules,input.revision));
+    }
+    if(path==='/api/trail/admin/bots'){
+      if(scope.environment!=='development')throw new ApiError(404,'Not found');
+      if(member.role!=='admin')throw new ApiError(403,'Administrator access required');
+      if(request.method==='GET')return json(await readBots(db));
+      if(request.method!=='POST')throw new ApiError(405,'Use GET or POST for test bots');
+      const assets=env.ASSETS?{fetch:(asset:Request)=>env.ASSETS!.fetch(new Request(new URL(new URL(asset.url).pathname,url.origin)))}:undefined;
+      return json(await stepBot(db,assets,id,await body(request,2048)));
     }
     if(path==='/api/trail/admin/route-check'){
       if(scope.environment!=='development')throw new ApiError(404,'Not found');

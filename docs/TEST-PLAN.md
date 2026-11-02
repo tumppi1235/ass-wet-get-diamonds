@@ -284,3 +284,7 @@ remain unexecuted. Verify hosted setup shows disabled, no real keys/observations
 are created, and ordinary quest controls/progress remain. Real auto-start UI
 acceptance awaits enabled authenticated ingress and the Enduro 3 profile/device.
 See [HTTPS implementation](DEV-GARMIN-HTTP.md).
+
+## TR-172 — Five dev bot players
+
+Seven bot-lab regressions cover mapped sampling and explicit limits, actual reducer gold/collection/XP, reproducibility/non-mutation/revisits, boss party/tier floors, persisted isolated reports and old retry IDs, unavailable routes/failed writes, dev/admin/origin gates and maintenance pause. Hosted validation must run all five through the visible admin panel, inspect saved exploration and boss results, and confirm normal profile/prod are unchanged. Bot reports are synthetic benchmarks; physical GPS, live encounters and Garmin execution remain pending.
