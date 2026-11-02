@@ -24,6 +24,41 @@ edges, 100,000 point occurrences, 60,000 nodes, 100,000 search expansions and
 The endpoint is unavailable in production and requires an admin plus same origin
 in dev. Full SQLite snapshot comparisons cover success/failure and denied access.
 
-Hosted measurement evidence will be appended after publishing and actual checks.
+Privately published as **dev version 31**, runtime revision 2. App source
+`cd8015eba1a1cb986fc09115f44090907b658638`; hosting source
+`d1ad598f56866b190b995d106898c1adc6a62f84`. All 199 regressions, mobile/server
+lint/typecheck, Worker build and four GitHub workflows pass. The refreshed local
+structural graph has 3,313 nodes / 8,084 relationships / 286 indexed source files.
+
+## Actual hosted measurements
+
+One browser sample per pair/mode on 2026-11-02. Times include network/database
+work and are not CPU timings or statistical performance guarantees. Distances
+and MiB below are rounded UI values. Every check reported zero awards.
+
+| Public pair | Foot result / round trip | Bicycle result / round trip |
+| --- | --- | --- |
+| Rantalantie baseline | 0.81 km / 547 ms | 0.81 km / 457 ms |
+| Helsinki dense centre | 0.64 km / 699 ms | 1.22 km / 601 ms |
+| Kirkkopuisto → Haukkala | 5.58 km / 951 ms | disconnected / 899 ms |
+| Kirkkopuisto → Sippulanniemi | 4.09 km / 827 ms | 4.62 km / 1,911 ms |
+| Haukkala → Sippulanniemi | 8.37 km / 768 ms | disconnected / 593 ms |
+
+Eight ready plans and two explicit unavailable cases; maximum observed source
+budget 3.53 MiB and four touched cells. Helsinki Bicycle's start offset is 51 m;
+all other ready endpoint offsets round to 0 m. Offsets are not traversable
+connector guarantees. The two disconnect causes are **not established**: inspect
+source topology, mode access and bounded envelope before changing routing.
+
+After reload the displayed profile remained 0 gold / 0.00 km / 0 finds, tile 0,0,
+levels 1/1/1, quest stopped. Hosted maintenance remained OPEN revision 0 and
+recovery dev-initial-1 ready. No private snapshot was downloaded. The admin tool
+is restricted to the existing owner-private dev audience; production remains
+public version 10. All 12,825 immutable Finland chunks and 93 retained frontend
+files remain. Archive 198,489,854 bytes / expanded 265,960,448 bytes fits both
+268,435,456-byte limits. See [release and raw public measurements](evidence/dev31-route-checks-release.json).
+
 This is an increment of TR-094/TR-101, not completion of phone navigation,
-long-route coverage or provider CPU/heap profiling. Physical tests remain pending.
+10–30 km coverage, source-access investigation or provider CPU/heap profiling.
+Physical tests remain pending. Next: investigate the two Haukkala Bicycle
+disconnects with the original topology/access rules, then extend longer samples.

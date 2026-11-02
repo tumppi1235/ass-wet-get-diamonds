@@ -1,0 +1,123 @@
+{
+  "recordedAt": "2026-11-02T06:00:10.374Z",
+  "stories": [
+    "TR-094",
+    "TR-101"
+  ],
+  "scope": "development only",
+  "appSourceCommit": "cd8015eba1a1cb986fc09115f44090907b658638",
+  "hostingSourceCommit": "d1ad598f56866b190b995d106898c1adc6a62f84",
+  "siteId": "appgprj_6ae5c02d5c008191b51fda4f4f39c7a5",
+  "version": 31,
+  "deployment": {
+    "id": "appgdep_6ae8261473948191963006626d864f2b",
+    "project_id": "appgprj_6ae5c02d5c008191b51fda4f4f39c7a5",
+    "title": "Trail Relics · Development",
+    "version_id": "appgprj_6ae5c02d5c008191b51fda4f4f39c7a5~appgver_481669c46b9881919322d0ae863b1fa1",
+    "type": "publish",
+    "status": "succeeded",
+    "url": "https://trail-relics-dev.tuomasl.chatgpt.site",
+    "has_mcp": false,
+    "screenshot_asset_pointer": null,
+    "provider_deployment_id": "site---6ae5c02d5c008191b51fda4f4f39c7a5",
+    "failure_message": null,
+    "env_set_revision": 2,
+    "updated_at": "2026-11-02T05:57:01.462694+00:00"
+  },
+  "archive": {
+    "sha256": "83f4fc304fd01079431e4d8384f28d3c4a24c24d91de9f5681efed9be2d11e86",
+    "compressedBytes": 198489854,
+    "expandedBytes": 265960448,
+    "limitBytes": 268435456
+  },
+  "githubWorkflows": [
+    {
+      "name": "Offline route network",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/tumppi1235/ass-wet-get-diamonds/actions/runs/41396257495"
+    },
+    {
+      "name": "Project knowledge graph",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/tumppi1235/ass-wet-get-diamonds/actions/runs/41396257321"
+    },
+    {
+      "name": "Web checks and release candidates",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/tumppi1235/ass-wet-get-diamonds/actions/runs/41396257374"
+    },
+    {
+      "name": "Shared development backend",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/tumppi1235/ass-wet-get-diamonds/actions/runs/41396257338"
+    }
+  ],
+  "automated": {
+    "regressionsPassed": 199,
+    "mobileTypecheck": true,
+    "mobileLint": true,
+    "serverTypecheck": true,
+    "serverLint": true,
+    "workerBuild": true,
+    "graph": {
+      "nodes": 3313,
+      "relationships": 8084,
+      "indexedFiles": 286
+    }
+  },
+  "hosted": {
+    "cases": 10,
+    "ready": 8,
+    "unavailable": 2,
+    "unavailableReason": "disconnected",
+    "roundTripRangeMs": [
+      457,
+      1911
+    ],
+    "maxDisplayedDecodedSourceBudgetMiB": 3.53,
+    "maxTouchedCells": 4,
+    "privateOwnerOnly": true,
+    "maintenance": "OPEN revision 0",
+    "recovery": "dev-initial-1 ready",
+    "displayedProfileBeforeAndAfter": {
+      "gold": 0,
+      "kilometers": 0,
+      "finds": 0,
+      "tile": "0,0",
+      "levels": [
+        1,
+        1,
+        1
+      ],
+      "quest": "stopped"
+    },
+    "snapshotScope": "Whole SQLite snapshots compared in automated tests. Hosted verification checked displayed profile only; no private snapshot downloaded.",
+    "observedUiRows": [
+      "Haukkala to Sippulanniemi · bicycle · Unavailable: disconnected · 593 ms round trip · 2 cells · 1.84 MiB source budget · 3 asset reads · awards 0Policy finland-paths-dev-1 · map 2026-10-30T21:24:51Z · closures regions-experiment-1",
+      "Haukkala to Sippulanniemi · foot · 8.37 km · 437 points · endpoint offsets 0/0 m · 768 ms round trip · 4 cells · 3.28 MiB source budget · 5 asset reads · awards 0Policy finland-paths-dev-1 · map 2026-10-30T21:24:51Z · closures regions-experiment-1",
+      "Kirkkopuisto to Sippulanniemi · bicycle · 4.62 km · 268 points · endpoint offsets 0/0 m · 1911 ms round trip · 1 cells · 1.48 MiB source budget · 2 asset reads · awards 0Policy finland-paths-dev-1 · map 2026-10-30T21:24:51Z · closures regions-experiment-1",
+      "Kirkkopuisto to Sippulanniemi · foot · 4.09 km · 222 points · endpoint offsets 0/0 m · 827 ms round trip · 1 cells · 1.48 MiB source budget · 2 asset reads · awards 0Policy finland-paths-dev-1 · map 2026-10-30T21:24:51Z · closures regions-experiment-1",
+      "Kirkkopuisto to Haukkala · bicycle · Unavailable: disconnected · 899 ms round trip · 4 cells · 3.28 MiB source budget · 5 asset reads · awards 0Policy finland-paths-dev-1 · map 2026-10-30T21:24:51Z · closures regions-experiment-1",
+      "Kirkkopuisto to Haukkala · foot · 5.58 km · 260 points · endpoint offsets 0/0 m · 951 ms round trip · 3 cells · 2.78 MiB source budget · 4 asset reads · awards 0Policy finland-paths-dev-1 · map 2026-10-30T21:24:51Z · closures regions-experiment-1",
+      "Helsinki dense centre · bicycle · 1.22 km · 104 points · endpoint offsets 51/0 m · 601 ms round trip · 1 cells · 3.53 MiB source budget · 2 asset reads · awards 0Policy finland-paths-dev-1 · map 2026-10-30T21:24:51Z · closures regions-experiment-1",
+      "Helsinki dense centre · foot · 0.64 km · 55 points · endpoint offsets 0/0 m · 699 ms round trip · 1 cells · 3.53 MiB source budget · 2 asset reads · awards 0Policy finland-paths-dev-1 · map 2026-10-30T21:24:51Z · closures regions-experiment-1",
+      "Rantalantie baseline · bicycle · 0.81 km · 28 points · endpoint offsets 0/0 m · 457 ms round trip · 1 cells · 0.02 MiB source budget · 2 asset reads · awards 0Policy finland-paths-dev-1 · map 2026-10-30T21:24:51Z · closures regions-experiment-1",
+      "Rantalantie baseline · foot · 0.81 km · 28 points · endpoint offsets 0/0 m · 547 ms round trip · 1 cells · 0.02 MiB source budget · 2 asset reads · awards 0Policy finland-paths-dev-1 · map 2026-10-30T21:24:51Z · closures regions-experiment-1"
+    ]
+  },
+  "production": {
+    "version": 10,
+    "access": "public",
+    "unchanged": true
+  },
+  "limitations": [
+    "Single browser round-trip samples, not Worker CPU time or a statistical benchmark.",
+    "Displayed distances and source MiB are rounded; decoded counters include a first rejected over-budget chunk, not heap memory.",
+    "Two Haukkala Bicycle disconnect causes remain unproven; do not infer access or add shortcuts.",
+    "No physical GPS, phone, cooperative boss or provider recovery validation in this run."
+  ]
+}

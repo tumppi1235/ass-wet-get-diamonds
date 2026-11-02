@@ -229,3 +229,9 @@ each public pair in Foot and Bicycle, record round-trip/source usage and explici
 unavailable reasons, then confirm stopped quest/progress unchanged. Do not call
 browser timing Worker CPU evidence or decoded source bytes peak memory. Physical
 phone navigation and provider CPU/heap measurements remain separate pending tests.
+
+Hosted dev 31: all ten checks executed; eight ready / two explicit Bicycle
+disconnects, 457–1,911 ms browser round trips, up to 8.37 km. Maintenance/recovery
+and displayed profile progress unchanged. See [raw public results and release](evidence/dev31-route-checks-release.json).
+This is a scoped hosted software pass, not physical navigation or provider
+CPU/heap acceptance. Investigate disconnect causes before claiming wider coverage.

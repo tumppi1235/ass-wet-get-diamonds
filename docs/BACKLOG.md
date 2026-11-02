@@ -26,16 +26,18 @@ All actions below are unassigned until someone starts them.
 
 | Order | Parent stories | Next action | Completion evidence |
 | --- | --- | --- | --- |
-| 1 | TR-094, TR-101 | Extend hosted performance evidence for long/dense routes and tune within the retained memory/access limits. Incremental cell loading is implemented. | Bounded Worker measurements and explicit unavailable cases; no inferred access/difficulty or reward writes. |
+| 1 | TR-094, TR-101 | Investigate Haukkala Bicycle disconnects against source topology/access and the bounded envelope; extend 10–30 km samples and provider CPU/heap evidence within retained limits. Dev 31 adds hosted diagnostics and ten measured cases. | Verified causes, bounded measurements and explicit unavailable cases; no inferred access/difficulty or reward writes. |
 | 2 | TR-041 | Complete a real named-tester invitation/access acceptance run after recipients are supplied and authorized. Existing-profile admin controls are implemented. | Recorded role/access results; preserve audience unless the exact change is authorized. |
 | 3 | TR-118 | Exercise the reviewed provider recovery/drain/retention procedure when supported. Server generation and whole-ledger sealing are implemented. | Actual provider evidence, externally pinned baseline/generation, complete-ledger seal and replay checks; no fabricated hosted restore pass. |
 
-Current TR-094/TR-101 increment adds a dev-only admin diagnostic for five fixed
-public route pairs, Foot/Bicycle and zero-write source-budget measurements.
-See [route checks](DEV-ROUTE-CHECKS.md). Hosted evidence and further tuning remain
-in progress; it does not close physical or provider performance gates.
+Latest increment is **dev 31**: a dev-only admin diagnostic for five fixed public
+route pairs and Foot/Bicycle. All **199** regressions and four GitHub workflows
+pass. Ten hosted checks produced eight plans (up to 8.37 km) and two explicit
+Bicycle disconnects, with 457–1,911 ms browser round trips and unchanged displayed
+progress. See [route checks](DEV-ROUTE-CHECKS.md). Further topology/access
+investigation, longer samples and physical/provider performance gates stay open.
 
-Latest planning increment is **dev 30**: boss and owner-discovered artefact
+Earlier planning increment was **dev 30**: boss and owner-discovered artefact
 opportunities, explicit public boss previews and public-path route selection.
 All **196** regressions and four GitHub workflows pass; actual Kirkkopuisto →
 Harju planning/reselection passed without changing progress. See
