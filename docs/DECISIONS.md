@@ -119,3 +119,10 @@ Counting uses only observed accepted GPS receipts in that one activity/window;
 there is no inferred traversal, extra XP, elevation claim or retroactive reward.
 Failure to meet either personal minimum denies personal loot/group credit even
 if damage reaches zero HP. Keep physical/provider validation and elevation open.
+
+D-043 (2026-11-02): TR-096 suggestions use only the owner's current revealed,
+unclaimed/unsearched artefacts and available public bosses. GPS or an explicit
+boss-only public preview is required. Route selection targets only an exact
+sourced catalog coordinate and remains a separate explicit zero-reward action.
+No hidden-spawn generation, inferred path connector, automatic activation or
+promise of completing a boss through navigation is introduced. Preserve prod 10.

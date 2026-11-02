@@ -1,4 +1,5 @@
 import G from './engine';
+import type {OpportunityIdeas} from './adventure-opportunities';
 import type {DevWorld,DevBalance,Movement} from './dev-world';
 import {ATTRIBUTES,levelProgress,type Attribute} from './progression';
 import {rewardXp} from './reward-rates';
@@ -7,9 +8,9 @@ import {groundDistance} from '../map/geodesy';
 import type {Relic} from './types';
 import {terrainAt,DIVERSITY_RULES,type DiversityRules} from './diversity';
 
-export type RecommendationPreferences={goal:Attribute;movement:Movement;meters:number;terrain:'any'|'urban'|'trail'|'woodland';access:'known-paths'|'step-free'};
+export type RecommendationPreferences={opportunityOrigin?:string;goal:Attribute;movement:Movement;meters:number;terrain:'any'|'urban'|'trail'|'woodland';access:'known-paths'|'step-free'};
 export type SuggestedPlace={id:string;name:string;latitude:number;longitude:number;source:string;tile:string;minimumReturnMeters:number;terrain:string;newTile:boolean;newRegion:boolean};
-export type AdventureIdeas={preferences:RecommendationPreferences;generatedAt:number;balanceRevision:string;locationUsed:boolean;title:string;guidance:string;assumptions:string[];xp:Record<Attribute,number>;levels:{attribute:Attribute;before:number;after:number}[];places:SuggestedPlace[];limits:string[];awardsWritten:0};
+export type AdventureIdeas={opportunities?:OpportunityIdeas;preferences:RecommendationPreferences;generatedAt:number;balanceRevision:string;locationUsed:boolean;title:string;guidance:string;assumptions:string[];xp:Record<Attribute,number>;levels:{attribute:Attribute;before:number;after:number}[];places:SuggestedPlace[];limits:string[];awardsWritten:0};
 export function validatePreferences(value:RecommendationPreferences){
   if(!value||!ATTRIBUTES.includes(value.goal)||!['foot','bicycle'].includes(value.movement)||!Number.isSafeInteger(value.meters)||value.meters<250||value.meters>100000||!['any','urban','trail','woodland'].includes(value.terrain)||!['known-paths','step-free'].includes(value.access))throw new Error('Choose a goal, Foot/Bicycle, 0.25–100 km and supported preferences');return value;
 }

@@ -208,3 +208,13 @@ check observed distinct tiles against the preview; submit within the window and
 verify distance alone cannot qualify loot. Check qualified/under-minimum co-op
 members separately and retry the same contribution/loot claim after reconnect.
 Synthetic admin simulations are zero-write and do not prove physical acceptance.
+
+## TR-096 — opportunity planning
+
+Four new tests (196 total) verify current owner-visible discovered finds, hidden/
+expired/removed/claimed/other-owner exclusions, stale GPS, closures/terrain/access,
+public boss previews and exact route coordinates. Full SQLite snapshots before/
+after suggestions match. Hosted checklist: choose a public origin, inspect boss
+minimums, select its path, review origin/movement, explicitly plan/show/clear it;
+verify recorded progress stays unchanged. Physical navigation and collection/
+encounter acceptance remain pending. A preview never supplies activity evidence.

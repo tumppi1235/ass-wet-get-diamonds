@@ -17,8 +17,10 @@ const messages:Record<string,string>={
   'data-invalid':'The route map data could not be verified. Try again later.',
   busy:'The route planner is busy. Try again shortly.',
 };
-export function SharedRoutes({client,plan,onPlan,onShow}:{client:SharedWorldClient;plan?:RoutePlan;onPlan(plan?:RoutePlan):void;onShow():void}){
-  const[input,setInput]=useState(plan?.preferences||initial),[originSearch,setOriginSearch]=useState(LANDMARKS.find(p=>p.landmarkId===plan?.preferences?.from)?.landmark||''),[search,setSearch]=useState(LANDMARKS.find(p=>p.landmarkId===plan?.preferences?.to)?.landmark||''),[catalogOrigin,setCatalogOrigin]=useState(plan?.preview||false),[busy,setBusy]=useState(false),[error,setError]=useState('');
+export type RouteDestinationChoice={id:string;name:string;movement:RoutePlanInput['movement'];from?:string};
+export function SharedRoutes({client,plan,onPlan,onShow,destinationChoice}:{client:SharedWorldClient;plan?:RoutePlan;onPlan(plan?:RoutePlan):void;onShow():void;destinationChoice?:RouteDestinationChoice}){
+  const seed=plan?.preferences||(destinationChoice?{...initial,from:destinationChoice.from||'gps',to:destinationChoice.id,movement:destinationChoice.movement}:initial);
+  const[input,setInput]=useState(seed),[originSearch,setOriginSearch]=useState(LANDMARKS.find(p=>p.landmarkId===seed.from)?.landmark||''),[search,setSearch]=useState(LANDMARKS.find(p=>p.landmarkId===seed.to)?.landmark||''),[catalogOrigin,setCatalogOrigin]=useState(seed.from!=='gps'),[busy,setBusy]=useState(false),[error,setError]=useState('');
   const sequence=useRef(0),request=useRef<AbortController|null>(null);
   useEffect(()=>()=>{sequence.current++;request.current?.abort();},[]);
   const change=(patch:Partial<RoutePlanInput>)=>{sequence.current++;request.current?.abort();setBusy(false);setInput(value=>({...value,...patch}));onPlan(undefined);setError('');};
