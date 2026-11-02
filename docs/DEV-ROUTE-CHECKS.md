@@ -10,7 +10,8 @@ One request runs at a time per Worker isolate. There is no benchmark batch loop,
 arbitrary-coordinate input, GPS lookup, activity submission or reward write.
 
 Each result reports browser round-trip time, touched cells (including empty
-probes), cumulative reserved decoded-source bytes, asset request count, route
+probes), cumulative decoded-source budget considered (including the first chunk rejected
+at that budget limit), asset request count, route
 distance/point count/endpoint offsets or an explicit unavailable reason. Results
 live only in admin page memory (latest 20); they are not stored against players.
 Do not interpret source bytes as peak heap or browser time as Worker CPU time.
