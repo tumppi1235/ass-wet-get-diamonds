@@ -1,0 +1,81 @@
+{
+  "releasedAt": "2026-11-02T04:58:26.797266+00:00",
+  "version": 30,
+  "url": "https://trail-relics-dev.tuomasl.chatgpt.site/shared",
+  "appSource": "9177f8536dfd5a808cbc076e4a39af7f2580500a",
+  "hostingSource": "fbdbebcb25369178b619d7b3c5c8b124d8a0cb69",
+  "savedVersion": "appgprj_6ae5c02d5c008191b51fda4f4f39c7a5~appgver_016ab268a7bc8191b84c61839122f380",
+  "deployment": "appgdep_6ae8185a24908191b3424b38ba9a32e4",
+  "status": "succeeded",
+  "runtimeRevision": 2,
+  "audience": "owner-private; unchanged",
+  "archive": {
+    "sha256": "0b7253c5750840d4998dfdd16951201bf1a29264f4177d618f1d1524056f2c8b",
+    "compressedBytes": 198487356,
+    "expandedBytes": 265952256,
+    "normalized": {
+      "archive_format": "tar",
+      "sediment_file_id": "file_000000006f40821081a89e8e4ba18e53",
+      "content_hash": "sha256:839acac98b284c79e728842174106fa5788e9c26c87e139206adce0dedd9591a",
+      "size_bytes": 265963520,
+      "file_count": 13081
+    }
+  },
+  "checks": {
+    "regressions": 196,
+    "mobileTypes": true,
+    "mobileLint": true,
+    "serverTypes": true,
+    "serverLint": true,
+    "workerBuild": true,
+    "graph": {
+      "nodes": 3305,
+      "relationships": 8055,
+      "indexedFiles": 283
+    },
+    "ci": [
+      {
+        "name": "Offline route network",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/tumppi1235/ass-wet-get-diamonds/actions/runs/41390586764"
+      },
+      {
+        "name": "Web checks and release candidates",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/tumppi1235/ass-wet-get-diamonds/actions/runs/41390586767"
+      },
+      {
+        "name": "Project knowledge graph",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/tumppi1235/ass-wet-get-diamonds/actions/runs/41390586704"
+      },
+      {
+        "name": "Shared development backend",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/tumppi1235/ass-wet-get-diamonds/actions/runs/41390586700"
+      }
+    ]
+  },
+  "hostedQA": {
+    "preview": "Explicit Kirkkopuisto public origin showed Metsänvartija and Kivenkulkija, including 20 equivalent km solo references and Kivenkulkija's 8 distinct tiles. No hidden artefacts shown.",
+    "selection": "Use path for Kivenkulkija filled Kirkkopuisto origin, Harju lookout destination and Foot. No route generated until explicit Plan.",
+    "route": "0.59 km mapped public preview; displayed offsets 1m/1m, excluded from geometry/distance. Gold-dashed route and endpoints rendered separately from recorded trail.",
+    "reselection": "Selecting the same opportunity again removed the previous route controls/overlay. A second explicit plan succeeded and Show route collapsed the drawer.",
+    "profile": "Tumppi unchanged: gold 0, 0.00 km, 0 finds, tile 0,0, levels 1/1/1; quest stopped.",
+    "writes": "No quest/GPS events, captures, claims, boss placements/drafts/activation/contributions/rewards, admin changes, maintenance or recovery operations were performed.",
+    "viewport": "Desktop browser 1280x720; physical/phone-size validation not claimed."
+  },
+  "production": {
+    "version": 10,
+    "audience": "public"
+  },
+  "pending": [
+    "Physical route/access and GPS navigation acceptance",
+    "Physical artefact collection and cooperative boss contribution/loot validation",
+    "Phone-size/native and Garmin/Strava evidence"
+  ]
+}

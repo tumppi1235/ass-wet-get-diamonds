@@ -6,7 +6,7 @@ Statuses: Backlog (not implemented), Ready (actionable next), In Progress (imple
 
 ## Backlog management board
 
-Last reviewed: **2026-11-01**. Edit this file to manage work; no separate service is required.
+Last reviewed: **2026-11-02**. Edit this file to manage work; no separate service is required.
 The epic tables below are the authoritative story register. This board breaks large
 stories into manageable next actions; completing one action does not complete its parent story.
 
@@ -30,13 +30,19 @@ All actions below are unassigned until someone starts them.
 | 2 | TR-041 | Complete a real named-tester invitation/access acceptance run after recipients are supplied and authorized. Existing-profile admin controls are implemented. | Recorded role/access results; preserve audience unless the exact change is authorized. |
 | 3 | TR-118 | Exercise the reviewed provider recovery/drain/retention procedure when supported. Server generation and whole-ledger sealing are implemented. | Actual provider evidence, externally pinned baseline/generation, complete-ledger seal and replay checks; no fabricated hosted restore pass. |
 
-Latest boss increment is privately released as **dev 29**: server-counted distinct
+Latest planning increment is **dev 30**: boss and owner-discovered artefact
+opportunities, explicit public boss previews and public-path route selection.
+All **196** regressions and four GitHub workflows pass; actual Kirkkopuisto →
+Harju planning/reselection passed without changing progress. See
+[opportunity evidence](DEV-OPPORTUNITY-IDEAS.md). Physical acceptance remains open.
+
+Earlier boss increment was privately released as **dev 29**: server-counted distinct
 activity-tile exploration minimums alongside locked distance requirements. All
 **192** regressions and four GitHub workflows pass. Harju Kivenkulkija requires
 eight distinct tiles; existing bosses remain unchanged. Physical/cooperative
 validation and elevation are still open. See [boss objective evidence](DEV-BOSS-OBJECTIVES.md).
 
-Latest software increment covers all four requested actions: external recovery
+Earlier dev 27 covers all four requested actions: external recovery
 generation/complete-ledger seal, incremental route loading, detected rarity clues
 and existing tester controls, released privately as **dev version 27**. **180**
 regressions, four GitHub workflows and ten offline public-route checks pass.
@@ -275,7 +281,7 @@ Automated repair evidence and remaining iPhone field gates: [P0 report](P0-EXPLO
 | TR-093 | P1 | In Progress | Personalized recommendations for accumulating specific attributes | TR-092, TR-095 | Non-route guidance uses personal XP/fractional credit, fresh location, paid tile/region history and preferences with zero rewards. Verified route/access and unsupported earning sources remain. |
 | TR-094 | P1 | In Progress | Route generation using real trail and geographic data | TR-026, TR-101 | Full compact Finland data now feeds request-local incremental A* with touched-cell/decoded-byte/node/search limits, shared eager validation and final closure/GPS checks. Three lazy tests and ten offline public routes include explicit unavailable results. Hosted large/dense performance and physical access remain; see DEV-BACKLOG-INCREMENT.md. |
 | TR-095 | P1 | In Progress | Estimated attribute XP for recommendations | TR-079, TR-087 | Ideas UI projects conditional ordinary XP/current levels with saved fractional credit and explicit one-tile/region/find assumptions. Accepted Foot/Bicycle arithmetic parity tested; real route/elevation integration remains. |
-| TR-096 | P1 | In Progress | Include artifact and boss opportunities in recommendations | TR-094, TR-003, TR-043 | Implemented bounded read-only boss/current owner-discovered artefact suggestions, explicit boss-only public previews and exact public-path route selection. Four new privacy/SQL cases; 196 regressions pass. Hosted validation follows; physical navigation remains separate. See DEV-OPPORTUNITY-IDEAS.md. |
+| TR-096 | P1 | Done | Include artifact and boss opportunities in recommendations | TR-094, TR-003, TR-043 | Dev 30: bounded current owner-discovered artefacts and available bosses; explicit boss-only public previews; exact public-path route selection. Four new privacy/SQL tests, 196 regressions and all CI pass. Hosted Kirkkopuisto → Harju 0.59 km preview/reselection verified with no progress change. Physical navigation/collection remain under their parent gates. See DEV-OPPORTUNITY-IDEAS.md. |
 | TR-097 | P2 | Done | Evaluate Strava segments as potential training suggestions | TR-164 | Feasibility decision: no persistent segment recommendation cache under assumed permissions; endpoint, deletion and data-use gates documented. No connected segment feature. See CONNECTIVITY-FEASIBILITY.md. |
 | TR-098 | P1 | In Progress | GPX export for Garmin and other navigation devices | TR-094 | Dev 24: planned GPX 1.1 preserves mapped geometry/attribution; independent XML and actual Rantalantie XSD checks pass. Hosted export control triggered without UI error. Actual supported navigation-device import remains; no recorded activity/effort is claimed. See DEV-ROUTE-PLANNER.md. |
 | TR-099 | P2 | Backlog | Compare predicted versus actual adventure rewards | TR-095 | Verified actual rewards can be compared with estimates without double rewards. |

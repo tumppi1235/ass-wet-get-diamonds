@@ -33,3 +33,24 @@ previews/physical requirements, and real SQLite current-spawn ownership/status
 filters with full snapshot equality before/after. All 196 application tests pass.
 Physical navigation, boss activity submission and independent provider evidence
 remain separate validation gates. Production remains version 10.
+
+## Released as private dev 30
+
+[Shared dev](https://trail-relics-dev.tuomasl.chatgpt.site/shared) now runs this
+increment. [Exact release, archive and CI evidence](evidence/dev30-opportunity-ideas-release.json)
+records successful publication, 196 regressions and four green GitHub workflows.
+Owner-private access, runtime revision 2 and all player data are preserved. Both
+archive limits passed at 198,487,356 input / 265,952,256 expanded bytes.
+
+Actual browser QA explicitly selected Kirkkopuisto for a public boss preview.
+It showed both existing bosses, the 20 equivalent km solo references and Harju
+Kivenkulkija's eight-tile requirement. **Use path** selected the Kirkkopuisto origin,
+Harju destination and Foot movement. Explicit planning returned **0.59 km** mapped
+with displayed offsets **1m/1m**, excluded from the route. Selecting the same
+opportunity again cleared the old plan; explicit replanning succeeded. Show route
+collapsed the drawer and rendered the gold-dashed plan separately from the trail.
+
+Tumppi retained 0 gold, 0.00 km, 0 finds, tile 0,0, levels 1/1/1 and stopped quest.
+No activity/GPS, capture, claim, encounter or administrative operation was used.
+This desktop public preview is not a physical GPS/navigation or phone-layout pass.
+Production remains public version 10; main was not pushed.
