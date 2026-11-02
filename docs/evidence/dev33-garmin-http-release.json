@@ -1,0 +1,114 @@
+{
+  "recordedAt": "2026-11-02T13:34:30.181Z",
+  "scope": "development only",
+  "version": 33,
+  "appSourceCommit": "ed3eb576701d859431b08893e3b8f280c2cce4dc",
+  "hostingSourceCommit": "fc2c68023c5d1578a663b2f4cdc4ac6940d9e988",
+  "siteId": "appgprj_6ae5c02d5c008191b51fda4f4f39c7a5",
+  "deployment": {
+    "id": "appgdep_6ae890fa62108191b26795da3c226695",
+    "project_id": "appgprj_6ae5c02d5c008191b51fda4f4f39c7a5",
+    "title": "Trail Relics · Development",
+    "version_id": "appgprj_6ae5c02d5c008191b51fda4f4f39c7a5~appgver_78b6cb4844208191a30c10f886d3eda3",
+    "type": "publish",
+    "status": "succeeded",
+    "url": "https://trail-relics-dev.tuomasl.chatgpt.site",
+    "has_mcp": false,
+    "screenshot_asset_pointer": null,
+    "provider_deployment_id": "site---6ae5c02d5c008191b51fda4f4f39c7a5",
+    "failure_message": null,
+    "env_set_revision": 2,
+    "updated_at": "2026-11-02T13:33:11.525000+00:00"
+  },
+  "savedVersion": {
+    "id": "appgprj_6ae5c02d5c008191b51fda4f4f39c7a5~appgver_78b6cb4844208191a30c10f886d3eda3",
+    "project_id": "appgprj_6ae5c02d5c008191b51fda4f4f39c7a5",
+    "version_number": 33,
+    "source": {
+      "commit_sha": "fc2c68023c5d1578a663b2f4cdc4ac6940d9e988"
+    },
+    "archive_storage": {
+      "archive_format": "tar",
+      "sediment_file_id": "file_0000000049f0821083184a514e6d9d42",
+      "content_hash": "sha256:00cf01c2410970635a5f9b7afb9eb07d8004dec6a05ebfba4a2661ed0f4a6480",
+      "size_bytes": 268359680,
+      "file_count": 13085
+    },
+    "screenshot_url": null,
+    "deployment_id": "appgdep_6ae890fa62108191b26795da3c226695"
+  },
+  "archive": {
+    "sha256": "7938a8e6b0d788c67e801cff6ac05d6dd3d7e780c27297c078f9921795c296ea",
+    "compressedBytes": 199122406,
+    "expandedBytes": 268350976,
+    "limitBytes": 268435456,
+    "retainedFrontendFiles": 97,
+    "retainedFrontendBytes": 73472072,
+    "immutableRoutingChunks": 12825
+  },
+  "githubWorkflows": [
+    {
+      "name": "Offline route network",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/tumppi1235/ass-wet-get-diamonds/actions/runs/41452199084"
+    },
+    {
+      "name": "Web checks and release candidates",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/tumppi1235/ass-wet-get-diamonds/actions/runs/41452199120"
+    },
+    {
+      "name": "Project knowledge graph",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/tumppi1235/ass-wet-get-diamonds/actions/runs/41452199124"
+    },
+    {
+      "name": "Shared development backend",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/tumppi1235/ass-wet-get-diamonds/actions/runs/41452199739"
+    }
+  ],
+  "automated": {
+    "applicationRegressions": 215,
+    "newRealSqliteApiTests": 8,
+    "mobileTypecheck": true,
+    "mobileLint": true,
+    "serverTypecheck": true,
+    "serverLint": true,
+    "monkeyCGenericReleaseCompiled": true,
+    "monkeyCGenericTestsCompiled": 5,
+    "monkeyCRuntimeTestsExecuted": 0,
+    "enduro3DeviceProfile": "missing; generic builds not installable"
+  },
+  "hostedChecks": {
+    "audience": "custom owner-only; one user, zero groups/external visitors",
+    "runtimeRevision": 2,
+    "httpServiceEnabled": false,
+    "setupUI": "Garmin HTTPS setup visible; disabled service/private hosting gate explained; Create watch key disabled",
+    "existingProfile": "Tumppi; quest stopped; Start enabled / Stop disabled; gold 0; 0.00 km; 0 finds; tile 0,0; levels 1/1/1",
+    "watchQuest": "none; no simulated watch traffic submitted",
+    "realWatchKeysCreated": 0,
+    "gameMutations": 0,
+    "anonymousEndpoint": "401 text/html at platform gate; no app response, cookies or watch credentials sent",
+    "screenshot": ".tools/garmin-http-dev33-setup.jpg",
+    "production": "unchanged public v10"
+  },
+  "limitations": [
+    "Real watch transport blocked by private platform gate; no public audience/runtime change authorized or performed.",
+    "Automatic start/pause/resume/end quest projection verified in isolated SQLite tests only; real Garmin training not tested.",
+    "No accepted Garmin effort, captures, fightable notifications or rewards.",
+    "SDK Enduro 3 profile and device/simulator execution pending."
+  ],
+  "graph": {
+    "nodes": 3391,
+    "relationships": 8314,
+    "indexedFiles": 293,
+    "extracted": 7998,
+    "inferred": 316,
+    "monkeyCIndexed": false
+  }
+}

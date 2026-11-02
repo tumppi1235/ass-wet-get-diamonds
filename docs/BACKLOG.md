@@ -33,7 +33,7 @@ All actions below are unassigned until someone starts them.
 
 Current source increment adds **Garmin Connect HTTPS and automatic training quests**,
 for iPhone/Windows. Scoped key/receipt storage, lifecycle projection and setup UI
-are implemented with disabled-by-default ingress; 215 regressions target this scope.
+are implemented in private dev 33 with disabled ingress; 215 regressions passed.
 No real watch traffic, reward acceptance or public access change occurs. See
 [HTTPS implementation](DEV-GARMIN-HTTP.md).
 

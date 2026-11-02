@@ -88,8 +88,21 @@ never bind/remove the queue: five watch functions compile; execution is pending.
 
 Next: resolve approved ingress access, validate Enduro 3/Garmin Connect transport,
 then implement authoritative observation/collection/effort reconciliation before
-enabling fightable notifications or rewards. Hosted UI and release evidence will
-be appended after private publication.
+enabling fightable notifications or rewards.
+
+## Private dev release 33
+
+Published on 2026-11-02 with service disabled and owner-only audience preserved.
+The hosted setup explains the private access gate and automatic training quest
+behavior; Create watch key is disabled. No real key or watch observation was
+created. Tumppi's existing quest stayed stopped with 0 gold, 0.00 km, 0 finds,
+tile 0,0 and levels 1/1/1. All four exact-source GitHub workflows passed.
+Production remains public version 10. See [release evidence](evidence/dev33-garmin-http-release.json).
+
+Watch ingress is still blocked. Making the whole dev Site publicly reachable
+would change its audience and requires the user's explicit approval; a separate
+supported ingress could preserve private browser access. Do not enable the flag
+or export platform credentials to bypass this gate. Hardware tests remain pending.
 
 Official reference: [Garmin Communications.makeWebRequest](https://developer.garmin.com/connect-iq/api-docs/Toybox/Communications.html)
 supports mobile Bluetooth/supported Wi-Fi requests, JSON headers/parameters and
