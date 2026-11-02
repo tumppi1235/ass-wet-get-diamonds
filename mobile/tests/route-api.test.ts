@@ -10,10 +10,40 @@ import {WORLD_REGIONS} from '../src/game/world-regions';
 import {database} from './sqlite-world';
 import {exportDevSnapshot} from '../../dev-server/trail/snapshot-store';
 import {trailApi} from '../../dev-server/trail/api';
+import {checkPublicRoute} from '../../dev-server/trail/route-check';
+import {ROUTE_CHECK_CASES} from '../../dev-server/trail/route-check-cases';
+import {PROD_SCOPE} from '../../dev-server/trail/service-scope';
 const places=LANDMARKS.filter(p=>p.landmarkId?.startsWith('haukivuori-rantalantie-')),a=places[0],b=places[1],now=1000000;
 const geographic=(p:typeof a)=>({latitude:p.latitude!,longitude:p.longitude!});
 const input:RouteInput={from:a.landmarkId!,to:b.landmarkId!,movement:'foot',access:'known-paths',maxMeters:5000};
 function assets(change?:(name:string,bytes:Uint8Array<ArrayBuffer>)=>Response){const requests:string[]=[];const binding:RouteAssets={async fetch(request){const url=new URL(request.url);requests.push(url.href);assert.ok(['https://route-assets.invalid','https://dev.invalid'].includes(url.origin));assert.ok(url.pathname.startsWith(ROUTE_ASSET_PATH));assert.equal(url.search,'');const name=url.pathname.slice(ROUTE_ASSET_PATH.length);assert.match(name,/^(manifest\.json|\d+_\d+\.bin)$/);const path=new URL('fixtures/route-runtime/'+name.replace(/\.bin$/,'.json.gz'),import.meta.url);if(!existsSync(path))return new Response(null,{status:404});const bytes=new Uint8Array(readFileSync(path));return change?change(name,bytes):new Response(bytes);}};return{binding,requests};}
+
+test('TR-094/TR-101 fixed route diagnostics reuse real geometry and report source usage with zero writes',async()=>{
+  const f=database(),db=f.db as never,before=await exportDevSnapshot(db,now),source=assets();
+  for(const c of ROUTE_CHECK_CASES){assert.ok(LANDMARKS.some(p=>p.landmarkId===c.from));assert.ok(LANDMARKS.some(p=>p.landmarkId===c.to));}
+  const result=await checkPublicRoute(db,source.binding,'p1',{caseId:'rantalantie',movement:'foot'},now);
+  assert.equal(result.result.status,'ready');if(result.result.status==='ready'){assert.ok(Math.abs(result.result.meters-807.7545974)<.001);assert.equal(result.result.points,28);assert.equal('wayIds' in result.result,false);}
+  assert.equal(result.awardsWritten,0);assert.equal(result.usage.assetRequests,source.requests.length);assert.ok(result.usage.cells>0&&result.usage.cells<=80);assert.ok(result.usage.decodedBytes>0&&result.usage.decodedBytes<=32*1048576);
+  assert.equal((await exportDevSnapshot(db,now)).digest,before.digest);f.sql.close();
+});
+
+test('TR-094/TR-101 diagnostics reject arbitrary coordinates and expose unavailable inputs without widening limits',async()=>{
+  const f=database(),db=f.db as never,before=await exportDevSnapshot(db,now);
+  await assert.rejects(checkPublicRoute(db,assets().binding,'p1',{caseId:'gps',movement:'foot'},now),/fixed public route/);
+  await assert.rejects(checkPublicRoute(db,assets().binding,'p1',{caseId:'rantalantie',movement:'car'},now),/fixed public route/);
+  await assert.rejects(checkPublicRoute(db,assets().binding,'p1',{caseId:'rantalantie',movement:'foot',from:'gps'}as never,now),/fixed public route/);
+  const unavailable=await checkPublicRoute(db,undefined,'p1',{caseId:'rantalantie',movement:'foot'},now);assert.deepEqual(unavailable.result,{status:'unavailable',reason:'data-unavailable'});assert.deepEqual(unavailable.usage,{cells:0,decodedBytes:0,assetRequests:0});
+  const huge=assets((name,bytes)=>new Response(name==='manifest.json'?new Uint8Array(2*1048576+1):bytes));assert.deepEqual((await checkPublicRoute(db,huge.binding,'p1',{caseId:'rantalantie',movement:'bicycle'},now)).result,{status:'unavailable',reason:'graph-limit'});
+  assert.equal((await exportDevSnapshot(db,now)).digest,before.digest);f.sql.close();
+});
+
+test('TR-094/TR-101 diagnostic endpoint is dev-only admin-only and same-origin with no database writes',async()=>{
+  const f=database(),db=f.db as never;for(const role of ['player','admin'])f.sql.prepare('INSERT INTO trail_members(id,display_name,role,created_at) VALUES(?,?,?,?)').run(role,role,role,now);
+  const before=await exportDevSnapshot(db,now),binding=assets().binding;
+  const request=(owner:string,origin='https://dev.invalid',production=false,method='POST')=>trailApi(new Request('https://dev.invalid/api/trail/admin/route-check',{method,headers:{'oai-authenticated-user-id':owner,origin,'Content-Type':'application/json'},...(method==='POST'?{body:JSON.stringify({caseId:'rantalantie',movement:'foot'})}:{})}),{DB:db,ASSETS:binding,TRAIL_ENV:production?'production':'development',...(production?{TRAIL_PROJECT_ID:PROD_SCOPE.projectId}:{})});
+  assert.equal((await request('')).status,401);assert.equal((await request('player')).status,403);assert.equal((await request('admin','https://other.invalid')).status,403);assert.equal((await request('admin','https://dev.invalid',true)).status,404);assert.equal((await request('admin','https://dev.invalid',false,'GET')).status,405);
+  const response=await request('admin');assert.equal(response.status,200);assert.equal((await response.json()).result.status,'ready');assert.equal((await exportDevSnapshot(db,now)).digest,before.digest);f.sql.close();
+});
 
 test('TR-094 phone catalog search finds original Jyväskylä landmarks as well as national locality labels',()=>{
   const local=searchCatalog('Jyväskylä');assert.ok(local.length>0&&local.length<=6);assert.ok(local.every(p=>catalogLabel(p).includes('Jyväskylä')));

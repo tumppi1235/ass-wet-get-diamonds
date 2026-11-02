@@ -12,7 +12,7 @@ let planning=false; // one bounded graph allocation at a time per Worker isolate
 /** Zero-write plan from an owner-scoped fresh fix OR explicitly chosen public catalog preview.
  * Never materializes spawns, reveals hidden artefacts, starts activities or grants XP.
  */
-export async function adventureRoute(db:D1Database,assets:RouteAssets|undefined,owner:string,input:RouteInput,at?:number):Promise<RoutePlan>{
+export async function adventureRoute(db:D1Database,assets:RouteAssets|undefined,owner:string,input:RouteInput,at?:number,usage?:{cells:number;decodedBytes:number}):Promise<RoutePlan>{
   const now=at??Date.now();
   if(!input||typeof input.from!=='string'||typeof input.to!=='string'||!['foot','bicycle'].includes(input.movement)||!Number.isSafeInteger(input.maxMeters)||input.maxMeters<250||input.maxMeters>50000||!['known-paths','step-free'].includes(input.access))throw new WorldError(400,'Choose Foot/Bicycle, a public destination and a 0.25–50 km distance budget');
   const destination=LANDMARKS.find(p=>p.landmarkId===input.to);if(!destination?.latitude||!destination.longitude)throw new WorldError(400,'Choose a public catalog destination');
@@ -24,10 +24,11 @@ export async function adventureRoute(db:D1Database,assets:RouteAssets|undefined,
   if(input.access==='step-free')return{...base,result:{status:'unavailable',reason:'access-unverified'}};
   if(planning)return{...base,result:{status:'unavailable',reason:'busy'}};
   planning=true;
+  let network:Awaited<ReturnType<typeof openLazyRouteNetwork>>|undefined;
   try{
     const start={latitude:origin.latitude,longitude:origin.longitude},end={latitude:destination.latitude,longitude:destination.longitude};
     if(groundDistance(start,end)>50000)throw new RouteAssetError('graph-limit');
-    const network=await openLazyRouteNetwork(assets,start,end);
+    network=await openLazyRouteNetwork(assets,start,end);
     const currentRegions=await loadRegions(db),finishedAt=at??Date.now();
     if(!preview&&world.previous&&finishedAt-world.previous.timestamp>=15000)throw new WorldError(409,'Use Me to refresh your location and plan again');
     let result=await planLazyMappedRoute(network,{start,end,movement:input.movement,maxMeters:input.maxMeters,access:input.access,blocked:routeClosureCheck(currentRegions,finishedAt)});
@@ -35,5 +36,5 @@ export async function adventureRoute(db:D1Database,assets:RouteAssets|undefined,
     if(!preview&&world.previous&&completedAt-world.previous.timestamp>=15000)throw new WorldError(409,'Use Me to refresh your location and plan again');
     if(result.status==='ready'){const points=result.points;if(points.some((point,i)=>i>0&&blocked(points[i-1],point)))result={status:'unavailable',reason:'disconnected'};}
     return{...base,generatedAt:completedAt,regionsRevision:finalRegions.revision,sourceDate:network.sourceDate,source:network.source,coverage:network.coverage,result};
-  }catch(error){if(error instanceof RouteAssetError)return{...base,result:{status:'unavailable',reason:error.reason}};throw error;}finally{planning=false;}
+  }catch(error){if(error instanceof RouteAssetError)return{...base,result:{status:'unavailable',reason:error.reason}};throw error;}finally{if(usage&&network)Object.assign(usage,network.statistics());planning=false;}
 }

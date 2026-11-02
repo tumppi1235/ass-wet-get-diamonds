@@ -218,3 +218,14 @@ after suggestions match. Hosted checklist: choose a public origin, inspect boss
 minimums, select its path, review origin/movement, explicitly plan/show/clear it;
 verify recorded progress stays unchanged. Physical navigation and collection/
 encounter acceptance remain pending. A preview never supplies activity evidence.
+
+## TR-094 / TR-101 — route diagnostic acceptance
+
+Three additional automated tests check real Rantalantie geometry/counters and
+unchanged whole-database snapshots; reject arbitrary/private origins and invalid
+movement; preserve graph-limit/data-unavailable cases; deny anonymous/player,
+cross-origin and production diagnostic requests. Hosted checks: manually run
+each public pair in Foot and Bicycle, record round-trip/source usage and explicit
+unavailable reasons, then confirm stopped quest/progress unchanged. Do not call
+browser timing Worker CPU evidence or decoded source bytes peak memory. Physical
+phone navigation and provider CPU/heap measurements remain separate pending tests.

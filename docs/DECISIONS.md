@@ -126,3 +126,9 @@ boss-only public preview is required. Route selection targets only an exact
 sourced catalog coordinate and remains a separate explicit zero-reward action.
 No hidden-spawn generation, inferred path connector, automatic activation or
 promise of completing a boss through navigation is introduced. Preserve prod 10.
+
+D-044 (2026-11-02): TR-094/TR-101 diagnostics run only fixed public catalog pairs
+in dev admin through the unchanged ordinary planner. Report browser round-trip
+time and bounded source counters with their limits; do not call them CPU or heap
+measurements. Keep failures visible, all routing/access limits intact and all
+diagnostics zero-write. Production version 10 remains unchanged.
