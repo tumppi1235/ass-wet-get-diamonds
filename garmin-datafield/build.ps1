@@ -12,5 +12,5 @@ $argsList=@('-Xms1g','-Dfile.encoding=UTF-8','-cp',$compiler,'com.garmin.monkeyb
 if(!$SourceOnly){$argsList+=@('-d','enduro3')}
 if($Tests){$argsList+='-t'}else{$argsList+='-r'}
 & $java @argsList
-if($LASTEXITCODE -ne 0){throw 'Data-field build failed. An installable Enduro 3 file also requires its official device profile.'}
+if($LASTEXITCODE -ne 0){if($SourceOnly){throw 'Generic data-field compilation failed; see compiler diagnostics above.'}else{throw 'Enduro 3 build failed; see compiler diagnostics and verify the official device profile.'}}
 if($SourceOnly){Write-Host 'Generic source compile only. This file is NOT suitable for watch installation or a claim of executed device tests.'}else{Write-Host "Built $out/$filename. Physical Enduro 3 validation remains pending."}

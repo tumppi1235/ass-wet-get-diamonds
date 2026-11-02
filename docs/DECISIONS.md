@@ -138,3 +138,11 @@ of the retained conservative graph with Foot-only connections. Preserve its mode
 flags and nearest-node policy. Offer an explicit walking route draft followed by
 a separate planning request, without changing active quest mode or granting
 progress. Do not infer real-world legal access from the graph's exclusions.
+
+D-046 (2026-11-02): The user prioritizes live Garmin collection and boss tile/
+fightable notifications over saved-activity imports. Build the foreground data-
+field/companion wire foundation in dev with a closed authorization seam, bounded
+durable-prefix receipts and short-lived account/activity-bound alerts. Local tile
+observations and stored-unverified receipts never establish boss readiness,
+collection, distance or rewards. Real authenticated transport, native/HTTP ingress,
+Enduro 3 target execution and cross-source reconciliation remain separate gates.

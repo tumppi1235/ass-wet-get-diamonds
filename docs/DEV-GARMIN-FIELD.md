@@ -12,7 +12,7 @@ The prototype reads the GPS/activity information supplied by a normal Garmin act
 - SDK good-quality location observations compute the original compatible tile projection. This is **not** a conversion of Garmin quality into the phone's 25m accuracy gate, nor a hardware proof of fresh GPS. The server does not accept these events as qualifying browser evidence.
 - Up to 64 start/pause/tile/collection-intent events persist locally. Entries have activity/sequence identity and observation time. Only tile-entry events retain coordinates, not a continuous second-by-second trace. SDK distance/timer/ascent metadata stays explicitly separate from game-validated distance.
 - Manual LAP can queue one collection **intent** per activity/tile with a recent good observation; automatic/workout laps do not queue intents. Garmin's normal lap is still recorded. This is not a successful artefact capture, and there is no synced target list yet.
-- A full queue refuses new entries, preserves existing events and shows **QUEUE FULL**. Storage exceptions are shown. No unacknowledged event is silently deleted. No sender, acknowledgement, retry transport or account-link claim is made.
+- A full queue refuses new entries, preserves existing events and shows **QUEUE FULL**. Storage exceptions are shown. No unacknowledged event is silently deleted. The subsequent [live messaging foundation](DEV-GARMIN-LIVE.md) adds compiled sender/receipt/retry and boss-alert source; actual account linking and device transport remain disconnected.
 
 ## Build evidence and outstanding device profile
 

@@ -254,3 +254,20 @@ unavailable states (trail disconnected/end-unmapped; metro graph-limit twice).
 These are coverage limitations, not completed long-route navigation. All 201
 regressions and four GitHub workflows pass; physical/provider acceptance remains
 pending. See [release evidence](evidence/dev32-route-access-release.json).
+
+## TR-021/136/157/158 — Garmin live messaging foundation
+
+Six executed contract/adapter tests cover account/device/app/environment binding,
+bounded batches, exact prefix receipts, delayed storage failures, late revocation,
+replay/expiry and provisional versus confirmed boss alerts. 207 application tests
+pass. Four Monkey C test functions compile generically but have not run: lifecycle,
+receipt prefix retention, boss notification replay/expiry and delivery/backoff.
+Actual Enduro 3 target remains unavailable without its device profile.
+
+Pending device checklist: real signed-in account pairing and revoke; queued visits
+and manual-only LAP intents survive reload/offline/full storage; transport completion
+alone retains queue; durable exact receipt removes only its prefix; wrong account,
+old revision/activity and expired alerts are rejected; pause/GPS loss clears ready
+text; small field and optional vibration work; foreground/hidden delivery is tested;
+saved versus discarded completion and phone/watch duplicate activity reconciliation
+pass before any progress, collection or boss acceptance. See [live foundation](DEV-GARMIN-LIVE.md).

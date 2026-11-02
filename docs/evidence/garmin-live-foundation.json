@@ -1,0 +1,76 @@
+{
+  "recordedAt": "2026-11-02T11:09:16.554Z",
+  "sourceBasis": {
+    "baseCommit": "e1af768dd4819065266e8761cd9d1d4fc02282ad",
+    "workingTreeDirty": true,
+    "note": "Source and this report are committed together; test run used the base plus these changes."
+  },
+  "stories": [
+    "TR-021",
+    "TR-025",
+    "TR-136",
+    "TR-155",
+    "TR-157",
+    "TR-158"
+  ],
+  "scope": "Development source only; no paired/watch release or hosted deployment",
+  "selection": "User selected live collection and boss tile/fightable notifications, not saved-activity imports",
+  "applicationChecks": [
+    {
+      "name": "TypeScript",
+      "passed": true,
+      "exitCode": 0
+    },
+    {
+      "name": "Lint",
+      "passed": true,
+      "exitCode": 0
+    },
+    {
+      "name": "Regression tests",
+      "passed": true,
+      "exitCode": 0
+    }
+  ],
+  "applicationRegressions": 207,
+  "newExecutedContractTests": 6,
+  "genericMonkeyC": {
+    "sourceBuildPassed": true,
+    "testBuildPassed": true,
+    "testFunctionsCompiled": 4,
+    "testFunctionsExecuted": false,
+    "warnings": [
+      "Enduro 3 manifest profile is not installed"
+    ],
+    "installable": false,
+    "sourceArtifactSha256": "bc86de4cd37fb5c680d632b0e48f96dd24e40cdee7b616c37451a9ec07904569",
+    "testArtifactSha256": "9f80ea7177adf7dce092c5c68c078205d5c4cd8f35e1e3e4fe76dade271c0968"
+  },
+  "actualTargetAttempt": {
+    "passed": false,
+    "reason": "Invalid device id specified: 'enduro3'"
+  },
+  "graph": {
+    "nodes": 3357,
+    "relationships": 8197,
+    "indexedFiles": 290,
+    "mode": "local-code-only; excludes Monkey C"
+  },
+  "runtimeChanges": {
+    "devSiteVersion": 32,
+    "productionVersion": 10,
+    "deployments": 0,
+    "livePairings": 0,
+    "realDeviceMessages": 0,
+    "gameOrAccountWrites": 0,
+    "rewardWrites": 0,
+    "audienceChanges": 0
+  },
+  "pending": [
+    "Authenticated account/device pairing and durable observation sink",
+    "Native Connect IQ adapter or supported HTTP ingress and iPhone installation path",
+    "Enduro 3 target profile, simulator test execution, device/layout/haptic tests",
+    "Server-side arrival/collection/effort validation and cross-source deduplication",
+    "Saved versus discarded activity completion proof"
+  ]
+}
