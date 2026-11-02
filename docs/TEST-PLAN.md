@@ -235,3 +235,14 @@ disconnects, 457–1,911 ms browser round trips, up to 8.37 km. Maintenance/reco
 and displayed profile progress unchanged. See [raw public results and release](evidence/dev31-route-checks-release.json).
 This is a scoped hosted software pass, not physical navigation or provider
 CPU/heap acceptance. Investigate disconnect causes before claiming wider coverage.
+
+## TR-094 / TR-101 — access-aware route retry
+
+Real pinned Haukkala geometry reproduces Bicycle disconnection and a ready Foot
+connector in eager and lazy planners. Retry tests preserve public/GPS origins,
+destination, distance and access while leaving the original result unchanged;
+step-free/data/budget/busy cases do not offer a walking override. Hosted acceptance:
+request a public Bicycle plan to Haukkala, choose Foot, verify the old result is
+cleared and no request occurs until Plan mapped route is pressed; then inspect
+the Foot plan. Quest mode and progress must remain unchanged. Run the new long
+trail and Helsinki–Espoo fixed public diagnostics, retaining unavailable results.

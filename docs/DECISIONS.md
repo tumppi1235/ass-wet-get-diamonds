@@ -132,3 +132,9 @@ in dev admin through the unchanged ordinary planner. Report browser round-trip
 time and bounded source counters with their limits; do not call them CPU or heap
 measurements. Keep failures visible, all routing/access limits intact and all
 diagnostics zero-write. Production version 10 remains unchanged.
+
+D-045 (2026-11-02): Haukkala Bicycle failures reproduce in a five-node component
+of the retained conservative graph with Foot-only connections. Preserve its mode
+flags and nearest-node policy. Offer an explicit walking route draft followed by
+a separate planning request, without changing active quest mode or granting
+progress. Do not infer real-world legal access from the graph's exclusions.
