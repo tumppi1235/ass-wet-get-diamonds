@@ -1,7 +1,7 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import fixture from './fixtures/haukkala-access.json';
-import {walkingRouteChoice} from '../src/game/route-retry';
+import {walkingRouteChoice} from '../src/game/route-gpx';
 import {planMappedRoute,planLazyMappedRoute,type MappedEdge} from '../src/game/mapped-route';
 import type {RoutePlan} from '../src/game/route-plan';
 const plan:RoutePlan={generatedAt:1,preview:true,originName:'Public catalog preview',destination:'Haukkala',policy:'finland-paths-dev-1',regionsRevision:'test',awardsWritten:0,preferences:{from:'church-park',to:'haukkala-gate',movement:'bicycle',access:'known-paths',maxMeters:20000},result:{status:'unavailable',reason:'disconnected'}};

@@ -4,8 +4,7 @@ import {Button,Field,styles} from './ui';
 import {LANDMARKS,catalogLabel,searchCatalog} from '../game/landmarks';
 import type {SharedWorldClient} from '../accounts/shared-world';
 import type {RoutePlan,RoutePlanInput} from '../game/route-plan';
-import {plannedRouteGpx} from '../game/route-gpx';
-import {walkingRouteChoice} from '../game/route-retry';
+import {plannedRouteGpx,walkingRouteChoice} from '../game/route-gpx';
 const initial:RoutePlanInput={from:'gps',to:'',movement:'foot',maxMeters:5000,access:'known-paths'};
 const messages:Record<string,string>={
   'access-unverified':'Step-free access is not verified for this network.',

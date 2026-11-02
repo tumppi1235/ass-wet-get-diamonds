@@ -1,4 +1,10 @@
-import type {RoutePlan} from './route-plan';
+import type {RoutePlan,RoutePlanInput} from './route-plan';
+/** Navigation-only draft choice; the player must request a new walking plan. */
+export function walkingRouteChoice(plan:RoutePlan|undefined):RoutePlanInput|undefined{
+  const input=plan?.preferences;
+  if(!input||input.movement!=='bicycle'||input.access!=='known-paths'||plan?.result.status!=='unavailable'||!['disconnected','start-unmapped','end-unmapped'].includes(plan.result.reason))return;
+  return{...input,movement:'foot'};
+}
 function xml(value:string){
   return Array.from(value.slice(0,500)).filter(char=>{const n=char.codePointAt(0)!;return n===9||n===10||n===13||n>=32&&n<=0xd7ff||n>=0xe000&&n<=0xfffd||n>=0x10000&&n<=0x10ffff;}).join('').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[char]!));
 }
