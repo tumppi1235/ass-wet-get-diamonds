@@ -54,3 +54,18 @@ Seven focused tests cover route geometry/bounds, deterministic actual-rule
 results, revisits, boss tier/party floors, durable replay, snapshot isolation,
 unavailable routes, storage failure, authorization and maintenance. Hosted results
 and full checks are recorded in the release evidence after publication.
+
+## Hosted first batch
+
+Published as public dev 34 on 2026-11-02, retaining runtime revision 3 and
+production v10. All 222 regressions, type/lint checks and four GitHub workflows
+passed. The admin Run all five action saved all five profiles at lab revision 5;
+reload retained the results and JSON download was verified on 2026-11-05.
+
+Four routes completed; cross-city explicitly stopped at 600 samples. Total
+simulated credited distance was 16,451.71 m, 143 exploration gold and five finds,
+with 1,813 accepted synthetic fixes and zero rejected. No solo or team benchmark
+won. Lesser team damage was 32.90/50 HP with three of five personally qualified.
+This is one seeded illustrative batch, not statistical or physical validation.
+See [release evidence](evidence/dev34-bots-release.json) and the
+[downloaded first-run report](evidence/dev34-bot-first-run.json).

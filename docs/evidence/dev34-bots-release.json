@@ -1,0 +1,101 @@
+{
+  "recordedDate": "2026-11-05",
+  "scope": "development only",
+  "version": 34,
+  "appSourceCommit": "020581189bc4ce5780c43271b574f3533193d4be",
+  "hostingSourceCommit": "1ebcd77f1ba457536570e584296abbee01829e8e",
+  "deployment": {
+    "id": "appgdep_6ae8e258f5088191a06dc9ade6e53544",
+    "project_id": "appgprj_6ae5c02d5c008191b51fda4f4f39c7a5",
+    "title": "Trail Relics · Development",
+    "version_id": "appgprj_6ae5c02d5c008191b51fda4f4f39c7a5~appgver_b626872fac5481918b30efbafa57c1c7",
+    "type": "publish",
+    "status": "succeeded",
+    "url": "https://trail-relics-dev.tuomasl.chatgpt.site",
+    "has_mcp": false,
+    "screenshot_asset_pointer": null,
+    "provider_deployment_id": "site---6ae5c02d5c008191b51fda4f4f39c7a5",
+    "failure_message": null,
+    "env_set_revision": 3,
+    "updated_at": "2026-11-02T19:20:22.678539+00:00"
+  },
+  "archive": {
+    "sha256": "45abb0065b5e464a722fbcd7554639d4229c63e02a8dc1ffa4f234f130c6caef",
+    "compressedBytes": 199127265,
+    "expandedBytes": 268369920,
+    "limitBytes": 268435456,
+    "retainedFrontendFiles": 97,
+    "immutableRoutingChunks": 12825
+  },
+  "automated": {
+    "regressionsPassed": 222,
+    "focusedBotTests": 7,
+    "mobileTypes": true,
+    "mobileLint": true,
+    "serverTypes": true,
+    "serverLint": true
+  },
+  "githubWorkflows": [
+    {
+      "name": "Offline route network",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/tumppi1235/ass-wet-get-diamonds/actions/runs/41507808322"
+    },
+    {
+      "name": "Project knowledge graph",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/tumppi1235/ass-wet-get-diamonds/actions/runs/41507808154"
+    },
+    {
+      "name": "Shared development backend",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/tumppi1235/ass-wet-get-diamonds/actions/runs/41507808294"
+    },
+    {
+      "name": "Web checks and release candidates",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/tumppi1235/ass-wet-get-diamonds/actions/runs/41507808362"
+    }
+  ],
+  "hostedChecks": {
+    "fiveNamedProfiles": true,
+    "runAllBatch": "One journey per bot; all five persisted at lab revision 5",
+    "reloadReports": true,
+    "download": "Verified JSON download, revision 5, five bot profiles; see dev34-bot-first-run.json",
+    "aggregate": {
+      "creditedSimulatedMeters": 16451.712484467276,
+      "simulatedGold": 143,
+      "relicFinds": 5,
+      "acceptedSyntheticFixes": 1813,
+      "rejectedSyntheticFixes": 0
+    },
+    "routeOutcomes": {
+      "completed": 4,
+      "sampleLimit": 1,
+      "unavailable": 0
+    },
+    "bosses": "Twenty solo tier benchmarks plus four hypothetical five-player benchmarks; no victories. Lesser party 32.90/50 HP, 3/5 qualified.",
+    "playerSeparation": "Real-table non-mutation verified in SQLite snapshot tests. Ordinary shared UI before batch showed Gold 0 / QUEST STOPPED. No synthetic real-player events or GPS submitted.",
+    "screenshot": ".tools/dev34-bots-panel.jpg",
+    "production": "Reconfirmed public version 10; no mutation",
+    "devAudience": "Public preserved",
+    "runtimeRevision": 3
+  },
+  "graph": {
+    "nodes": 3417,
+    "relationships": 8461,
+    "indexedFiles": 296,
+    "extracted": 8145,
+    "inferred": 316
+  },
+  "limits": [
+    "Synthetic virtual-clock journeys and hypothetical boss arena/roster visits; not physical GPS or actual live encounters.",
+    "No unattended background workers. Batches require admin page; current request can finish after closure/Stop.",
+    "600 fixes/journey, 100 candidates, 20 rounds/bot; explicit sample-limit for cross-city.",
+    "No real boss rewards, claims, Garmin observations or player activity records written."
+  ]
+}

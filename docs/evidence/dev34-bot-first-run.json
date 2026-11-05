@@ -1,0 +1,1310 @@
+{
+  "simulation": true,
+  "replayed": false,
+  "realPlayerWrites": 0,
+  "revision": 5,
+  "teamBosses": [
+    {
+      "tier": "Lesser",
+      "requirement": {
+        "hp": 50,
+        "targetKmPerPerson": 5,
+        "minimumKmPerPerson": 1.25,
+        "windowHours": 24
+      },
+      "players": [
+        {
+          "owner": "bot-haukkala",
+          "baseHp": 11.08675414199111,
+          "hp": 11.08675414199111,
+          "equivalentKm": 5.543377070995555,
+          "bonus": 0,
+          "qualified": true
+        },
+        {
+          "owner": "bot-sippula",
+          "baseHp": 8.101869623247604,
+          "hp": 8.101869623247604,
+          "equivalentKm": 4.050934811623802,
+          "bonus": 0,
+          "qualified": true
+        },
+        {
+          "owner": "bot-rantalantie",
+          "baseHp": 1.6153224484557278,
+          "hp": 1.6153224484557278,
+          "equivalentKm": 0.8076612242278639,
+          "bonus": 0,
+          "qualified": false
+        },
+        {
+          "owner": "bot-helsinki",
+          "baseHp": 1.248553859350472,
+          "hp": 1.248553859350472,
+          "equivalentKm": 0.624276929675236,
+          "bonus": 0,
+          "qualified": false
+        },
+        {
+          "owner": "bot-cross-city",
+          "baseHp": 10.850924895889635,
+          "hp": 10.850924895889635,
+          "equivalentKm": 5.425462447944818,
+          "bonus": 0,
+          "qualified": true
+        }
+      ],
+      "hp": 32.90342496893455,
+      "remainingHp": 17.09657503106545,
+      "victory": false,
+      "rulesRevision": "boss-experiment-1",
+      "worldWrites": 0
+    },
+    {
+      "tier": "Standard",
+      "requirement": {
+        "hp": 120,
+        "targetKmPerPerson": 12,
+        "minimumKmPerPerson": 3,
+        "windowHours": 24
+      },
+      "players": [
+        {
+          "owner": "bot-haukkala",
+          "baseHp": 11.08675414199111,
+          "hp": 11.08675414199111,
+          "equivalentKm": 5.543377070995555,
+          "bonus": 0,
+          "qualified": true
+        },
+        {
+          "owner": "bot-sippula",
+          "baseHp": 8.101869623247604,
+          "hp": 8.101869623247604,
+          "equivalentKm": 4.050934811623802,
+          "bonus": 0,
+          "qualified": true
+        },
+        {
+          "owner": "bot-rantalantie",
+          "baseHp": 1.6153224484557278,
+          "hp": 1.6153224484557278,
+          "equivalentKm": 0.8076612242278639,
+          "bonus": 0,
+          "qualified": false
+        },
+        {
+          "owner": "bot-helsinki",
+          "baseHp": 1.248553859350472,
+          "hp": 1.248553859350472,
+          "equivalentKm": 0.624276929675236,
+          "bonus": 0,
+          "qualified": false
+        },
+        {
+          "owner": "bot-cross-city",
+          "baseHp": 10.850924895889635,
+          "hp": 10.850924895889635,
+          "equivalentKm": 5.425462447944818,
+          "bonus": 0,
+          "qualified": true
+        }
+      ],
+      "hp": 32.90342496893455,
+      "remainingHp": 87.09657503106544,
+      "victory": false,
+      "rulesRevision": "boss-experiment-1",
+      "worldWrites": 0
+    },
+    {
+      "tier": "Greater",
+      "requirement": {
+        "hp": 220,
+        "targetKmPerPerson": 22,
+        "minimumKmPerPerson": 11,
+        "windowHours": 24
+      },
+      "players": [
+        {
+          "owner": "bot-haukkala",
+          "baseHp": 11.08675414199111,
+          "hp": 11.08675414199111,
+          "equivalentKm": 5.543377070995555,
+          "bonus": 0,
+          "qualified": false
+        },
+        {
+          "owner": "bot-sippula",
+          "baseHp": 8.101869623247604,
+          "hp": 8.101869623247604,
+          "equivalentKm": 4.050934811623802,
+          "bonus": 0,
+          "qualified": false
+        },
+        {
+          "owner": "bot-rantalantie",
+          "baseHp": 1.6153224484557278,
+          "hp": 1.6153224484557278,
+          "equivalentKm": 0.8076612242278639,
+          "bonus": 0,
+          "qualified": false
+        },
+        {
+          "owner": "bot-helsinki",
+          "baseHp": 1.248553859350472,
+          "hp": 1.248553859350472,
+          "equivalentKm": 0.624276929675236,
+          "bonus": 0,
+          "qualified": false
+        },
+        {
+          "owner": "bot-cross-city",
+          "baseHp": 10.850924895889635,
+          "hp": 10.850924895889635,
+          "equivalentKm": 5.425462447944818,
+          "bonus": 0,
+          "qualified": false
+        }
+      ],
+      "hp": 32.90342496893455,
+      "remainingHp": 187.09657503106544,
+      "victory": false,
+      "rulesRevision": "boss-experiment-1",
+      "worldWrites": 0
+    },
+    {
+      "tier": "Mythical",
+      "requirement": {
+        "hp": 500,
+        "targetKmPerPerson": 50,
+        "minimumKmPerPerson": 50,
+        "windowHours": 24
+      },
+      "players": [
+        {
+          "owner": "bot-haukkala",
+          "baseHp": 11.08675414199111,
+          "hp": 11.08675414199111,
+          "equivalentKm": 5.543377070995555,
+          "bonus": 0,
+          "qualified": false
+        },
+        {
+          "owner": "bot-sippula",
+          "baseHp": 8.101869623247604,
+          "hp": 8.101869623247604,
+          "equivalentKm": 4.050934811623802,
+          "bonus": 0,
+          "qualified": false
+        },
+        {
+          "owner": "bot-rantalantie",
+          "baseHp": 1.6153224484557278,
+          "hp": 1.6153224484557278,
+          "equivalentKm": 0.8076612242278639,
+          "bonus": 0,
+          "qualified": false
+        },
+        {
+          "owner": "bot-helsinki",
+          "baseHp": 1.248553859350472,
+          "hp": 1.248553859350472,
+          "equivalentKm": 0.624276929675236,
+          "bonus": 0,
+          "qualified": false
+        },
+        {
+          "owner": "bot-cross-city",
+          "baseHp": 10.850924895889635,
+          "hp": 10.850924895889635,
+          "equivalentKm": 5.425462447944818,
+          "bonus": 0,
+          "qualified": false
+        }
+      ],
+      "hp": 32.90342496893455,
+      "remainingHp": 467.09657503106547,
+      "victory": false,
+      "rulesRevision": "boss-experiment-1",
+      "worldWrites": 0
+    }
+  ],
+  "bots": [
+    {
+      "id": "bot-haukkala",
+      "name": "BOT · Haukkala Hiker",
+      "route": "haukkala",
+      "weather": "clear",
+      "rounds": 1,
+      "gold": 47,
+      "tiles": 25,
+      "finds": 1,
+      "reports": [
+        {
+          "round": 1,
+          "at": 1793647233894,
+          "status": "completed",
+          "routeMeters": 5584.786207491243,
+          "samples": 594,
+          "accepted": 594,
+          "rejected": 0,
+          "walkedMeters": 5543.377070995555,
+          "gold": 47,
+          "newTiles": 25,
+          "attempts": 7,
+          "finds": 1,
+          "misses": 6,
+          "xp": {
+            "exploration": 125,
+            "agility": 12,
+            "endurance": 22,
+            "perception": 10
+          },
+          "balanceRevision": "dev-experimental-1",
+          "spawnRevision": "spawn-experiment-1",
+          "regionsRevision": "regions-experiment-1",
+          "bosses": [
+            {
+              "tier": "Lesser",
+              "requirement": {
+                "hp": 40,
+                "targetKmPerPerson": 20,
+                "minimumKmPerPerson": 5,
+                "windowHours": 24
+              },
+              "players": [
+                {
+                  "owner": "bot-haukkala",
+                  "baseHp": 11.08675414199111,
+                  "hp": 11.08675414199111,
+                  "equivalentKm": 5.543377070995555,
+                  "bonus": 0,
+                  "qualified": true
+                }
+              ],
+              "hp": 11.08675414199111,
+              "remainingHp": 28.913245858008892,
+              "victory": false,
+              "rulesRevision": "boss-experiment-1",
+              "worldWrites": 0,
+              "loot": {
+                "rare": 0.2,
+                "legendary": 0.02,
+                "signature": 0.01,
+                "common": 0.77,
+                "gold": 20,
+                "fellowshipXp": 0,
+                "contributionBonus": 0,
+                "groupBonus": 0,
+                "levels": {
+                  "exploration": 3,
+                  "power": 1,
+                  "agility": 1,
+                  "endurance": 1,
+                  "perception": 1,
+                  "fellowship": 1
+                },
+                "rulesRevision": "loot-experiment-1"
+              },
+              "rewardEligible": false
+            },
+            {
+              "tier": "Standard",
+              "requirement": {
+                "hp": 70,
+                "targetKmPerPerson": 35,
+                "minimumKmPerPerson": 8.75,
+                "windowHours": 24
+              },
+              "players": [
+                {
+                  "owner": "bot-haukkala",
+                  "baseHp": 11.08675414199111,
+                  "hp": 11.08675414199111,
+                  "equivalentKm": 5.543377070995555,
+                  "bonus": 0,
+                  "qualified": false
+                }
+              ],
+              "hp": 11.08675414199111,
+              "remainingHp": 58.91324585800889,
+              "victory": false,
+              "rulesRevision": "boss-experiment-1",
+              "worldWrites": 0,
+              "loot": {
+                "rare": 0.3,
+                "legendary": 0.05,
+                "signature": 0.02,
+                "common": 0.6299999999999999,
+                "gold": 35,
+                "fellowshipXp": 0,
+                "contributionBonus": 0,
+                "groupBonus": 0,
+                "levels": {
+                  "exploration": 3,
+                  "power": 1,
+                  "agility": 1,
+                  "endurance": 1,
+                  "perception": 1,
+                  "fellowship": 1
+                },
+                "rulesRevision": "loot-experiment-1"
+              },
+              "rewardEligible": false
+            },
+            {
+              "tier": "Greater",
+              "requirement": {
+                "hp": 100,
+                "targetKmPerPerson": 50,
+                "minimumKmPerPerson": 25,
+                "windowHours": 24
+              },
+              "players": [
+                {
+                  "owner": "bot-haukkala",
+                  "baseHp": 11.08675414199111,
+                  "hp": 11.08675414199111,
+                  "equivalentKm": 5.543377070995555,
+                  "bonus": 0,
+                  "qualified": false
+                }
+              ],
+              "hp": 11.08675414199111,
+              "remainingHp": 88.91324585800889,
+              "victory": false,
+              "rulesRevision": "boss-experiment-1",
+              "worldWrites": 0,
+              "loot": {
+                "rare": 0.4,
+                "legendary": 0.1,
+                "signature": 0.04,
+                "common": 0.46,
+                "gold": 50,
+                "fellowshipXp": 0,
+                "contributionBonus": 0,
+                "groupBonus": 0,
+                "levels": {
+                  "exploration": 3,
+                  "power": 1,
+                  "agility": 1,
+                  "endurance": 1,
+                  "perception": 1,
+                  "fellowship": 1
+                },
+                "rulesRevision": "loot-experiment-1"
+              },
+              "rewardEligible": false
+            },
+            {
+              "tier": "Mythical",
+              "requirement": {
+                "hp": 150,
+                "targetKmPerPerson": 75,
+                "minimumKmPerPerson": 75,
+                "windowHours": 24
+              },
+              "players": [
+                {
+                  "owner": "bot-haukkala",
+                  "baseHp": 11.08675414199111,
+                  "hp": 11.08675414199111,
+                  "equivalentKm": 5.543377070995555,
+                  "bonus": 0,
+                  "qualified": false
+                }
+              ],
+              "hp": 11.08675414199111,
+              "remainingHp": 138.91324585800888,
+              "victory": false,
+              "rulesRevision": "boss-experiment-1",
+              "worldWrites": 0,
+              "loot": {
+                "rare": 0.5,
+                "legendary": 0.2,
+                "signature": 0.08,
+                "common": 0.21999999999999997,
+                "gold": 101,
+                "fellowshipXp": 0,
+                "contributionBonus": 0,
+                "groupBonus": 0,
+                "levels": {
+                  "exploration": 3,
+                  "power": 1,
+                  "agility": 1,
+                  "endurance": 1,
+                  "perception": 1,
+                  "fellowship": 1
+                },
+                "rulesRevision": "loot-experiment-1"
+              },
+              "rewardEligible": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bot-sippula",
+      "name": "BOT · Sippula Scout",
+      "route": "sippulanniemi",
+      "weather": "rain",
+      "rounds": 1,
+      "gold": 36,
+      "tiles": 20,
+      "finds": 4,
+      "reports": [
+        {
+          "round": 1,
+          "at": 1793647234980,
+          "status": "completed",
+          "routeMeters": 4088.0195220253795,
+          "samples": 448,
+          "accepted": 448,
+          "rejected": 0,
+          "walkedMeters": 4050.934811623802,
+          "gold": 36,
+          "newTiles": 20,
+          "attempts": 4,
+          "finds": 4,
+          "misses": 0,
+          "xp": {
+            "exploration": 100,
+            "agility": 9,
+            "perception": 40,
+            "endurance": 16
+          },
+          "balanceRevision": "dev-experimental-1",
+          "spawnRevision": "spawn-experiment-1",
+          "regionsRevision": "regions-experiment-1",
+          "bosses": [
+            {
+              "tier": "Lesser",
+              "requirement": {
+                "hp": 40,
+                "targetKmPerPerson": 20,
+                "minimumKmPerPerson": 5,
+                "windowHours": 24
+              },
+              "players": [
+                {
+                  "owner": "bot-sippula",
+                  "baseHp": 8.101869623247604,
+                  "hp": 8.101869623247604,
+                  "equivalentKm": 4.050934811623802,
+                  "bonus": 0,
+                  "qualified": false
+                }
+              ],
+              "hp": 8.101869623247604,
+              "remainingHp": 31.8981303767524,
+              "victory": false,
+              "rulesRevision": "boss-experiment-1",
+              "worldWrites": 0,
+              "loot": {
+                "rare": 0.2,
+                "legendary": 0.02,
+                "signature": 0.010071428571428571,
+                "common": 0.7699285714285714,
+                "gold": 20,
+                "fellowshipXp": 0,
+                "contributionBonus": 0,
+                "groupBonus": 0,
+                "levels": {
+                  "exploration": 3,
+                  "power": 1,
+                  "agility": 1,
+                  "endurance": 1,
+                  "perception": 2,
+                  "fellowship": 1
+                },
+                "rulesRevision": "loot-experiment-1"
+              },
+              "rewardEligible": false
+            },
+            {
+              "tier": "Standard",
+              "requirement": {
+                "hp": 70,
+                "targetKmPerPerson": 35,
+                "minimumKmPerPerson": 8.75,
+                "windowHours": 24
+              },
+              "players": [
+                {
+                  "owner": "bot-sippula",
+                  "baseHp": 8.101869623247604,
+                  "hp": 8.101869623247604,
+                  "equivalentKm": 4.050934811623802,
+                  "bonus": 0,
+                  "qualified": false
+                }
+              ],
+              "hp": 8.101869623247604,
+              "remainingHp": 61.8981303767524,
+              "victory": false,
+              "rulesRevision": "boss-experiment-1",
+              "worldWrites": 0,
+              "loot": {
+                "rare": 0.3,
+                "legendary": 0.05,
+                "signature": 0.020142857142857143,
+                "common": 0.6298571428571428,
+                "gold": 35,
+                "fellowshipXp": 0,
+                "contributionBonus": 0,
+                "groupBonus": 0,
+                "levels": {
+                  "exploration": 3,
+                  "power": 1,
+                  "agility": 1,
+                  "endurance": 1,
+                  "perception": 2,
+                  "fellowship": 1
+                },
+                "rulesRevision": "loot-experiment-1"
+              },
+              "rewardEligible": false
+            },
+            {
+              "tier": "Greater",
+              "requirement": {
+                "hp": 100,
+                "targetKmPerPerson": 50,
+                "minimumKmPerPerson": 25,
+                "windowHours": 24
+              },
+              "players": [
+                {
+                  "owner": "bot-sippula",
+                  "baseHp": 8.101869623247604,
+                  "hp": 8.101869623247604,
+                  "equivalentKm": 4.050934811623802,
+                  "bonus": 0,
+                  "qualified": false
+                }
+              ],
+              "hp": 8.101869623247604,
+              "remainingHp": 91.89813037675239,
+              "victory": false,
+              "rulesRevision": "boss-experiment-1",
+              "worldWrites": 0,
+              "loot": {
+                "rare": 0.4,
+                "legendary": 0.1,
+                "signature": 0.040285714285714286,
+                "common": 0.45971428571428574,
+                "gold": 50,
+                "fellowshipXp": 0,
+                "contributionBonus": 0,
+                "groupBonus": 0,
+                "levels": {
+                  "exploration": 3,
+                  "power": 1,
+                  "agility": 1,
+                  "endurance": 1,
+                  "perception": 2,
+                  "fellowship": 1
+                },
+                "rulesRevision": "loot-experiment-1"
+              },
+              "rewardEligible": false
+            },
+            {
+              "tier": "Mythical",
+              "requirement": {
+                "hp": 150,
+                "targetKmPerPerson": 75,
+                "minimumKmPerPerson": 75,
+                "windowHours": 24
+              },
+              "players": [
+                {
+                  "owner": "bot-sippula",
+                  "baseHp": 8.101869623247604,
+                  "hp": 8.101869623247604,
+                  "equivalentKm": 4.050934811623802,
+                  "bonus": 0,
+                  "qualified": false
+                }
+              ],
+              "hp": 8.101869623247604,
+              "remainingHp": 141.8981303767524,
+              "victory": false,
+              "rulesRevision": "boss-experiment-1",
+              "worldWrites": 0,
+              "loot": {
+                "rare": 0.5,
+                "legendary": 0.2,
+                "signature": 0.08057142857142857,
+                "common": 0.21942857142857142,
+                "gold": 101,
+                "fellowshipXp": 0,
+                "contributionBonus": 0,
+                "groupBonus": 0,
+                "levels": {
+                  "exploration": 3,
+                  "power": 1,
+                  "agility": 1,
+                  "endurance": 1,
+                  "perception": 2,
+                  "fellowship": 1
+                },
+                "rulesRevision": "loot-experiment-1"
+              },
+              "rewardEligible": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bot-rantalantie",
+      "name": "BOT · Rantalantie Rambler",
+      "route": "rantalantie",
+      "weather": "cold",
+      "rounds": 1,
+      "gold": 8,
+      "tiles": 5,
+      "finds": 0,
+      "reports": [
+        {
+          "round": 1,
+          "at": 1793647236380,
+          "status": "completed",
+          "routeMeters": 807.7545974194686,
+          "samples": 82,
+          "accepted": 82,
+          "rejected": 0,
+          "walkedMeters": 807.661224227864,
+          "gold": 8,
+          "newTiles": 5,
+          "attempts": 8,
+          "finds": 0,
+          "misses": 8,
+          "xp": {
+            "exploration": 25,
+            "agility": 6,
+            "endurance": 3
+          },
+          "balanceRevision": "dev-experimental-1",
+          "spawnRevision": "spawn-experiment-1",
+          "regionsRevision": "regions-experiment-1",
+          "bosses": [
+            {
+              "tier": "Lesser",
+              "requirement": {
+                "hp": 40,
+                "targetKmPerPerson": 20,
+                "minimumKmPerPerson": 5,
+                "windowHours": 24
+              },
+              "players": [
+                {
+                  "owner": "bot-rantalantie",
+                  "baseHp": 1.6153224484557278,
+                  "hp": 1.6153224484557278,
+                  "equivalentKm": 0.8076612242278639,
+                  "bonus": 0,
+                  "qualified": false
+                }
+              ],
+              "hp": 1.6153224484557278,
+              "remainingHp": 38.38467755154427,
+              "victory": false,
+              "rulesRevision": "boss-experiment-1",
+              "worldWrites": 0,
+              "loot": {
+                "rare": 0.2,
+                "legendary": 0.02,
+                "signature": 0.01,
+                "common": 0.77,
+                "gold": 20,
+                "fellowshipXp": 0,
+                "contributionBonus": 0,
+                "groupBonus": 0,
+                "levels": {
+                  "exploration": 2,
+                  "power": 1,
+                  "agility": 1,
+                  "endurance": 1,
+                  "perception": 1,
+                  "fellowship": 1
+                },
+                "rulesRevision": "loot-experiment-1"
+              },
+              "rewardEligible": false
+            },
+            {
+              "tier": "Standard",
+              "requirement": {
+                "hp": 70,
+                "targetKmPerPerson": 35,
+                "minimumKmPerPerson": 8.75,
+                "windowHours": 24
+              },
+              "players": [
+                {
+                  "owner": "bot-rantalantie",
+                  "baseHp": 1.6153224484557278,
+                  "hp": 1.6153224484557278,
+                  "equivalentKm": 0.8076612242278639,
+                  "bonus": 0,
+                  "qualified": false
+                }
+              ],
+              "hp": 1.6153224484557278,
+              "remainingHp": 68.38467755154427,
+              "victory": false,
+              "rulesRevision": "boss-experiment-1",
+              "worldWrites": 0,
+              "loot": {
+                "rare": 0.3,
+                "legendary": 0.05,
+                "signature": 0.02,
+                "common": 0.6299999999999999,
+                "gold": 35,
+                "fellowshipXp": 0,
+                "contributionBonus": 0,
+                "groupBonus": 0,
+                "levels": {
+                  "exploration": 2,
+                  "power": 1,
+                  "agility": 1,
+                  "endurance": 1,
+                  "perception": 1,
+                  "fellowship": 1
+                },
+                "rulesRevision": "loot-experiment-1"
+              },
+              "rewardEligible": false
+            },
+            {
+              "tier": "Greater",
+              "requirement": {
+                "hp": 100,
+                "targetKmPerPerson": 50,
+                "minimumKmPerPerson": 25,
+                "windowHours": 24
+              },
+              "players": [
+                {
+                  "owner": "bot-rantalantie",
+                  "baseHp": 1.6153224484557278,
+                  "hp": 1.6153224484557278,
+                  "equivalentKm": 0.8076612242278639,
+                  "bonus": 0,
+                  "qualified": false
+                }
+              ],
+              "hp": 1.6153224484557278,
+              "remainingHp": 98.38467755154427,
+              "victory": false,
+              "rulesRevision": "boss-experiment-1",
+              "worldWrites": 0,
+              "loot": {
+                "rare": 0.4,
+                "legendary": 0.1,
+                "signature": 0.04,
+                "common": 0.46,
+                "gold": 50,
+                "fellowshipXp": 0,
+                "contributionBonus": 0,
+                "groupBonus": 0,
+                "levels": {
+                  "exploration": 2,
+                  "power": 1,
+                  "agility": 1,
+                  "endurance": 1,
+                  "perception": 1,
+                  "fellowship": 1
+                },
+                "rulesRevision": "loot-experiment-1"
+              },
+              "rewardEligible": false
+            },
+            {
+              "tier": "Mythical",
+              "requirement": {
+                "hp": 150,
+                "targetKmPerPerson": 75,
+                "minimumKmPerPerson": 75,
+                "windowHours": 24
+              },
+              "players": [
+                {
+                  "owner": "bot-rantalantie",
+                  "baseHp": 1.6153224484557278,
+                  "hp": 1.6153224484557278,
+                  "equivalentKm": 0.8076612242278639,
+                  "bonus": 0,
+                  "qualified": false
+                }
+              ],
+              "hp": 1.6153224484557278,
+              "remainingHp": 148.38467755154429,
+              "victory": false,
+              "rulesRevision": "boss-experiment-1",
+              "worldWrites": 0,
+              "loot": {
+                "rare": 0.5,
+                "legendary": 0.2,
+                "signature": 0.08,
+                "common": 0.21999999999999997,
+                "gold": 100,
+                "fellowshipXp": 0,
+                "contributionBonus": 0,
+                "groupBonus": 0,
+                "levels": {
+                  "exploration": 2,
+                  "power": 1,
+                  "agility": 1,
+                  "endurance": 1,
+                  "perception": 1,
+                  "fellowship": 1
+                },
+                "rulesRevision": "loot-experiment-1"
+              },
+              "rewardEligible": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bot-helsinki",
+      "name": "BOT · Helsinki Explorer",
+      "route": "helsinki",
+      "weather": "clear",
+      "rounds": 1,
+      "gold": 6,
+      "tiles": 4,
+      "finds": 0,
+      "reports": [
+        {
+          "round": 1,
+          "at": 1793647237172,
+          "status": "completed",
+          "routeMeters": 638.0837859593975,
+          "samples": 89,
+          "accepted": 89,
+          "rejected": 0,
+          "walkedMeters": 624.2769296752359,
+          "gold": 6,
+          "newTiles": 4,
+          "attempts": 2,
+          "finds": 0,
+          "misses": 2,
+          "xp": {
+            "exploration": 20,
+            "agility": 6,
+            "endurance": 2
+          },
+          "balanceRevision": "dev-experimental-1",
+          "spawnRevision": "spawn-experiment-1",
+          "regionsRevision": "regions-experiment-1",
+          "bosses": [
+            {
+              "tier": "Lesser",
+              "requirement": {
+                "hp": 40,
+                "targetKmPerPerson": 20,
+                "minimumKmPerPerson": 5,
+                "windowHours": 24
+              },
+              "players": [
+                {
+                  "owner": "bot-helsinki",
+                  "baseHp": 1.248553859350472,
+                  "hp": 1.248553859350472,
+                  "equivalentKm": 0.624276929675236,
+                  "bonus": 0,
+                  "qualified": false
+                }
+              ],
+              "hp": 1.248553859350472,
+              "remainingHp": 38.75144614064953,
+              "victory": false,
+              "rulesRevision": "boss-experiment-1",
+              "worldWrites": 0,
+              "loot": {
+                "rare": 0.2,
+                "legendary": 0.02,
+                "signature": 0.01,
+                "common": 0.77,
+                "gold": 20,
+                "fellowshipXp": 0,
+                "contributionBonus": 0,
+                "groupBonus": 0,
+                "levels": {
+                  "exploration": 1,
+                  "power": 1,
+                  "agility": 1,
+                  "endurance": 1,
+                  "perception": 1,
+                  "fellowship": 1
+                },
+                "rulesRevision": "loot-experiment-1"
+              },
+              "rewardEligible": false
+            },
+            {
+              "tier": "Standard",
+              "requirement": {
+                "hp": 70,
+                "targetKmPerPerson": 35,
+                "minimumKmPerPerson": 8.75,
+                "windowHours": 24
+              },
+              "players": [
+                {
+                  "owner": "bot-helsinki",
+                  "baseHp": 1.248553859350472,
+                  "hp": 1.248553859350472,
+                  "equivalentKm": 0.624276929675236,
+                  "bonus": 0,
+                  "qualified": false
+                }
+              ],
+              "hp": 1.248553859350472,
+              "remainingHp": 68.75144614064953,
+              "victory": false,
+              "rulesRevision": "boss-experiment-1",
+              "worldWrites": 0,
+              "loot": {
+                "rare": 0.3,
+                "legendary": 0.05,
+                "signature": 0.02,
+                "common": 0.6299999999999999,
+                "gold": 35,
+                "fellowshipXp": 0,
+                "contributionBonus": 0,
+                "groupBonus": 0,
+                "levels": {
+                  "exploration": 1,
+                  "power": 1,
+                  "agility": 1,
+                  "endurance": 1,
+                  "perception": 1,
+                  "fellowship": 1
+                },
+                "rulesRevision": "loot-experiment-1"
+              },
+              "rewardEligible": false
+            },
+            {
+              "tier": "Greater",
+              "requirement": {
+                "hp": 100,
+                "targetKmPerPerson": 50,
+                "minimumKmPerPerson": 25,
+                "windowHours": 24
+              },
+              "players": [
+                {
+                  "owner": "bot-helsinki",
+                  "baseHp": 1.248553859350472,
+                  "hp": 1.248553859350472,
+                  "equivalentKm": 0.624276929675236,
+                  "bonus": 0,
+                  "qualified": false
+                }
+              ],
+              "hp": 1.248553859350472,
+              "remainingHp": 98.75144614064953,
+              "victory": false,
+              "rulesRevision": "boss-experiment-1",
+              "worldWrites": 0,
+              "loot": {
+                "rare": 0.4,
+                "legendary": 0.1,
+                "signature": 0.04,
+                "common": 0.46,
+                "gold": 50,
+                "fellowshipXp": 0,
+                "contributionBonus": 0,
+                "groupBonus": 0,
+                "levels": {
+                  "exploration": 1,
+                  "power": 1,
+                  "agility": 1,
+                  "endurance": 1,
+                  "perception": 1,
+                  "fellowship": 1
+                },
+                "rulesRevision": "loot-experiment-1"
+              },
+              "rewardEligible": false
+            },
+            {
+              "tier": "Mythical",
+              "requirement": {
+                "hp": 150,
+                "targetKmPerPerson": 75,
+                "minimumKmPerPerson": 75,
+                "windowHours": 24
+              },
+              "players": [
+                {
+                  "owner": "bot-helsinki",
+                  "baseHp": 1.248553859350472,
+                  "hp": 1.248553859350472,
+                  "equivalentKm": 0.624276929675236,
+                  "bonus": 0,
+                  "qualified": false
+                }
+              ],
+              "hp": 1.248553859350472,
+              "remainingHp": 148.75144614064953,
+              "victory": false,
+              "rulesRevision": "boss-experiment-1",
+              "worldWrites": 0,
+              "loot": {
+                "rare": 0.5,
+                "legendary": 0.2,
+                "signature": 0.08,
+                "common": 0.21999999999999997,
+                "gold": 100,
+                "fellowshipXp": 0,
+                "contributionBonus": 0,
+                "groupBonus": 0,
+                "levels": {
+                  "exploration": 1,
+                  "power": 1,
+                  "agility": 1,
+                  "endurance": 1,
+                  "perception": 1,
+                  "fellowship": 1
+                },
+                "rulesRevision": "loot-experiment-1"
+              },
+              "rewardEligible": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bot-cross-city",
+      "name": "BOT · City Trail Seeker",
+      "route": "cross-city",
+      "weather": "snow",
+      "rounds": 1,
+      "gold": 46,
+      "tiles": 25,
+      "finds": 0,
+      "reports": [
+        {
+          "round": 1,
+          "at": 1793647238343,
+          "status": "sample-limit",
+          "routeMeters": 8369.63517742312,
+          "samples": 600,
+          "accepted": 600,
+          "rejected": 0,
+          "walkedMeters": 5425.4624479448175,
+          "gold": 46,
+          "newTiles": 25,
+          "attempts": 2,
+          "finds": 0,
+          "misses": 2,
+          "xp": {
+            "exploration": 125,
+            "agility": 12,
+            "endurance": 21
+          },
+          "balanceRevision": "dev-experimental-1",
+          "spawnRevision": "spawn-experiment-1",
+          "regionsRevision": "regions-experiment-1",
+          "bosses": [
+            {
+              "tier": "Lesser",
+              "requirement": {
+                "hp": 40,
+                "targetKmPerPerson": 20,
+                "minimumKmPerPerson": 5,
+                "windowHours": 24
+              },
+              "players": [
+                {
+                  "owner": "bot-cross-city",
+                  "baseHp": 10.850924895889635,
+                  "hp": 10.850924895889635,
+                  "equivalentKm": 5.425462447944818,
+                  "bonus": 0,
+                  "qualified": true
+                }
+              ],
+              "hp": 10.850924895889635,
+              "remainingHp": 29.149075104110366,
+              "victory": false,
+              "rulesRevision": "boss-experiment-1",
+              "worldWrites": 0,
+              "loot": {
+                "rare": 0.2,
+                "legendary": 0.02,
+                "signature": 0.01,
+                "common": 0.77,
+                "gold": 20,
+                "fellowshipXp": 0,
+                "contributionBonus": 0,
+                "groupBonus": 0,
+                "levels": {
+                  "exploration": 3,
+                  "power": 1,
+                  "agility": 1,
+                  "endurance": 1,
+                  "perception": 1,
+                  "fellowship": 1
+                },
+                "rulesRevision": "loot-experiment-1"
+              },
+              "rewardEligible": false
+            },
+            {
+              "tier": "Standard",
+              "requirement": {
+                "hp": 70,
+                "targetKmPerPerson": 35,
+                "minimumKmPerPerson": 8.75,
+                "windowHours": 24
+              },
+              "players": [
+                {
+                  "owner": "bot-cross-city",
+                  "baseHp": 10.850924895889635,
+                  "hp": 10.850924895889635,
+                  "equivalentKm": 5.425462447944818,
+                  "bonus": 0,
+                  "qualified": false
+                }
+              ],
+              "hp": 10.850924895889635,
+              "remainingHp": 59.149075104110366,
+              "victory": false,
+              "rulesRevision": "boss-experiment-1",
+              "worldWrites": 0,
+              "loot": {
+                "rare": 0.3,
+                "legendary": 0.05,
+                "signature": 0.02,
+                "common": 0.6299999999999999,
+                "gold": 35,
+                "fellowshipXp": 0,
+                "contributionBonus": 0,
+                "groupBonus": 0,
+                "levels": {
+                  "exploration": 3,
+                  "power": 1,
+                  "agility": 1,
+                  "endurance": 1,
+                  "perception": 1,
+                  "fellowship": 1
+                },
+                "rulesRevision": "loot-experiment-1"
+              },
+              "rewardEligible": false
+            },
+            {
+              "tier": "Greater",
+              "requirement": {
+                "hp": 100,
+                "targetKmPerPerson": 50,
+                "minimumKmPerPerson": 25,
+                "windowHours": 24
+              },
+              "players": [
+                {
+                  "owner": "bot-cross-city",
+                  "baseHp": 10.850924895889635,
+                  "hp": 10.850924895889635,
+                  "equivalentKm": 5.425462447944818,
+                  "bonus": 0,
+                  "qualified": false
+                }
+              ],
+              "hp": 10.850924895889635,
+              "remainingHp": 89.14907510411037,
+              "victory": false,
+              "rulesRevision": "boss-experiment-1",
+              "worldWrites": 0,
+              "loot": {
+                "rare": 0.4,
+                "legendary": 0.1,
+                "signature": 0.04,
+                "common": 0.46,
+                "gold": 50,
+                "fellowshipXp": 0,
+                "contributionBonus": 0,
+                "groupBonus": 0,
+                "levels": {
+                  "exploration": 3,
+                  "power": 1,
+                  "agility": 1,
+                  "endurance": 1,
+                  "perception": 1,
+                  "fellowship": 1
+                },
+                "rulesRevision": "loot-experiment-1"
+              },
+              "rewardEligible": false
+            },
+            {
+              "tier": "Mythical",
+              "requirement": {
+                "hp": 150,
+                "targetKmPerPerson": 75,
+                "minimumKmPerPerson": 75,
+                "windowHours": 24
+              },
+              "players": [
+                {
+                  "owner": "bot-cross-city",
+                  "baseHp": 10.850924895889635,
+                  "hp": 10.850924895889635,
+                  "equivalentKm": 5.425462447944818,
+                  "bonus": 0,
+                  "qualified": false
+                }
+              ],
+              "hp": 10.850924895889635,
+              "remainingHp": 139.14907510411035,
+              "victory": false,
+              "rulesRevision": "boss-experiment-1",
+              "worldWrites": 0,
+              "loot": {
+                "rare": 0.5,
+                "legendary": 0.2,
+                "signature": 0.08,
+                "common": 0.21999999999999997,
+                "gold": 101,
+                "fellowshipXp": 0,
+                "contributionBonus": 0,
+                "groupBonus": 0,
+                "levels": {
+                  "exploration": 3,
+                  "power": 1,
+                  "agility": 1,
+                  "endurance": 1,
+                  "perception": 1,
+                  "fellowship": 1
+                },
+                "rulesRevision": "loot-experiment-1"
+              },
+              "rewardEligible": false
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "limits": {
+    "fixesPerJourney": 600,
+    "reportsPerBot": 20,
+    "roundsPerBot": 20,
+    "catalogCandidates": 100
+  },
+  "execution": "Only runs while an administrator explicitly starts a batch; browser auto-run stops when closed.",
+  "exportedAt": "2026-11-05T06:20:16.652Z",
+  "label": "SIMULATED TEST DATA — not physical activity"
+}

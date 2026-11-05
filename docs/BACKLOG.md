@@ -367,10 +367,12 @@ Automated repair evidence and remaining iPhone field gates: [P0 report](P0-EXPLO
 
 ## Field-test follow-ups
 
-TR-172 — P1 — In Progress: five labelled dev bots for exploration and boss
+TR-172 — P1 — Done (isolated dev lab scope): five labelled dev bots for exploration and boss
 benchmark data. Bounded admin batches, persistent isolated state, JSON reports,
 ordinary mapped-route/game rules and conditional boss/loot calculations are
-implemented. Hosted validation pending; no physical or live encounter evidence.
+implemented in dev 34 with 222 passing regressions. Hosted five-bot batch,
+persistent reload, conditional boss comparisons and report download verified;
+four routes completed and one hit its explicit sample limit. No physical or live encounter evidence.
 See [bot lab](DEV-BOTS.md).
 
 | ID | Priority | Status | Story / outcome | Dependencies | Acceptance and implementation notes |
